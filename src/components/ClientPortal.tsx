@@ -88,6 +88,7 @@ export default function ClientPortal({
       setError(null);
       await reviewsApi.create({
         salonId: selectedBookingForReview.salonId,
+        bookingId: selectedBookingForReview.id,
         clientName: selectedBookingForReview.clientName,
         rating: reviewRating,
         text: reviewText

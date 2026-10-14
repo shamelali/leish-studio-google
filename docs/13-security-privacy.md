@@ -15,7 +15,7 @@ Protect account credentials, booking/contact information, provider management ac
 | PII enumeration | Emails/bookings | Auth-scoped reads and sanitized responses | Negative API tests |
 | Secret exposure | JWT/Gemini/Maps keys | Environment secrets, no client Gemini key, restricted Maps key | Secret scan and bundle review |
 | Prompt/model failure | User trust | zod output parsing, timeout, deterministic fallback | AI contract tests |
-| Review abuse | Reputation | Completed-booking eligibility and rate limiting | Review authorization tests |
+| Review abuse | Reputation | Authenticated client, completed-booking eligibility, one review per booking/reviewer and rate limiting | Review authorization tests |
 | Data loss | Bookings/catalog | Durable adapter, backups/migration, atomic writes | Redeploy and restore rehearsal |
 | XSS/injection | Browser/session | Output encoding, validation, Helmet/CSP | Dependency and security review |
 | DoS | API availability | Route-specific rate buckets, body limit, timeouts | Load/rate tests |

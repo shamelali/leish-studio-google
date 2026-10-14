@@ -96,6 +96,10 @@ export interface Review {
   rating: number;
   text: string;
   date: string;
+  /** Present on reviews created through the authenticated API. */
+  reviewerId?: string;
+  /** Present on reviews tied to a completed booking; legacy seed reviews omit it. */
+  bookingId?: string;
 }
 
 export interface LookbookItem {
@@ -121,6 +125,8 @@ export interface LookbookItem {
   longevityFeatures: string[];
   groundedTrendContext?: string;
   recommendedSalonId?: string;
+  /** Canonical catalogue service ID when the model provides one. */
+  recommendedServiceId?: string;
   recommendedServiceName?: string;
   heroImage?: string;
   lightingBestFor?: string;
@@ -152,13 +158,23 @@ export interface AIAdviceRequest {
 }
 
 export interface AIAdviceResponse {
+  source: 'model' | 'fallback';
   recommendationText: string;
   suggestedServices: {
     serviceName: string;
+    /** Present when the model response includes a canonical catalogue ID. */
+    serviceId?: string;
     category: string;
     salonName: string;
     salonId: string;
     estimatedPrice: number;
     reason: string;
   }[];
+}
+
+export interface AIReviewSummaryResponse {
+  source: 'model' | 'fallback';
+  vibe: string;
+  bestFor: string;
+  tip: string;
 }

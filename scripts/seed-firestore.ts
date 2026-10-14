@@ -6,7 +6,6 @@ import { initializeApp, deleteApp } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
 
 const PROJECT_ID = 'leish-local';
-const EMULATOR_HOST = '127.0.0.1:8080';
 const collections = ['salons', 'bookings', 'reviews', 'users'] as const;
 type Collection = typeof collections[number];
 type RecordWithId = { id: string; [key: string]: unknown };
@@ -30,8 +29,12 @@ function requireRecords(value: unknown, collection: Collection): RecordWithId[] 
 async function main() {
   // Check the destination BEFORE reading any data or initializing the Admin SDK.
   // No ADC, service account, or production project is ever used by this script.
-  if (process.env.FIRESTORE_EMULATOR_HOST !== EMULATOR_HOST || process.env.FIREBASE_PROJECT_ID !== PROJECT_ID) {
-    throw new Error(`Refusing seed: set FIRESTORE_EMULATOR_HOST=${EMULATOR_HOST} and FIREBASE_PROJECT_ID=${PROJECT_ID}`);
+  const emulatorHost = process.env.FIRESTORE_EMULATOR_HOST;
+  const [host, portText] = emulatorHost?.split(':') ?? [];
+  const port = Number(portText);
+  const isLoopbackEmulator = host === '127.0.0.1' && Number.isInteger(port) && port > 0 && port <= 65535;
+  if (!isLoopbackEmulator || process.env.FIREBASE_PROJECT_ID !== PROJECT_ID) {
+    throw new Error(`Refusing seed: set FIRESTORE_EMULATOR_HOST=127.0.0.1:<port> and FIREBASE_PROJECT_ID=${PROJECT_ID}`);
   }
   if (process.argv.length !== 2) throw new Error('Seed takes no arguments');
 

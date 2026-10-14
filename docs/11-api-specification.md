@@ -30,9 +30,10 @@ Example login response:
 | GET | `/salons/:id` | none | Read public listing details |
 | PUT | `/salons/:id` | provider/admin | Update owned listing |
 | POST | `/salons/:id/services` | provider/admin | Add service to owned listing |
+| PUT | `/salons/:id/services/:serviceId` | provider/admin | Edit service fields without changing its ID |
 | DELETE | `/salons/:id/services/:serviceId` | provider/admin | Delete service from owned listing |
 | GET | `/reviews/:salonId` | none | List public reviews |
-| POST | `/reviews` | client | Create review for eligible completed booking |
+| POST | `/reviews` | client | Create one review for an eligible completed booking (optional `bookingId` is resolved server-side for legacy clients) |
 
 ## Booking endpoints
 
@@ -62,17 +63,17 @@ Minimum booking request:
 
 | Method | Path | Result envelope |
 |---|---|---|
-| POST | `/gemini/advice` | `{ source, data }` |
-| POST | `/gemini/summarize-reviews` | `{ source, data: { vibe, bestFor, tip } }` |
+| POST | `/gemini/advice` | `{ source, recommendationText, suggestedServices }` |
+| POST | `/gemini/summarize-reviews` | `{ source, vibe, bestFor, tip }` |
 | POST | `/gemini/trends-lookbook` | `{ source, data: LookbookItem }` |
-| POST | `/gemini/quality-audit` | `{ source, data: audit }` |
+| POST | `/gemini/quality-audit` | existing audit fields (authenticated owner/admin) |
 | POST | `/gemini/chat` | `{ source, data: message }` |
 | POST | `/gemini/generate-image` | image result or labeled fallback |
 | POST | `/gemini/generate-video` | async operation |
 | POST | `/gemini/video-status` | operation status |
 | POST | `/gemini/video-download` | `video/mp4` stream |
 
-All user-facing AI endpoints require zod input validation, a wall-clock timeout, parsed model output, a fallback path, and an AI-specific rate-limit bucket.
+All user-facing AI endpoints require zod input validation, a wall-clock timeout, parsed model output, a fallback path, and an AI-specific rate-limit bucket. Advisor and review-summary responses use `source: "model"` for validated provider output and `source: "fallback"` for deterministic keyless or failure responses; the existing flat fields remain unchanged for current clients.
 
 ## Authorization matrix
 

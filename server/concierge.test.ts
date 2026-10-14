@@ -116,7 +116,7 @@ describe('concierge input safety', () => {
     expect(response.status).toBe(400);
   });
 
-  it('returns 503 without a server-side Gemini key', async () => {
+  it('streams a deterministic preview without a server-side model key', async () => {
     const app = express();
     app.use(express.json());
     app.post('/api/gemini/concierge', createConciergeHandler({ apiKey: '' }));
@@ -124,8 +124,9 @@ describe('concierge input safety', () => {
     const response = await request(app).post('/api/gemini/concierge').send({
       messages: [{ role: 'user', parts: [{ type: 'text', text: 'Natural look in KL' }] }],
     });
-    expect(response.status).toBe(503);
-    expect(response.body.error).toBe('No concierge model is configured. Set NVIDIA_API_KEY, OPENAI_API_KEY, or GEMINI_API_KEY.');
+    expect(response.status).toBe(200);
+    expect(response.headers['content-type']).toMatch(/text\/event-stream/);
+    expect(response.text).toContain('Concierge preview mode');
   });
 
   it('documents that NVIDIA NIM is selected before other providers', () => {

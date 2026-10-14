@@ -40,7 +40,32 @@ const STORE_PATH = process.env.LEISH_DB_PATH
   : process.env.VERCEL
   ? path.join('/tmp', 'db_store.json')
   : path.join(process.cwd(), 'db_store.json');
-const DISABLE_DEMO_JSON_IN_PRODUCTION = process.env.NODE_ENV === 'production' && !process.env.LEISH_DB_PATH;
+
+/**
+ * Resolve the persistence backend before constructing any store. JSON is a
+ * useful local/test fallback, but it cannot provide production durability.
+ * Refusing to boot is safer than serving an empty catalog or writing to an
+ * ephemeral deployment filesystem.
+ */
+export function getStoreBackend(
+  environment = process.env.NODE_ENV,
+  configuredBackend = process.env.STORE_BACKEND,
+): 'json' | 'firestore' {
+  const backend = configuredBackend?.trim();
+  const isProduction = environment === 'production' || process.env.VERCEL === '1';
+
+  if (isProduction && backend !== 'firestore') {
+    throw new Error(
+      '[leish] Production requires STORE_BACKEND=firestore. The JSON backend is supported only for local development and tests.',
+    );
+  }
+
+  const selected = backend || 'json';
+  if (selected !== 'json' && selected !== 'firestore') {
+    throw new Error(`Unknown STORE_BACKEND: ${selected}`);
+  }
+  return selected;
+}
 
 const hashPassword = (password: string): string => bcrypt.hashSync(password, 10);
 
@@ -801,16 +826,6 @@ export class JsonDataStore implements DataStore {
   }
 
   private load() {
-    if (DISABLE_DEMO_JSON_IN_PRODUCTION) {
-      // Production persistence is expected to be Firestore. Never inspect or
-      // seed the repository's demo db_store.json when that configuration is
-      // missing; fail-safe with an empty in-memory JSON store instead.
-      this.salons = [];
-      this.reviews = [];
-      this.bookings = [];
-      this.users = [];
-      return;
-    }
     try {
       if (fs.existsSync(STORE_PATH)) {
         const raw = fs.readFileSync(STORE_PATH, 'utf-8');
@@ -920,6 +935,11 @@ export class JsonDataStore implements DataStore {
   }
 
   public createReview(review: Review): Review {
+    if (review.reviewerId && review.bookingId && this.reviews.some(existing =>
+      existing.reviewerId === review.reviewerId && existing.bookingId === review.bookingId
+    )) {
+      throw new Error('Review already exists for this booking and reviewer');
+    }
     this.reviews.unshift(review);
     // Recalculate average studio rating
     const studioReviews = this.getSalonReviews(review.salonId);
@@ -966,9 +986,5 @@ export class JsonDataStore implements DataStore {
   }
 }
 
-const backend = process.env.STORE_BACKEND || 'json';
-if (backend !== 'json' && backend !== 'firestore') {
-  throw new Error(`Unknown STORE_BACKEND: ${backend}`);
-}
-
+const backend = getStoreBackend();
 export const store: DataStore = backend === 'firestore' ? new FirestoreStore() : new JsonDataStore();

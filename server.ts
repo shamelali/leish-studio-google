@@ -1,5 +1,5 @@
 import express from 'express';
-import { store } from './server/data-store.ts';
+import { store, type DataStore } from './server/data-store.ts';
 import { GoogleGenAI, Type, GenerateVideosOperation } from '@google/genai';
 import type { Booking, Review, Service, User } from './src/types.ts';
 import bcrypt from 'bcrypt';
@@ -8,7 +8,7 @@ import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import { z } from 'zod';
 import { registerConciergeRoute } from './server/concierge.ts';
-import { bookingSchema, salonUpdateSchema } from './server/validation.ts';
+import { bookingSchema, salonUpdateSchema, serviceUpdateSchema } from './server/validation.ts';
 
 // Initialize Gemini Client
 const ai = new GoogleGenAI({
@@ -19,6 +19,120 @@ const ai = new GoogleGenAI({
     }
   }
 });
+
+export type AIResponseSource = 'model' | 'fallback';
+
+const adviceRequestSchema = z.object({
+  goals: z.string().trim().min(1).max(1000),
+  skinHairType: z.string().trim().min(1).max(1000),
+  occasion: z.string().trim().min(1).max(200),
+  preferredCategory: z.string().trim().max(100).optional(),
+}).strict();
+
+const adviceResponseSchema = z.object({
+  recommendationText: z.string().trim().min(1).max(2500),
+  suggestedServices: z.array(z.object({
+    serviceName: z.string().trim().min(1).max(200),
+    category: z.string().trim().min(1).max(100),
+    salonName: z.string().trim().min(1).max(200),
+    salonId: z.string().trim().min(1).max(120),
+    estimatedPrice: z.number().finite().nonnegative().max(100000),
+    reason: z.string().trim().min(1).max(800),
+  }).strict()).max(3),
+}).strict();
+
+const reviewSummaryRequestSchema = z.object({
+  salonId: z.string().trim().min(1).max(120),
+}).strict();
+
+const reviewSummaryResponseSchema = z.object({
+  vibe: z.string().trim().min(1).max(500),
+  bestFor: z.string().trim().min(1).max(500),
+  tip: z.string().trim().min(1).max(500),
+}).strict();
+
+const AI_TIMEOUT_MS = 7000;
+const clip = (value: string, max: number): string => value.slice(0, max);
+
+async function withTimeout<T>(operation: Promise<T>, timeoutMs: number, label: string): Promise<T> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const timeout = new Promise<never>((_, reject) => {
+    timer = setTimeout(() => reject(new Error(`${label} timed out`)), timeoutMs);
+  });
+  try {
+    return await Promise.race([operation, timeout]);
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
+}
+
+function parseModelJson<T extends z.ZodType>(text: unknown, schema: T): z.output<T> | undefined {
+  if (typeof text !== 'string' || !text.trim()) return undefined;
+  try {
+    const parsed = schema.safeParse(JSON.parse(stripJsonFences(text)));
+    return parsed.success ? parsed.data : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+const configuredGeminiKey = (): boolean => {
+  const key = process.env.GEMINI_API_KEY?.trim();
+  return Boolean(key && key !== 'MY_GEMINI_API_KEY' && !/^MY_|^YOUR_/i.test(key));
+};
+
+type AdviceRequest = z.infer<typeof adviceRequestSchema>;
+type AdviceData = z.infer<typeof adviceResponseSchema>;
+type ReviewSummaryData = z.infer<typeof reviewSummaryResponseSchema>;
+
+function fallbackAdvice(input: AdviceRequest, salons: Awaited<ReturnType<DataStore['getSalons']>>): AdviceData & { source: 'fallback' } {
+  const candidates = salons
+    .flatMap(salon => salon.services.map(service => ({ salon, service })))
+    .sort((a, b) => a.salon.id.localeCompare(b.salon.id) || a.service.id.localeCompare(b.service.id));
+  const preferred = input.preferredCategory?.toLowerCase();
+  const preferredCandidates = preferred
+    ? candidates.filter(({ salon, service }) => salon.category.toLowerCase() === preferred || service.category.toLowerCase() === preferred)
+    : candidates;
+  const selected = (preferredCandidates.length > 0 ? preferredCandidates : candidates).slice(0, 3);
+
+  return {
+    source: 'fallback',
+    recommendationText: clip(
+      `Based on your goal of "${input.goals}" and your skin profile "${input.skinHairType}", our makeup ateliers recommend custom complexion sculpting and long-wear artistry.`,
+      2500,
+    ),
+    suggestedServices: selected.map(({ salon, service }) => ({
+      serviceName: clip(service.name, 200),
+      category: clip(service.category, 100),
+      salonName: clip(salon.name, 200),
+      salonId: clip(salon.id, 120),
+      estimatedPrice: Math.min(100000, Math.max(0, Number.isFinite(service.price) ? service.price : 0)),
+      reason: clip(`A ${service.category} service selected from the live Leish catalogue for your ${input.occasion} plans.`, 800),
+    })),
+  };
+}
+
+function fallbackReviewSummary(hasReviews: boolean): ReviewSummaryData & { source: 'fallback' } {
+  return hasReviews
+    ? {
+        source: 'fallback',
+        vibe: 'Sophisticated and deeply professional. Guests appreciate the exquisite premium aesthetic.',
+        bestFor: 'Precision treatments and highly detailed beauty consulting by creative lead stylists.',
+        tip: 'Secure weekend bookings well in advance, as premium afternoon slots fill up quickly.',
+      }
+    : {
+        source: 'fallback',
+        vibe: 'Inviting and fresh. Ready to welcome its first clients with personalized premium care.',
+        bestFor: 'First-time visitors seeking dedicated, highly customized care in an exclusive environment.',
+        tip: 'Book early to secure slots with their main professionals as they establish their premier schedule.',
+      };
+}
+
+export interface AppDependencies {
+  store?: DataStore;
+  ai?: GoogleGenAI;
+  aiTimeoutMs?: number;
+}
 
 /**
  * Strips markdown code fences (```json or ```) that models sometimes wrap
@@ -63,7 +177,10 @@ export function getJwtSecret(
   return secret || 'leish-dev-secret-change-in-production';
 }
 
-function createApp() {
+export function createApp(dependencies: AppDependencies = {}) {
+  const appStore = dependencies.store ?? store;
+  const aiClient = dependencies.ai ?? ai;
+  const aiTimeoutMs = Math.max(1, dependencies.aiTimeoutMs ?? AI_TIMEOUT_MS);
   const app = express();
 
   // Behind the Vercel proxy, trust the first X-Forwarded-For hop so
@@ -125,7 +242,7 @@ function createApp() {
 
   // JSON body size limit
   app.use(express.json({ limit: '100kb' }));
-  registerConciergeRoute(app);
+  registerConciergeRoute(app, { getSalons: () => appStore.getSalons() });
 
   // Helper to strip sensitive data
   const sanitizeUser = (u: any): User => {
@@ -162,7 +279,7 @@ function createApp() {
       return res.status(401).json({ error: 'Invalid or expired token.' });
     }
     try {
-      const user = await store.getUserById(decoded.userId as string);
+      const user = await appStore.getUserById(decoded.userId as string);
       if (!user) {
         return res.status(401).json({ error: 'User not found.' });
       }
@@ -181,12 +298,42 @@ function createApp() {
     canUpdateSalon(user, booking.salonId) ||
     booking.clientEmail.toLowerCase() === user.email.toLowerCase();
 
-  const canReview = async (user: User, salonId: string): Promise<boolean> =>
-    (await store.getBookings()).some(b =>
-      b.salonId === salonId &&
-      b.clientEmail.toLowerCase() === user.email.toLowerCase() &&
-      b.status === 'completed'
+  const findReviewEligibility = async (
+    user: User,
+    salonId: string,
+    requestedBookingId?: string,
+  ): Promise<{ booking?: Booking; duplicate: boolean }> => {
+    const [bookings, reviews] = await Promise.all([
+      appStore.getBookings(),
+      appStore.getSalonReviews(salonId),
+    ]);
+    const completedBookings = bookings.filter(booking =>
+      booking.salonId === salonId &&
+      booking.clientEmail.toLowerCase() === user.email.toLowerCase() &&
+      booking.status === 'completed',
     );
+
+    if (requestedBookingId) {
+      const booking = completedBookings.find(candidate => candidate.id === requestedBookingId);
+      return {
+        booking,
+        duplicate: Boolean(booking && reviews.some(review =>
+          review.reviewerId === user.id && review.bookingId === booking.id,
+        )),
+      };
+    }
+
+    const reviewedBookingIds = new Set(
+      reviews
+        .filter(review => review.reviewerId === user.id && review.bookingId)
+        .map(review => review.bookingId as string),
+    );
+    const booking = completedBookings.find(candidate => !reviewedBookingIds.has(candidate.id));
+    return {
+      booking,
+      duplicate: !booking && completedBookings.length > 0,
+    };
+  };
 
   /** Requires authenticateToken first. 403 unless the caller manages :id. */
   const requireSalonOwner = (req: any, res: any, next: any) => {
@@ -201,7 +348,7 @@ function createApp() {
   const requireBookingAccess = async (req: any, res: any, next: any) => {
     let booking: Booking | undefined;
     try {
-      booking = await store.getBooking(req.params.id);
+      booking = await appStore.getBooking(req.params.id);
     } catch (error) {
       return next(error);
     }
@@ -232,7 +379,10 @@ function createApp() {
 
   const reviewSchema = z.object({
     salonId: z.string().min(1),
-    clientName: z.string().min(1).max(100),
+    // Kept optional for compatibility with clients that already send it; the
+    // server always uses the authenticated account name instead.
+    clientName: z.string().trim().min(1).max(100).optional(),
+    bookingId: z.string().trim().min(1).max(120).optional(),
     rating: z.number().int().min(1).max(5),
     text: z.string().min(1).max(2000),
   });
@@ -261,7 +411,7 @@ function createApp() {
       const { name, email, password, role, phone, bio } = parsed.data;
 
       const normalizedEmail = email.trim().toLowerCase();
-      const existing = await store.getUserByEmail(normalizedEmail);
+      const existing = await appStore.getUserByEmail(normalizedEmail);
       if (existing) {
         return res.status(400).json({ error: 'An account with this email already exists. Please sign in instead.' });
       }
@@ -270,7 +420,7 @@ function createApp() {
         ? 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200'
         : 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200';
       
-      const newUser = await store.createUser({
+      const newUser = await appStore.createUser({
         id: `user-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
         name: name.trim(),
         email: normalizedEmail,
@@ -305,7 +455,7 @@ function createApp() {
 
       const { email, password } = parsed.data;
       const normalizedEmail = email.trim().toLowerCase();
-      const user = await store.getUserByEmail(normalizedEmail);
+      const user = await appStore.getUserByEmail(normalizedEmail);
       if (!user) {
         return res.status(401).json({ error: 'Invalid email or password.' });
       }
@@ -351,7 +501,7 @@ function createApp() {
         return res.status(403).json({ error: 'You can only update your own profile.' });
       }
 
-      const updated = await store.updateUser(id, {
+      const updated = await appStore.updateUser(id, {
         ...(name && { name: name.trim() }),
         ...(phone !== undefined && { phone }),
         ...(bio !== undefined && { bio }),
@@ -370,7 +520,7 @@ function createApp() {
   // API Route: Get all salons
   app.get('/api/salons', async (req, res) => {
     try {
-      const salons = await store.getSalons();
+      const salons = await appStore.getSalons();
       res.json(salons);
     } catch (error: any) {
       res.status(500).json({ error: 'Could not load salons' });
@@ -380,7 +530,7 @@ function createApp() {
   // API Route: Get single salon
   app.get('/api/salons/:id', async (req, res) => {
     try {
-      const salon = await store.getSalon(req.params.id);
+      const salon = await appStore.getSalon(req.params.id);
       if (!salon) {
         return res.status(404).json({ error: 'Salon not found' });
       }
@@ -397,7 +547,7 @@ function createApp() {
       if (!parsed.success) {
         return res.status(400).json({ error: parsed.error.issues[0].message });
       }
-      const updated = await store.updateSalon(req.params.id, parsed.data);
+      const updated = await appStore.updateSalon(req.params.id, parsed.data);
       res.json(updated);
     } catch (error: any) {
       res.status(500).json({ error: 'Salon update failed' });
@@ -407,7 +557,7 @@ function createApp() {
   // API Route: Add service to salon (owner-only)
   app.post('/api/salons/:id/services', authenticateToken, requireSalonOwner, async (req: any, res) => {
     try {
-      const salon = await store.getSalon(req.params.id);
+      const salon = await appStore.getSalon(req.params.id);
       if (!salon) {
         return res.status(404).json({ error: 'Salon not found' });
       }
@@ -427,8 +577,42 @@ function createApp() {
         category: req.body.category || salon.category
       };
       const updatedServices = [...salon.services, newService];
-      const updated = await store.updateSalon(req.params.id, { services: updatedServices });
+      const updated = await appStore.updateSalon(req.params.id, { services: updatedServices });
       res.status(201).json(updated);
+    } catch (error: any) {
+      res.status(500).json({ error: 'Service update failed' });
+    }
+  });
+
+  // API Route: Edit an existing service (owner-only). The route keeps the
+  // path-selected service ID rather than accepting an ID from the request
+  // body, so existing bookings continue to reference the same catalogue item.
+  app.put('/api/salons/:id/services/:serviceId', authenticateToken, requireSalonOwner, async (req: any, res) => {
+    try {
+      const salon = await appStore.getSalon(req.params.id);
+      if (!salon) {
+        return res.status(404).json({ error: 'Salon not found' });
+      }
+      const service = salon.services.find(candidate => candidate.id === req.params.serviceId);
+      if (!service) {
+        return res.status(404).json({ error: 'Service not found' });
+      }
+
+      const parsed = serviceUpdateSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ error: parsed.error.issues[0].message });
+      }
+
+      const updatedService: Service = {
+        ...service,
+        ...parsed.data,
+        id: service.id,
+      };
+      const updatedServices = salon.services.map(candidate =>
+        candidate.id === service.id ? updatedService : candidate,
+      );
+      const updated = await appStore.updateSalon(req.params.id, { services: updatedServices });
+      res.json(updated);
     } catch (error: any) {
       res.status(500).json({ error: 'Service update failed' });
     }
@@ -437,7 +621,7 @@ function createApp() {
   // API Route: Delete service from salon (owner-only)
   app.delete('/api/salons/:id/services/:serviceId', authenticateToken, requireSalonOwner, async (req: any, res) => {
     try {
-      const salon = await store.getSalon(req.params.id);
+      const salon = await appStore.getSalon(req.params.id);
       if (!salon) {
         return res.status(404).json({ error: 'Salon not found' });
       }
@@ -445,7 +629,7 @@ function createApp() {
         return res.status(404).json({ error: 'Service not found' });
       }
       const updatedServices = salon.services.filter(s => s.id !== req.params.serviceId);
-      const updated = await store.updateSalon(req.params.id, { services: updatedServices });
+      const updated = await appStore.updateSalon(req.params.id, { services: updatedServices });
       res.json(updated);
     } catch (error: any) {
       res.status(500).json({ error: 'Service update failed' });
@@ -458,7 +642,7 @@ function createApp() {
   //   admin     → may filter freely
   app.get('/api/bookings', authenticateToken, async (req: any, res) => {
     try {
-      let bookings = await store.getBookings();
+      let bookings = await appStore.getBookings();
 
       if (req.user.role === 'admin') {
         const email = req.query.email as string | undefined;
@@ -509,7 +693,7 @@ function createApp() {
         attachedMoodboard
       } = parsed.data;
 
-      const salon = await store.getSalon(salonId);
+      const salon = await appStore.getSalon(salonId);
       if (!salon) {
         return res.status(404).json({ error: 'Salon not found' });
       }
@@ -549,7 +733,7 @@ function createApp() {
         attachedMoodboard: attachedMoodboard || undefined
       };
 
-      const created = await store.createBooking(booking);
+      const created = await appStore.createBooking(booking);
       res.status(201).json(created);
     } catch (error: any) {
       serverError(res, 'Booking creation failed');
@@ -574,7 +758,7 @@ function createApp() {
           return res.status(403).json({ error: 'You can only cancel pending or confirmed bookings.' });
         }
       }
-      const updated = await store.updateBookingStatus(req.params.id, parsed.data.status);
+      const updated = await appStore.updateBookingStatus(req.params.id, parsed.data.status);
       res.json(updated);
     } catch (error: any) {
       serverError(res, 'Booking update failed');
@@ -584,27 +768,35 @@ function createApp() {
   // API Route: Get reviews
   app.get('/api/reviews/:salonId', async (req, res) => {
     try {
-      const reviews = await store.getSalonReviews(req.params.salonId);
+      const reviews = await appStore.getSalonReviews(req.params.salonId);
       res.json(reviews);
     } catch (error: any) {
       serverError(res, 'Could not load reviews');
     }
   });
 
-  // API Route: Post review — requires auth AND a completed booking at that
-  // salon with the caller's own email (TR-7 canReview). clientName is taken
-  // from the account, never from the body, so reviews cannot be spoofed.
+  // API Route: Post review — client accounts need an eligible completed
+  // booking. New reviews carry both the authenticated reviewer and booking
+  // identity so one booking cannot be reviewed more than once.
   app.post('/api/reviews', authenticateToken, async (req: any, res) => {
     try {
       const parsed = reviewSchema.safeParse(req.body);
       if (!parsed.success) {
         return res.status(400).json({ error: parsed.error.issues[0].message });
       }
-      const { salonId, rating, text } = parsed.data;
-      if (!await store.getSalon(salonId)) {
+      const { salonId, bookingId, rating, text } = parsed.data;
+      if (!await appStore.getSalon(salonId)) {
         return res.status(404).json({ error: 'Salon not found' });
       }
-      if (!await canReview(req.user, salonId)) {
+      if (req.user.role !== 'client') {
+        return res.status(403).json({ error: 'Only client accounts can create customer reviews.' });
+      }
+
+      const eligibility = await findReviewEligibility(req.user, salonId, bookingId);
+      if (eligibility.duplicate) {
+        return res.status(409).json({ error: 'You have already reviewed this completed booking.' });
+      }
+      if (!eligibility.booking) {
         return res.status(403).json({
           error: 'You can review a studio once you have a completed booking there.'
         });
@@ -615,11 +807,16 @@ function createApp() {
         clientName: req.user.name,
         rating,
         text,
-        date: new Date().toISOString().split('T')[0]
+        date: new Date().toISOString().split('T')[0],
+        reviewerId: req.user.id,
+        bookingId: eligibility.booking.id,
       };
-      const created = await store.createReview(review);
+      const created = await appStore.createReview(review);
       res.status(201).json(created);
     } catch (error: any) {
+      if (error instanceof Error && error.message === 'Review already exists for this booking and reviewer') {
+        return res.status(409).json({ error: 'You have already reviewed this completed booking.' });
+      }
       serverError(res, 'Review creation failed');
     }
   });
@@ -627,49 +824,36 @@ function createApp() {
   // API Route: Gemini AI Beauty Advisor Matcher
   app.post('/api/gemini/advice', async (req, res) => {
     try {
-      const { goals, skinHairType, occasion, preferredCategory } = req.body;
-      const salons = await store.getSalons();
+      const parsedInput = adviceRequestSchema.safeParse(req.body);
+      if (!parsedInput.success) {
+        return res.status(400).json({ error: 'Invalid advisor request.' });
+      }
+      const input = parsedInput.data;
+      const salons = await appStore.getSalons();
+      const fallback = fallbackAdvice(input, salons);
 
-      if (!process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY === 'MY_GEMINI_API_KEY') {
-        // Mock response if Gemini Key is not set up, so it never fails the user
-        return res.json({
-          recommendationText: `Based on your goal of "${goals}" and your skin profile "${skinHairType}", our makeup ateliers recommend custom complexion sculpting and long-wear artistry. (AI Note: Connect your Gemini API Key in the Secrets panel to activate full intelligence!)`,
-          suggestedServices: [
-            {
-              serviceName: 'Royal Bridal Glam & Touch-Up Kit',
-              category: 'bridal',
-              salonName: 'Maison Leish Haute Makeup Atelier',
-              salonId: 'salon-1',
-              estimatedPrice: 320,
-              reason: 'Ideal for an unforgettable, waterproof event complexion tailored to your facial symmetry and skin undertone.'
-            },
-            {
-              serviceName: 'Signature Velvet Soft Glam',
-              category: 'soft-glam',
-              salonName: 'Velvet Glow Makeup Studio',
-              salonId: 'salon-3',
-              estimatedPrice: 150,
-              reason: 'Flawless skin-like foundation with soft taupe eye sculpting and hydrated ombre nude lips.'
-            }
-          ]
-        });
+      if (!configuredGeminiKey()) {
+        return res.json(fallback);
       }
 
       // Construct dynamic salons context for Gemini to read
-      const salonsContext = salons.map(s => {
-        return `- Makeup Studio: ${s.name} (ID: ${s.id}, specialty: ${s.category}, location: ${s.location})
-  Tagline: ${s.tagline}
-  Services: ${s.services.map(sv => `${sv.name} (${sv.price}, ${sv.duration} mins - ${sv.description})`).join('; ')}`;
-      }).join('\n\n');
+      const salonsContext = clip(salons.map(s => {
+        const services = s.services.slice(0, 20).map(sv =>
+          `${clip(sv.name, 200)} (${sv.price}, ${sv.duration} mins - ${clip(sv.description, 500)})`,
+        ).join('; ');
+        return `- Makeup Studio: ${clip(s.name, 200)} (ID: ${clip(s.id, 120)}, specialty: ${clip(s.category, 100)}, location: ${clip(s.location, 200)})
+  Tagline: ${clip(s.tagline, 300)}
+  Services: ${services}`;
+      }).join('\n\n'), 18000);
 
       const prompt = `You are the Lead Luxury Makeup Stylist & Artistry Consultant for "Leish!", a high-end marketplace for premier makeup studios.
 Your goal is to suggest exact makeup services and studios listed on our platform that best match the client's beauty profile.
 
 Client Makeup Profile:
-- Skin Type & Undertone: ${skinHairType}
-- Desired Makeup Style / Goals: ${goals}
-- Occasion: ${occasion}
-- Preferred Category (if any): ${preferredCategory || 'Any Makeup Category'}
+- Skin Type & Undertone: ${input.skinHairType}
+- Desired Makeup Style / Goals: ${input.goals}
+- Occasion: ${input.occasion}
+- Preferred Category (if any): ${input.preferredCategory || 'Any Makeup Category'}
 
 Here are the makeup studios and services available on Leish!:
 ${salonsContext}
@@ -692,82 +876,74 @@ Your response MUST be in valid JSON conforming to the schema:
 
 Provide EXACT service names and studio IDs matching the ones provided above. Do not invent non-existent services. Limit your suggestions to 2 or 3 highly relevant services.`;
 
-      const response = await ai.models.generateContent({
-        model: 'gemini-3.5-flash',
-        contents: prompt,
-        config: {
-          responseMimeType: 'application/json',
-          responseSchema: {
-            type: Type.OBJECT,
-            properties: {
-              recommendationText: {
-                type: Type.STRING,
-                description: 'Elegant personal advice styling summary.'
-              },
-              suggestedServices: {
-                type: Type.ARRAY,
-                items: {
-                  type: Type.OBJECT,
-                  properties: {
-                    serviceName: { type: Type.STRING },
-                    category: { type: Type.STRING },
-                    salonName: { type: Type.STRING },
-                    salonId: { type: Type.STRING },
-                    estimatedPrice: { type: Type.NUMBER },
-                    reason: { type: Type.STRING }
+      try {
+        const response = await withTimeout(
+          Promise.resolve().then(() => aiClient.models.generateContent({
+            model: 'gemini-3.5-flash',
+            contents: prompt,
+            config: {
+              responseMimeType: 'application/json',
+              responseSchema: {
+                type: Type.OBJECT,
+                properties: {
+                  recommendationText: { type: Type.STRING, description: 'Elegant personal advice styling summary.' },
+                  suggestedServices: {
+                    type: Type.ARRAY,
+                    items: {
+                      type: Type.OBJECT,
+                      properties: {
+                        serviceName: { type: Type.STRING },
+                        category: { type: Type.STRING },
+                        salonName: { type: Type.STRING },
+                        salonId: { type: Type.STRING },
+                        estimatedPrice: { type: Type.NUMBER },
+                        reason: { type: Type.STRING },
+                      },
+                      required: ['serviceName', 'category', 'salonName', 'salonId', 'estimatedPrice', 'reason'],
+                    },
                   },
-                  required: ['serviceName', 'category', 'salonName', 'salonId', 'estimatedPrice', 'reason']
-                }
-              }
+                },
+                required: ['recommendationText', 'suggestedServices'],
+              },
             },
-            required: ['recommendationText', 'suggestedServices']
-          }
-        }
-      });
-
-      if (response.text) {
-        const jsonResult = JSON.parse(response.text.trim());
-        res.json(jsonResult);
-      } else {
-        throw new Error('Empty response from Gemini model');
+          })),
+          aiTimeoutMs,
+          'Advisor request',
+        );
+        const data = parseModelJson(response.text, adviceResponseSchema);
+        return res.json(data ? { source: 'model', ...data } : fallback);
+      } catch {
+        return res.json(fallback);
       }
-    } catch (error: any) {
-      console.error('[Gemini AI Advisor] Error:', error);
-      res.status(500).json({ error: 'AI processing failed. Please try again.' });
+    } catch {
+      return serverError(res, 'AI processing failed. Please try again.');
     }
   });
 
   // API Route: Gemini AI Salon Review Summarizer
   app.post('/api/gemini/summarize-reviews', async (req, res) => {
     try {
-      const { salonId } = req.body;
-      const salon = await store.getSalon(salonId);
+      const parsedInput = reviewSummaryRequestSchema.safeParse(req.body);
+      if (!parsedInput.success) {
+        return res.status(400).json({ error: 'Invalid review summary request.' });
+      }
+      const { salonId } = parsedInput.data;
+      const salon = await appStore.getSalon(salonId);
       if (!salon) {
         return res.status(404).json({ error: 'Salon not found' });
       }
 
-      const reviews = await store.getSalonReviews(salonId);
-      
-      if (reviews.length === 0) {
-        return res.json({
-          vibe: 'Inviting and fresh. Ready to welcome its first clients with personalized premium care.',
-          bestFor: 'First-time visitors seeking dedicated, highly customized care in an exclusive environment.',
-          tip: 'Book early to secure slots with their main professionals as they establish their premier schedule.'
-        });
+      const reviews = await appStore.getSalonReviews(salonId);
+      const fallback = fallbackReviewSummary(reviews.length > 0);
+      if (reviews.length === 0 || !configuredGeminiKey()) {
+        return res.json(fallback);
       }
 
-      if (!process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY === 'MY_GEMINI_API_KEY') {
-        // Fallback mock summary if key not configured
-        return res.json({
-          vibe: 'Sophisticated and deeply professional. Guests appreciate the exquisite premium aesthetic.',
-          bestFor: 'Precision treatments and highly detailed beauty consulting by creative lead stylists.',
-          tip: 'Secure weekend bookings well in advance, as premium afternoon slots fill up quickly.'
-        });
-      }
+      const reviewsText = clip(reviews.slice(0, 50).map(r =>
+        `[Rating: ${r.rating}/5, Client: ${clip(r.clientName, 120)}] Review: "${clip(r.text, 1000)}"`,
+      ).join('\n'), 18000);
 
-      const reviewsText = reviews.map(r => `[Rating: ${r.rating}/5, Client: ${r.clientName}] Review: "${r.text}"`).join('\n');
-
-      const prompt = `You are a luxury beauty concierge. Analyze the customer reviews for "${salon.name}" and compile an elegant, concise 3-part summary.
+      const prompt = `You are a luxury beauty concierge. Analyze the customer reviews for "${clip(salon.name, 200)}" and compile an elegant, concise 3-part summary.
 Reviews to analyze:
 ${reviewsText}
 
@@ -779,32 +955,34 @@ Generate a JSON object conforming exactly to this schema:
 }
 Keep each field extremely concise, professional, and sophisticated. No emojis.`;
 
-      const response = await ai.models.generateContent({
-        model: 'gemini-3.5-flash',
-        contents: prompt,
-        config: {
-          responseMimeType: 'application/json',
-          responseSchema: {
-            type: Type.OBJECT,
-            properties: {
-              vibe: { type: Type.STRING },
-              bestFor: { type: Type.STRING },
-              tip: { type: Type.STRING }
+      try {
+        const response = await withTimeout(
+          Promise.resolve().then(() => aiClient.models.generateContent({
+            model: 'gemini-3.5-flash',
+            contents: prompt,
+            config: {
+              responseMimeType: 'application/json',
+              responseSchema: {
+                type: Type.OBJECT,
+                properties: {
+                  vibe: { type: Type.STRING },
+                  bestFor: { type: Type.STRING },
+                  tip: { type: Type.STRING },
+                },
+                required: ['vibe', 'bestFor', 'tip'],
+              },
             },
-            required: ['vibe', 'bestFor', 'tip']
-          }
-        }
-      });
-
-      if (response.text) {
-        const jsonResult = JSON.parse(response.text.trim());
-        res.json(jsonResult);
-      } else {
-        throw new Error('Empty response from review summarizer');
+          })),
+          aiTimeoutMs,
+          'Review summary request',
+        );
+        const data = parseModelJson(response.text, reviewSummaryResponseSchema);
+        return res.json(data ? { source: 'model', ...data } : fallback);
+      } catch {
+        return res.json(fallback);
       }
-    } catch (error: any) {
-      console.error('[Gemini Review Summarizer] Error:', error);
-      res.status(500).json({ error: 'Failed to summarize reviews. Please try again.' });
+    } catch {
+      return serverError(res, 'Failed to summarize reviews. Please try again.');
     }
   });
 
@@ -816,7 +994,7 @@ Keep each field extremely concise, professional, and sophisticated. No emojis.`;
         return res.status(400).json({ error: 'Venue name or address is required.' });
       }
 
-      const salon = await store.getSalon(salonId || 'salon-1');
+      const salon = await appStore.getSalon(salonId || 'salon-1');
       const studioAddress = salon ? salon.address : '404 Jalan Bukit Bintang, Kuala Lumpur';
 
       // Deterministic sample distance until a geocoding provider is configured.
@@ -853,7 +1031,7 @@ Keep each field extremely concise, professional, and sophisticated. No emojis.`;
   app.post('/api/gemini/trends-lookbook', async (req, res) => {
     try {
       const { prompt: userPrompt, aesthetic, occasion, skinUndertone, lighting } = req.body;
-      const salons = await store.getSalons();
+      const salons = await appStore.getSalons();
 
       const defaultImages: Record<string, string> = {
         bridal: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&q=80&w=1200',
@@ -865,6 +1043,15 @@ Keep each field extremely concise, professional, and sophisticated. No emojis.`;
 
       const selectedAesthetic = aesthetic || 'bridal';
       const heroImage = defaultImages[selectedAesthetic] || defaultImages['bridal'];
+
+      // Keep the deterministic fallback bookable against the live catalogue.
+      // Hard-coded display names drift when providers edit their service menu;
+      // the booking flow must receive the current canonical salon/service IDs.
+      const fallbackSalon = salons.find(salon =>
+        salon.category === selectedAesthetic || salon.services.some(service => service.category === selectedAesthetic),
+      ) || salons[0];
+      const fallbackService = fallbackSalon?.services.find(service => service.category === selectedAesthetic)
+        || fallbackSalon?.services[0];
 
       // Fallback curated lookbook spec if Gemini is unavailable
       const fallbackLookbook = {
@@ -904,8 +1091,9 @@ Keep each field extremely concise, professional, and sophisticated. No emojis.`;
         ],
         lightingBestFor: lighting || 'Warm Ballroom Chandelier & Sunset Golden Hour',
         groundedTrendContext: '2026 Fashion Week spotlighted "Glass Velvet" skin: ultra-dewy high points balanced by blurred, shine-controlled T-zones for seamless camera transitions.',
-        recommendedSalonId: selectedAesthetic === 'bridal' ? 'salon-1' : (selectedAesthetic === 'airbrush' ? 'salon-2' : 'salon-3'),
-        recommendedServiceName: selectedAesthetic === 'bridal' ? 'Haute Couture Bridal Artistry' : 'Signature Velvet Soft Glam',
+        recommendedSalonId: fallbackSalon?.id,
+        recommendedServiceId: fallbackService?.id,
+        recommendedServiceName: fallbackService?.name,
         heroImage
       };
 
@@ -969,7 +1157,7 @@ Ensure colorPalette has 5 distinct harmonious hexadecimal values. Return pure JS
         const timeoutPromise = new Promise((_, reject) => 
           setTimeout(() => reject(new Error('AI request timeout')), 7000)
         );
-        const aiPromise = ai.models.generateContent({
+        const aiPromise = aiClient.models.generateContent({
           model: 'gemini-3.5-flash',
           contents: searchPrompt,
           config: {
@@ -999,15 +1187,22 @@ Ensure colorPalette has 5 distinct harmonious hexadecimal values. Return pure JS
   });
 
   // --- API ROUTE: AI Studio Review & Quality Auditor (Hybrid Inspection) ---
-  app.post('/api/gemini/quality-audit', async (req, res) => {
+  app.post('/api/gemini/quality-audit', authenticateToken, async (req: any, res) => {
     try {
-      const { salonId } = req.body;
-      const salon = await store.getSalon(salonId);
+      const parsed = z.object({ salonId: z.string().trim().min(1).max(120) }).strict().safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ error: 'A valid salonId is required.' });
+      }
+      const { salonId } = parsed.data;
+      const salon = await appStore.getSalon(salonId);
       if (!salon) {
         return res.status(404).json({ error: 'Salon not found' });
       }
+      if (!canUpdateSalon(req.user, salonId)) {
+        return res.status(403).json({ error: 'You do not have permission to audit this salon.' });
+      }
 
-      const reviews = await store.getSalonReviews(salonId);
+      const reviews = await appStore.getSalonReviews(salonId);
 
       // Default high-grade fallback audit report
       const defaultAudit = {
@@ -1033,7 +1228,7 @@ Ensure colorPalette has 5 distinct harmonious hexadecimal values. Return pure JS
         ]
       };
 
-      if (!process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY === 'MY_GEMINI_API_KEY' || reviews.length === 0) {
+      if (!configuredGeminiKey() || reviews.length === 0) {
         return res.json(defaultAudit);
       }
 
@@ -1072,25 +1267,22 @@ Generate a structured quality audit conforming to this JSON schema:
 Return pure JSON.`;
 
       try {
-        const timeoutPromise = new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('Audit request timeout')), 7000)
+        const response: any = await withTimeout(
+          Promise.resolve().then(() => aiClient.models.generateContent({
+            model: 'gemini-3.5-flash',
+            contents: auditPrompt,
+            config: { responseMimeType: 'application/json' },
+          })),
+          aiTimeoutMs,
+          'Quality audit request',
         );
-        const aiPromise = ai.models.generateContent({
-          model: 'gemini-3.5-flash',
-          contents: auditPrompt,
-          config: {
-            responseMimeType: 'application/json'
-          }
-        });
-
-        const response: any = await Promise.race([aiPromise, timeoutPromise]);
 
         if (response && response.text) {
-          const auditResult = JSON.parse(response.text.trim());
+          const auditResult = JSON.parse(stripJsonFences(response.text));
           return res.json(auditResult);
         }
-      } catch (aiErr: any) {
-        console.warn('[Quality Audit] GenAI note:', aiErr?.message || aiErr);
+      } catch {
+        console.warn('[Quality Audit] Model unavailable; serving fallback.');
       }
 
       return res.json(defaultAudit);
@@ -1115,7 +1307,7 @@ Return pure JSON.`;
       if (modelChoice === 'complex') selectedModel = 'gemini-3.1-pro-preview';
       else if (modelChoice === 'fast') selectedModel = 'gemini-3.1-flash-lite';
 
-      const salons = await store.getSalons();
+      const salons = await appStore.getSalons();
       const directorySummary = salons.map(s => 
         `• ${s.name} (${s.type === 'mua' ? 'Independent MUA' : 'Atelier Studio'}, Rating: ${s.rating}★, Location: ${s.location}, Category: ${s.category}, Top: ${s.services[0]?.name} RM${s.services[0]?.price})`
       ).join('\n');
@@ -1155,7 +1347,7 @@ Always answer questions directly. When recommending studios or MUAs, cite their 
       }
 
       try {
-        const response = await ai.models.generateContent({
+        const response = await aiClient.models.generateContent({
           model: selectedModel,
           contents: messages,
           config
@@ -1181,7 +1373,7 @@ Always answer questions directly. When recommending studios or MUAs, cite their 
         console.warn('[Gemini Chat] Primary call note:', err?.message);
         // Graceful fallback to gemini-3.5-flash if pro preview quota or paid key was needed
         if (selectedModel !== 'gemini-3.5-flash') {
-          const fallbackRes = await ai.models.generateContent({
+          const fallbackRes = await aiClient.models.generateContent({
             model: 'gemini-3.5-flash',
             contents: messages,
             config: { systemInstruction }
@@ -1233,7 +1425,7 @@ Always answer questions directly. When recommending studios or MUAs, cite their 
       parts.push({ text: `Haute couture luxury beauty editorial photograph: ${prompt}. Professional studio lighting, poreless glass skin finish, bespoke eye design, high fashion magazine quality.` });
 
       try {
-        const response = await ai.models.generateContent({
+        const response = await aiClient.models.generateContent({
           model: modelName,
           contents: { parts },
           config: {
@@ -1260,7 +1452,7 @@ Always answer questions directly. When recommending studios or MUAs, cite their 
         console.warn('[Gemini Flash Image] Error with preview model, trying lite image model:', imgErr?.message);
         // Fallback to gemini-3.1-flash-lite-image
         try {
-          const fallbackRes = await ai.models.generateContent({
+          const fallbackRes = await aiClient.models.generateContent({
             model: 'gemini-3.1-flash-lite-image',
             contents: { parts },
             config: {
@@ -1315,7 +1507,7 @@ Always answer questions directly. When recommending studios or MUAs, cite their 
       }
 
       try {
-        const operation = await ai.models.generateVideos({
+        const operation = await aiClient.models.generateVideos({
           model: 'veo-3.1-fast-generate-preview',
           prompt: `Cinematic 4K luxury beauty video: ${prompt}. Smooth camera pan, flattering studio rim lighting, immaculate makeup details, runway movement.`,
           config: {
@@ -1333,7 +1525,7 @@ Always answer questions directly. When recommending studios or MUAs, cite their 
       } catch (veoErr: any) {
         console.warn('[Veo 3 fast model note]:', veoErr?.message);
         // Try fallback to veo-3.1-lite-generate-preview
-        const opLite = await ai.models.generateVideos({
+        const opLite = await aiClient.models.generateVideos({
           model: 'veo-3.1-lite-generate-preview',
           prompt: `Cinematic beauty runway video: ${prompt}`,
           config: {
@@ -1378,7 +1570,7 @@ Always answer questions directly. When recommending studios or MUAs, cite their 
 
       const op = new GenerateVideosOperation();
       op.name = operationName;
-      const updated = await ai.operations.getVideosOperation({ operation: op });
+      const updated = await aiClient.operations.getVideosOperation({ operation: op });
       const uri = updated.response?.generatedVideos?.[0]?.video?.uri;
 
       res.json({
@@ -1405,7 +1597,7 @@ Always answer questions directly. When recommending studios or MUAs, cite their 
 
       const op = new GenerateVideosOperation();
       op.name = operationName;
-      const updated = await ai.operations.getVideosOperation({ operation: op });
+      const updated = await aiClient.operations.getVideosOperation({ operation: op });
       const uri = updated.response?.generatedVideos?.[0]?.video?.uri;
 
       if (!uri) {

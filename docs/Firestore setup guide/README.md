@@ -48,11 +48,14 @@ running emulator from the existing `db_store.json` development store:
 pnpm run seed:firestore
 ```
 
-The seed command sets `FIRESTORE_EMULATOR_HOST=127.0.0.1:8080` (without
-`http://`) and `FIREBASE_PROJECT_ID=leish-local`. The script requires these
-exact values, uses no credentials, and refuses a nonempty emulator instead of
-overwriting data. Stop and restart the emulator without a data import to seed
-again. This command is never run by app startup or production deployment.
+The seed command defaults to `FIRESTORE_EMULATOR_HOST=127.0.0.1:8080`
+(without `http://`) and always uses `FIREBASE_PROJECT_ID=leish-local`. For a
+different local port, override only the host, for example
+`FIRESTORE_EMULATOR_HOST=127.0.0.1:8081 pnpm run seed:firestore`. The script
+accepts loopback hosts only, uses no credentials, and refuses a nonempty
+emulator instead of overwriting data. Stop and restart the emulator without a
+data import to seed again. This command is never run by app startup or
+production deployment.
 The JSON file includes demo users and bcrypt password hashes; use only local
 development data here. To run the server against the seeded emulator, use a
 third terminal:
@@ -63,6 +66,12 @@ STORE_BACKEND=firestore FIREBASE_PROJECT_ID=leish-local FIRESTORE_EMULATOR_HOST=
 
 The emulator is the preferred first verification target. No credentials are
 needed with the emulator, but the server still requires the explicit project ID.
+
+To run the adapter integration tests against the same emulator:
+
+```bash
+FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 pnpm run test:firestore
+```
 
 ## Rules and client access
 

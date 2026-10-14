@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import type { Salon, Booking, Review, User } from '../types';
+import type { Salon, Booking, Review, Service, User } from '../types';
 
 const API_BASE = '/api';
 
@@ -51,6 +51,8 @@ export const salonsApi = {
     apiClient.put(`/salons/${id}`, data),
   addService: (id: string, data: { name: string; price: number; duration: number; description?: string; category?: string }) =>
     apiClient.post(`/salons/${id}/services`, data),
+  updateService: (id: string, serviceId: string, data: Pick<Service, 'name' | 'price' | 'duration' | 'description' | 'category'>) =>
+    apiClient.put(`/salons/${id}/services/${serviceId}`, data),
   deleteService: (id: string, serviceId: string) =>
     apiClient.delete(`/salons/${id}/services/${serviceId}`),
 };
@@ -70,7 +72,7 @@ export const bookingsApi = {
 // Reviews API
 export const reviewsApi = {
   getBySalon: (salonId: string) => apiClient.get(`/reviews/${salonId}`),
-  create: (data: { salonId: string; clientName: string; rating: number; text: string }) =>
+  create: (data: { salonId: string; clientName?: string; bookingId?: string; rating: number; text: string }) =>
     apiClient.post('/reviews', data),
 };
 

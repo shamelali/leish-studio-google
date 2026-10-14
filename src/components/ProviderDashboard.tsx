@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Store, TrendingUp, Star, DollarSign, Calendar, Settings, Plus, Trash2, Edit3, Save, Check, Loader2, AlertCircle } from 'lucide-react';
 import { Salon, Service, Booking, WorkingHours, User } from '../types';
 import { apiClient, bookingsApi, salonsApi } from '../lib/api';
+import { serviceFormSchema } from '../lib/service-form';
 
 interface ProviderDashboardProps {
   salons: Salon[];
@@ -44,7 +45,9 @@ export default function ProviderDashboard({
   const [newServiceDuration, setNewServiceDuration] = useState('45');
   const [newServiceDescription, setNewServiceDescription] = useState('');
   const [newServiceCategory, setNewServiceCategory] = useState('');
-  const [addingService, setAddingService] = useState(false);
+  const [editingServiceId, setEditingServiceId] = useState<string | null>(null);
+  const [savingService, setSavingService] = useState(false);
+  const [serviceFormError, setServiceFormError] = useState<string | null>(null);
 
   // Edit Salon profile states
   const [isEditingProfile, setIsEditingProfile] = useState(false);
@@ -124,31 +127,66 @@ export default function ProviderDashboard({
     }
   };
 
-  const handleAddService = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newServiceName || !newServicePrice || !newServiceDuration) return;
+  const resetServiceForm = () => {
+    setEditingServiceId(null);
+    setNewServiceName('');
+    setNewServicePrice('');
+    setNewServiceDuration('45');
+    setNewServiceDescription('');
+    setNewServiceCategory(salon?.category || '');
+    setServiceFormError(null);
+  };
 
-    setAddingService(true);
+  const handleEditService = (service: Service) => {
+    setEditingServiceId(service.id);
+    setNewServiceName(service.name);
+    setNewServicePrice(String(service.price));
+    setNewServiceDuration(String(service.duration));
+    setNewServiceDescription(service.description);
+    setNewServiceCategory(service.category);
+    setServiceFormError(null);
+    setDashTab('services');
+  };
+
+  const handleSaveService = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const parsed = serviceFormSchema.safeParse({
+      name: newServiceName,
+      price: newServicePrice,
+      duration: newServiceDuration,
+      description: newServiceDescription,
+      category: newServiceCategory,
+    });
+    if (!parsed.success) {
+      setServiceFormError(parsed.error.issues[0]?.message || 'Enter valid service details.');
+      return;
+    }
+    const serviceData = {
+      name: parsed.data.name,
+      price: Number(newServicePrice),
+      duration: Number(newServiceDuration),
+      description: parsed.data.description,
+      category: parsed.data.category,
+    };
+
+    setSavingService(true);
     try {
       setError(null);
-      await salonsApi.addService(selectedSalonId, {
-        name: newServiceName,
-        price: Number(newServicePrice),
-        duration: Number(newServiceDuration),
-        description: newServiceDescription,
-        category: newServiceCategory
-      });
+      setServiceFormError(null);
+      if (editingServiceId) {
+        await salonsApi.updateService(selectedSalonId, editingServiceId, serviceData);
+      } else {
+        await salonsApi.addService(selectedSalonId, serviceData);
+      }
 
-      setNewServiceName('');
-      setNewServicePrice('');
-      setNewServiceDescription('');
-      fetchSalonAndBookings();
+      resetServiceForm();
+      await fetchSalonAndBookings();
       onSalonUpdated();
     } catch (err: any) {
-      console.error('Failed to add service', err);
-      setError(err.message || 'We could not add that service. Please try again.');
+      console.error('Failed to save service', err);
+      setServiceFormError(err.message || 'We could not save that service. Please try again.');
     } finally {
-      setAddingService(false);
+      setSavingService(false);
     }
   };
 
@@ -158,6 +196,7 @@ export default function ProviderDashboard({
     try {
       setError(null);
       await salonsApi.deleteService(selectedSalonId, serviceId);
+      if (editingServiceId === serviceId) resetServiceForm();
       fetchSalonAndBookings();
       onSalonUpdated();
     } catch (err: any) {
@@ -473,12 +512,22 @@ export default function ProviderDashboard({
                         <p className="text-fg-muted max-w-md font-serif italic text-[11px]">"{serv.description}"</p>
                       </div>
 
-                      <div className="flex items-center space-x-3">
-                        <span className="font-serif font-bold text-sm text-fg">RM {serv.price}</span>
-                        <button
-                          onClick={() => handleDeleteService(serv.id)}
-                          className="rounded p-1.5 text-danger hover:bg-accent/10 hover:text-danger transition"
-                        >
+                       <div className="flex items-center space-x-3">
+                         <span className="font-serif font-bold text-sm text-fg">RM {serv.price}</span>
+                         <button
+                           type="button"
+                           onClick={() => handleEditService(serv)}
+                           aria-label={`Edit ${serv.name}`}
+                           className="rounded p-1.5 text-fg-muted hover:bg-surface hover:text-fg transition"
+                         >
+                           <Edit3 className="h-4 w-4" />
+                         </button>
+                         <button
+                           type="button"
+                           onClick={() => handleDeleteService(serv.id)}
+                           aria-label={`Delete ${serv.name}`}
+                           className="rounded p-1.5 text-danger hover:bg-accent/10 hover:text-danger transition"
+                         >
                           <Trash2 className="h-4 w-4" />
                         </button>
                       </div>
@@ -486,24 +535,30 @@ export default function ProviderDashboard({
                   ))}
                 </div>
 
-                {/* 2. Add Service Form (Right Side) */}
-                <div className="rounded-xl border border-line bg-panel p-5 space-y-4 h-fit">
-                  <h3 className="flex items-center space-x-1.5 font-serif text-sm font-semibold text-fg">
-                    <Plus className="h-4 w-4 text-accent-text" />
-                    <span>Add Makeup Service</span>
-                  </h3>
+                 {/* 2. Add/Edit Service Form (Right Side) */}
+                 <div className="rounded-xl border border-line bg-panel p-5 space-y-4 h-fit">
+                   <h3 className="flex items-center space-x-1.5 font-serif text-sm font-semibold text-fg">
+                     {editingServiceId ? <Edit3 className="h-4 w-4 text-accent-text" /> : <Plus className="h-4 w-4 text-accent-text" />}
+                     <span>{editingServiceId ? 'Edit Makeup Service' : 'Add Makeup Service'}</span>
+                   </h3>
 
-                  <form onSubmit={handleAddService} className="space-y-3.5 text-xs">
-                    <div>
-                      <label className="text-[10px] font-mono text-fg uppercase block mb-1">Service Title</label>
-                      <input
+                   <form onSubmit={handleSaveService} className="space-y-3.5 text-xs">
+                     {serviceFormError && (
+                       <div className="flex items-start gap-2 rounded-lg border border-danger-border/40 bg-danger-surface/10 p-3 text-danger" role="alert">
+                         <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+                         <span>{serviceFormError}</span>
+                       </div>
+                     )}
+                     <div>
+                       <label className="text-[10px] font-mono text-fg uppercase block mb-1">Service Title</label>
+                       <input
                         type="text"
-                        required
-                        value={newServiceName}
-                        onChange={(e) => setNewServiceName(e.target.value)}
-                        placeholder="e.g. Royal Signature Bridal Trial & Lashes"
-                        className="w-full rounded-lg border border-accent-soft bg-surface/30 px-3 py-2 text-fg placeholder-fg-dim focus:border-accent-strong focus:outline-none"
-                      />
+                         required
+                         value={newServiceName}
+                         onChange={(e) => { setNewServiceName(e.target.value); setServiceFormError(null); }}
+                         placeholder="e.g. Royal Signature Bridal Trial & Lashes"
+                         className="w-full rounded-lg border border-accent-soft bg-surface/30 px-3 py-2 text-fg placeholder-fg-dim focus:border-accent-strong focus:outline-none"
+                       />
                     </div>
 
                     <div className="grid grid-cols-2 gap-2">
@@ -511,49 +566,79 @@ export default function ProviderDashboard({
                         <label className="text-[10px] font-mono text-fg uppercase block mb-1">Price (RM)</label>
                         <input
                           type="number"
-                          required
-                          value={newServicePrice}
-                          onChange={(e) => setNewServicePrice(e.target.value)}
-                          placeholder="e.g. 195"
-                          className="w-full rounded-lg border border-accent-soft bg-surface/30 px-3 py-2 text-fg placeholder-fg-dim focus:border-accent-strong focus:outline-none"
-                        />
+                         required
+                         min="0"
+                         step="0.01"
+                         value={newServicePrice}
+                         onChange={(e) => { setNewServicePrice(e.target.value); setServiceFormError(null); }}
+                         placeholder="e.g. 195"
+                         className="w-full rounded-lg border border-accent-soft bg-surface/30 px-3 py-2 text-fg placeholder-fg-dim focus:border-accent-strong focus:outline-none"
+                       />
                       </div>
                       <div>
                         <label className="text-[10px] font-mono text-fg uppercase block mb-1">Duration (min)</label>
-                        <select
-                          value={newServiceDuration}
-                          onChange={(e) => setNewServiceDuration(e.target.value)}
-                          className="w-full rounded-lg border border-accent-soft bg-surface/30 px-3 py-2 text-fg focus:border-accent-strong focus:outline-none"
-                        >
-                          <option value="45">45 mins</option>
-                          <option value="60">60 mins</option>
-                          <option value="75">75 mins</option>
-                          <option value="90">90 mins</option>
-                          <option value="120">120 mins</option>
-                          <option value="150">150 mins</option>
-                        </select>
-                      </div>
-                    </div>
+                         <input
+                           type="number"
+                           min="1"
+                           step="1"
+                           required
+                           value={newServiceDuration}
+                           onChange={(e) => { setNewServiceDuration(e.target.value); setServiceFormError(null); }}
+                           placeholder="e.g. 60"
+                           className="w-full rounded-lg border border-accent-soft bg-surface/30 px-3 py-2 text-fg focus:border-accent-strong focus:outline-none"
+                         />
+                       </div>
+                     </div>
 
                     <div>
                       <label className="text-[10px] font-mono text-fg uppercase block mb-1">Short Description</label>
                       <textarea
-                        value={newServiceDescription}
-                        onChange={(e) => setNewServiceDescription(e.target.value)}
-                        placeholder="Complexion matching, airbrush finish, custom lash placement, and long-wear setting..."
-                        rows={2}
-                        className="w-full rounded-lg border border-accent-soft bg-surface/30 px-3 py-2 text-fg placeholder-fg-dim focus:border-accent-strong focus:outline-none resize-none"
-                      />
-                    </div>
+                         value={newServiceDescription}
+                         onChange={(e) => { setNewServiceDescription(e.target.value); setServiceFormError(null); }}
+                         placeholder="Complexion matching, airbrush finish, custom lash placement, and long-wear setting..."
+                         rows={2}
+                         className="w-full rounded-lg border border-accent-soft bg-surface/30 px-3 py-2 text-fg placeholder-fg-dim focus:border-accent-strong focus:outline-none resize-none"
+                       />
+                     </div>
 
-                    <button
-                      type="submit"
-                      disabled={addingService}
-                      className="w-full flex items-center justify-center space-x-1 rounded-lg bg-primary py-2.5 font-semibold text-on-primary hover:bg-primary-hover transition disabled:opacity-50 cursor-pointer"
-                    >
-                      {addingService ? <Loader2 className="h-4 w-4 animate-spin" /> : <span>Add to Menu</span>}
-                    </button>
-                  </form>
+                     <div>
+                       <label className="text-[10px] font-mono text-fg uppercase block mb-1">Service Category</label>
+                       <select
+                         required
+                         value={newServiceCategory}
+                         onChange={(e) => { setNewServiceCategory(e.target.value); setServiceFormError(null); }}
+                         className="w-full rounded-lg border border-accent-soft bg-surface/30 px-3 py-2 text-fg focus:border-accent-strong focus:outline-none"
+                       >
+                         {newServiceCategory && !['bridal', 'editorial', 'soft-glam', 'airbrush', 'masterclass', 'glam'].includes(newServiceCategory) && (
+                           <option value={newServiceCategory}>{newServiceCategory}</option>
+                         )}
+                         <option value="bridal">Bridal</option>
+                         <option value="editorial">Editorial</option>
+                         <option value="soft-glam">Soft Glam</option>
+                         <option value="airbrush">Airbrush</option>
+                         <option value="masterclass">Masterclass</option>
+                         <option value="glam">Glam</option>
+                       </select>
+                     </div>
+
+                     <button
+                       type="submit"
+                       disabled={savingService}
+                       className="w-full flex items-center justify-center space-x-1 rounded-lg bg-primary py-2.5 font-semibold text-on-primary hover:bg-primary-hover transition disabled:opacity-50 cursor-pointer"
+                     >
+                       {savingService ? <Loader2 className="h-4 w-4 animate-spin" /> : <span>{editingServiceId ? 'Save Service Changes' : 'Add to Menu'}</span>}
+                     </button>
+                     {editingServiceId && (
+                       <button
+                         type="button"
+                         onClick={resetServiceForm}
+                         disabled={savingService}
+                         className="w-full rounded-lg border border-line bg-surface py-2.5 font-semibold text-fg-muted hover:bg-chip hover:text-fg transition disabled:opacity-50"
+                       >
+                         Cancel Edit
+                       </button>
+                     )}
+                   </form>
                 </div>
               </div>
             )}

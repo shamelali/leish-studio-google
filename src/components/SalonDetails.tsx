@@ -16,6 +16,7 @@ interface SalonDetailsProps {
 }
 
 interface AISummary {
+  source: 'model' | 'fallback';
   vibe: string;
   bestFor: string;
   tip: string;
@@ -301,9 +302,16 @@ export default function SalonDetails({ salon, onBack, onInitiateBooking }: Salon
                 <Sparkles className="h-4 w-4 text-accent-text" />
                 <span>AI Review Takeaways</span>
               </h3>
-              <span className="rounded bg-accent/10 px-2 py-0.5 text-[8px] font-mono text-fg uppercase">
-                Gemini
-              </span>
+              <div className="flex items-center gap-1.5">
+                {aiSummary?.source === 'fallback' && (
+                  <span className="rounded bg-accent/10 px-2 py-0.5 text-[8px] font-mono text-fg-muted uppercase">
+                    Sample
+                  </span>
+                )}
+                <span className="rounded bg-accent/10 px-2 py-0.5 text-[8px] font-mono text-fg uppercase">
+                  Gemini
+                </span>
+              </div>
             </div>
 
             {loadingAI ? (

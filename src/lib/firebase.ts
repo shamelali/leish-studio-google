@@ -60,6 +60,9 @@ googleProvider.addScope('https://www.googleapis.com/auth/forms.responses.readonl
 googleProvider.addScope('https://www.googleapis.com/auth/tasks');
 googleProvider.addScope('https://www.googleapis.com/auth/contacts.readonly');
 googleProvider.addScope('https://www.googleapis.com/auth/chat.spaces');
+// The Workspace UI lists and creates masterclass courses, so the full courses
+// scope is the minimum Classroom permission that covers both actions.
+googleProvider.addScope('https://www.googleapis.com/auth/classroom.courses');
 
 // In-memory token cache (never stored in localStorage/sessionStorage)
 let cachedAccessToken: string | null = null;

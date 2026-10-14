@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 import { LookbookItem, Salon, Service } from '../types';
 import { apiClient } from '../lib/api';
+import { resolveCatalogRecommendation } from '../lib/catalog-resolution';
 
 interface LookbookStudioProps {
   salons: Salon[];
@@ -81,12 +82,14 @@ export default function LookbookStudio({ salons, onBookLook }: LookbookStudioPro
   const [currentLook, setCurrentLook] = useState<LookbookItem | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [generationError, setGenerationError] = useState<string | null>(null);
+  const [bookingError, setBookingError] = useState<string | null>(null);
   const [copiedHex, setCopiedHex] = useState<string | null>(null);
 
   // Generate Lookbook on Mount or Preset Selection
   const handleGenerateLook = async (overridePrompt?: string, overrideAesthetic?: string) => {
     setLoading(true);
     setGenerationError(null);
+    setBookingError(null);
     try {
       const data = await apiClient.post<LookbookItem>('/gemini/trends-lookbook', {
           prompt: overridePrompt || customPrompt,
@@ -116,17 +119,28 @@ export default function LookbookStudio({ salons, onBookLook }: LookbookStudioPro
 
   const handleInitiateBookingWithLook = () => {
     if (!currentLook) return;
-    const targetSalon = salons.find(s => s.id === currentLook.recommendedSalonId && s.services.length > 0)
-      || salons.find(s => s.services.length > 0);
-    if (!targetSalon) return;
-    const targetService = targetSalon.services.find(s => 
-      s.name.toLowerCase().includes(currentLook.recommendedServiceName?.toLowerCase() || '') ||
-      s.category === currentLook.category
-    ) || targetSalon.services[0];
-    if (!targetService) return;
+    const resolution = resolveCatalogRecommendation(salons, {
+      salonId: currentLook.recommendedSalonId,
+      serviceId: currentLook.recommendedServiceId,
+      serviceName: currentLook.recommendedServiceName,
+    });
 
-    onBookLook(targetSalon, targetService, currentLook);
+    if (!resolution.resolved) {
+      setBookingError('message' in resolution ? resolution.message : 'This recommendation is not currently bookable.');
+      return;
+    }
+
+    setBookingError(null);
+    onBookLook(resolution.salon, resolution.service, currentLook);
   };
+
+  const currentLookBooking = currentLook
+    ? resolveCatalogRecommendation(salons, {
+        salonId: currentLook.recommendedSalonId,
+        serviceId: currentLook.recommendedServiceId,
+        serviceName: currentLook.recommendedServiceName,
+      })
+    : null;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -343,8 +357,8 @@ export default function LookbookStudio({ salons, onBookLook }: LookbookStudioPro
 
                     <button
                       onClick={handleInitiateBookingWithLook}
-                      disabled={salons.length === 0 || !salons.some(s => s.services.length > 0)}
-                       className="flex self-start items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-xs font-mono font-bold uppercase tracking-wider text-on-primary shadow-xl transition-colors duration-300 hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-strong focus-visible:ring-offset-2 focus-visible:ring-offset-feature sm:self-auto"
+                      disabled={!currentLookBooking?.resolved}
+                       className="flex self-start items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-xs font-mono font-bold uppercase tracking-wider text-on-primary shadow-xl transition-colors duration-300 hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-strong focus-visible:ring-offset-2 focus-visible:ring-offset-feature disabled:cursor-not-allowed disabled:opacity-50 sm:self-auto"
                   >
                      <Calendar className="h-3.5 w-3.5" aria-hidden="true" />
                     <span>Book This Look</span>
@@ -352,6 +366,19 @@ export default function LookbookStudio({ salons, onBookLook }: LookbookStudioPro
                   </button>
                 </div>
               </div>
+
+              {currentLookBooking && !currentLookBooking.resolved && (
+                <div className="mx-6 mt-6 flex flex-col gap-3 rounded-xl border border-danger-border/40 bg-danger-surface/10 p-4 text-xs text-danger sm:mx-8 sm:flex-row sm:items-center sm:justify-between" role="alert">
+                  <span>{bookingError || ('message' in currentLookBooking ? currentLookBooking.message : 'This recommendation is not currently bookable.')}</span>
+                  <button
+                    type="button"
+                    onClick={() => void handleGenerateLook()}
+                    className="shrink-0 font-semibold underline underline-offset-2 hover:text-fg"
+                  >
+                    Generate a new recommendation
+                  </button>
+                </div>
+              )}
 
               {/* Spec Details Body */}
               <div className="p-6 sm:p-8 space-y-8">
@@ -497,13 +524,14 @@ export default function LookbookStudio({ salons, onBookLook }: LookbookStudioPro
                 <div className="pt-4 border-t border-line flex flex-col sm:flex-row items-center justify-between gap-4">
                   <div className="text-xs text-fg-dim flex items-center gap-2">
                      <MapPin className="h-3.5 w-3.5 text-brand-emerald" aria-hidden="true" />
-                    <span>Recommended Studio: <strong className="text-fg">{salons.find(s => s.id === currentLook.recommendedSalonId)?.name || 'Maison Leish'}</strong></span>
+                     <span>Recommended Studio: <strong className="text-fg">{currentLookBooking?.resolved ? currentLookBooking.salon.name : 'Recommendation unavailable'}</strong></span>
                   </div>
 
-                  <button
-                    onClick={handleInitiateBookingWithLook}
-                     className="flex w-full items-center justify-center gap-2 rounded-full bg-primary px-8 py-3 text-xs font-mono font-semibold uppercase tracking-widest text-on-primary shadow-lg shadow-primary/20 transition-colors duration-300 hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-strong focus-visible:ring-offset-2 focus-visible:ring-offset-feature sm:w-auto"
-                  >
+                   <button
+                     onClick={handleInitiateBookingWithLook}
+                     disabled={!currentLookBooking?.resolved}
+                      className="flex w-full items-center justify-center gap-2 rounded-full bg-primary px-8 py-3 text-xs font-mono font-semibold uppercase tracking-widest text-on-primary shadow-lg shadow-primary/20 transition-colors duration-300 hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-strong focus-visible:ring-offset-2 focus-visible:ring-offset-feature disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+                   >
                     <span>Reserve With This Moodboard</span>
                     <ArrowRight className="h-4 w-4" />
                   </button>

@@ -54,7 +54,7 @@
 
 ## Review and moodboard
 
-`Review` contains `id`, `salonId`, `clientName`, `rating`, `text`, and `date`. A `LookbookItem` contains look name, category, vibe, palette entries, complexion, eye artistry, lip formula, longevity features, optional grounded trend context, recommended salon/service, hero image and lighting guidance.
+`Review` contains `id`, `salonId`, `clientName`, `rating`, `text`, and `date`. Reviews created by the API also contain `reviewerId` (the authenticated client) and `bookingId` (the completed booking that makes the review eligible). Legacy seeded reviews may omit those two fields and remain publicly readable. A `LookbookItem` contains look name, category, vibe, palette entries, complexion, eye artistry, lip formula, longevity features, optional grounded trend context, recommended salon/service, hero image and lighting guidance.
 
 ## Persistence mapping
 
@@ -65,4 +65,4 @@
 | Bookings | `bookings` array in JSON | Firestore `bookings/{id}` |
 | Reviews | `reviews` array in JSON | Firestore `reviews/{id}` |
 
-The JSON store is a development/test fallback. Production selection must be explicit and verified with migration, concurrency and redeploy tests.
+The JSON store is a development/test fallback. Production must explicitly select the durable Firestore adapter with `STORE_BACKEND=firestore`; otherwise the server fails during boot instead of serving an empty or ephemeral catalog.

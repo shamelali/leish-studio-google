@@ -227,7 +227,7 @@ provider ─────────── Provider Dashboard (4 sub-tabs)
    └─ Google sign-in (Firebase provider) → consent for scopes:
       drive.readonly · drive.file · gmail.send · gmail.readonly ·
       documents.readonly · forms.responses.readonly · tasks ·
-      contacts.readonly · chat.spaces
+      contacts.readonly · chat.spaces · classroom.courses
         ▼
    gmail    compose → send (RFC822 base64url)        → confirmation emails
    drive    list files                                → contracts, moodboards

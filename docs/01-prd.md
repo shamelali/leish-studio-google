@@ -158,12 +158,12 @@ Nine sub-tabs: `overview, gmail, drive, docs, forms, tasks, contacts, chat, clas
 
 | ID | Requirement | Priority |
 |---|---|---|
-| FR-8.1 | Google OAuth sign-in (Firebase Google provider) with the documented scopes (Drive, Gmail send/read, Docs read, Forms responses, Tasks, Contacts, Chat spaces). | P2 |
+| FR-8.1 | Google OAuth sign-in (Firebase Google provider) with the documented scopes (Drive, Gmail send/read, Docs read, Forms responses, Tasks, Contacts, Chat spaces, Classroom courses). | P2 |
 | FR-8.2 | Gmail: compose & send confirmation emails. | P2 |
 | FR-8.3 | Drive/Docs: list and create documents. | P3 |
 | FR-8.4 | Forms: list forms and their responses (e.g., consultation intake). | P3 |
 | FR-8.5 | Tasks: list and create follow-up tasks. | P3 |
-| FR-8.6 | Contacts / Chat / Classroom: read-only listing in v1. | P3 |
+| FR-8.6 | Contacts / Chat: read-only listing in v1; Classroom: list and create masterclass courses. | P3 |
 
 ### E9 — Auth & Accounts
 

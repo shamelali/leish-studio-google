@@ -23,10 +23,12 @@ const TEST_DB = `/tmp/omnirush/leish-server-test-${process.pid}-${Date.now()}.js
 process.env.LEISH_DB_PATH = TEST_DB;
 process.env.STORE_BACKEND = 'json';
 process.env.LEISH_DISABLE_RATE_LIMIT = '1';
+process.env.GEMINI_API_KEY = '';
 
 let app: any;
 let stripJsonFences: (text: string) => string;
 let getJwtSecret: (environment?: string, configuredSecret?: string) => string;
+let testStore: any;
 let providerToken = '';
 let bookingId = '';
 
@@ -35,6 +37,7 @@ beforeAll(async () => {
   app = mod.default;
   stripJsonFences = mod.stripJsonFences;
   getJwtSecret = mod.getJwtSecret;
+  testStore = (await import('./server/data-store.ts')).store;
 
   const login = await request(app)
     .post('/api/auth/login')
@@ -271,7 +274,7 @@ describe('legacy plaintext password migration', () => {
 /**
  * Phase 1 — TR-7 authorization matrix.
  *
- * canUpdateSalon / canModifyBooking / canReview enforced in middleware:
+ * canUpdateSalon / canModifyBooking / completed-booking review eligibility:
  *   provider → only their own salon's listings, services and bookings
  *   client   → only bookings made with their own email; cancel-only status
  *   review   → only with a completed booking at that studio; name from account
@@ -460,6 +463,52 @@ describe('TR-7 authorization matrix (Phase 1)', () => {
       addedServiceId = svc.id;
     });
 
+    it('rejects a client editing a service', async () => {
+      const res = await request(app)
+        .put(`/api/salons/salon-1/services/${addedServiceId}`)
+        .set('Authorization', `Bearer ${clientToken}`)
+        .send({ name: 'Client Takeover', price: 1, duration: 5, description: '', category: 'glam' });
+      expect(res.status).toBe(403);
+    });
+
+    it('lets the owner edit service fields while preserving the service ID', async () => {
+      const res = await request(app)
+        .put(`/api/salons/salon-1/services/${addedServiceId}`)
+        .set('Authorization', `Bearer ${providerToken}`)
+        .send({
+          id: 'service-id-takeover',
+          name: 'Authz Matrix Blend Updated',
+          price: 175,
+          duration: 75,
+          description: 'Updated service description',
+          category: 'editorial',
+        });
+
+      expect(res.status).toBe(200);
+      const updated = res.body.services.find((service: any) => service.id === addedServiceId);
+      expect(updated).toMatchObject({
+        id: addedServiceId,
+        name: 'Authz Matrix Blend Updated',
+        price: 175,
+        duration: 75,
+        description: 'Updated service description',
+        category: 'editorial',
+      });
+      expect(res.body.services.some((service: any) => service.id === 'service-id-takeover')).toBe(false);
+    });
+
+    it('rejects invalid service edits without changing the service', async () => {
+      const res = await request(app)
+        .put(`/api/salons/salon-1/services/${addedServiceId}`)
+        .set('Authorization', `Bearer ${providerToken}`)
+        .send({ name: '', price: -1, duration: 0 });
+
+      expect(res.status).toBe(400);
+      const salon = await request(app).get('/api/salons/salon-1');
+      const unchanged = salon.body.services.find((service: any) => service.id === addedServiceId);
+      expect(unchanged).toMatchObject({ name: 'Authz Matrix Blend Updated', price: 175 });
+    });
+
     it('403s a client deleting services, 404s an unknown service', async () => {
       const forbidden = await request(app)
         .delete(`/api/salons/salon-1/services/${addedServiceId}`)
@@ -534,7 +583,7 @@ describe('TR-7 authorization matrix (Phase 1)', () => {
     });
   });
 
-  describe('review gating (canReview)', () => {
+  describe('review gating and uniqueness', () => {
     const reviewBody = (overrides: any = {}) => ({
       salonId: 'salon-1',
       clientName: 'ZZZ Spoofed Name',
@@ -577,10 +626,99 @@ describe('TR-7 authorization matrix (Phase 1)', () => {
       const res = await request(app)
         .post('/api/reviews')
         .set('Authorization', `Bearer ${clientToken}`)
-        .send(reviewBody());
+        .send(reviewBody({ bookingId: reviewBookingId }));
       expect(res.status).toBe(201);
       expect(res.body.clientName).toBe('Shamel Ali'); // never the spoofed body
       expect(res.body.rating).toBe(5);
+      expect(res.body.reviewerId).toBe('user-client-1');
+      expect(res.body.bookingId).toBe(reviewBookingId);
+    });
+
+    it('keeps seeded reviews publicly readable', async () => {
+      const res = await request(app).get('/api/reviews/salon-2');
+      expect(res.status).toBe(200);
+      expect(res.body.some((review: any) => review.id === 'rev-3')).toBe(true);
+    });
+
+    it('allows only one review for the same completed booking and reviewer', async () => {
+      const res = await request(app)
+        .post('/api/reviews')
+        .set('Authorization', `Bearer ${clientToken}`)
+        .send(reviewBody({ bookingId: reviewBookingId }));
+      expect(res.status).toBe(409);
+      expect(res.body.error).toMatch(/already reviewed/i);
+    });
+
+    it('blocks provider accounts from customer reviews, including self-review', async () => {
+      const booking = await request(app)
+        .post('/api/bookings')
+        .send({
+          ...validBooking(),
+          clientEmail: 'director@atelierleish.com',
+          clientName: 'Jean-Marc Laurent',
+        });
+      expect(booking.status).toBe(201);
+
+      const completed = await request(app)
+        .patch(`/api/bookings/${booking.body.id}/status`)
+        .set('Authorization', `Bearer ${providerToken}`)
+        .send({ status: 'completed' });
+      expect(completed.status).toBe(200);
+
+      const res = await request(app)
+        .post('/api/reviews')
+        .set('Authorization', `Bearer ${providerToken}`)
+        .send(reviewBody({ bookingId: booking.body.id }));
+      expect(res.status).toBe(403);
+      expect(res.body.error).toMatch(/client accounts/i);
+    });
+  });
+
+  describe('quality-audit authorization', () => {
+    let adminToken = '';
+
+    beforeAll(async () => {
+      const email = `quality-admin-${process.pid}@leish.test`;
+      await testStore.createUser({
+        id: `quality-admin-${process.pid}`,
+        name: 'Quality Admin',
+        email,
+        password: 'password123',
+        role: 'admin',
+        createdAt: new Date().toISOString(),
+      });
+      adminToken = await login(email);
+    });
+
+    it('requires authentication before spending the audit quota', async () => {
+      const res = await request(app)
+        .post('/api/gemini/quality-audit')
+        .send({ salonId: 'salon-1' });
+      expect(res.status).toBe(401);
+    });
+
+    it('only lets the owning provider audit its salon', async () => {
+      const res = await request(app)
+        .post('/api/gemini/quality-audit')
+        .set('Authorization', `Bearer ${otherProviderToken}`)
+        .send({ salonId: 'salon-1' });
+      expect(res.status).toBe(403);
+    });
+
+    it('allows the owner and admin, with the keyless deterministic audit fallback', async () => {
+      const owner = await request(app)
+        .post('/api/gemini/quality-audit')
+        .set('Authorization', `Bearer ${providerToken}`)
+        .send({ salonId: 'salon-1' });
+      expect(owner.status).toBe(200);
+      expect(owner.body.salonName).toBe('Maison Leish Haute Makeup Atelier');
+
+      const admin = await request(app)
+        .post('/api/gemini/quality-audit')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({ salonId: 'salon-2' });
+      expect(admin.status).toBe(200);
+      expect(admin.body.salonName).toBe('L’Éclat Makeup & Airbrush Lab');
     });
   });
 

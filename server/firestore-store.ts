@@ -6,6 +6,8 @@ import type { DataStore, StoredUser } from './data-store.ts';
 
 const normalizeEmail = (email: string) => email.trim().toLowerCase();
 const emailKey = (email: string) => createHash('sha256').update(normalizeEmail(email)).digest('hex');
+const reviewClaimKey = (reviewerId: string, bookingId: string) =>
+  createHash('sha256').update(`${reviewerId}:${bookingId}`).digest('hex');
 const configuredDatabases = new WeakSet<Firestore>();
 
 // Admin uses ADC (including GOOGLE_APPLICATION_CREDENTIALS); never ship a
@@ -122,13 +124,32 @@ export class FirestoreStore implements DataStore {
     const db = await this.dbPromise;
     const ref = db.collection('reviews').doc(review.id);
     const salonRef = db.collection('salons').doc(review.salonId);
+    const claimRef = review.reviewerId && review.bookingId
+      ? db.collection('reviewClaims').doc(reviewClaimKey(review.reviewerId, review.bookingId))
+      : undefined;
     return db.runTransaction(async tx => {
       // All reads precede all writes. Concurrent reviews contend on salonRef;
       // Firestore retries the loser with the newly committed review included.
       const salonSnapshot = await tx.get(salonRef);
       const existing = await tx.get(db.collection('reviews').where('salonId', '==', review.salonId));
       const duplicate = await tx.get(ref);
+      const claim = claimRef ? await tx.get(claimRef) : undefined;
       if (duplicate.exists) throw new Error('Review already exists');
+      if (claim?.exists) throw new Error('Review already exists for this booking and reviewer');
+      if (review.reviewerId && review.bookingId && existing.docs.some(doc => {
+        const existingReview = doc.data() as Review;
+        return existingReview.reviewerId === review.reviewerId && existingReview.bookingId === review.bookingId;
+      })) {
+        throw new Error('Review already exists for this booking and reviewer');
+      }
+      if (claimRef) {
+        tx.create(claimRef, {
+          reviewerId: review.reviewerId,
+          bookingId: review.bookingId,
+          reviewId: review.id,
+          salonId: review.salonId,
+        });
+      }
       tx.create(ref, review);
       if (salonSnapshot.exists) {
         const reviews = existing.docs.map(doc => doc.data() as Review);

@@ -1,6 +1,7 @@
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { createOpenAI } from '@ai-sdk/openai';
 import {
+  createUIMessageStream,
   pipeUIMessageStreamToResponse,
   stepCountIs,
   streamText,
@@ -46,6 +47,7 @@ const requestSchema = z.object({
 
 const MAX_HISTORY_CHARS = 12000;
 const MAX_MESSAGE_CHARS = 2000;
+const CONCIERGE_TIMEOUT_MS = 15000;
 
 const STYLE_ALIASES: Record<string, string[]> = {
   natural: ['soft glam', 'soft-glam', 'clean girl', 'glass skin', 'dewy', 'natural'],
@@ -236,8 +238,21 @@ export function createConciergeHandler(options: ConciergeHandlerOptions = {}) {
       return;
     }
 
+    const lastUserMessage = messages.filter(message => message.role === 'user').at(-1)?.content || '';
+    const fallbackText = `Concierge preview mode: I received “${lastUserMessage.slice(0, 160)}”. Add a supported server-side AI key to receive live catalogue matching, or include your locality and wedding style for a tailored next step.`;
+    const writeTextStream = async (text: string) => {
+      const stream = createUIMessageStream<any>({
+        execute: ({ writer }) => {
+          writer.write({ type: 'text-start', id: 'concierge-fallback' });
+          writer.write({ type: 'text-delta', id: 'concierge-fallback', delta: text });
+          writer.write({ type: 'text-end', id: 'concierge-fallback' });
+        },
+      });
+      await pipeUIMessageStreamToResponse({ response: res, stream });
+    };
+
     if (!options.model && !configuredProvider(options)) {
-      res.status(503).json({ error: 'No concierge model is configured. Set NVIDIA_API_KEY, OPENAI_API_KEY, or GEMINI_API_KEY.' });
+      await writeTextStream(fallbackText);
       return;
     }
 
@@ -274,12 +289,17 @@ export function createConciergeHandler(options: ConciergeHandlerOptions = {}) {
         onError: () => {}, // SDK errors may contain private provider details.
         abortSignal: abortController.signal,
       });
-      await pipeUIMessageStreamToResponse({
-        response: res,
-        stream: result.toUIMessageStream({
-          onError: () => 'Concierge temporarily unavailable.',
-        }),
-      });
+      const timeout = setTimeout(() => abortController.abort(), CONCIERGE_TIMEOUT_MS);
+      try {
+        await pipeUIMessageStreamToResponse({
+          response: res,
+          stream: result.toUIMessageStream({
+            onError: () => 'Concierge temporarily unavailable.',
+          }),
+        });
+      } finally {
+        clearTimeout(timeout);
+      }
     } catch {
       if (!res.headersSent) res.status(500).json({ error: 'Concierge temporarily unavailable.' });
     } finally {

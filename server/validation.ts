@@ -47,14 +47,21 @@ export const bookingSchema = z.object({
   path: ['eventVenue'],
 });
 
-const serviceSchema = z.object({
-  id: requiredText(120),
+const serviceFieldsSchema = z.object({
   name: requiredText(120),
   price: nonNegativeNumber,
   duration: z.number().finite().positive(),
   description: z.string().max(1000),
   category: requiredText(100),
 });
+
+const serviceSchema = serviceFieldsSchema.extend({ id: requiredText(120) });
+
+/** Partial service fields for an owner editing one existing catalogue item. */
+export const serviceUpdateSchema = serviceFieldsSchema.partial().refine(
+  value => Object.keys(value).length > 0,
+  'Provide at least one service field to update.',
+);
 
 const staffSchema = z.object({
   id: requiredText(120),

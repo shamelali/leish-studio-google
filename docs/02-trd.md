@@ -176,7 +176,7 @@ Base: `/api`. JSON in/out. Auth: `Authorization: Bearer <JWT>`.
 | Method | Path | Auth | Notes |
 |---|---|---|---|
 | GET | `/reviews/:salonId` | – | Public read |
-| POST | `/reviews` | – | ⚠ Unauthenticated create → review bombing |
+| POST | `/reviews` | client JWT | One review per authenticated client/completed booking; provider accounts cannot create customer reviews |
 | POST | `/venue/estimate-travel` | – | Deterministic pseudo-distance (string hash), **not** geocoding |
 
 ### 5.5 Gemini
@@ -192,7 +192,7 @@ Base: `/api`. JSON in/out. Auth: `Authorization: Bearer <JWT>`.
 | POST | `/gemini/video-status` | — | `ai.operations.getVideosOperation` polling |
 | POST | `/gemini/video-download` | — | Streams `video/mp4` with `x-goog-api-key` |
 
-**TR-3:** all `/gemini/*` endpoints must (a) validate input with zod, (b) enforce a wall-clock timeout, (c) return `{ source: 'model' | 'fallback', data }` so the UI can label fallback output, and (d) be rate-limited on their own bucket.
+**TR-3:** all `/gemini/*` endpoints must (a) validate input with zod, (b) enforce a wall-clock timeout, (c) return a `source: 'model' | 'fallback'` indicator while preserving each route's existing flat response fields, so the UI can label fallback output, and (d) be rate-limited on their own bucket. Advisor and review-summary enforce this contract here; legacy routes retain their existing response shapes.
 
 ---
 

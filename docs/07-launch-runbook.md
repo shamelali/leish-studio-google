@@ -1,8 +1,9 @@
 # Leish! Launch Runbook
 
-This runbook covers the current Vercel + JSON-store deployment. Firestore,
-payments, real availability, and consent-backed analytics are not launch
-prerequisites for this development-backed release and remain separate work.
+This runbook covers the current Vercel + Express deployment. Firestore is the
+required production data backend; JSON remains available for local development
+and tests. Payments, real availability, and consent-backed analytics remain
+separate work.
 
 ## 1. Preflight
 
@@ -25,13 +26,17 @@ Configure these in the Vercel project settings, not in source control:
 | Variable | Required | Notes |
 |---|---:|---|
 | `JWT_SECRET` | Yes in production | Random secret of at least 32 bytes. Rotate deliberately; changing it invalidates active sessions. |
+| `STORE_BACKEND` | Yes in production | Set explicitly to `firestore`; the JSON backend is local/test only. |
+| `FIREBASE_PROJECT_ID` | With Firestore | Google Cloud project used by the Firebase Admin adapter. |
 | `GEMINI_API_KEY` | Only for AI routes | Server-side only; never use a `VITE_` prefix. |
 | `APP_URL` | Recommended | Public deployment URL used for self-referential links and callbacks. |
 | `VITE_GOOGLE_MAPS_API_KEY` | Only for maps | Restrict the key to the deployed origins and Maps APIs required by the app. |
 
-The app currently uses the JSON `DataStore` fallback. Do not enable a new
-Firestore backend in production until Admin credentials, rules, indexes, and
-an emulator round-trip have been verified.
+Configure Firebase Admin credentials through the deployment secret manager
+(`GOOGLE_APPLICATION_CREDENTIALS` or the `FIREBASE_CLIENT_EMAIL` /
+`FIREBASE_PRIVATE_KEY` pair). The server refuses to boot in production unless
+`STORE_BACKEND=firestore` is explicitly set; it never falls back to an empty or
+ephemeral JSON catalog.
 
 ## 3. Deploy and smoke test
 

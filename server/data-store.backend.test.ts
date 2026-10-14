@@ -39,4 +39,22 @@ describe('store backend selection', () => {
     await expect(import('./data-store.ts')).rejects.toThrow('Unknown STORE_BACKEND: other');
     expect(existsSync(jsonPath)).toBe(false);
   });
+
+  it('fails clearly when production has no explicitly configured durable backend', async () => {
+    vi.stubEnv('NODE_ENV', 'production');
+    vi.stubEnv('STORE_BACKEND', undefined);
+    vi.stubEnv('LEISH_DB_PATH', jsonPath);
+
+    await expect(import('./data-store.ts')).rejects.toThrow(/production requires STORE_BACKEND=firestore/i);
+    expect(existsSync(jsonPath)).toBe(false);
+  });
+
+  it('does not permit the JSON backend in production even when a path is supplied', async () => {
+    vi.stubEnv('NODE_ENV', 'production');
+    vi.stubEnv('STORE_BACKEND', 'json');
+    vi.stubEnv('LEISH_DB_PATH', jsonPath);
+
+    await expect(import('./data-store.ts')).rejects.toThrow(/production requires STORE_BACKEND=firestore/i);
+    expect(existsSync(jsonPath)).toBe(false);
+  });
 });

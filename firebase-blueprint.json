@@ -30,7 +30,8 @@
       "type": "object",
       "properties": {
         "salonId": { "type": "string", "maxLength": 64 },
-        "userId": { "type": "string", "maxLength": 128 },
+        "reviewerId": { "type": "string", "maxLength": 128 },
+        "bookingId": { "type": "string", "maxLength": 128 },
         "clientName": { "type": "string", "maxLength": 128 },
         "rating": { "type": "number" },
         "text": { "type": "string", "maxLength": 1000 },
