@@ -1,0 +1,6 @@
+{
+  "name": "Leish! Luxury Makeup Studio Marketplace",
+  "description": "Exclusive beauty marketplace for premier makeup studios, bridal artistry, red carpet glam, and bespoke masterclasses. Managed by Duta Integra Solutions.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

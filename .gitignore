@@ -1,0 +1,26 @@
+node_modules/
+node_modules.stale/
+.omnirush/
+build/
+dist/
+public/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+.vercel
+__pycache__/
+api/\[\.\.\.path\].js
+__pycache__/
+firebase-applet-config.json
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+emulator-data/
+# Local dev JSON store (self-seeds from code constants when missing).
+db_store.json
+
+# FUSE/NTFS deleted-but-open file handles
+.fuse_hidden*

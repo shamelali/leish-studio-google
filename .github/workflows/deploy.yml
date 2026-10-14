@@ -1,0 +1,49 @@
+# Push-to-deploy: runs the Phase 0 regression gate, then deploys to Vercel
+# production from CI. VERCEL_TOKEN is a repository secret — once the native
+# GitHub integration (Login Connection) is added in the Vercel dashboard this
+# workflow can be removed in favour of preview deployments too.
+name: Deploy to Vercel
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Never overlap production deploys; don't cancel an in-flight build.
+concurrency:
+  group: vercel-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 12.9.1
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm run typecheck
+
+      - name: Regression tests (Phase 0 gate)
+        run: pnpm test
+
+      - name: Link Vercel project
+        run: pnpm dlx vercel link --yes --project leishv2 --scope duta-integra --token "${{ secrets.VERCEL_TOKEN }}"
+
+      - name: Deploy to production
+        run: pnpm dlx vercel deploy --prod --yes --token "${{ secrets.VERCEL_TOKEN }}"

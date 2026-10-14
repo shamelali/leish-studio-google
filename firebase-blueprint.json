@@ -1,0 +1,52 @@
+{
+  "entities": {
+    "booking": {
+      "title": "Booking",
+      "description": "Appointment reservation for MUA or Studio",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "salonId": { "type": "string", "maxLength": 64 },
+        "salonName": { "type": "string", "maxLength": 128 },
+        "serviceId": { "type": "string", "maxLength": 64 },
+        "serviceName": { "type": "string", "maxLength": 128 },
+        "servicePrice": { "type": "number" },
+        "clientName": { "type": "string", "maxLength": 128 },
+        "clientEmail": { "type": "string", "maxLength": 128 },
+        "clientPhone": { "type": "string", "maxLength": 32 },
+        "date": { "type": "string", "maxLength": 32 },
+        "time": { "type": "string", "maxLength": 32 },
+        "status": { "type": "string", "enum": ["pending", "confirmed", "completed", "cancelled"] },
+        "onLocationVenue": { "type": "string", "maxLength": 256 },
+        "travelFee": { "type": "number" },
+        "totalAmount": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["userId", "salonId", "serviceId", "clientName", "date", "time", "status"]
+    },
+    "review": {
+      "title": "Review",
+      "description": "Artistry and studio review",
+      "type": "object",
+      "properties": {
+        "salonId": { "type": "string", "maxLength": 64 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "clientName": { "type": "string", "maxLength": 128 },
+        "rating": { "type": "number" },
+        "text": { "type": "string", "maxLength": 1000 },
+        "date": { "type": "string", "maxLength": 32 }
+      },
+      "required": ["salonId", "clientName", "rating", "text"]
+    }
+  },
+  "firestore": {
+    "/bookings/{bookingId}": {
+      "schema": "booking",
+      "description": "User client booking tickets"
+    },
+    "/reviews/{reviewId}": {
+      "schema": "review",
+      "description": "Verified client reviews"
+    }
+  }
+}

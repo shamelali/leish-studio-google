@@ -1,0 +1,352 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --font-display: "Space Grotesk", "Plus Jakarta Sans", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Original Champagne Elegance palette. */
+  --color-brand-gold: #C9A961;
+  --color-brand-gold-light: #DFCC84;
+  --color-brand-gold-dark: #B08F45;
+  --color-brand-champagne: #F3E9CC;
+  --color-brand-espresso: #1A150F;
+  --color-brand-dark: #261F17;
+
+  --color-brand-blush: #F5E6DE;
+  --color-brand-cream: #F3E9CC;
+  --color-brand-rose: #E9B7AE;
+  --color-brand-emerald: #8FC7A5;
+  --color-brand-rose-surface: #3A2523;
+  --color-brand-emerald-surface: #173126;
+
+  /* Neutrals — warm dark espresso. */
+  --color-neutral-50: #FDFCF9;
+  --color-neutral-100: #EFE9DE;
+  --color-neutral-200: #DFD5C5;
+  --color-neutral-300: #C4B8A4;
+  --color-neutral-400: #A3947D;
+  --color-neutral-500: #7D6F5A;
+  --color-neutral-600: #5A4F3E;
+  --color-neutral-700: #3B3226;
+  --color-neutral-800: #332B20;
+  --color-neutral-900: #261F17;
+  --color-neutral-950: #1A150F;
+
+  /* ── Semantic app palette — the original Espresso Gallery surfaces. */
+  --color-canvas: #0F0D0A;
+  --color-recessed: #100E0A;
+  --color-recessed-deep: #0E0C09;
+  --color-panel: #14110C;
+  --color-panel-mid: #1D1912;
+  --color-inset: #17140F;
+  --color-inset-deep: #0C0B08;
+  --color-feature: #110F0B;
+  --color-surface: #221E16;
+  --color-elevated: #14110C;
+  --color-chip: #2B251B;
+  --color-line: #3E3628;
+
+  --color-accent: #574D3C;
+  --color-accent-soft: #746853;
+  --color-accent-text: #C4AD78;
+  --color-accent-strong: #A88F5A;
+
+  --color-fg: #E6E5E4;
+  --color-fg-muted: #C4B8A4;
+  --color-fg-dim: #B8A77A;
+  --color-fg-subtle: #BFA873;
+
+  /* Original primary action contract. */
+  --color-primary: #574D3C;
+  --color-primary-hover: #6B5F4A;
+  --color-on-primary: #E6E5E4;
+
+  /* Status foregrounds are bright enough for normal text on dark surfaces. */
+  --color-success: #65D6A5;
+  --color-success-surface: #173126;
+  --color-success-border: #2F8F68;
+  --color-warning: #E6C978;
+  --color-warning-surface: #3A2F17;
+  --color-warning-border: #A27E2B;
+  --color-danger: #F0A39B;
+  --color-danger-surface: #3A1E1B;
+  --color-danger-border: #BC5B50;
+  --color-info: #8FC7E8;
+  --color-info-surface: #182C38;
+  --color-info-border: #4E91B3;
+
+  /* Semantic depth tokens for the dark editorial surface hierarchy. */
+  --shadow-elevation-1: 0 1px 2px rgb(7 11 15 / 0.34), 0 4px 12px rgb(7 11 15 / 0.2);
+  --shadow-elevation-2: 0 4px 8px rgb(7 11 15 / 0.36), 0 12px 28px rgb(7 11 15 / 0.26);
+  --shadow-elevation-3: 0 8px 16px rgb(7 11 15 / 0.4), 0 24px 52px rgb(7 11 15 / 0.32);
+  --shadow-inset: inset 0 1px 0 rgb(255 255 255 / 0.04), inset 0 -1px 0 rgb(0 0 0 / 0.18);
+  --shadow-accent: 0 0 0 1px rgb(213 166 170 / 0.24), 0 12px 32px rgb(213 166 170 / 0.12);
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    min-width: 320px;
+    background-color: var(--color-canvas);
+    scroll-behavior: smooth;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    min-width: 320px;
+    min-height: 100vh;
+    margin: 0;
+    font-family: var(--font-sans);
+    background-color: var(--color-canvas);
+    color: var(--color-fg);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  :where(h1, h2, h3, h4, h5, h6) {
+    font-family: var(--font-serif);
+    text-wrap: balance;
+  }
+
+  :where(code, kbd, pre, samp) {
+    font-family: var(--font-mono);
+  }
+
+  :where(img, picture, video, canvas, svg) {
+    display: block;
+    max-width: 100%;
+  }
+
+  :where(button, input, select, textarea) {
+    font: inherit;
+  }
+
+  /* Keep native controls comfortable for touch without changing checkboxes,
+     radios, or range inputs that have their own compact visual treatment. */
+  :where(button, input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), select) {
+    min-block-size: 2.5rem;
+    touch-action: manipulation;
+  }
+
+  :where(textarea) {
+    min-block-size: 5rem;
+    resize: vertical;
+    touch-action: manipulation;
+  }
+
+  :where(button:not(:disabled), [role="button"]:not([aria-disabled="true"]), summary) {
+    cursor: pointer;
+  }
+
+  :where(button:disabled, [aria-disabled="true"]) {
+    cursor: not-allowed;
+  }
+
+  :where(a, button, input, select, textarea, summary):focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  :where(input, select, textarea):user-invalid {
+    border-color: var(--color-danger);
+  }
+
+  :where(input, select, textarea)[aria-invalid="true"] {
+    border-color: var(--color-danger);
+  }
+
+  ::placeholder {
+    color: var(--color-fg-dim);
+    opacity: 1;
+  }
+
+  /* Keep keyboard focus visible even when a component's resting styles remove
+     the browser outline. */
+  :focus-visible {
+    outline: 2px solid var(--color-accent-text) !important;
+    outline-offset: 3px !important;
+    box-shadow: 0 0 0 4px rgb(216 198 154 / 0.22), var(--shadow-elevation-1) !important;
+  }
+}
+
+::selection {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+::-moz-selection {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+@layer utilities {
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Reusable background recipes from the Quiet Luxury scheme. Keeping
+     these in one place prevents small screen-to-screen hex drift. */
+  .bg-panel-gradient {
+    background-image: radial-gradient(circle at 8% 0%, rgb(213 166 170 / 0.07), transparent 38%),
+      linear-gradient(118deg, var(--color-panel) 0%, var(--color-panel-mid) 52%, var(--color-recessed) 100%);
+  }
+
+  .bg-panel-gradient-dim {
+    background-image: radial-gradient(circle at 86% 12%, rgb(169 179 154 / 0.08), transparent 44%),
+      linear-gradient(135deg, var(--color-inset) 0%, var(--color-recessed-deep) 100%);
+  }
+
+  .bg-editorial-glow {
+    background-image: radial-gradient(circle at 14% 4%, rgb(213 166 170 / 0.09), transparent 36%),
+      radial-gradient(circle at 86% 18%, rgb(169 179 154 / 0.1), transparent 40%),
+      linear-gradient(135deg, var(--color-recessed) 0%, var(--color-canvas) 55%, var(--color-panel) 100%);
+  }
+
+  .text-champagne-gradient {
+    color: var(--color-brand-champagne);
+    background-image: linear-gradient(110deg, var(--color-brand-champagne), var(--color-primary-hover) 48%, var(--color-brand-gold-light));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .bg-scrim-bottom {
+    background-image: linear-gradient(to top, var(--color-canvas), rgb(17 24 32 / 0.6) 50%, transparent);
+  }
+
+  .bg-scrim-bottom-soft {
+    background-image: linear-gradient(to top, rgb(17 24 32 / 0.85), transparent);
+  }
+
+  .bg-scrim-left {
+    background-image: linear-gradient(to right, rgb(17 24 32 / 0.95), rgb(17 24 32 / 0.5) 55%, transparent);
+  }
+
+  .glow-orb {
+    border-radius: 9999px;
+    background: rgb(213 166 170 / 0.09);
+    filter: blur(64px);
+    pointer-events: none;
+  }
+
+  /* Compose media cards from a consistent frame, media layer, and optional
+     overlay without introducing another component dependency. */
+  .media-frame {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: 1rem;
+    background: var(--color-elevated);
+    box-shadow: var(--shadow-elevation-1);
+  }
+
+  .media-frame__media {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .media-frame__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(180deg, rgb(17 24 32 / 0.02) 30%, rgb(17 24 32 / 0.76) 100%);
+  }
+
+  .media-frame--interactive {
+    cursor: pointer;
+    transition: border-color 250ms ease, box-shadow 250ms ease, transform 250ms ease;
+  }
+
+  .media-frame--interactive:hover {
+    border-color: var(--color-accent-soft);
+    box-shadow: var(--shadow-accent);
+    transform: translateY(-2px);
+  }
+
+  .media-frame--interactive:hover .media-frame__media {
+    transform: scale(1.03);
+  }
+
+  .interactive-surface {
+    transition: border-color 200ms ease, background-color 200ms ease, box-shadow 200ms ease, transform 200ms ease;
+  }
+
+  .interactive-surface:hover {
+    border-color: var(--color-accent-soft);
+    box-shadow: var(--shadow-elevation-1);
+  }
+
+  .interactive-surface:active {
+    transform: translateY(1px);
+  }
+
+  .interactive-underline {
+    text-decoration-line: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.28em;
+    transition: text-decoration-color 200ms ease, color 200ms ease;
+  }
+
+  .interactive-underline:hover {
+    color: var(--color-accent-strong);
+    text-decoration-color: currentColor;
+  }
+}
+
+/* Keep interactive cards keyboard-equivalent to their hover treatment. */
+@media (hover: hover) {
+  .media-frame--interactive:focus-within,
+  .interactive-surface:focus-within {
+    border-color: var(--color-accent-soft);
+    box-shadow: var(--shadow-accent);
+  }
+}
+
+@media (max-width: 639px) {
+  :where(h1) {
+    text-wrap: pretty;
+  }
+
+  /* Prevent long URLs and generated copy from widening the viewport. */
+  :where(p, h1, h2, h3, h4, h5, h6, label, button) {
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (forced-colors: active) {
+  :focus-visible {
+    outline: 2px solid CanvasText !important;
+    box-shadow: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+  }
+}

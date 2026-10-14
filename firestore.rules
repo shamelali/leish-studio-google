@@ -1,0 +1,10 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // All access goes through the server API using the Admin SDK. Firebase
+    // client credentials (including Firebase Auth users) have no direct access.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
