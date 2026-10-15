@@ -991,3 +991,58 @@ describe('salon partial update validation', () => {
     }
   });
 });
+
+describe('demo username accounts (auth modal Instant Demo Access)', () => {
+  it('signs in the client demo with username + password123', async () => {
+    const res = await request(app)
+      .post('/api/auth/login')
+      .send({ email: 'client', password: 'password123' });
+    expect(res.status).toBe(200);
+    expect(res.body.user.email).toBe('client');
+    expect(res.body.user.role).toBe('client');
+    expect(res.body.token).toBeTruthy();
+    expect(res.body.user).not.toHaveProperty('password');
+  });
+
+  it('signs in the studio demo with username + password123', async () => {
+    const res = await request(app)
+      .post('/api/auth/login')
+      .send({ email: 'studio', password: 'password123' });
+    expect(res.status).toBe(200);
+    expect(res.body.user.email).toBe('studio');
+    expect(res.body.user.role).toBe('provider');
+    expect(res.body.token).toBeTruthy();
+  });
+
+  it('still rejects wrong passwords for demo usernames', async () => {
+    const res = await request(app)
+      .post('/api/auth/login')
+      .send({ email: 'client', password: 'wrong-password' });
+    expect(res.status).toBe(401);
+  });
+
+  it('accepts a demo username as the booking contact email', async () => {
+    const res = await request(app)
+      .post('/api/bookings')
+      .send({ ...validBooking(), clientEmail: 'client' });
+    expect(res.status).toBe(201);
+    expect(res.body.clientEmail).toBe('client');
+  });
+});
+
+describe('Google ID-token exchange (POST /api/auth/google)', () => {
+  it('rejects a missing ID token with 400', async () => {
+    const res = await request(app).post('/api/auth/google').send({});
+    expect(res.status).toBe(400);
+    expect(res.body.error).toEqual(expect.any(String));
+  });
+
+  it('returns 503 when the server has no Firebase credentials', async () => {
+    // Test env sets no FIREBASE_PROJECT_ID / service-account cert.
+    const res = await request(app)
+      .post('/api/auth/google')
+      .send({ idToken: 'dummy-token' });
+    expect(res.status).toBe(503);
+    expect(res.body.error).toMatch(/not configured/);
+  });
+});

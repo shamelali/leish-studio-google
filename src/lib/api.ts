@@ -38,6 +38,8 @@ export const authApi = {
     apiClient.post('/auth/register', data),
   login: (data: { email: string; password: string }) =>
     apiClient.post('/auth/login', data),
+  google: (idToken: string) =>
+    apiClient.post('/auth/google', { idToken }),
   getMe: () => apiClient.get('/auth/me'),
   updateProfile: (data: { id: string; name?: string; phone?: string; bio?: string; avatar?: string }) =>
     apiClient.put('/auth/profile', data),

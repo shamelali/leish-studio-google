@@ -19,13 +19,13 @@ import {
   CheckCircle2,
   AlertCircle,
   Sparkles,
-  Scissors,
   Building2,
   ArrowRight,
   ShieldCheck
 } from 'lucide-react';
 import { User } from '../types';
 import { authApi } from '../lib/api';
+import { auth as firebaseAuth, googleSignIn } from '../lib/firebase';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -63,6 +63,7 @@ export default function AuthModal({
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [googleBusy, setGoogleBusy] = useState(false);
 
   const loginForm = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
@@ -139,6 +140,38 @@ export default function AuthModal({
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    setErrorMessage(null);
+    setSuccessMessage(null);
+    if (!firebaseAuth) {
+      setErrorMessage('Google sign-in is not set up in this environment yet. Use email sign-in or instant demo access below.');
+      return;
+    }
+    setGoogleBusy(true);
+    try {
+      const result = await googleSignIn();
+      if (!result) {
+        setErrorMessage('Google sign-in is not available right now. Please try again.');
+        return;
+      }
+      // Exchange the Firebase ID token for a Leish! session. The OAuth
+      // access token stays client-side for Google Workspace API calls.
+      const idToken = await result.user.getIdToken();
+      const session = await authApi.google(idToken);
+      setSuccessMessage(`Welcome, ${session.user.name}!`);
+      setTimeout(() => {
+        onAuthSuccess(session.user, session.token);
+        onClose();
+      }, 700);
+    } catch (err: any) {
+      // Dismissing the popup is not an error worth surfacing.
+      if (err?.code === 'auth/popup-closed-by-user' || err?.code === 'auth/cancelled-popup-request') return;
+      setErrorMessage(err.message || 'Google sign-in failed. Please try again.');
+    } finally {
+      setGoogleBusy(false);
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-canvas/80 backdrop-blur-md overflow-y-auto">
       <motion.div
@@ -170,6 +203,32 @@ export default function AuthModal({
               {promptMessage}
             </div>
           )}
+        </div>
+
+        <div className="mb-6">
+          <button
+            type="button"
+            onClick={handleGoogleSignIn}
+            disabled={googleBusy}
+            className="w-full flex items-center justify-center space-x-2.5 rounded-xl bg-white py-2.5 px-4 text-sm font-medium text-slate-700 shadow hover:bg-slate-100 active:scale-[0.99] transition-all disabled:opacity-60"
+          >
+            {googleBusy ? (
+              <div className="h-5 w-5 border-2 border-slate-300 border-t-slate-600 rounded-full animate-spin" />
+            ) : (
+              <svg className="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="#4285F4" d="M23.49 12.27c0-.79-.07-1.54-.19-2.27H12v4.51h6.47c-.29 1.48-1.14 2.73-2.4 3.58v3h3.86c2.26-2.09 3.56-5.17 3.56-8.82z" />
+                <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.86-3c-1.08.72-2.45 1.16-4.07 1.16-3.13 0-5.78-2.11-6.73-4.96H1.29v3.09C3.26 21.3 7.31 24 12 24z" />
+                <path fill="#FBBC05" d="M5.27 14.29c-.25-.72-.38-1.49-.38-2.29s.14-1.57.38-2.29V6.62H1.29C.47 8.24 0 10.06 0 12s.47 3.76 1.29 5.38l3.98-3.09z" />
+                <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.62l3.98 3.09C6.22 6.86 8.87 4.75 12 4.75z" />
+              </svg>
+            )}
+            <span>{googleBusy ? 'Connecting to Google…' : 'Continue with Google'}</span>
+          </button>
+          <div className="flex items-center gap-3 my-5">
+            <div className="h-px flex-1 bg-line" />
+            <span className="text-[11px] font-mono uppercase tracking-wider text-fg-dim">or with email</span>
+            <div className="h-px flex-1 bg-line" />
+          </div>
         </div>
 
         <div className="flex rounded-xl bg-panel-mid p-1 mb-6 border border-line">
@@ -427,19 +486,19 @@ export default function AuthModal({
           <div className="grid grid-cols-2 gap-2">
             <button
               type="button"
-              onClick={() => handleQuickDemo('shamelali@gmail.com', 'password123')}
+              onClick={() => handleQuickDemo('client', 'password123')}
               className="flex items-center justify-center space-x-1.5 p-2 rounded-lg border border-line bg-inset text-xs text-fg-muted hover:bg-surface hover:border-accent-soft/50 hover:text-fg transition-all"
             >
               <Sparkles className="h-3 w-3 text-fg" />
-              <span className="truncate">Client: Shamel</span>
+              <span className="truncate">Client</span>
             </button>
             <button
               type="button"
-              onClick={() => handleQuickDemo('director@atelierleish.com', 'password123')}
+              onClick={() => handleQuickDemo('studio', 'password123')}
               className="flex items-center justify-center space-x-1.5 p-2 rounded-lg border border-line bg-inset text-xs text-fg-muted hover:bg-surface hover:border-accent-soft/50 hover:text-fg transition-all"
             >
-              <Scissors className="h-3 w-3 text-accent-text" />
-              <span className="truncate">Salon: Atelier</span>
+              <Building2 className="h-3 w-3 text-accent-text" />
+              <span className="truncate">Studio/MUA</span>
             </button>
           </div>
         </div>

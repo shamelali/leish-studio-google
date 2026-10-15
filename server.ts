@@ -233,6 +233,46 @@ export function getJwtSecret(
   return secret || 'leish-dev-secret-change-in-production';
 }
 
+/**
+ * Firebase Admin Auth for verifying Google ID tokens (POST /api/auth/google).
+ * Mirrors the credential pattern in server/firestore-store.ts: explicit
+ * service-account cert when FIREBASE_CLIENT_EMAIL/PRIVATE_KEY are set,
+ * otherwise Application Default Credentials. Returns null when the server
+ * has no Firebase credentials at all (local JSON dev default) so the
+ * route can respond 503 instead of failing obscurely. Never throws.
+ */
+let cachedAdminAuth: any = null;
+let adminAuthAttempted = false;
+async function getAdminAuth(): Promise<any | null> {
+  if (adminAuthAttempted) return cachedAdminAuth;
+  adminAuthAttempted = true;
+  try {
+    const projectId = process.env.FIREBASE_PROJECT_ID;
+    const hasCert = Boolean(process.env.FIREBASE_CLIENT_EMAIL && process.env.FIREBASE_PRIVATE_KEY);
+    if (!projectId && !hasCert) return null;
+    const [{ applicationDefault, cert, getApps, initializeApp }, { getAuth }] = await Promise.all([
+      import('firebase-admin/app'),
+      import('firebase-admin/auth'),
+    ]);
+    const credential = hasCert
+      ? cert({
+          projectId,
+          clientEmail: process.env.FIREBASE_CLIENT_EMAIL as string,
+          privateKey: (process.env.FIREBASE_PRIVATE_KEY as string).replace(/\\n/g, '\n'),
+        })
+      : applicationDefault();
+    const name = 'leish-auth';
+    const adminApp = getApps().find(existing => existing.name === name) ?? initializeApp({
+      ...(credential ? { credential } : {}),
+      ...(projectId ? { projectId } : {}),
+    }, name);
+    cachedAdminAuth = getAuth(adminApp);
+  } catch {
+    cachedAdminAuth = null;
+  }
+  return cachedAdminAuth;
+}
+
 export function createApp(dependencies: AppDependencies = {}) {
   const appStore = dependencies.store ?? store;
   const aiClient = dependencies.ai ?? ai;
@@ -444,8 +484,11 @@ export function createApp(dependencies: AppDependencies = {}) {
     bio: z.string().max(500).optional(),
   });
 
+  // Login accepts an email address or a short demo username (e.g. the
+  // `client` / `studio` demo accounts). Registration still requires a
+  // real email address; see registerSchema below.
   const loginSchema = z.object({
-    email: z.string().email(),
+    email: z.string().trim().min(1, 'Enter your email or demo username.').max(254),
     password: z.string().min(1),
   });
 
@@ -546,6 +589,60 @@ export function createApp(dependencies: AppDependencies = {}) {
       });
     } catch (error: any) {
       res.status(500).json({ error: 'Sign in failed' });
+    }
+  });
+
+  // API Route: Google sign-in (Firebase ID token exchange).
+  // The browser signs in via Firebase (src/lib/firebase.ts googlesignIn) and
+  // POSTs the Firebase ID token here. The server verifies it with the Admin
+  // SDK, finds or creates the matching account, and returns the same
+  // { user, token } session shape as password login.
+  app.post('/api/auth/google', async (req, res) => {
+    try {
+      const idToken = typeof req.body?.idToken === 'string' ? req.body.idToken : '';
+      if (!idToken) {
+        return res.status(400).json({ error: 'A Google ID token is required.' });
+      }
+      const adminAuth = await getAdminAuth();
+      if (!adminAuth) {
+        return res.status(503).json({ error: 'Google sign-in is not configured on the server.' });
+      }
+      let decoded: { email?: unknown; name?: unknown; picture?: unknown; uid?: unknown };
+      try {
+        decoded = await adminAuth.verifyIdToken(idToken);
+      } catch {
+        return res.status(401).json({ error: 'Invalid Google sign-in. Please try again.' });
+      }
+      if (typeof decoded.email !== 'string' || !decoded.email) {
+        return res.status(401).json({ error: 'Your Google account has no verified email address.' });
+      }
+      const normalizedEmail = decoded.email.trim().toLowerCase();
+      let user = await appStore.getUserByEmail(normalizedEmail);
+      if (!user) {
+        const displayName = typeof decoded.name === 'string' && decoded.name.trim()
+          ? decoded.name.trim().slice(0, 100)
+          : normalizedEmail.split('@')[0];
+        user = await appStore.createUser({
+          id: `user-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+          name: displayName,
+          email: normalizedEmail,
+          // Random unguessable secret: Google-linked accounts authenticate
+          // via ID-token exchange, never via password login.
+          password: `google-oauth-${Date.now()}-${Math.random().toString(36).slice(2, 18)}`,
+          role: 'client',
+          bio: 'Signed up with Google.',
+          avatar: typeof decoded.picture === 'string' ? decoded.picture : undefined,
+          createdAt: new Date().toISOString(),
+        });
+      }
+      const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+      res.json({
+        user: sanitizeUser(user),
+        token,
+        message: `Welcome${user.name ? `, ${user.name}` : ''}!`,
+      });
+    } catch (error: any) {
+      serverError(res, 'Google sign-in failed');
     }
   });
 

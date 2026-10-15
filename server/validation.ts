@@ -35,7 +35,9 @@ export const bookingSchema = z.object({
   // Preserve the caller's 12-hour clock representation, including leading zeros.
   time: z.string().regex(/^(0?[1-9]|1[0-2]):[0-5]\d (AM|PM)$/, 'Time must be a valid h:mm AM/PM time'),
   clientName: requiredText(100),
-  clientEmail: z.string().trim().max(254).email(),
+  // Contact identifier: usually an email address, but demo accounts sign in
+  // with short usernames (`client` / `studio`) which must round-trip here.
+  clientEmail: z.string().trim().min(1, 'Enter a contact email or username.').max(254),
   clientPhone: requiredText(50),
   notes: z.string().max(1000).optional(),
   isLocationEvent: z.boolean().optional(),

@@ -31,9 +31,9 @@ describe('booking details validation', () => {
     });
   });
 
-  it('returns field errors for blank contacts, invalid email, and excessive notes', () => {
+  it('returns field errors for blank contacts and excessive notes', () => {
     const result = bookingFormSchema.safeParse({
-      ...details, clientName: '  ', clientEmail: 'not-an-email', clientPhone: '\t', notes: 'x'.repeat(1001),
+      ...details, clientName: '  ', clientEmail: '   ', clientPhone: '\t', notes: 'x'.repeat(1001),
     });
     expect(result.success).toBe(false);
     if (!result.success) {
@@ -42,6 +42,10 @@ describe('booking details validation', () => {
       );
       expect(result.error.issues.every(issue => issue.message.length > 10)).toBe(true);
     }
+  });
+
+  it('accepts a demo username as the contact identifier', () => {
+    expect(bookingFormSchema.parse({ ...details, clientEmail: 'client' }).clientEmail).toBe('client');
   });
 
   it.each(['', '   ', 'v'.repeat(201)])('rejects an invalid on-location venue (%s)', eventVenue => {

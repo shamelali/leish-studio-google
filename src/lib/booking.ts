@@ -3,7 +3,10 @@ import type { Booking, LookbookItem, Salon, Service, WorkingHours } from '../typ
 
 export const bookingFormSchema = z.object({
   clientName: z.string().trim().min(1, 'Enter your full name.').max(100, 'Use 100 characters or fewer for your name.'),
-  clientEmail: z.string().trim().max(254, 'Use an email address of 254 characters or fewer.').email('Enter a valid email address.'),
+  // Demo accounts use short usernames (`client` / `studio`); accept any
+  // non-empty contact identifier so a signed-in demo user can complete a
+  // booking without retyping a real email address.
+  clientEmail: z.string().trim().min(1, 'Enter your contact email or username.').max(254, 'Use an email address of 254 characters or fewer.'),
   clientPhone: z.string().trim().min(1, 'Enter your telephone number.').max(50, 'Use 50 characters or fewer for your telephone number.'),
   notes: z.string().max(1000, 'Keep special instructions to 1,000 characters or fewer.').optional(),
   isLocationEvent: z.boolean(),

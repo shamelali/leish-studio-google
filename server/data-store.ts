@@ -104,6 +104,32 @@ const INITIAL_USERS: StoredUser[] = [
     avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=200',
     bio: 'Principal Runway MUA & Airbrush Specialist at L’Éclat Makeup Lab.',
     createdAt: '2026-01-12T12:00:00.000Z'
+  },
+  // One-click demo accounts used by the auth modal's Instant Demo Access.
+  // These intentionally use short usernames instead of email addresses so
+  // visitors can sign in without typing; login and booking contact fields
+  // accept any non-empty identifier for the same reason.
+  {
+    id: 'user-client-demo',
+    name: 'Demo Client',
+    email: 'client',
+    password: hashPassword('password123'),
+    role: 'client',
+    phone: '+60 12-000 0000',
+    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200',
+    bio: 'Demo makeup client account for trying bookings end to end.',
+    createdAt: '2026-10-16T00:00:00.000Z'
+  },
+  {
+    id: 'user-studio-demo',
+    name: 'Demo Studio',
+    email: 'studio',
+    password: hashPassword('password123'),
+    role: 'provider',
+    phone: '+60 12-000 0001',
+    avatar: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&q=80&w=200',
+    bio: 'Demo studio/MUA account for exploring the provider portal.',
+    createdAt: '2026-10-16T00:00:00.000Z'
   }
 ];
 

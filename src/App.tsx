@@ -65,7 +65,7 @@ export default function App() {
         if (u.email) return u.email;
       }
     } catch {}
-    return 'shamelali@gmail.com';
+    return 'client';
   });
 
   // Hero Section Image Gallery curation
