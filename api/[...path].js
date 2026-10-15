@@ -1,8 +1,9 @@
 // Vercel serverless entry (source wrapper, committed).
-// Vercel compiles this TypeScript-aware entry and traces node_modules
-// natively (including bcrypt's prebuilt binaries), which a pre-bundled
-// ESM file cannot do under Node's ESM loader. The Express app in
-// ../server.ts normalizes Vercel's ...path rewrite envelope itself.
-import app from '../server.ts';
+// Extensionless import: Vercel's function bundler resolves ../server to
+// ../server.ts and traces the whole graph (including native prebuilds)
+// natively. An explicit .ts extension breaks module resolution at runtime
+// (ERR_MODULE_NOT_FOUND), and a pre-bundled ESM file cannot execute under
+// Node's ESM loader (dynamic require, __dirname in native loaders).
+import app from '../server';
 
 export default app;
