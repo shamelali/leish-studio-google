@@ -9,6 +9,7 @@ import rateLimit from 'express-rate-limit';
 import { z } from 'zod';
 import { registerConciergeRoute } from './server/concierge.ts';
 import { bookingSchema, salonUpdateSchema, serviceUpdateSchema, serviceCreateSchema } from './server/validation.ts';
+import { logger, withLogging, recordMetric, Metrics } from './server/monitoring.ts';
 
 // Initialize Gemini Client
 const ai = new GoogleGenAI({
@@ -297,6 +298,19 @@ export function createApp(dependencies: AppDependencies = {}) {
 
   // JSON body size limit
   app.use(express.json({ limit: '100kb' }));
+
+  // Request ID middleware (for tracing)
+  app.use((req, _res, next) => {
+    const getHeader = (name: string): string | undefined => {
+      const val = req.headers[name];
+      return Array.isArray(val) ? val[0] : val;
+    };
+    req.requestId = getHeader('x-request-id') ||
+      getHeader('x-vercel-id') ||
+      `req-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    next();
+  });
+
   registerConciergeRoute(app, { getSalons: () => appStore.getSalons() });
 
   // Helper to strip sensitive data
