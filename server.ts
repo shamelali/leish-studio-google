@@ -1,14 +1,14 @@
 import express from 'express';
 import { store, type DataStore } from './server/data-store.ts';
 import { GoogleGenAI, Type, GenerateVideosOperation } from '@google/genai';
-import type { Booking, Review, Service, User } from './src/types.ts';
+import type { Booking, Review, Service, Salon, User } from './src/types.ts';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import { z } from 'zod';
 import { registerConciergeRoute } from './server/concierge.ts';
-import { bookingSchema, salonUpdateSchema, serviceUpdateSchema } from './server/validation.ts';
+import { bookingSchema, salonUpdateSchema, serviceUpdateSchema, serviceCreateSchema } from './server/validation.ts';
 
 // Initialize Gemini Client
 const ai = new GoogleGenAI({
@@ -53,6 +53,51 @@ const reviewSummaryResponseSchema = z.object({
 
 const AI_TIMEOUT_MS = 7000;
 const clip = (value: string, max: number): string => value.slice(0, max);
+
+// --- AI Prompt Context Builder (extracted for testability and caching) ---
+const MAX_SALON_NAME = 200;
+const MAX_SALON_ID = 120;
+const MAX_CATEGORY = 100;
+const MAX_LOCATION = 200;
+const MAX_TAGLINE = 300;
+const MAX_SERVICE_NAME = 200;
+const MAX_SERVICE_DESC = 500;
+const MAX_SERVICES_PER_SALON = 20;
+const MAX_CONTEXT_CHARS = 18000;
+
+export function buildSalonsContext(salons: readonly (Salon & { services: Service[] })[]): string {
+  return clip(salons.map(s => {
+    const services = s.services.slice(0, MAX_SERVICES_PER_SALON).map(sv =>
+      `${clip(sv.name, MAX_SERVICE_NAME)} (${sv.price}, ${sv.duration} mins - ${clip(sv.description, MAX_SERVICE_DESC)})`,
+    ).join('; ');
+    return `- Makeup Studio: ${clip(s.name, MAX_SALON_NAME)} (ID: ${clip(s.id, MAX_SALON_ID)}, specialty: ${clip(s.category, MAX_CATEGORY)}, location: ${clip(s.location, MAX_LOCATION)})
+  Tagline: ${clip(s.tagline, MAX_TAGLINE)}
+  Services: ${services}`;
+  }).join('\n\n'), MAX_CONTEXT_CHARS);
+}
+
+// Cached version that rebuilds only when salon data changes
+let salonsContextCache: { context: string; version: number } | null = null;
+
+export async function getCachedSalonsContext(getSalons: () => Promise<Salon[]> | Salon[]): Promise<string> {
+  const salons = getSalons();
+  const salonsArray = Array.isArray(salons) ? salons : await salons;
+  
+  // Generate a simple version hash from salon IDs and service counts
+  const version = salonsArray.reduce((acc, s) => {
+    acc ^= s.id.split('').reduce((h, c) => h + c.charCodeAt(0), 0);
+    acc ^= s.services.length;
+    return acc;
+  }, 0);
+
+  if (salonsContextCache && salonsContextCache.version === version) {
+    return salonsContextCache.context;
+  }
+
+  const context = buildSalonsContext(salonsArray);
+  salonsContextCache = { context, version };
+  return context;
+}
 
 async function withTimeout<T>(operation: Promise<T>, timeoutMs: number, label: string): Promise<T> {
   let timer: ReturnType<typeof setTimeout> | undefined;
@@ -106,7 +151,10 @@ function fallbackAdvice(input: AdviceRequest, salons: Awaited<ReturnType<DataSto
       category: clip(service.category, 100),
       salonName: clip(salon.name, 200),
       salonId: clip(salon.id, 120),
-      estimatedPrice: Math.min(100000, Math.max(0, Number.isFinite(service.price) ? service.price : 0)),
+      estimatedPrice: (() => {
+        const price = Number(service.price);
+        return Number.isFinite(price) ? Math.min(100000, Math.max(0, price)) : 0;
+      })(),
       reason: clip(`A ${service.category} service selected from the live Leish catalogue for your ${input.occasion} plans.`, 800),
     })),
   };
@@ -172,6 +220,13 @@ export function getJwtSecret(
     throw new Error(
       '[leish] JWT_SECRET is not set (or is a placeholder). Refusing to boot in production with an unsafe signing secret (TR-9).'
     );
+  }
+
+  if (isWeak) {
+    console.warn('[leish] JWT_SECRET is weak (<32 chars). Use a strong secret even in development.');
+  }
+  if (isPlaceholder && environment !== 'production') {
+    console.warn('[leish] JWT_SECRET is a placeholder. Set a strong secret in production.');
   }
 
   return secret || 'leish-dev-secret-change-in-production';
@@ -296,7 +351,9 @@ export function createApp(dependencies: AppDependencies = {}) {
 
   const canModifyBooking = (user: User, booking: Booking): boolean =>
     canUpdateSalon(user, booking.salonId) ||
-    booking.clientEmail.toLowerCase() === user.email.toLowerCase();
+    (booking.clientId !== undefined && booking.clientId === user.id) ||
+    // Fallback for legacy bookings without clientId: compare emails (case-insensitive)
+    (booking.clientId === undefined && booking.clientEmail.toLowerCase() === user.email.toLowerCase());
 
   const findReviewEligibility = async (
     user: User,
@@ -309,7 +366,8 @@ export function createApp(dependencies: AppDependencies = {}) {
     ]);
     const completedBookings = bookings.filter(booking =>
       booking.salonId === salonId &&
-      booking.clientEmail.toLowerCase() === user.email.toLowerCase() &&
+      ((booking.clientId !== undefined && booking.clientId === user.id) ||
+        (booking.clientId === undefined && booking.clientEmail.toLowerCase() === user.email.toLowerCase())) &&
       booking.status === 'completed',
     );
 
@@ -561,20 +619,19 @@ export function createApp(dependencies: AppDependencies = {}) {
       if (!salon) {
         return res.status(404).json({ error: 'Salon not found' });
       }
-      const price = Number(req.body.price);
-      const duration = Number(req.body.duration);
-      if (!req.body.name || !String(req.body.name).trim() ||
-          !Number.isFinite(price) || price < 0 ||
-          !Number.isFinite(duration) || duration <= 0) {
-        return res.status(400).json({ error: 'Service needs a name, a non-negative price and a positive duration.' });
+
+      const parsed = serviceCreateSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ error: parsed.error.issues[0].message });
       }
+
       const newService: Service = {
         id: `serv-${req.params.id}-${Date.now()}`,
-        name: String(req.body.name).trim().slice(0, 120),
-        price,
-        duration,
-        description: req.body.description ? String(req.body.description).slice(0, 500) : '',
-        category: req.body.category || salon.category
+        name: parsed.data.name,
+        price: parsed.data.price,
+        duration: parsed.data.duration,
+        description: parsed.data.description || '',
+        category: parsed.data.category || salon.category
       };
       const updatedServices = [...salon.services, newService];
       const updated = await appStore.updateSalon(req.params.id, { services: updatedServices });
@@ -598,7 +655,9 @@ export function createApp(dependencies: AppDependencies = {}) {
         return res.status(404).json({ error: 'Service not found' });
       }
 
-      const parsed = serviceUpdateSchema.safeParse(req.body);
+      // Strip 'id' from request body since it's determined by the URL path
+      const { id: _ignoredId, ...bodyWithoutId } = req.body;
+      const parsed = serviceUpdateSchema.safeParse(bodyWithoutId);
       if (!parsed.success) {
         return res.status(400).json({ error: parsed.error.issues[0].message });
       }
@@ -708,6 +767,21 @@ export function createApp(dependencies: AppDependencies = {}) {
         return res.status(404).json({ error: 'Staff member not found' });
       }
 
+      // Determine clientId from authenticated user if available, otherwise leave undefined for anonymous bookings
+      const authHeader = req.headers.authorization;
+      let clientId: string | undefined;
+      if (authHeader && authHeader.startsWith('Bearer ')) {
+        try {
+          const token = authHeader.replace('Bearer ', '').trim();
+          const decoded = jwt.verify(token, JWT_SECRET, { algorithms: ['HS256'] }) as { userId?: unknown };
+          if (typeof decoded.userId === 'string' && decoded.userId) {
+            clientId = decoded.userId;
+          }
+        } catch {
+          // Token invalid/expired, proceed as anonymous booking
+        }
+      }
+
       const booking: Booking = {
         id: `book-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
         salonId,
@@ -724,6 +798,7 @@ export function createApp(dependencies: AppDependencies = {}) {
         clientName,
         clientEmail,
         clientPhone,
+        clientId,
         notes,
         status: 'pending',
         createdAt: new Date().toISOString(),
@@ -785,11 +860,23 @@ export function createApp(dependencies: AppDependencies = {}) {
         return res.status(400).json({ error: parsed.error.issues[0].message });
       }
       const { salonId, bookingId, rating, text } = parsed.data;
-      if (!await appStore.getSalon(salonId)) {
+      const salon = await appStore.getSalon(salonId);
+      if (!salon) {
         return res.status(404).json({ error: 'Salon not found' });
       }
       if (req.user.role !== 'client') {
         return res.status(403).json({ error: 'Only client accounts can create customer reviews.' });
+      }
+
+      // If bookingId is provided, verify it exists and belongs to the requested salon
+      if (bookingId) {
+        const booking = await appStore.getBooking(bookingId);
+        if (!booking) {
+          return res.status(404).json({ error: 'Booking not found' });
+        }
+        if (booking.salonId !== salonId) {
+          return res.status(404).json({ error: 'Booking not found for this salon' });
+        }
       }
 
       const eligibility = await findReviewEligibility(req.user, salonId, bookingId);
@@ -836,15 +923,8 @@ export function createApp(dependencies: AppDependencies = {}) {
         return res.json(fallback);
       }
 
-      // Construct dynamic salons context for Gemini to read
-      const salonsContext = clip(salons.map(s => {
-        const services = s.services.slice(0, 20).map(sv =>
-          `${clip(sv.name, 200)} (${sv.price}, ${sv.duration} mins - ${clip(sv.description, 500)})`,
-        ).join('; ');
-        return `- Makeup Studio: ${clip(s.name, 200)} (ID: ${clip(s.id, 120)}, specialty: ${clip(s.category, 100)}, location: ${clip(s.location, 200)})
-  Tagline: ${clip(s.tagline, 300)}
-  Services: ${services}`;
-      }).join('\n\n'), 18000);
+      // Construct dynamic salons context for Gemini to read (cached)
+      const salonsContext = await getCachedSalonsContext(() => appStore.getSalons());
 
       const prompt = `You are the Lead Luxury Makeup Stylist & Artistry Consultant for "Leish!", a high-end marketplace for premier makeup studios.
 Your goal is to suggest exact makeup services and studios listed on our platform that best match the client's beauty profile.
@@ -987,36 +1067,48 @@ Keep each field extremely concise, professional, and sophisticated. No emojis.`;
   });
 
   // --- API ROUTE: Venue Distance & On-Location Travel Calculator ---
+  // Deterministic sample distance until a geocoding provider is configured.
+  // Keep the public contract in Malaysia's expected unit (kilometres).
+  const DISTANCE_HASH_MODULO = 39; // produces range 0-38
+  const BASE_DISTANCE_KM = 7.5; // minimum distance offset
+  const DRIVE_MINUTES_PER_KM = 1.37; // average drive time factor
+  const DRIVE_MINUTES_BASE = 8; // fixed overhead (pickup, parking)
+  const BASE_KIT_FEE = 50; // Mobile sanitation and lighting kit setup
+  const MILEAGE_FEE_PER_KM = 1.55; // RM per km
+
   app.post('/api/venue/estimate-travel', async (req, res) => {
     try {
       const { salonId, venue } = req.body;
       if (!venue || !venue.trim()) {
         return res.status(400).json({ error: 'Venue name or address is required.' });
       }
+      if (!salonId || !salonId.trim()) {
+        return res.status(400).json({ error: 'salonId is required.' });
+      }
 
-      const salon = await appStore.getSalon(salonId || 'salon-1');
-      const studioAddress = salon ? salon.address : '404 Jalan Bukit Bintang, Kuala Lumpur';
+      const salon = await appStore.getSalon(salonId);
+      if (!salon) {
+        return res.status(404).json({ error: 'Salon not found' });
+      }
+      const studioAddress = salon.address;
 
-      // Deterministic sample distance until a geocoding provider is configured.
-      // Keep the public contract in Malaysia's expected unit (kilometres).
       let hash = 0;
       for (let i = 0; i < venue.length; i++) {
         hash = (hash << 5) - hash + venue.charCodeAt(i);
         hash |= 0;
       }
-      const distanceKm = Number((Math.abs(hash % 39) + 7.5).toFixed(1));
-      const estimatedDriveMinutes = Math.round(distanceKm * 1.37 + 8);
+      const distanceKm = Number((Math.abs(hash % DISTANCE_HASH_MODULO) + BASE_DISTANCE_KM).toFixed(1));
+      const estimatedDriveMinutes = Math.round(distanceKm * DRIVE_MINUTES_PER_KM + DRIVE_MINUTES_BASE);
       
-      const baseKitFee = 50; // Mobile sanitation and lighting kit setup
-      const mileageFee = Number((distanceKm * 1.55).toFixed(2));
-      const totalTravelFee = Math.round(baseKitFee + mileageFee);
+      const mileageFee = Number((distanceKm * MILEAGE_FEE_PER_KM).toFixed(2));
+      const totalTravelFee = Math.round(BASE_KIT_FEE + mileageFee);
 
       res.json({
         venueName: venue.trim(),
         studioAddress,
         distanceKm,
         estimatedDriveMinutes,
-        baseKitFee,
+        baseKitFee: BASE_KIT_FEE,
         mileageFee,
         totalTravelFee,
         estimateSource: 'sample',

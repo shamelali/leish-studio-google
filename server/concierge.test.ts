@@ -91,6 +91,40 @@ describe('searchArtists', () => {
     expect((await searchArtists({ styles: ['natural'], location: 'PJ' }, catalogue)).artists).toEqual([]);
     expect((await searchArtists({ styles: ['natural'], location: 'KL', maxPrice: 100 }, async () => [salon()])).artists).toEqual([]);
   });
+
+  it('excludes masterclass/lesson services when user does not request lessons', async () => {
+    const lesson = service({ id: 'lesson', name: 'Bridal Masterclass', category: 'masterclass' });
+    const bridal = service({ id: 'bridal', name: 'Bridal Makeup', category: 'bridal' });
+    const result = await searchArtists({ styles: ['bridal'], location: 'KL' }, async () => [
+      salon({ services: [lesson, bridal] }),
+    ]);
+    expect(result.artists.map(m => m.service.id)).toEqual(['bridal']);
+  });
+
+  it('includes lesson services when user explicitly requests lessons', async () => {
+    const lesson = service({ id: 'lesson', name: 'Bridal Masterclass', category: 'masterclass' });
+    const bridal = service({ id: 'bridal', name: 'Bridal Makeup', category: 'bridal' });
+    const result = await searchArtists({ styles: ['bridal', 'masterclass'], location: 'KL' }, async () => [
+      salon({ services: [lesson, bridal] }),
+    ]);
+    expect(result.artists.map(m => m.service.id)).toContain('lesson');
+  });
+
+  it('handles unicode normalization in style matching', async () => {
+    const result = await searchArtists({ styles: ['natural'], location: 'KL' }, async () => [
+      salon({ category: 'soft-glam', tagline: 'Natural soft glam', services: [service({ category: 'soft-glam' })] }),
+    ]);
+    expect(result.artists.length).toBeGreaterThan(0);
+  });
+
+  it('applies price ceiling per service independently', async () => {
+    const cheap = service({ id: 'cheap', name: 'Cheap Service', price: 50 });
+    const expensive = service({ id: 'expensive', name: 'Expensive Service', price: 500 });
+    const result = await searchArtists({ styles: ['natural'], location: 'KL', maxPrice: 100 }, async () => [
+      salon({ services: [cheap, expensive] }),
+    ]);
+    expect(result.artists.map(m => m.service.id)).toEqual(['cheap']);
+  });
 });
 
 describe('concierge input safety', () => {

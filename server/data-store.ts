@@ -865,6 +865,25 @@ export class JsonDataStore implements DataStore {
   }
 
   public save(): void {
+    // Simple file lock to prevent concurrent writes from corrupting the store
+    const lockPath = `${STORE_PATH}.lock`;
+    const maxRetries = 50;
+    const retryDelayMs = 20;
+    
+    for (let attempt = 0; attempt < maxRetries; attempt++) {
+      try {
+        // Try to create lock file exclusively (fails if exists)
+        fs.openSync(lockPath, 'wx');
+        break; // Lock acquired
+      } catch (e: any) {
+        if (e.code !== 'EEXIST') throw e;
+        if (attempt === maxRetries - 1) throw new Error('Could not acquire store lock');
+        // Wait and retry
+        const start = Date.now();
+        while (Date.now() - start < retryDelayMs) { /* busy wait for short delay */ }
+      }
+    }
+    
     try {
       const data = {
         salons: this.salons,
@@ -884,8 +903,9 @@ export class JsonDataStore implements DataStore {
       // Existing stores may have been created with broader permissions.
       // Password hashes are still sensitive, so tighten them on every save.
       fs.chmodSync(STORE_PATH, 0o600);
-    } catch (e) {
-      console.error('[DataStore] Error saving database store:', e);
+    } finally {
+      // Release lock
+      try { fs.unlinkSync(lockPath); } catch {}
     }
   }
 

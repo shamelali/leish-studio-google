@@ -75,6 +75,8 @@ export interface Booking {
   clientName: string;
   clientEmail: string;
   clientPhone: string;
+  /** Stable identifier of the client who created the booking. Used for authorization. */
+  clientId?: string;
   notes?: string;
   status: BookingStatus;
   createdAt: string;

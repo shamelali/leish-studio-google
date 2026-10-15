@@ -57,7 +57,7 @@ describe('AI recommendation catalogue resolution', () => {
     });
 
     expect(result.resolved).toBe(false);
-    if ('reason' in result) expect(result.reason).toBe('salon');
+    if ('reason' in result) expect(result.reason).toBe('salon-not-found');
   });
 
   it('does not fall back to the first service when the recommended service is unknown', () => {
@@ -68,7 +68,7 @@ describe('AI recommendation catalogue resolution', () => {
     });
 
     expect(result.resolved).toBe(false);
-    if ('reason' in result) expect(result.reason).toBe('service');
+    if ('reason' in result) expect(result.reason).toBe('service-not-found');
   });
 
   it('requires an explicit service name to agree with an explicit canonical service ID', () => {
@@ -92,5 +92,59 @@ describe('AI recommendation catalogue resolution', () => {
 
     expect(result.resolved).toBe(false);
     if ('reason' in result) expect(result.reason).toBe('mismatch');
+  });
+
+  it('returns no-service-identified when neither serviceId nor serviceName is provided', () => {
+    const result = resolveCatalogRecommendation([salon], {
+      salonId: salon.id,
+      salonName: salon.name,
+    });
+
+    expect(result.resolved).toBe(false);
+    if ('reason' in result) expect(result.reason).toBe('no-service-identified');
+  });
+
+  it('returns service-not-found when serviceId is provided but not found in salon', () => {
+    const result = resolveCatalogRecommendation([salon], {
+      salonId: salon.id,
+      salonName: salon.name,
+      serviceId: 'non-existent-service',
+    });
+
+    expect(result.resolved).toBe(false);
+    if ('reason' in result) expect(result.reason).toBe('service-not-found');
+  });
+
+  it('returns salon-not-found when salonId is missing but salonName provided', () => {
+    const result = resolveCatalogRecommendation([salon], {
+      salonName: salon.name,
+      serviceName: recommendedService.name,
+    });
+
+    expect(result.resolved).toBe(false);
+    if ('reason' in result) expect(result.reason).toBe('salon-not-found');
+  });
+
+  it('normalizes unicode and whitespace for matching', () => {
+    // NFKC normalization: full-width characters -> half-width
+    const fullWidthName = 'Ｓｉｇｎａｔｕｒｅ　Ｓｏｆｔ　Ｇｌａｍ'; // full-width
+    const result = resolveCatalogRecommendation([salon], {
+      salonId: salon.id,
+      salonName: salon.name,
+      serviceName: fullWidthName,
+    });
+
+    expect(result).toEqual({ resolved: true, salon, service: recommendedService });
+  });
+
+  it('handles zero-width spaces in service name', () => {
+    const zwspName = 'Signature\u200B Soft\u200B Glam'; // zero-width spaces
+    const result = resolveCatalogRecommendation([salon], {
+      salonId: salon.id,
+      salonName: salon.name,
+      serviceName: zwspName,
+    });
+
+    expect(result).toEqual({ resolved: true, salon, service: recommendedService });
   });
 });

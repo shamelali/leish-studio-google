@@ -57,11 +57,17 @@ const serviceFieldsSchema = z.object({
 
 const serviceSchema = serviceFieldsSchema.extend({ id: requiredText(120) });
 
+/** Schema for creating a new service — category and description are optional (defaults to salon category / empty string). */
+export const serviceCreateSchema = serviceFieldsSchema.extend({
+  category: z.string().trim().max(100).optional(),
+  description: z.string().max(1000).optional(),
+});
+
 /** Partial service fields for an owner editing one existing catalogue item. */
 export const serviceUpdateSchema = serviceFieldsSchema.partial().refine(
   value => Object.keys(value).length > 0,
   'Provide at least one service field to update.',
-);
+).strict();
 
 const staffSchema = z.object({
   id: requiredText(120),

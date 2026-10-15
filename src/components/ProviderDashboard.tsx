@@ -10,6 +10,12 @@ import { Salon, Service, Booking, WorkingHours, User } from '../types';
 import { apiClient, bookingsApi, salonsApi } from '../lib/api';
 import { serviceFormSchema } from '../lib/service-form';
 
+// Predefined service categories - single source of truth
+const PREDEFINED_CATEGORIES = ['bridal', 'editorial', 'soft-glam', 'airbrush', 'masterclass', 'glam'] as const;
+type PredefinedCategory = typeof PREDEFINED_CATEGORIES[number];
+const isCustomCategory = (cat: string): cat is Exclude<string, PredefinedCategory> =>
+  cat && !PREDEFINED_CATEGORIES.includes(cat as PredefinedCategory);
+
 interface ProviderDashboardProps {
   salons: Salon[];
   onSalonUpdated: () => void;
@@ -609,7 +615,7 @@ export default function ProviderDashboard({
                          onChange={(e) => { setNewServiceCategory(e.target.value); setServiceFormError(null); }}
                          className="w-full rounded-lg border border-accent-soft bg-surface/30 px-3 py-2 text-fg focus:border-accent-strong focus:outline-none"
                        >
-                         {newServiceCategory && !['bridal', 'editorial', 'soft-glam', 'airbrush', 'masterclass', 'glam'].includes(newServiceCategory) && (
+                         {isCustomCategory(newServiceCategory) && (
                            <option value={newServiceCategory}>{newServiceCategory}</option>
                          )}
                          <option value="bridal">Bridal</option>

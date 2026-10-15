@@ -11,7 +11,7 @@ export type CatalogResolution =
   | { resolved: true; salon: Salon; service: Service }
   | {
       resolved: false;
-      reason: 'salon' | 'service' | 'mismatch';
+      reason: 'salon-not-found' | 'service-not-found' | 'mismatch' | 'no-service-identified';
       message: string;
     };
 
@@ -21,7 +21,14 @@ export type CatalogResolution =
  * same canonical salon and service that the model named.
  */
 export function normalizeCatalogLabel(value: string): string {
-  return value.normalize('NFKC').trim().replace(/\s+/g, ' ').toLocaleLowerCase();
+  return value
+    .normalize('NFKC')
+    // Remove format characters (Cf category) including zero-width space (U+200B),
+    // zero-width non-joiner (U+200C), zero-width joiner (U+200D), etc.
+    .replace(/[\u200B-\u200D\uFEFF]/g, '')
+    .trim()
+    .replace(/\s+/g, ' ')
+    .toLowerCase();
 }
 
 export function resolveCatalogRecommendation(
@@ -34,7 +41,7 @@ export function resolveCatalogRecommendation(
   if (!salon) {
     return {
       resolved: false,
-      reason: 'salon',
+      reason: 'salon-not-found',
       message: 'The recommended studio is no longer in the catalogue. Start a new recommendation to refresh the available studios.',
     };
   }
@@ -56,7 +63,7 @@ export function resolveCatalogRecommendation(
   if (serviceId && !serviceById) {
     return {
       resolved: false,
-      reason: 'service',
+      reason: 'service-not-found',
       message: 'The recommended service is no longer offered by that studio. Start a new recommendation to refresh the catalogue.',
     };
   }
@@ -77,7 +84,7 @@ export function resolveCatalogRecommendation(
   if (!serviceName) {
     return {
       resolved: false,
-      reason: 'service',
+      reason: 'no-service-identified',
       message: 'This recommendation does not identify a bookable service. Start a new recommendation to refresh the catalogue.',
     };
   }
@@ -89,7 +96,7 @@ export function resolveCatalogRecommendation(
   if (!service) {
     return {
       resolved: false,
-      reason: 'service',
+      reason: 'service-not-found',
       message: `We could not find “${serviceName}” at the recommended studio. Start a new recommendation to refresh the catalogue.`,
     };
   }
