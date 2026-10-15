@@ -1116,3 +1116,20 @@ describe('booking confirmation email hook', () => {
     expect(res.body.status).toBe('confirmed');
   });
 });
+
+describe('Vercel rewrite envelope (GET /api/[...path]?...path=…)', () => {
+  it('routes single-segment API paths carried in the ...path param', async () => {
+    const res = await request(app).get('/api/[...path]').query({ '...path': 'salons' });
+    expect(res.status).toBe(200);
+    expect(Array.isArray(res.body)).toBe(true);
+  });
+
+  it('routes multi-segment paths and preserves the remaining query string', async () => {
+    const res = await request(app)
+      .post('/api/[...path]')
+      .query({ '...path': 'auth/login' })
+      .send({ email: 'client', password: 'password123' });
+    expect(res.status).toBe(200);
+    expect(res.body.user.email).toBe('client');
+  });
+});

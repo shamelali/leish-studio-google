@@ -281,6 +281,27 @@ export function createApp(dependencies: AppDependencies = {}) {
   const aiTimeoutMs = Math.max(1, dependencies.aiTimeoutMs ?? AI_TIMEOUT_MS);
   const app = express();
 
+  // Vercel rewrite compatibility. /api/* rewrites to the /api/[...path]
+  // function with the original sub-path carried in the `...path` query
+  // param. Depending on platform behavior the function may receive the
+  // pre- or post-rewrite URL, so normalize back to the real API path here:
+  // when the param is absent (local dev, tests) this is a no-op, and when
+  // present it reproduces exactly the URL the client requested.
+  app.use((req, _res, next) => {
+    const routed = (req.query as Record<string, unknown>)?.['...path'];
+    if (typeof routed === 'string' && routed) {
+      const rest = Object.entries((req.query ?? {}) as Record<string, unknown>)
+        .filter(([key]) => key !== '...path')
+        .map(([key, value]) => {
+          const first = Array.isArray(value) ? value[0] : value;
+          return `${encodeURIComponent(key)}=${encodeURIComponent(String(first ?? ''))}`;
+        })
+        .join('&');
+      req.url = `/api/${routed.replace(/^\/+/, '')}${rest ? `?${rest}` : ''}`;
+    }
+    next();
+  });
+
   // Behind the Vercel proxy, trust the first X-Forwarded-For hop so
   // req.ip (and express-rate-limit) see the real client address.
   if (process.env.VERCEL) {
