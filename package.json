@@ -7,7 +7,7 @@
   "packageManager": "pnpm@12.9.1",
   "scripts": {
     "dev": "tsx dev.ts",
-    "build": "tsc --noEmit && vite build && esbuild server.ts --bundle --platform=node --format=esm --target=node22 --outfile=api/[...path].js",
+    "build": "tsc --noEmit && vite build",
     "start": "NODE_ENV=production node dev.ts",
     "test": "vitest run",
     "verify": "pnpm run typecheck && pnpm test",

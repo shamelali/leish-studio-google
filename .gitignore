@@ -11,7 +11,6 @@ coverage/
 !.env.example
 .vercel
 __pycache__/
-api/\[\.\.\.path\].js
 __pycache__/
 firebase-applet-config.json
 .firebase/
