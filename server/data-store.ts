@@ -55,8 +55,21 @@ export function getStoreBackend(
   const isProduction = environment === 'production' || process.env.VERCEL === '1';
 
   if (isProduction && backend !== 'firestore') {
+    // Explicit staging/demo escape hatch: serve the seeded JSON catalog
+    // ephemerally instead of refusing to boot. Writes evaporate with the
+    // serverless container, so this must never back real user data — it
+    // exists so staging can be browsed before Firestore credentials land.
+    if (process.env.LEISH_ALLOW_EPHEMERAL_DEMO === '1') {
+      console.warn(
+        '[leish] WARNING: serving the EPHEMERAL seed catalog ' +
+          '(LEISH_ALLOW_EPHEMERAL_DEMO=1). Bookings and edits will evaporate. ' +
+          'Configure STORE_BACKEND=firestore with credentials for real data.',
+      );
+      return 'json';
+    }
     throw new Error(
-      '[leish] Production requires STORE_BACKEND=firestore. The JSON backend is supported only for local development and tests.',
+      '[leish] Production requires STORE_BACKEND=firestore. The JSON backend is supported only for local development and tests. ' +
+        'Set LEISH_ALLOW_EPHEMERAL_DEMO=1 to serve seed demo data instead (staging only, writes evaporate).',
     );
   }
 

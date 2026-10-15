@@ -57,4 +57,15 @@ describe('store backend selection', () => {
     await expect(import('./data-store.ts')).rejects.toThrow(/production requires STORE_BACKEND=firestore/i);
     expect(existsSync(jsonPath)).toBe(false);
   });
+
+  it('serves the seeded ephemeral catalog when the staging hatch is set', async () => {
+    vi.stubEnv('NODE_ENV', 'production');
+    vi.stubEnv('STORE_BACKEND', undefined);
+    vi.stubEnv('LEISH_DB_PATH', jsonPath);
+    vi.stubEnv('LEISH_ALLOW_EPHEMERAL_DEMO', '1');
+
+    const { JsonDataStore, store } = await import('./data-store.ts');
+    expect(store).toBeInstanceOf(JsonDataStore);
+    expect(existsSync(jsonPath)).toBe(true);
+  });
 });
