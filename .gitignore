@@ -11,6 +11,10 @@ coverage/
 !.env.example
 .vercel
 __pycache__/
+# api/handler.js is TRACKED (placeholder) so Vercel registers the route from
+# a fresh clone; `pnpm run build` overwrites it with the esbuild bundle and
+# this rule keeps that build output out of git status.
+api/handler.js
 __pycache__/
 firebase-applet-config.json
 .firebase/

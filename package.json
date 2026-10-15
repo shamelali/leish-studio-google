@@ -7,7 +7,7 @@
   "packageManager": "pnpm@12.9.1",
   "scripts": {
     "dev": "tsx dev.ts",
-    "build": "tsc --noEmit && vite build",
+    "build": "tsc --noEmit && vite build && esbuild server.ts --bundle --platform=node --format=esm --target=node22 --external:bcrypt --outfile=api/handler.js --banner:js=\"import { createRequire } from 'module'; import { fileURLToPath } from 'url'; import { dirname } from 'path'; const require = createRequire(import.meta.url); const __filename = fileURLToPath(import.meta.url); const __dirname = dirname(__filename);\"",
     "start": "NODE_ENV=production node dev.ts",
     "test": "vitest run",
     "verify": "pnpm run typecheck && pnpm test",
