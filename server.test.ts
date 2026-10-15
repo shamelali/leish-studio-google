@@ -1046,3 +1046,73 @@ describe('Google ID-token exchange (POST /api/auth/google)', () => {
     expect(res.body.error).toMatch(/not configured/);
   });
 });
+
+describe('venue travel estimates (live Distance Matrix with sample fallback)', () => {
+  const payload = { salonId: 'salon-1', venue: 'KLCC Convention Centre' };
+
+  it("serves a labelled sample estimate when no server key is configured", async () => {
+    delete process.env.GOOGLE_MAPS_SERVER_KEY;
+    const res = await request(app).post('/api/venue/estimate-travel').send(payload);
+    expect(res.status).toBe(200);
+    expect(res.body.estimateSource).toBe('sample');
+    expect(res.body.distanceKm).toEqual(expect.any(Number));
+    expect(res.body.totalTravelFee).toEqual(expect.any(Number));
+  });
+
+  it('serves a live estimate when the Distance Matrix responds OK', async () => {
+    process.env.GOOGLE_MAPS_SERVER_KEY = 'test-key';
+    const fetchSpy = vi.fn(async () => ({
+      ok: true,
+      json: async () => ({
+        status: 'OK',
+        rows: [{ elements: [{ status: 'OK', distance: { value: 12500 }, duration: { value: 1500 } }] }],
+      }),
+    }));
+    vi.stubGlobal('fetch', fetchSpy);
+    try {
+      const res = await request(app).post('/api/venue/estimate-travel').send(payload);
+      expect(res.status).toBe(200);
+      expect(res.body.estimateSource).toBe('live');
+      expect(res.body.distanceKm).toBe(12.5);
+      expect(res.body.estimatedDriveMinutes).toBe(25);
+    } finally {
+      vi.unstubAllGlobals();
+      delete process.env.GOOGLE_MAPS_SERVER_KEY;
+    }
+  });
+});
+
+describe('booking confirmation email hook', () => {
+  it('attempts a confirmation email when a booking is confirmed', async () => {
+    const created = await request(app).post('/api/bookings').send(validBooking());
+    expect(created.status).toBe(201);
+    process.env.BREVO_API_KEY = 'test-key';
+    const fetchSpy = vi.fn(async () => ({ ok: true }));
+    vi.stubGlobal('fetch', fetchSpy);
+    try {
+      const res = await request(app)
+        .patch(`/api/bookings/${created.body.id}/status`)
+        .set('Authorization', `Bearer ${providerToken}`)
+        .send({ status: 'confirmed' });
+      expect(res.status).toBe(200);
+      expect(fetchSpy).toHaveBeenCalledOnce();
+      const calls = fetchSpy.mock.calls as unknown as Array<[string]>;
+      expect(calls[0][0]).toBe('https://api.brevo.com/v3/smtp/email');
+    } finally {
+      vi.unstubAllGlobals();
+      delete process.env.BREVO_API_KEY;
+    }
+  });
+
+  it('still confirms when email is unconfigured (no key, no send)', async () => {
+    delete process.env.BREVO_API_KEY;
+    const created = await request(app).post('/api/bookings').send(validBooking());
+    expect(created.status).toBe(201);
+    const res = await request(app)
+      .patch(`/api/bookings/${created.body.id}/status`)
+      .set('Authorization', `Bearer ${providerToken}`)
+      .send({ status: 'confirmed' });
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe('confirmed');
+  });
+});
