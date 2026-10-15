@@ -10,6 +10,7 @@
     "build": "tsc --noEmit && vite build && esbuild server.ts --bundle --platform=node --format=esm --target=node22 --outfile=api/[...path].js",
     "start": "NODE_ENV=production node dev.ts",
     "test": "vitest run",
+    "verify": "pnpm run typecheck && pnpm test",
     "emulator:firestore": "npx --yes firebase-tools@13.35.1 emulators:start --only firestore --project leish-local",
     "seed:firestore": "FIRESTORE_EMULATOR_HOST=\"${FIRESTORE_EMULATOR_HOST:-127.0.0.1:8080}\" FIREBASE_PROJECT_ID=leish-local tsx scripts/seed-firestore.ts",
     "test:firestore": "FIRESTORE_EMULATOR_HOST=\"${FIRESTORE_EMULATOR_HOST:-127.0.0.1:8080}\" FIREBASE_PROJECT_ID=leish-local vitest run server/firestore-store.test.ts",
@@ -19,6 +20,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "engines": {
+    "node": "22.x"
+  },
   "dependencies": {
     "@ai-sdk/google": "^4.0.93",
     "@ai-sdk/openai": "^4.0.91",

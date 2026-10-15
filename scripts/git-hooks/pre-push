@@ -1,0 +1,32 @@
+#!/bin/sh
+# Pre-push quality gate (replaces GitHub Actions, which cannot schedule
+# runs on this account). Installed by scripts/install-hooks.sh.
+# Runs the same gates CI used to run: typecheck + full test suite.
+# Optional: runs gitleaks for secret scanning when installed.
+
+set -e
+cd "$(git rev-parse --show-toplevel)"
+
+echo "--- pre-push: typecheck ---"
+if ! pnpm run typecheck; then
+  echo "pre-push blocked: typecheck failed."
+  exit 1
+fi
+
+echo "--- pre-push: tests ---"
+if ! pnpm test; then
+  echo "pre-push blocked: tests failed."
+  exit 1
+fi
+
+if command -v gitleaks >/dev/null 2>&1; then
+  echo "--- pre-push: secret scan (gitleaks) ---"
+  if ! gitleaks protect --staged --verbose; then
+    echo "pre-push blocked: secret scan failed."
+    exit 1
+  fi
+else
+  echo "--- pre-push: gitleaks not installed, skipping secret scan ---"
+fi
+
+echo "pre-push gates passed."
