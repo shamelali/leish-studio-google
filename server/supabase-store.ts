@@ -274,4 +274,13 @@ export class SupabaseStore implements DataStore {
     }
     return record;
   }
+
+  async deleteUser(id: string): Promise<void> {
+    const user = await this.getUserById(id);
+    if (!user) throw new Error('User not found');
+    const { error: claimError } = await this.db.from('user_emails').delete().eq('user_id', id);
+    if (claimError) throw new Error(`Supabase email claim delete failed: ${claimError.message}`);
+    const { error } = await this.db.from('users').delete().eq('id', id);
+    if (error) throw new Error(`Supabase user delete failed: ${error.message}`);
+  }
 }

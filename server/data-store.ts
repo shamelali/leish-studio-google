@@ -33,6 +33,7 @@ export interface DataStore {
   getUserByEmail(email: string): StoredUser | undefined | Promise<StoredUser | undefined>;
   createUser(user: StoredUser): StoredUser | Promise<StoredUser>;
   updateUser(id: string, updates: Partial<StoredUser>): StoredUser | Promise<StoredUser>;
+  deleteUser(id: string): void | Promise<void>;
 }
 
 // On Vercel the root filesystem is read-only; /tmp is the only writable path.
@@ -323,6 +324,13 @@ export class JsonDataStore implements DataStore {
     this.users[idx] = { ...this.users[idx], ...updates };
     this.save();
     return this.users[idx];
+  }
+
+  public deleteUser(id: string): void {
+    const idx = this.users.findIndex(u => u.id === id);
+    if (idx === -1) throw new Error('User not found');
+    this.users.splice(idx, 1);
+    this.save();
   }
 }
 

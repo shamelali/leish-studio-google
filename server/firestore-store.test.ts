@@ -95,4 +95,20 @@ describe.skipIf(!emulatorEnabled)('FirestoreStore emulator integration', () => {
       await db.collection('salons').doc(id).delete();
     }
   });
+
+  it('deletes users and frees their email claim', async () => {
+    const store = new FirestoreStore();
+    const id = `test-deluser-${Date.now()}`;
+    const email = `deluser-${Date.now()}@example.test`;
+    const db = await (store as unknown as { dbPromise: Promise<import('firebase-admin/firestore').Firestore> }).dbPromise;
+    await store.createUser({
+      id, name: 'Delete Me', email, password: 'secret', role: 'client',
+      createdAt: new Date().toISOString(),
+    });
+    await store.deleteUser(id);
+    expect(await store.getUserById(id)).toBeUndefined();
+    expect(await store.getUserByEmail(email)).toBeUndefined();
+    await expect(store.deleteUser(id)).rejects.toThrow('User not found');
+    await db.collection('users').doc(id).delete().catch(() => undefined);
+  });
 });

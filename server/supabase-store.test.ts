@@ -71,4 +71,18 @@ describe.skipIf(!supabaseEnabled)('SupabaseStore live integration', () => {
       await store['db'].from('salons').delete().eq('id', id);
     }
   });
+
+  it('deletes users and frees their email claim', async () => {
+    const store = new SupabaseStore();
+    const id = `test-deluser-${Date.now()}`;
+    const email = `deluser-${Date.now()}@example.test`;
+    await store.createUser({
+      id, name: 'Delete Me', email, password: 'secret', role: 'client',
+      createdAt: new Date().toISOString(),
+    });
+    await store.deleteUser(id);
+    expect(await store.getUserById(id)).toBeUndefined();
+    expect(await store.getUserByEmail(email)).toBeUndefined();
+    await expect(store.deleteUser(id)).rejects.toThrow('User not found');
+  });
 });

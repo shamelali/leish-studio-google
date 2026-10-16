@@ -823,6 +823,43 @@ export function createApp(dependencies: AppDependencies = {}) {
     }
   });
 
+  // API Route: Delete user as admin. Deliberately conservative: no
+  // cascading deletes. Self-deletion, the last administrator, and accounts
+  // with booking history are refused so no orphaned records or lockouts.
+  app.delete('/api/users/:id', authenticateToken, requireAdmin, async (req: any, res) => {
+    try {
+      if (req.params.id === req.user.id) {
+        return res.status(403).json({ error: 'You cannot delete your own account. Ask another administrator.' });
+      }
+      const target = await appStore.getUserById(req.params.id);
+      if (!target) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+      if (target.role === 'admin') {
+        const admins = (await appStore.getUsers()).filter(user => user.role === 'admin');
+        if (admins.length <= 1) {
+          return res.status(403).json({ error: 'Cannot delete the last administrator account.' });
+        }
+      }
+      const email = target.email.trim().toLowerCase();
+      const bookings = await appStore.getBookings();
+      const hasHistory = bookings.some(
+        booking => booking.clientId === target.id ||
+          (booking.clientEmail && booking.clientEmail.trim().toLowerCase() === email),
+      );
+      if (hasHistory) {
+        return res.status(409).json({ error: 'This account has booking history and cannot be deleted.' });
+      }
+      await appStore.deleteUser(req.params.id);
+      res.json({ deleted: req.params.id });
+    } catch (error: any) {
+      if (error?.message === 'User not found') {
+        return res.status(404).json({ error: 'User not found' });
+      }
+      serverError(res, 'User deletion failed');
+    }
+  });
+
   // API Route: Get all salons
   app.get('/api/salons', async (req, res) => {
     try {

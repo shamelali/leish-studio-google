@@ -1230,6 +1230,7 @@ describe('admin users panel (GET+PATCH /api/users)', () => {
   const authed = (token?: string) => ({
     get: (url: string) => request(app).get(url).set('Authorization', `Bearer ${token ?? ''}`),
     patch: (url: string) => request(app).patch(url).set('Authorization', `Bearer ${token ?? ''}`),
+    delete: (url: string) => request(app).delete(url).set('Authorization', `Bearer ${token ?? ''}`),
   });
 
   it('lists every user sanitized as admin', async () => {
@@ -1275,5 +1276,38 @@ describe('admin users panel (GET+PATCH /api/users)', () => {
     const me = await authed(adminToken).get('/api/users');
     const selfId = me.body.find((u: any) => u.email === 'shamel@leish.my').id;
     expect((await authed(adminToken).patch(`/api/users/${selfId}`).send({ role: 'client' })).status).toBe(403);
+  });
+
+  it('deletes disposable accounts but guards self, last admin, and history', async () => {
+    const reg = await request(app).post('/api/auth/register').send({
+      name: 'Disposable', email: `disposable-${Date.now()}@leish.test`, password: 'Sup3rSecret!', role: 'client',
+    });
+    expect(reg.status).toBe(201);
+    const id = reg.body.user.id;
+
+    expect((await authed(providerToken).delete(`/api/users/${id}`)).status).toBe(403);
+    expect((await request(app).delete(`/api/users/${id}`)).status).toBe(401);
+
+    const gone = await authed(adminToken).delete(`/api/users/${id}`);
+    expect(gone.status).toBe(200);
+    expect(gone.body).toEqual({ deleted: id });
+    expect((await authed(adminToken).delete(`/api/users/${id}`)).status).toBe(404);
+
+    const me = await authed(adminToken).get('/api/users');
+    const selfId = me.body.find((u: any) => u.email === 'shamel@leish.my').id;
+    expect((await authed(adminToken).delete(`/api/users/${selfId}`)).status).toBe(403);
+  });
+
+  it('refuses to delete the last administrator and accounts with bookings', async () => {
+    const me = await authed(adminToken).get('/api/users');
+    const selfId = me.body.find((u: any) => u.email === 'shamel@leish.my').id;
+    expect((await authed(adminToken).delete(`/api/users/${selfId}`)).status).toBe(403);
+
+    const reg = await request(app).post('/api/auth/register').send({
+      name: 'Booked Once', email: `booked-${Date.now()}@leish.test`, password: 'Sup3rSecret!', role: 'client',
+    });
+    const made = await request(app).post('/api/bookings').send({ ...validBooking(), clientEmail: reg.body.user.email });
+    expect(made.status).toBe(201);
+    expect((await authed(adminToken).delete(`/api/users/${reg.body.user.id}`)).status).toBe(409);
   });
 });

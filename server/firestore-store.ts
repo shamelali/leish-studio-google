@@ -239,4 +239,16 @@ export class FirestoreStore implements DataStore {
       return record;
     });
   }
+
+  async deleteUser(id: string): Promise<void> {
+    const db = await this.dbPromise;
+    const userRef = db.collection('users').doc(id);
+    await db.runTransaction(async tx => {
+      const snapshot = await tx.get(userRef);
+      if (!snapshot.exists) throw new Error('User not found');
+      const user = snapshot.data() as StoredUser;
+      tx.delete(userRef);
+      tx.delete(db.collection('userEmails').doc(emailKey(normalizeEmail(user.email))));
+    });
+  }
 }

@@ -4,9 +4,9 @@
  */
 import React, { useMemo, useState } from 'react';
 import { motion } from 'motion/react';
-import { ShieldCheck, Search, Save, AlertCircle, CheckCircle2, Users } from 'lucide-react';
+import { ShieldCheck, Search, Save, AlertCircle, CheckCircle2, Users, Trash2 } from 'lucide-react';
 import type { Salon, User } from '../types';
-import { useUsers, useUpdateUser, useSalons } from '../lib/api';
+import { useUsers, useUpdateUser, useDeleteUser, useSalons } from '../lib/api';
 
 interface AdminUsersProps {
   currentUser: User | null;
@@ -34,8 +34,10 @@ export default function AdminUsers({ currentUser, onOpenAuth }: AdminUsersProps)
   const { data: users = [], isLoading, error: loadError } = useUsers(isAdmin);
   const { data: salons = [] } = useSalons();
   const updateUser = useUpdateUser();
+  const deleteUser = useDeleteUser();
   const [query, setQuery] = useState('');
   const [edits, setEdits] = useState<Record<string, RowEdit>>({});
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const [notice, setNotice] = useState<{ kind: 'error' | 'success'; text: string } | null>(null);
 
   const filtered = useMemo(() => {
@@ -96,6 +98,22 @@ export default function AdminUsers({ currentUser, onOpenAuth }: AdminUsersProps)
     }
   };
 
+  const removeRow = async (user: User) => {
+    if (confirmDeleteId !== user.id) {
+      setNotice(null);
+      setConfirmDeleteId(user.id);
+      return;
+    }
+    setConfirmDeleteId(null);
+    setNotice(null);
+    try {
+      await deleteUser.mutateAsync(user.id);
+      setNotice({ kind: 'success', text: `Deleted ${user.email}.` });
+    } catch (err: any) {
+      setNotice({ kind: 'error', text: err.message || `Could not delete ${user.email}.` });
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -142,15 +160,15 @@ export default function AdminUsers({ currentUser, onOpenAuth }: AdminUsersProps)
         <p className="text-sm text-fg-muted">No accounts match.</p>
       ) : (
         <div className="rounded-2xl border border-line overflow-hidden">
-          <div className="hidden sm:grid grid-cols-[1fr_130px_1fr_90px] gap-3 px-4 py-2.5 text-[11px] font-mono uppercase tracking-wider text-fg-dim bg-panel-mid border-b border-line">
-            <span>Account</span><span>Role</span><span>Salon</span><span />
+          <div className="hidden sm:grid grid-cols-[1fr_130px_1fr_90px_44px] gap-3 px-4 py-2.5 text-[11px] font-mono uppercase tracking-wider text-fg-dim bg-panel-mid border-b border-line">
+            <span>Account</span><span>Role</span><span>Salon</span><span /><span />
           </div>
           {filtered.map((user: User) => {
             const edit = edits[user.id] ?? editOf(user);
             const dirty = isDirty(user);
             const saving = updateUser.isPending && dirty;
             return (
-              <div key={user.id} className="grid sm:grid-cols-[1fr_130px_1fr_90px] gap-3 items-center px-4 py-3 border-b border-line last:border-0 bg-recessed">
+              <div key={user.id} className="grid sm:grid-cols-[1fr_130px_1fr_90px_44px] gap-3 items-center px-4 py-3 border-b border-line last:border-0 bg-recessed">
                 <div className="min-w-0">
                   <p className="text-sm font-medium text-fg truncate">{user.name}</p>
                   <p className="text-xs font-mono text-fg-muted truncate">{user.email}</p>
@@ -186,6 +204,28 @@ export default function AdminUsers({ currentUser, onOpenAuth }: AdminUsersProps)
                 >
                   <Save className="h-3.5 w-3.5" />
                   <span>{saving ? 'Saving…' : 'Save'}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => removeRow(user)}
+                  disabled={deleteUser.isPending || user.id === currentUser.id}
+                  title={
+                    user.id === currentUser.id
+                      ? 'You cannot delete your own account'
+                      : confirmDeleteId === user.id
+                        ? `Click again to permanently delete ${user.email}`
+                        : `Delete ${user.email}`
+                  }
+                  aria-label={
+                    confirmDeleteId === user.id ? `Confirm deletion of ${user.email}` : `Delete ${user.email}`
+                  }
+                  className={`flex items-center justify-center rounded-lg border px-2 py-2 transition-colors disabled:opacity-40 ${
+                    confirmDeleteId === user.id
+                      ? 'border-danger-border/50 bg-danger-surface/40 text-danger hover:bg-danger-surface/60'
+                      : 'border-line text-fg-muted hover:bg-surface hover:text-danger'
+                  }`}
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
                 </button>
               </div>
             );

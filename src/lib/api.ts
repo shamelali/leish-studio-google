@@ -76,6 +76,7 @@ export const usersApi = {
   list: () => apiClient.get('/users'),
   update: (id: string, data: { name?: string; role?: string; salonId?: string | null; phone?: string; bio?: string }) =>
     apiClient.patch(`/users/${id}`, data),
+  remove: (id: string) => apiClient.delete(`/users/${id}`),
 };
 
 // Reviews API
@@ -122,6 +123,14 @@ export const useUpdateUser = () => {
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: Parameters<typeof usersApi.update>[1] }) =>
       usersApi.update(id, data),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['users'] }),
+  });
+};
+
+export const useDeleteUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => usersApi.remove(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['users'] }),
   });
 };
