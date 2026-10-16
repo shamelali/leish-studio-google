@@ -80,4 +80,19 @@ describe('store backend selection', () => {
     expect(store).toBeInstanceOf(JsonDataStore);
     expect(existsSync(jsonPath)).toBe(true);
   });
+
+  it('seeds the administrator bootstrap account and nothing else', async () => {
+    vi.stubEnv('STORE_BACKEND', undefined);
+    vi.stubEnv('LEISH_DB_PATH', jsonPath);
+
+    const { store } = await import('./data-store.ts');
+    const users = await store.getUsers();
+    expect(users.map(user => user.email)).toEqual(['shamel@leish.my']);
+    expect(users[0].role).toBe('admin');
+    expect(users[0].password).toMatch(/^\$2[aby]\$\d{2}\$/);
+    expect(await store.getUserByEmail('SHAMEL@leish.my')).toMatchObject({ id: 'user-admin-1' });
+    expect(await store.getSalons()).toEqual([]);
+    expect(await store.getBookings()).toEqual([]);
+    expect(await store.getSalonReviews('salon-1')).toEqual([]);
+  });
 });

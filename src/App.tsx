@@ -65,7 +65,7 @@ export default function App() {
         if (u.email) return u.email;
       }
     } catch {}
-    return 'client';
+    return '';
   });
 
   // Hero Section Image Gallery curation

@@ -124,22 +124,6 @@ export default function AuthModal({
     }
   };
 
-  const handleQuickDemo = async (demoEmail: string, demoPass: string) => {
-    loginForm.setValue('email', demoEmail);
-    loginForm.setValue('password', demoPass);
-    setErrorMessage(null);
-    try {
-      const response = await authApi.login({ email: demoEmail, password: demoPass });
-      setSuccessMessage(`Logged in as ${response.user.name}`);
-      setTimeout(() => {
-        onAuthSuccess(response.user, response.token);
-        onClose();
-      }, 700);
-    } catch (err: any) {
-      setErrorMessage(err.message);
-    }
-  };
-
   const handleGoogleSignIn = async () => {
     setErrorMessage(null);
     setSuccessMessage(null);
@@ -303,11 +287,10 @@ export default function AuthModal({
             </div>
 
             <div>
-              <div className="flex items-center justify-between mb-1.5">
+              <div className="mb-1.5">
                 <label className="block text-xs font-mono uppercase tracking-wider text-fg-muted">
                   Password
                 </label>
-                <span className="text-[11px] text-fg-muted">Demo Pass: password123</span>
               </div>
               <div className="relative">
                 <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-fg-dim" />
@@ -481,26 +464,11 @@ export default function AuthModal({
 
         <div className="mt-6 pt-5 border-t border-line">
           <p className="text-[11px] font-mono uppercase tracking-wider text-center text-fg-dim mb-3">
-            Instant Demo Access
+            Demo Accounts
           </p>
-          <div className="grid grid-cols-2 gap-2">
-            <button
-              type="button"
-              onClick={() => handleQuickDemo('client', 'password123')}
-              className="flex items-center justify-center space-x-1.5 p-2 rounded-lg border border-line bg-inset text-xs text-fg-muted hover:bg-surface hover:border-accent-soft/50 hover:text-fg transition-all"
-            >
-              <Sparkles className="h-3 w-3 text-fg" />
-              <span className="truncate">Client</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => handleQuickDemo('studio', 'password123')}
-              className="flex items-center justify-center space-x-1.5 p-2 rounded-lg border border-line bg-inset text-xs text-fg-muted hover:bg-surface hover:border-accent-soft/50 hover:text-fg transition-all"
-            >
-              <Building2 className="h-3 w-3 text-accent-text" />
-              <span className="truncate">Studio/MUA</span>
-            </button>
-          </div>
+          <p className="text-xs text-center text-fg-muted">
+            Demo sign-in is disabled in this build. Create an account above to explore the marketplace.
+          </p>
         </div>
 
         <div className="mt-4 flex items-center justify-center space-x-1.5 text-[11px] text-fg-dim">

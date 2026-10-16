@@ -18,10 +18,16 @@ delete process.env.LEISH_DISABLE_RATE_LIMIT;
 fs.rmSync(TEST_DB, { force: true });
 
 let app: any;
+let probePassword = 'password123';
 
 beforeAll(async () => {
   const mod = await import('./server.ts');
   app = mod.default;
+  // The product ships without seed accounts; register a probe account.
+  const reg = await request(app).post('/api/auth/register').send({
+    name: 'Rate Probe', email: 'probe@leish.test', password: probePassword, role: 'client',
+  });
+  expect(reg.status).toBe(201);
 });
 
 afterAll(() => {
@@ -41,7 +47,7 @@ describe('rate-limit buckets (TR-8)', () => {
     // …while a login still succeeds: the auth bucket has its own budget.
     const login = await request(app)
       .post('/api/auth/login')
-      .send({ email: 'director@atelierleish.com', password: 'password123' });
+      .send({ email: 'probe@leish.test', password: probePassword });
     expect(login.status).toBe(200);
   });
 
@@ -57,7 +63,7 @@ describe('rate-limit buckets (TR-8)', () => {
     // …but login still works (it is skipped by the read bucket).
     const login = await request(app)
       .post('/api/auth/login')
-      .send({ email: 'director@atelierleish.com', password: 'password123' });
+      .send({ email: 'probe@leish.test', password: probePassword });
     expect(login.status).toBe(200);
   });
 
@@ -69,7 +75,7 @@ describe('rate-limit buckets (TR-8)', () => {
     for (let i = 0; i < 21; i++) {
       last = await request(app)
         .post('/api/auth/login')
-        .send({ email: 'director@atelierleish.com', password: 'definitely-wrong' });
+        .send({ email: 'probe@leish.test', password: 'definitely-wrong' });
     }
     expect(last.status).toBe(429);
     expect(String(last.body.error)).toMatch(/attempts|requests/i);

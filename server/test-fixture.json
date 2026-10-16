@@ -1,0 +1,143 @@
+{
+  "salons": [
+    {
+      "id": "salon-1",
+      "name": "Maison Leish Haute Makeup Atelier",
+      "tagline": "Haute couture bridal, red carpet & VIP gala makeup artistry",
+      "description": "Maison Leish is our flagship luxury makeup studio, renowned for bespoke bridal looks, red-carpet complexion sculpting, and camera-ready luxury artistry. Founded on Parisian couture aesthetics, our master MUAs tailor every stroke, contour, and highlight to your unique bone structure and skin undertone.",
+      "rating": 4.95,
+      "reviewCount": 148,
+      "location": "Bukit Bintang, Kuala Lumpur",
+      "address": "404 Jalan Bukit Bintang, Kuala Lumpur",
+      "image": "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&q=80&w=1200",
+      "gallery": [
+        "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&q=80&w=600",
+        "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&q=80&w=600",
+        "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&q=80&w=600"
+      ],
+      "category": "bridal",
+      "featured": true,
+      "type": "studio",
+      "workingHours": {
+        "Monday": "09:00 AM - 07:00 PM",
+        "Tuesday": "09:00 AM - 08:00 PM",
+        "Wednesday": "09:00 AM - 08:00 PM",
+        "Thursday": "09:00 AM - 09:00 PM",
+        "Friday": "09:00 AM - 09:00 PM",
+        "Saturday": "08:30 AM - 07:00 PM",
+        "Sunday": "10:00 AM - 04:00 PM"
+      },
+      "services": [
+        {
+          "id": "serv-1-1",
+          "name": "Royal Bridal Glam & Touch-Up Kit",
+          "price": 320,
+          "duration": 120,
+          "description": "Includes luxury skincare prep, custom waterproof airbrush base, 3D mink/silk lashes, lip sculpting, and a custom VIP bridal touch-up kit.",
+          "category": "bridal"
+        },
+        {
+          "id": "serv-1-2",
+          "name": "Red Carpet Gala Contour & Radiance",
+          "price": 195,
+          "duration": 75,
+          "description": "High-definition sculpting, luminous glass skin finish, bespoke eye design, and 18-hour transfer-resistant setting.",
+          "category": "editorial"
+        },
+        {
+          "id": "serv-1-3",
+          "name": "Bridal Glam Trial & Artistry Consultation",
+          "price": 160,
+          "duration": 90,
+          "description": "Comprehensive bridal trial testing lighting variations, skin compatibility, and veil/jewelry color harmony.",
+          "category": "bridal"
+        }
+      ],
+      "staff": [
+        {
+          "id": "staff-1-1",
+          "name": "Jean-Marc Laurent",
+          "role": "Master Celebrity Makeup Artist",
+          "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150",
+          "rating": 4.95
+        },
+        {
+          "id": "staff-1-2",
+          "name": "Camille Dubois",
+          "role": "Senior Bridal Artistry Director",
+          "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150",
+          "rating": 4.92
+        }
+      ]
+    },
+    {
+      "id": "salon-2",
+      "name": "L\u2019\u00c9clat Makeup & Airbrush Lab",
+      "tagline": "High-definition 4K airbrushing, editorial & runway perfection",
+      "description": "L\u2019\u00c9clat is an avant-garde makeup atelier specializing in precision airbrush technology and high-fashion editorial styling. We create seamless, poreless skin finishes that look effortless in daylight and flawless under high-intensity 4K cameras.",
+      "rating": 4.88,
+      "reviewCount": 112,
+      "location": "Bangsar, Kuala Lumpur",
+      "address": "88 Jalan Bangsar, Kuala Lumpur",
+      "image": "https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?auto=format&fit=crop&q=80&w=1200",
+      "gallery": [
+        "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&q=80&w=600",
+        "https://images.unsplash.com/photo-1503236823255-94609f598e71?auto=format&fit=crop&q=80&w=600"
+      ],
+      "category": "editorial",
+      "featured": true,
+      "type": "studio",
+      "workingHours": {
+        "Monday": "10:00 AM - 07:00 PM",
+        "Tuesday": "10:00 AM - 07:00 PM",
+        "Wednesday": "10:00 AM - 08:00 PM",
+        "Thursday": "10:00 AM - 08:00 PM",
+        "Friday": "09:00 AM - 08:00 PM",
+        "Saturday": "09:00 AM - 07:00 PM",
+        "Sunday": "11:00 AM - 05:00 PM"
+      },
+      "services": [
+        {
+          "id": "serv-2-1",
+          "name": "4K Ultra-HD Airbrush Artistry",
+          "price": 210,
+          "duration": 75,
+          "description": "Micro-fine airbrushed foundation with custom pigment matching, sweat-resistant silicone veil, and sculpted cheekbones.",
+          "category": "airbrush"
+        },
+        {
+          "id": "serv-2-2",
+          "name": "High-Fashion Editorial & Graphic Wing",
+          "price": 180,
+          "duration": 70,
+          "description": "Bold runway color gradients, chromatic pigments, precision winged liner, and sculpted brows.",
+          "category": "editorial"
+        },
+        {
+          "id": "serv-2-3",
+          "name": "Editorial Photoshoot Day-Rate Package",
+          "price": 450,
+          "duration": 240,
+          "description": "On-set makeup artistry with 3 full look changes and continuous camera touch-ups for studio photography.",
+          "category": "editorial"
+        }
+      ],
+      "staff": [
+        {
+          "id": "staff-2-1",
+          "name": "Elena Rose",
+          "role": "Principal Runway & Editorial MUA",
+          "avatar": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150",
+          "rating": 4.9
+        },
+        {
+          "id": "staff-2-2",
+          "name": "Mayumi Lin",
+          "role": "Creative Color & FX Specialist",
+          "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=150",
+          "rating": 4.85
+        }
+      ]
+    }
+  ]
+}

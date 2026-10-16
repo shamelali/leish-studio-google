@@ -33,6 +33,22 @@ let providerToken = '';
 let bookingId = '';
 
 beforeAll(async () => {
+  // The product ships with an empty catalog (no seed data). Tests build
+  // their own isolated fixture: two Malaysian ateliers plus one provider
+  // per salon and one client, written before the server module loads.
+  const fixtureSalons = JSON.parse(fs.readFileSync('server/test-fixture.json', 'utf-8')).salons;
+  const hashPassword = (plain: string) => bcrypt.hashSync(plain, 10);
+  fs.writeFileSync(TEST_DB, JSON.stringify({
+    salons: fixtureSalons,
+    bookings: [],
+    reviews: [],
+    users: [
+      { id: 'user-provider-1', name: 'Aina Rahman', email: 'aina@leish.test', password: hashPassword('password123'), role: 'provider', salonId: 'salon-1', phone: '+60 12-890 1234', createdAt: '2026-01-10T10:00:00.000Z' },
+      { id: 'user-provider-2', name: 'Siti Ahmad', email: 'siti@leish.test', password: hashPassword('password123'), role: 'provider', salonId: 'salon-2', phone: '+60 12-456 7890', createdAt: '2026-01-12T12:00:00.000Z' },
+      { id: 'user-client-1', name: 'Mei Ling', email: 'mei@leish.test', password: hashPassword('password123'), role: 'client', phone: '+60 12-345 6789', createdAt: '2026-01-15T08:00:00.000Z' },
+    ],
+  }));
+
   const mod = await import('./server.ts');
   app = mod.default;
   stripJsonFences = mod.stripJsonFences;
@@ -41,7 +57,7 @@ beforeAll(async () => {
 
   const login = await request(app)
     .post('/api/auth/login')
-    .send({ email: 'director@atelierleish.com', password: 'password123' });
+    .send({ email: 'aina@leish.test', password: 'password123' });
   expect(login.status).toBe(200);
   providerToken = login.body.token;
   expect(providerToken).toBeTruthy();
@@ -223,7 +239,7 @@ describe('auth round-trip', () => {
   it('rejects a bad password', async () => {
     const res = await request(app)
       .post('/api/auth/login')
-      .send({ email: 'director@atelierleish.com', password: 'wrong-password' });
+      .send({ email: 'aina@leish.test', password: 'wrong-password' });
 
     expect(res.status).toBe(401);
   });
@@ -281,8 +297,8 @@ describe('legacy plaintext password migration', () => {
  * Reads are authenticated: unauthenticated enumeration must 401.
  */
 describe('TR-7 authorization matrix (Phase 1)', () => {
-  let clientToken = '';         // shamelali@gmail.com — client
-  let otherProviderToken = '';  // rosewood@beauty.com  — provider of salon-2
+  let clientToken = '';         // mei@leish.test — client
+  let otherProviderToken = '';  // siti@leish.test  — provider of salon-2
   let nosalonProviderToken = '';
   let clientBookingId = '';     // shamelali @ salon-1 (to cancel)
   let reviewBookingId = '';     // shamelali @ salon-1 (to complete, then review)
@@ -298,8 +314,8 @@ describe('TR-7 authorization matrix (Phase 1)', () => {
   };
 
   beforeAll(async () => {
-    clientToken = await login('shamelali@gmail.com');
-    otherProviderToken = await login('rosewood@beauty.com');
+    clientToken = await login('mei@leish.test');
+    otherProviderToken = await login('siti@leish.test');
 
     const book = (overrides: any) =>
       request(app).post('/api/bookings').send({ ...validBooking(), ...overrides });
@@ -312,11 +328,11 @@ describe('TR-7 authorization matrix (Phase 1)', () => {
     expect(other.status).toBe(201);
     otherSalonBookingId = other.body.id;
 
-    const mine = await book({ clientEmail: 'shamelali@gmail.com', clientName: 'Shamel Ali' });
+    const mine = await book({ clientEmail: 'mei@leish.test', clientName: 'Mei Ling' });
     expect(mine.status).toBe(201);
     clientBookingId = mine.body.id;
 
-    const review = await book({ clientEmail: 'shamelali@gmail.com', clientName: 'Shamel Ali' });
+    const review = await book({ clientEmail: 'mei@leish.test', clientName: 'Mei Ling' });
     expect(review.status).toBe(201);
     reviewBookingId = review.body.id;
   });
@@ -334,7 +350,7 @@ describe('TR-7 authorization matrix (Phase 1)', () => {
       expect(res.status).toBe(200);
       expect(res.body.length).toBeGreaterThan(0);
       for (const b of res.body) {
-        expect(b.clientEmail.toLowerCase()).toBe('shamelali@gmail.com');
+        expect(b.clientEmail.toLowerCase()).toBe('mei@leish.test');
       }
       const ids = res.body.map((b: any) => b.id);
       expect(ids).toContain(clientBookingId);
@@ -628,16 +644,33 @@ describe('TR-7 authorization matrix (Phase 1)', () => {
         .set('Authorization', `Bearer ${clientToken}`)
         .send(reviewBody({ bookingId: reviewBookingId }));
       expect(res.status).toBe(201);
-      expect(res.body.clientName).toBe('Shamel Ali'); // never the spoofed body
+      expect(res.body.clientName).toBe('Mei Ling'); // never the spoofed body
       expect(res.body.rating).toBe(5);
       expect(res.body.reviewerId).toBe('user-client-1');
       expect(res.body.bookingId).toBe(reviewBookingId);
     });
 
-    it('keeps seeded reviews publicly readable', async () => {
-      const res = await request(app).get('/api/reviews/salon-2');
+    it('keeps submitted reviews publicly readable', async () => {
+      const email = `reader-${Date.now()}@leish.test`;
+      const reg = await request(app).post('/api/auth/register').send({
+        name: 'Reader', email, password: 'Sup3rSecret!', role: 'client',
+      });
+      expect(reg.status).toBe(201);
+      const made = await request(app).post('/api/bookings').send({ ...validBooking(), clientEmail: email });
+      expect(made.status).toBe(201);
+      const completed = await request(app)
+        .patch(`/api/bookings/${made.body.id}/status`)
+        .set('Authorization', `Bearer ${providerToken}`)
+        .send({ status: 'completed' });
+      expect(completed.status).toBe(200);
+      const posted = await request(app)
+        .post('/api/reviews')
+        .set('Authorization', `Bearer ${reg.body.token}`)
+        .send(reviewBody({ bookingId: made.body.id }));
+      expect(posted.status).toBe(201);
+      const res = await request(app).get('/api/reviews/salon-1');
       expect(res.status).toBe(200);
-      expect(res.body.some((review: any) => review.id === 'rev-3')).toBe(true);
+      expect(res.body.some((review: any) => review.id === posted.body.id)).toBe(true);
     });
 
     it('allows only one review for the same completed booking and reviewer', async () => {
@@ -654,8 +687,8 @@ describe('TR-7 authorization matrix (Phase 1)', () => {
         .post('/api/bookings')
         .send({
           ...validBooking(),
-          clientEmail: 'director@atelierleish.com',
-          clientName: 'Jean-Marc Laurent',
+          clientEmail: 'aina@leish.test',
+          clientName: 'Aina Rahman',
         });
       expect(booking.status).toBe(201);
 
@@ -832,7 +865,7 @@ describe('booking status privilege boundaries', () => {
 
   beforeAll(async () => {
     const login = await request(app).post('/api/auth/login').send({
-      email: 'shamelali@gmail.com', password: 'password123',
+      email: 'mei@leish.test', password: 'password123',
     });
     expect(login.status).toBe(200);
     clientToken = login.body.token;
@@ -858,12 +891,12 @@ describe('booking status privilege boundaries', () => {
     beforeAll(async () => {
       if (actor === 'client') {
         token = clientToken;
-        email = 'shamelali@gmail.com';
+        email = 'mei@leish.test';
       } else if (actor === 'unlinked provider') {
         token = unlinkedToken;
         email = unlinkedEmail;
       } else {
-        email = 'rosewood@beauty.com';
+        email = 'siti@leish.test';
         const login = await request(app).post('/api/auth/login').send({ email, password: 'password123' });
         expect(login.status).toBe(200);
         token = login.body.token;
@@ -905,7 +938,7 @@ describe('booking status privilege boundaries', () => {
 
   it('preserves the owning provider workflow, including when also the customer', async () => {
     const created = await request(app).post('/api/bookings').send({
-      ...validBooking(), clientEmail: 'director@atelierleish.com',
+      ...validBooking(), clientEmail: 'aina@leish.test',
     });
     expect(created.status).toBe(201);
     for (const status of ['confirmed', 'completed', 'cancelled', 'pending'] as const) {
@@ -993,32 +1026,13 @@ describe('salon partial update validation', () => {
 });
 
 describe('demo username accounts (auth modal Instant Demo Access)', () => {
-  it('signs in the client demo with username + password123', async () => {
+  it('rejects an unknown username with 401 instead of a format error', async () => {
+    // Login accepts non-email identifiers and routes them to lookup.
     const res = await request(app)
       .post('/api/auth/login')
       .send({ email: 'client', password: 'password123' });
-    expect(res.status).toBe(200);
-    expect(res.body.user.email).toBe('client');
-    expect(res.body.user.role).toBe('client');
-    expect(res.body.token).toBeTruthy();
-    expect(res.body.user).not.toHaveProperty('password');
-  });
-
-  it('signs in the studio demo with username + password123', async () => {
-    const res = await request(app)
-      .post('/api/auth/login')
-      .send({ email: 'studio', password: 'password123' });
-    expect(res.status).toBe(200);
-    expect(res.body.user.email).toBe('studio');
-    expect(res.body.user.role).toBe('provider');
-    expect(res.body.token).toBeTruthy();
-  });
-
-  it('still rejects wrong passwords for demo usernames', async () => {
-    const res = await request(app)
-      .post('/api/auth/login')
-      .send({ email: 'client', password: 'wrong-password' });
     expect(res.status).toBe(401);
+    expect(res.body.error).toMatch(/invalid email or password/i);
   });
 
   it('accepts a demo username as the booking contact email', async () => {
@@ -1125,11 +1139,16 @@ describe('Vercel rewrite envelope (GET /api/[...path]?...path=…)', () => {
   });
 
   it('routes multi-segment paths and preserves the remaining query string', async () => {
+    const email = `envelope-${Date.now()}@leish.test`;
+    const reg = await request(app).post('/api/auth/register').send({
+      name: 'Envelope', email, password: 'password123', role: 'client',
+    });
+    expect(reg.status).toBe(201);
     const res = await request(app)
       .post('/api/[...path]')
       .query({ '...path': 'auth/login' })
-      .send({ email: 'client', password: 'password123' });
+      .send({ email, password: 'password123' });
     expect(res.status).toBe(200);
-    expect(res.body.user.email).toBe('client');
+    expect(res.body.user.email).toBe(email);
   });
 });
