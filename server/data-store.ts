@@ -3,6 +3,7 @@ import path from 'path';
 import bcrypt from 'bcrypt';
 import type { Salon, Booking, Review, Service, StaffMember, User } from '../src/types.ts';
 import { FirestoreStore } from './firestore-store.ts';
+import { SupabaseStore } from './supabase-store.ts';
 
 export interface StoredUser extends User {
   password: string;
@@ -50,11 +51,11 @@ const STORE_PATH = process.env.LEISH_DB_PATH
 export function getStoreBackend(
   environment = process.env.NODE_ENV,
   configuredBackend = process.env.STORE_BACKEND,
-): 'json' | 'firestore' {
+): 'json' | 'firestore' | 'supabase' {
   const backend = configuredBackend?.trim();
   const isProduction = environment === 'production' || process.env.VERCEL === '1';
 
-  if (isProduction && backend !== 'firestore') {
+  if (isProduction && backend !== 'firestore' && backend !== 'supabase') {
     // Explicit staging/demo escape hatch: serve the seeded JSON catalog
     // ephemerally instead of refusing to boot. Writes evaporate with the
     // serverless container, so this must never back real user data — it
@@ -68,13 +69,13 @@ export function getStoreBackend(
       return 'json';
     }
     throw new Error(
-      '[leish] Production requires STORE_BACKEND=firestore. The JSON backend is supported only for local development and tests. ' +
+      '[leish] Production requires a durable backend (STORE_BACKEND=firestore or supabase). The JSON backend is supported only for local development and tests. ' +
         'Set LEISH_ALLOW_EPHEMERAL_DEMO=1 to serve seed demo data instead (staging only, writes evaporate).',
     );
   }
 
   const selected = backend || 'json';
-  if (selected !== 'json' && selected !== 'firestore') {
+  if (selected !== 'json' && selected !== 'firestore' && selected !== 'supabase') {
     throw new Error(`Unknown STORE_BACKEND: ${selected}`);
   }
   return selected;
@@ -1046,4 +1047,5 @@ export class JsonDataStore implements DataStore {
 }
 
 const backend = getStoreBackend();
-export const store: DataStore = backend === 'firestore' ? new FirestoreStore() : new JsonDataStore();
+export const store: DataStore =
+  backend === 'firestore' ? new FirestoreStore() : backend === 'supabase' ? new SupabaseStore() : new JsonDataStore();

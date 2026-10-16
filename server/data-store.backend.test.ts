@@ -45,7 +45,7 @@ describe('store backend selection', () => {
     vi.stubEnv('STORE_BACKEND', undefined);
     vi.stubEnv('LEISH_DB_PATH', jsonPath);
 
-    await expect(import('./data-store.ts')).rejects.toThrow(/production requires STORE_BACKEND=firestore/i);
+    await expect(import('./data-store.ts')).rejects.toThrow(/production requires a durable backend/i);
     expect(existsSync(jsonPath)).toBe(false);
   });
 
@@ -54,7 +54,19 @@ describe('store backend selection', () => {
     vi.stubEnv('STORE_BACKEND', 'json');
     vi.stubEnv('LEISH_DB_PATH', jsonPath);
 
-    await expect(import('./data-store.ts')).rejects.toThrow(/production requires STORE_BACKEND=firestore/i);
+    await expect(import('./data-store.ts')).rejects.toThrow(/production requires a durable backend/i);
+    expect(existsSync(jsonPath)).toBe(false);
+  });
+
+  it('selects Supabase without initializing the JSON store', async () => {
+    vi.stubEnv('STORE_BACKEND', 'supabase');
+    vi.stubEnv('LEISH_DB_PATH', jsonPath);
+    vi.stubEnv('SUPABASE_URL', 'https://example.supabase.co');
+    vi.stubEnv('SUPABASE_SERVICE_ROLE_KEY', 'test-service-key');
+
+    const { store } = await import('./data-store.ts');
+    const { SupabaseStore } = await import('./supabase-store.ts');
+    expect(store).toBeInstanceOf(SupabaseStore);
     expect(existsSync(jsonPath)).toBe(false);
   });
 
