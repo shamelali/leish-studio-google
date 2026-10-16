@@ -12,7 +12,8 @@ import SalonDetails from './components/SalonDetails';
 import MUACard from './components/MUACard';
 import LoadingSpinner from './components/LoadingSpinner';
 import { Salon, Service, Booking, User, LookbookItem } from './types';
-import { useSalons } from './lib/api';
+import { useSalons, authApi } from './lib/api';
+import { getSupabaseSessionToken } from './lib/supabase';
 import { useStore } from './lib/store';
 import { findSalonByRoute, pathForRoute, routeFromLocation, type AppRoute } from './lib/routing';
 import { analytics } from './lib/analytics';
@@ -203,6 +204,26 @@ export default function App() {
     }
     analytics.track('auth_completed', { role: user.role });
   };
+
+  // OAuth return pickup (Supabase): after Google consent redirects back to
+  // the site root, exchange the Supabase session for an app session once.
+  const oauthHandled = React.useRef(false);
+  React.useEffect(() => {
+    if (oauthHandled.current || currentUser) return;
+    oauthHandled.current = true;
+    (async () => {
+      try {
+        const supabaseToken = await getSupabaseSessionToken();
+        if (!supabaseToken) return;
+        const session = await authApi.oauth(supabaseToken);
+        handleAuthSuccess(session.user, session.token);
+      } catch {
+        // No usable OAuth session (or exchange failed); stay signed out.
+      }
+    })();
+    // handleAuthSuccess is stable enough for mount-only pickup.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSignOut = () => {
     setCurrentUser(null);

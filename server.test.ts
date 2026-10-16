@@ -1045,18 +1045,19 @@ describe('demo username accounts (auth modal Instant Demo Access)', () => {
   });
 });
 
-describe('Google ID-token exchange (POST /api/auth/google)', () => {
-  it('rejects a missing ID token with 400', async () => {
-    const res = await request(app).post('/api/auth/google').send({});
-    expect(res.status).toBe(400);
+describe('OAuth session exchange (POST /api/auth/oauth)', () => {
+  it('rejects a missing token with 401', async () => {
+    const res = await request(app).post('/api/auth/oauth').send({});
+    expect(res.status).toBe(401);
     expect(res.body.error).toEqual(expect.any(String));
   });
 
-  it('returns 503 when the server has no Firebase credentials', async () => {
-    // Test env sets no FIREBASE_PROJECT_ID / service-account cert.
+  it('returns 503 when Supabase Auth is unconfigured', async () => {
+    // Test env sets no SUPABASE_URL / SUPABASE_ANON_KEY.
     const res = await request(app)
-      .post('/api/auth/google')
-      .send({ idToken: 'dummy-token' });
+      .post('/api/auth/oauth')
+      .set('Authorization', 'Bearer dummy-token')
+      .send({});
     expect(res.status).toBe(503);
     expect(res.body.error).toMatch(/not configured/);
   });

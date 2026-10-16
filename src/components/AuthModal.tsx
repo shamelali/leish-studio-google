@@ -25,7 +25,7 @@ import {
 } from 'lucide-react';
 import { User } from '../types';
 import { authApi } from '../lib/api';
-import { auth as firebaseAuth, googleSignIn } from '../lib/firebase';
+import { supabaseBrowser, signInWithGoogle } from '../lib/supabase';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -127,31 +127,17 @@ export default function AuthModal({
   const handleGoogleSignIn = async () => {
     setErrorMessage(null);
     setSuccessMessage(null);
-    if (!firebaseAuth) {
-      setErrorMessage('Google sign-in is not set up in this environment yet. Use email sign-in or instant demo access below.');
+    if (!supabaseBrowser) {
+      setErrorMessage('Google sign-in is not set up in this environment yet. Use email sign-in instead.');
       return;
     }
     setGoogleBusy(true);
     try {
-      const result = await googleSignIn();
-      if (!result) {
-        setErrorMessage('Google sign-in is not available right now. Please try again.');
-        return;
-      }
-      // Exchange the Firebase ID token for a Leish! session. The OAuth
-      // access token stays client-side for Google Workspace API calls.
-      const idToken = await result.user.getIdToken();
-      const session = await authApi.google(idToken);
-      setSuccessMessage(`Welcome, ${session.user.name}!`);
-      setTimeout(() => {
-        onAuthSuccess(session.user, session.token);
-        onClose();
-      }, 700);
+      // Redirects to Google; on return App exchanges the Supabase session
+      // for an app session via POST /api/auth/oauth.
+      await signInWithGoogle();
     } catch (err: any) {
-      // Dismissing the popup is not an error worth surfacing.
-      if (err?.code === 'auth/popup-closed-by-user' || err?.code === 'auth/cancelled-popup-request') return;
       setErrorMessage(err.message || 'Google sign-in failed. Please try again.');
-    } finally {
       setGoogleBusy(false);
     }
   };

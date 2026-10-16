@@ -11,6 +11,13 @@ import { registerConciergeRoute } from './server/concierge.ts';
 import { bookingSchema, salonCreateSchema, salonUpdateSchema, serviceUpdateSchema, serviceCreateSchema } from './server/validation.ts';
 import { calcDistanceKm } from './server/geo.ts';
 import { sendBookingConfirmation } from './server/email.ts';
+import {
+  isSupabaseAuthConfigured,
+  verifySupabasePassword,
+  verifySupabaseToken,
+  createSupabaseUser,
+  deleteSupabaseUser,
+} from './server/supabase-auth.ts';
 import { logger, withLogging, recordMetric, Metrics } from './server/monitoring.ts';
 
 // Initialize Gemini Client
@@ -233,46 +240,6 @@ export function getJwtSecret(
   }
 
   return secret || 'leish-dev-secret-change-in-production';
-}
-
-/**
- * Firebase Admin Auth for verifying Google ID tokens (POST /api/auth/google).
- * Mirrors the credential pattern in server/firestore-store.ts: explicit
- * service-account cert when FIREBASE_CLIENT_EMAIL/PRIVATE_KEY are set,
- * otherwise Application Default Credentials. Returns null when the server
- * has no Firebase credentials at all (local JSON dev default) so the
- * route can respond 503 instead of failing obscurely. Never throws.
- */
-let cachedAdminAuth: any = null;
-let adminAuthAttempted = false;
-async function getAdminAuth(): Promise<any | null> {
-  if (adminAuthAttempted) return cachedAdminAuth;
-  adminAuthAttempted = true;
-  try {
-    const projectId = process.env.FIREBASE_PROJECT_ID;
-    const hasCert = Boolean(process.env.FIREBASE_CLIENT_EMAIL && process.env.FIREBASE_PRIVATE_KEY);
-    if (!projectId && !hasCert) return null;
-    const [{ applicationDefault, cert, getApps, initializeApp }, { getAuth }] = await Promise.all([
-      import('firebase-admin/app'),
-      import('firebase-admin/auth'),
-    ]);
-    const credential = hasCert
-      ? cert({
-          projectId,
-          clientEmail: process.env.FIREBASE_CLIENT_EMAIL as string,
-          privateKey: (process.env.FIREBASE_PRIVATE_KEY as string).replace(/\\n/g, '\n'),
-        })
-      : applicationDefault();
-    const name = 'leish-auth';
-    const adminApp = getApps().find(existing => existing.name === name) ?? initializeApp({
-      ...(credential ? { credential } : {}),
-      ...(projectId ? { projectId } : {}),
-    }, name);
-    cachedAdminAuth = getAuth(adminApp);
-  } catch {
-    cachedAdminAuth = null;
-  }
-  return cachedAdminAuth;
 }
 
 export function createApp(dependencies: AppDependencies = {}) {
@@ -565,7 +532,42 @@ export function createApp(dependencies: AppDependencies = {}) {
       const defaultAvatar = role === 'provider'
         ? 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200'
         : 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200';
-      
+
+      // Supabase Auth owns credentials when configured: pre-confirmed Auth
+      // user first, then the app profile keyed by the Auth id. The plaintext
+      // password is still stored hashed so the legacy path keeps working.
+      if (isSupabaseAuthConfigured()) {
+        const identity = await createSupabaseUser(normalizedEmail, password, name.trim());
+        if (!identity) {
+          return res.status(500).json({ error: 'Registration failed' });
+        }
+        try {
+          const newUser = await appStore.createUser({
+            id: identity.id,
+            name: name.trim(),
+            email: normalizedEmail,
+            password,
+            role: role === 'provider' ? 'provider' : 'client',
+            phone: phone ? phone.trim() : undefined,
+            bio: bio ? bio.trim() : (role === 'provider' ? 'Boutique beauty specialist at Leish! Aesthetic Marketplace.' : 'Beauty enthusiast exploring curated salon treatments.'),
+            avatar: defaultAvatar,
+            createdAt: new Date().toISOString()
+          });
+          const token = jwt.sign({ userId: newUser.id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+          return res.status(201).json({
+            user: sanitizeUser(newUser),
+            token,
+            message: 'Account successfully registered!'
+          });
+        } catch (error: any) {
+          await deleteSupabaseUser(identity.id);
+          if (error?.message && /already (exists|registered)/i.test(error.message)) {
+            return res.status(400).json({ error: 'An account with this email already exists. Please sign in instead.' });
+          }
+          return res.status(500).json({ error: 'Registration failed' });
+        }
+      }
+
       const newUser = await appStore.createUser({
         id: `user-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
         name: name.trim(),
@@ -600,6 +602,24 @@ export function createApp(dependencies: AppDependencies = {}) {
       }
 
       const { email, password } = parsed.data;
+      // Supabase Auth verifies credentials when configured; sessions stay
+      // app JWTs so the client shape and middleware are unchanged.
+      if (isSupabaseAuthConfigured()) {
+        const normalizedEmail = email.trim().toLowerCase();
+        const identity = await verifySupabasePassword(email, password);
+        const user = identity
+          ? (await appStore.getUserById(identity.id)) ?? (await appStore.getUserByEmail(identity.email.trim().toLowerCase()))
+          : undefined;
+        if (!identity || !user || user.email.trim().toLowerCase() !== normalizedEmail) {
+          return res.status(401).json({ error: 'Invalid email or password.' });
+        }
+        const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+        return res.json({
+          user: sanitizeUser(user),
+          token,
+          message: `Welcome back, ${user.name}!`
+        });
+      }
       const normalizedEmail = email.trim().toLowerCase();
       const user = await appStore.getUserByEmail(normalizedEmail);
       if (!user) {
@@ -623,46 +643,39 @@ export function createApp(dependencies: AppDependencies = {}) {
     }
   });
 
-  // API Route: Google sign-in (Firebase ID token exchange).
-  // The browser signs in via Firebase (src/lib/firebase.ts googlesignIn) and
-  // POSTs the Firebase ID token here. The server verifies it with the Admin
-  // SDK, finds or creates the matching account, and returns the same
-  // { user, token } session shape as password login.
-  app.post('/api/auth/google', async (req, res) => {
+  // API Route: OAuth session exchange (Supabase Auth: Google + any provider).
+  // The browser signs in via Supabase (lib/supabase browser client) and
+  // POSTs its Supabase access token as the Bearer credential. The server
+  // verifies it, finds or creates the app profile, and mints the standard
+  // app JWT, so sessions stay uniform across password and OAuth sign-ins.
+  app.post('/api/auth/oauth', async (req, res) => {
     try {
-      const idToken = typeof req.body?.idToken === 'string' ? req.body.idToken : '';
-      if (!idToken) {
-        return res.status(400).json({ error: 'A Google ID token is required.' });
+      const authHeader = req.headers.authorization;
+      const supabaseToken = authHeader && authHeader.startsWith('Bearer ') ? authHeader.replace('Bearer ', '').trim() : '';
+      if (!supabaseToken) {
+        return res.status(401).json({ error: 'A sign-in token is required.' });
       }
-      const adminAuth = await getAdminAuth();
-      if (!adminAuth) {
-        return res.status(503).json({ error: 'Google sign-in is not configured on the server.' });
+      if (!isSupabaseAuthConfigured()) {
+        return res.status(503).json({ error: 'OAuth sign-in is not configured on the server.' });
       }
-      let decoded: { email?: unknown; name?: unknown; picture?: unknown; uid?: unknown };
-      try {
-        decoded = await adminAuth.verifyIdToken(idToken);
-      } catch {
-        return res.status(401).json({ error: 'Invalid Google sign-in. Please try again.' });
+      const identity = await verifySupabaseToken(supabaseToken);
+      if (!identity?.email) {
+        return res.status(401).json({ error: 'Invalid sign-in. Please try again.' });
       }
-      if (typeof decoded.email !== 'string' || !decoded.email) {
-        return res.status(401).json({ error: 'Your Google account has no verified email address.' });
-      }
-      const normalizedEmail = decoded.email.trim().toLowerCase();
-      let user = await appStore.getUserByEmail(normalizedEmail);
+      const normalizedEmail = identity.email.trim().toLowerCase();
+      let user = (await appStore.getUserById(identity.id)) ?? (await appStore.getUserByEmail(normalizedEmail));
       if (!user) {
-        const displayName = typeof decoded.name === 'string' && decoded.name.trim()
-          ? decoded.name.trim().slice(0, 100)
-          : normalizedEmail.split('@')[0];
+        const displayName = identity.name?.trim().slice(0, 100) || normalizedEmail.split('@')[0];
         user = await appStore.createUser({
-          id: `user-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+          id: identity.id,
           name: displayName,
           email: normalizedEmail,
-          // Random unguessable secret: Google-linked accounts authenticate
-          // via ID-token exchange, never via password login.
-          password: `google-oauth-${Date.now()}-${Math.random().toString(36).slice(2, 18)}`,
+          // Random unguessable secret: OAuth-linked accounts authenticate
+          // via token exchange, never via password login.
+          password: `oauth-${Date.now()}-${Math.random().toString(36).slice(2, 18)}`,
           role: 'client',
-          bio: 'Signed up with Google.',
-          avatar: typeof decoded.picture === 'string' ? decoded.picture : undefined,
+          bio: 'Signed up with OAuth.',
+          avatar: identity.avatar,
           createdAt: new Date().toISOString(),
         });
       }
@@ -673,7 +686,7 @@ export function createApp(dependencies: AppDependencies = {}) {
         message: `Welcome${user.name ? `, ${user.name}` : ''}!`,
       });
     } catch (error: any) {
-      serverError(res, 'Google sign-in failed');
+      serverError(res, 'OAuth sign-in failed');
     }
   });
 
