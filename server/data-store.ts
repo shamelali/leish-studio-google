@@ -90,7 +90,7 @@ const INITIAL_USERS: StoredUser[] = [
     email: 'shamelali@gmail.com',
     password: hashPassword('password123'),
     role: 'client',
-    phone: '+1 (555) 234-5678',
+    phone: '+60 12-345 6789',
     avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
     bio: 'Beauty enthusiast booking bridal glam, red carpet artistry, and makeup masterclasses.',
     createdAt: '2026-01-15T08:00:00.000Z'
@@ -102,7 +102,7 @@ const INITIAL_USERS: StoredUser[] = [
     password: hashPassword('password123'),
     role: 'provider',
     salonId: 'salon-1',
-    phone: '+1 (555) 890-1234',
+    phone: '+60 12-890 1234',
     avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200',
     bio: 'Celebrity Makeup Artist & Creative Director at Maison Leish Haute Makeup Atelier.',
     createdAt: '2026-01-10T10:00:00.000Z'
@@ -114,7 +114,7 @@ const INITIAL_USERS: StoredUser[] = [
     password: hashPassword('password123'),
     role: 'provider',
     salonId: 'salon-2',
-    phone: '+1 (555) 456-7890',
+    phone: '+60 12-456 7890',
     avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=200',
     bio: 'Principal Runway MUA & Airbrush Specialist at L’Éclat Makeup Lab.',
     createdAt: '2026-01-12T12:00:00.000Z'
@@ -834,7 +834,7 @@ const INITIAL_BOOKINGS: Booking[] = [
     time: '10:00 AM',
     clientName: 'Shamel Ali',
     clientEmail: 'shamelali@gmail.com',
-    clientPhone: '555-0199',
+    clientPhone: '+60 12-019 9000',
     notes: 'Excited for signature bridal glam with warm neutral tones!',
     status: 'confirmed',
     createdAt: '2026-06-28T10:00:00-07:00'
