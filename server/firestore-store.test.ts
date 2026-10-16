@@ -76,4 +76,23 @@ describe.skipIf(!emulatorEnabled)('FirestoreStore emulator integration', () => {
     expect(result?.reviewCount).toBe(2);
     expect(result?.rating).toBe(4);
   });
+
+  it('creates salons and rejects duplicate ids', async () => {
+    const store = new FirestoreStore();
+    const id = `test-salon-${Date.now()}`;
+    const salon = {
+      id, name: 'Adapter Atelier', tagline: '', description: '', rating: 0,
+      reviewCount: 0, location: 'KL', address: 'Test Street', image: '',
+      gallery: [], category: 'bridal', services: [], staff: [],
+      featured: false, workingHours: {},
+    };
+    const db = await (store as unknown as { dbPromise: Promise<import('firebase-admin/firestore').Firestore> }).dbPromise;
+    try {
+      await expect(store.createSalon(salon)).resolves.toMatchObject({ id });
+      expect(await store.getSalon(id)).toMatchObject({ id, name: 'Adapter Atelier' });
+      await expect(store.createSalon(salon)).rejects.toThrow('Salon already exists');
+    } finally {
+      await db.collection('salons').doc(id).delete();
+    }
+  });
 });

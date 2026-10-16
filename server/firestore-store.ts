@@ -72,6 +72,15 @@ export class FirestoreStore implements DataStore {
     return doc.exists ? doc.data() as Salon : undefined;
   }
 
+  async createSalon(salon: Salon): Promise<Salon> {
+    const db = await this.dbPromise;
+    const ref = db.collection('salons').doc(salon.id);
+    const existing = await ref.get();
+    if (existing.exists) throw new Error('Salon already exists');
+    await ref.create(salon);
+    return salon;
+  }
+
   async updateSalon(id: string, updates: Partial<Salon>): Promise<Salon> {
     const db = await this.dbPromise;
     const ref = db.collection('salons').doc(id);

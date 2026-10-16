@@ -20,6 +20,7 @@ export interface DataStore {
   save(): void | Promise<void>;
   getSalons(): Salon[] | Promise<Salon[]>;
   getSalon(id: string): Salon | undefined | Promise<Salon | undefined>;
+  createSalon(salon: Salon): Salon | Promise<Salon>;
   updateSalon(id: string, updates: Partial<Salon>): Salon | Promise<Salon>;
   getBookings(): Booking[] | Promise<Booking[]>;
   getBooking(id: string): Booking | undefined | Promise<Booking | undefined>;
@@ -228,6 +229,13 @@ export class JsonDataStore implements DataStore {
 
   public getSalon(id: string): Salon | undefined {
     return this.salons.find(s => s.id === id);
+  }
+
+  public createSalon(salon: Salon): Salon {
+    if (this.salons.some(s => s.id === salon.id)) throw new Error('Salon already exists');
+    this.salons.unshift(salon);
+    this.save();
+    return salon;
   }
 
   public updateSalon(id: string, updates: Partial<Salon>): Salon {

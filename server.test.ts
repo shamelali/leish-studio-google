@@ -46,6 +46,7 @@ beforeAll(async () => {
       { id: 'user-provider-1', name: 'Aina Rahman', email: 'aina@leish.test', password: hashPassword('password123'), role: 'provider', salonId: 'salon-1', phone: '+60 12-890 1234', createdAt: '2026-01-10T10:00:00.000Z' },
       { id: 'user-provider-2', name: 'Siti Ahmad', email: 'siti@leish.test', password: hashPassword('password123'), role: 'provider', salonId: 'salon-2', phone: '+60 12-456 7890', createdAt: '2026-01-12T12:00:00.000Z' },
       { id: 'user-client-1', name: 'Mei Ling', email: 'mei@leish.test', password: hashPassword('password123'), role: 'client', phone: '+60 12-345 6789', createdAt: '2026-01-15T08:00:00.000Z' },
+      { id: 'user-admin-1', name: 'Shamel', email: 'shamel@leish.my', password: hashPassword('lindan95'), role: 'admin', phone: '+60 12-000 0000', createdAt: '2026-10-17T00:00:00.000Z' },
     ],
   }));
 
@@ -1150,5 +1151,60 @@ describe('Vercel rewrite envelope (GET /api/[...path]?...path=…)', () => {
       .send({ email, password: 'password123' });
     expect(res.status).toBe(200);
     expect(res.body.user.email).toBe(email);
+  });
+});
+
+describe('admin salon creation (POST /api/salons)', () => {
+  const listing = () => ({
+    name: 'Seri Kembangan Glow Atelier',
+    category: 'bridal',
+    location: 'Seri Kembangan',
+    address: '21 Jalan SK 6/1, Seri Kembangan, Selangor',
+  });
+  let adminToken = '';
+  let providerToken = '';
+
+  beforeAll(async () => {
+    const admin = await request(app)
+      .post('/api/auth/login')
+      .send({ email: 'shamel@leish.my', password: 'lindan95' });
+    expect(admin.status).toBe(200);
+    adminToken = admin.body.token;
+    const provider = await request(app)
+      .post('/api/auth/login')
+      .send({ email: 'aina@leish.test', password: 'password123' });
+    expect(provider.status).toBe(200);
+    providerToken = provider.body.token;
+  });
+
+  it('creates a listing with server defaults as admin', async () => {
+    const res = await request(app)
+      .post('/api/salons')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send(listing());
+    expect(res.status).toBe(201);
+    expect(res.body.id).toMatch(/^salon-/);
+    expect(res.body).toMatchObject({ name: 'Seri Kembangan Glow Atelier', rating: 0, reviewCount: 0, featured: false });
+    expect(res.body.services).toEqual([]);
+    expect(res.body.staff).toEqual([]);
+    expect(res.body).not.toHaveProperty('password');
+
+    const fetched = await request(app).get(`/api/salons/${res.body.id}`);
+    expect(fetched.status).toBe(200);
+    expect(fetched.body.name).toBe('Seri Kembangan Glow Atelier');
+  });
+
+  it('403s providers and 401s anonymous callers', async () => {
+    expect((await request(app).post('/api/salons').set('Authorization', `Bearer ${providerToken}`).send(listing())).status).toBe(403);
+    expect((await request(app).post('/api/salons').send(listing())).status).toBe(401);
+  });
+
+  it('400s on missing identity fields', async () => {
+    const res = await request(app)
+      .post('/api/salons')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({ category: 'bridal' });
+    expect(res.status).toBe(400);
+    expect(res.body.error).toEqual(expect.any(String));
   });
 });

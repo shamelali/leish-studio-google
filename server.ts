@@ -8,7 +8,7 @@ import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import { z } from 'zod';
 import { registerConciergeRoute } from './server/concierge.ts';
-import { bookingSchema, salonUpdateSchema, serviceUpdateSchema, serviceCreateSchema } from './server/validation.ts';
+import { bookingSchema, salonCreateSchema, salonUpdateSchema, serviceUpdateSchema, serviceCreateSchema } from './server/validation.ts';
 import { calcDistanceKm } from './server/geo.ts';
 import { sendBookingConfirmation } from './server/email.ts';
 import { logger, withLogging, recordMetric, Metrics } from './server/monitoring.ts';
@@ -470,6 +470,14 @@ export function createApp(dependencies: AppDependencies = {}) {
     };
   };
 
+  /** Requires authenticateToken first. 403 unless the caller is an admin. */
+  const requireAdmin = (req: any, res: any, next: any) => {
+    if (!req.user || req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Administrator access required.' });
+    }
+    next();
+  };
+
   /** Requires authenticateToken first. 403 unless the caller manages :id. */
   const requireSalonOwner = (req: any, res: any, next: any) => {
     if (!canUpdateSalon(req.user, req.params.id)) {
@@ -706,6 +714,48 @@ export function createApp(dependencies: AppDependencies = {}) {
       });
     } catch (error: any) {
       res.status(500).json({ error: 'Profile update failed' });
+    }
+  });
+
+  // API Route: Create salon (admin-only; providers get listings linked by an administrator)
+  app.post('/api/salons', authenticateToken, requireAdmin, async (req: any, res) => {
+    try {
+      const parsed = salonCreateSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ error: parsed.error.issues[0].message });
+      }
+      const details = parsed.data;
+      const salon: Salon = {
+        id: `salon-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+        name: details.name,
+        category: details.category,
+        location: details.location,
+        address: details.address,
+        tagline: details.tagline ?? '',
+        description: details.description ?? '',
+        rating: 0,
+        reviewCount: 0,
+        image: details.image ?? '',
+        gallery: details.gallery ?? [],
+        services: [],
+        staff: [],
+        featured: false,
+        workingHours: details.workingHours ?? {},
+        ...(details.type !== undefined ? { type: details.type } : {}),
+        ...(details.artistTitle !== undefined ? { artistTitle: details.artistTitle } : {}),
+        ...(details.yearsExperience !== undefined ? { yearsExperience: details.yearsExperience } : {}),
+        ...(details.kitBrands !== undefined ? { kitBrands: details.kitBrands } : {}),
+        ...(details.travelRadius !== undefined ? { travelRadius: details.travelRadius } : {}),
+        ...(details.instagramHandle !== undefined ? { instagramHandle: details.instagramHandle } : {}),
+        ...(details.startingPrice !== undefined ? { startingPrice: details.startingPrice } : {}),
+      };
+      const created = await appStore.createSalon(salon);
+      res.status(201).json(created);
+    } catch (error: any) {
+      if (error?.message === 'Salon already exists') {
+        return res.status(409).json({ error: 'A listing with this id already exists.' });
+      }
+      serverError(res, 'Salon creation failed');
     }
   });
 

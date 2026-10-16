@@ -53,4 +53,22 @@ describe.skipIf(!supabaseEnabled)('SupabaseStore live integration', () => {
       await store['db'].from('users').delete().eq('id', id);
     }
   });
+
+  it('creates salons and rejects duplicate ids', async () => {
+    const store = new SupabaseStore();
+    const id = `test-salon-${Date.now()}`;
+    const salon = {
+      id, name: 'Adapter Atelier', tagline: '', description: '', rating: 0,
+      reviewCount: 0, location: 'KL', address: 'Test Street', image: '',
+      gallery: [], category: 'bridal', services: [], staff: [],
+      featured: false, workingHours: {},
+    };
+    try {
+      await expect(store.createSalon(salon)).resolves.toMatchObject({ id });
+      expect(await store.getSalon(id)).toMatchObject({ id, name: 'Adapter Atelier' });
+      await expect(store.createSalon(salon)).rejects.toThrow('Salon already exists');
+    } finally {
+      await store['db'].from('salons').delete().eq('id', id);
+    }
+  });
 });

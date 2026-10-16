@@ -65,6 +65,8 @@ export const serviceCreateSchema = serviceFieldsSchema.extend({
   description: z.string().max(1000).optional(),
 });
 
+
+
 /** Partial service fields for an owner editing one existing catalogue item. */
 export const serviceUpdateSchema = serviceFieldsSchema.partial().refine(
   value => Object.keys(value).length > 0,
@@ -91,6 +93,26 @@ const workingHoursSchema = z.object({
   Saturday: hoursText,
   Sunday: hoursText,
 }).strict();
+
+/** Schema for admin listing creation — identity fields required, everything else optional (services/staff are added afterwards via their own endpoints). */
+export const salonCreateSchema = z.object({
+  name: requiredText(120),
+  category: requiredText(100),
+  location: requiredText(200),
+  address: requiredText(500),
+  tagline: z.string().trim().max(300).optional(),
+  description: z.string().max(5000).optional(),
+  image: imageUrl.optional(),
+  gallery: z.array(imageUrl).max(50).optional(),
+  workingHours: workingHoursSchema.partial().optional(),
+  type: z.enum(['studio', 'mua']).optional(),
+  artistTitle: z.string().trim().max(200).optional(),
+  yearsExperience: nonNegativeNumber.int().optional(),
+  kitBrands: z.array(requiredText(100)).max(50).optional(),
+  travelRadius: z.string().trim().max(200).optional(),
+  instagramHandle: z.string().trim().max(100).optional(),
+  startingPrice: nonNegativeNumber.optional(),
+});
 
 // Partial only at the top level: supplied collections contain complete typed
 // entries. Unknown top-level fields are stripped, retaining the existing

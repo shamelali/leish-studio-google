@@ -60,6 +60,15 @@ export class SupabaseStore implements DataStore {
     return this.rowById<Salon>('salons', id);
   }
 
+  async createSalon(salon: Salon): Promise<Salon> {
+    const { error } = await this.db.from('salons').insert({ id: salon.id, data: salon });
+    if (error) {
+      if (isUniqueViolation(error)) throw new Error('Salon already exists');
+      throw new Error(`Supabase salon create failed: ${error.message}`);
+    }
+    return salon;
+  }
+
   async updateSalon(id: string, updates: Partial<Salon>): Promise<Salon> {
     const current = await this.getSalon(id);
     if (!current) throw new Error('Makeup Studio not found');
