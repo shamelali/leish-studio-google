@@ -25,6 +25,7 @@ const AIStylist = React.lazy(() => import('./components/AIStylist'));
 const BookingModal = React.lazy(() => import('./components/BookingModal'));
 const ClientPortal = React.lazy(() => import('./components/ClientPortal'));
 const ProviderDashboard = React.lazy(() => import('./components/ProviderDashboard'));
+const AdminUsers = React.lazy(() => import('./components/AdminUsers'));
 const AuthModal = React.lazy(() => import('./components/AuthModal'));
 const ProfileModal = React.lazy(() => import('./components/ProfileModal'));
 const LookbookStudio = React.lazy(() => import('./components/LookbookStudio'));
@@ -805,6 +806,21 @@ export default function App() {
               <ProviderDashboard
                 salons={salons}
                 onSalonUpdated={() => {}}
+                currentUser={currentUser}
+                onOpenAuth={handleOpenAuth}
+              />
+            </motion.div>
+          )}
+
+          {activeTab === 'admin' && (
+            <motion.div
+              key="admin-view"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <AdminUsers
                 currentUser={currentUser}
                 onOpenAuth={handleOpenAuth}
               />

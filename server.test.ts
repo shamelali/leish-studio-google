@@ -1209,3 +1209,71 @@ describe('admin salon creation (POST /api/salons)', () => {
     expect(res.body.error).toEqual(expect.any(String));
   });
 });
+
+describe('admin users panel (GET+PATCH /api/users)', () => {
+  let adminToken = '';
+  let providerToken = '';
+
+  beforeAll(async () => {
+    const admin = await request(app)
+      .post('/api/auth/login')
+      .send({ email: 'shamel@leish.my', password: 'lindan95' });
+    expect(admin.status).toBe(200);
+    adminToken = admin.body.token;
+    const provider = await request(app)
+      .post('/api/auth/login')
+      .send({ email: 'aina@leish.test', password: 'password123' });
+    expect(provider.status).toBe(200);
+    providerToken = provider.body.token;
+  });
+
+  const authed = (token?: string) => ({
+    get: (url: string) => request(app).get(url).set('Authorization', `Bearer ${token ?? ''}`),
+    patch: (url: string) => request(app).patch(url).set('Authorization', `Bearer ${token ?? ''}`),
+  });
+
+  it('lists every user sanitized as admin', async () => {
+    const res = await authed(adminToken).get('/api/users');
+    expect(res.status).toBe(200);
+    expect(res.body.length).toBeGreaterThan(0);
+    expect(res.body.some((u: any) => u.email === 'shamel@leish.my' && u.role === 'admin')).toBe(true);
+    for (const user of res.body) expect(user).not.toHaveProperty('password');
+  });
+
+  it('403s providers and 401s anonymous callers', async () => {
+    expect((await authed(providerToken).get('/api/users')).status).toBe(403);
+    expect((await request(app).get('/api/users')).status).toBe(401);
+    expect((await authed(providerToken).patch('/api/users/user-client-1').send({ role: 'provider' })).status).toBe(403);
+  });
+
+  it('changes roles and links salons, then unlinks', async () => {
+    const reg = await request(app).post('/api/auth/register').send({
+      name: 'Panel Prospect', email: `panel-${Date.now()}@leish.test`, password: 'Sup3rSecret!', role: 'client',
+    });
+    expect(reg.status).toBe(201);
+    const id = reg.body.user.id;
+
+    const promote = await authed(adminToken).patch(`/api/users/${id}`).send({ role: 'provider', salonId: 'salon-1' });
+    expect(promote.status).toBe(200);
+    expect(promote.body).toMatchObject({ id, role: 'provider', salonId: 'salon-1' });
+    expect(promote.body).not.toHaveProperty('password');
+
+    const unlink = await authed(adminToken).patch(`/api/users/${id}`).send({ salonId: null });
+    expect(unlink.status).toBe(200);
+    expect(unlink.body.salonId).toBeUndefined();
+  });
+
+  it('rejects unknown users, unknown salons, empty patches and self-demotion', async () => {
+    expect((await authed(adminToken).patch('/api/users/no-such-user').send({ role: 'client' })).status).toBe(404);
+    const reg = await request(app).post('/api/auth/register').send({
+      name: 'Panel Other', email: `panel-other-${Date.now()}@leish.test`, password: 'Sup3rSecret!', role: 'client',
+    });
+    expect((await authed(adminToken).patch(`/api/users/${reg.body.user.id}`).send({ salonId: 'no-such-salon' })).status).toBe(404);
+    expect((await authed(adminToken).patch(`/api/users/${reg.body.user.id}`).send({})).status).toBe(400);
+    expect((await authed(adminToken).patch(`/api/users/${reg.body.user.id}`).send({ role: 'superadmin' })).status).toBe(400);
+
+    const me = await authed(adminToken).get('/api/users');
+    const selfId = me.body.find((u: any) => u.email === 'shamel@leish.my').id;
+    expect((await authed(adminToken).patch(`/api/users/${selfId}`).send({ role: 'client' })).status).toBe(403);
+  });
+});

@@ -71,6 +71,13 @@ export const bookingsApi = {
     apiClient.patch(`/bookings/${id}/status`, { status }),
 };
 
+// Users API (admin panel)
+export const usersApi = {
+  list: () => apiClient.get('/users'),
+  update: (id: string, data: { name?: string; role?: string; salonId?: string | null; phone?: string; bio?: string }) =>
+    apiClient.patch(`/users/${id}`, data),
+};
+
 // Reviews API
 export const reviewsApi = {
   getBySalon: (salonId: string) => apiClient.get(`/reviews/${salonId}`),
@@ -104,5 +111,17 @@ export const useCreateReview = () => {
   return useMutation({
     mutationFn: reviewsApi.create,
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['reviews'] }),
+  });
+};
+
+export const useUsers = (enabled = true) =>
+  useQuery({ queryKey: ['users'], queryFn: usersApi.list, enabled });
+
+export const useUpdateUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: Parameters<typeof usersApi.update>[1] }) =>
+      usersApi.update(id, data),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['users'] }),
   });
 };

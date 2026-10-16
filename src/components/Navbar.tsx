@@ -25,11 +25,12 @@ import {
   Image as ImageIcon,
   Video,
   MessageSquare,
+  ShieldCheck,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { useStore } from '../lib/store';
 
-type NavTab = 'explore' | 'lookbook' | 'ai-stylist' | 'workspace' | 'client' | 'provider' | 'image-studio' | 'video-studio' | 'concierge';
+type NavTab = 'explore' | 'lookbook' | 'ai-stylist' | 'workspace' | 'client' | 'provider' | 'admin' | 'image-studio' | 'video-studio' | 'concierge';
 
 interface NavItem {
   id: NavTab;
@@ -61,6 +62,8 @@ const TOOL_ITEMS: NavItem[] = [
 ];
 
 const SALON_ITEM: NavItem = { id: 'provider', label: 'Salon Portal', icon: Scissors };
+
+const ADMIN_ITEM: NavItem = { id: 'admin', label: 'Admin Users', icon: ShieldCheck };
 
 const FOCUS_RING =
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-strong focus-visible:ring-offset-2 focus-visible:ring-offset-canvas';
@@ -190,12 +193,16 @@ export default function Navbar({
   const searchTimers = useRef<number[]>([]);
 
   const isProvider = currentUser?.role === 'provider';
+  const isAdmin = currentUser?.role === 'admin';
   // Guests get the salon portal as an acquisition entry; providers get their own tool.
   const showSalonPortal = !currentUser || isProvider;
-  const toolItems = showSalonPortal ? [...TOOL_ITEMS, SALON_ITEM] : TOOL_ITEMS;
+  const toolItems = [...TOOL_ITEMS];
+  if (showSalonPortal) toolItems.push(SALON_ITEM);
+  if (isAdmin) toolItems.push(ADMIN_ITEM);
   const personalActive =
     activeTab === 'workspace' ||
     activeTab === 'client' ||
+    activeTab === 'admin' ||
     activeTab === 'image-studio' ||
     activeTab === 'video-studio' ||
     activeTab === 'concierge' ||

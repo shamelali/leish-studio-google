@@ -94,6 +94,15 @@ const workingHoursSchema = z.object({
   Sunday: hoursText,
 }).strict();
 
+/** Schema for admin user edits — role changes and salon linkage only. */
+export const adminUserUpdateSchema = z.object({
+  name: z.string().trim().min(1).max(100).optional(),
+  role: z.enum(['client', 'provider', 'admin']).optional(),
+  salonId: z.string().trim().max(120).nullable().optional(),
+  phone: z.string().trim().max(50).optional(),
+  bio: z.string().trim().max(500).optional(),
+});
+
 /** Schema for admin listing creation — identity fields required, everything else optional (services/staff are added afterwards via their own endpoints). */
 export const salonCreateSchema = z.object({
   name: requiredText(120),

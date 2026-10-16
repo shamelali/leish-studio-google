@@ -8,7 +8,7 @@ import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import { z } from 'zod';
 import { registerConciergeRoute } from './server/concierge.ts';
-import { bookingSchema, salonCreateSchema, salonUpdateSchema, serviceUpdateSchema, serviceCreateSchema } from './server/validation.ts';
+import { bookingSchema, adminUserUpdateSchema, salonCreateSchema, salonUpdateSchema, serviceUpdateSchema, serviceCreateSchema } from './server/validation.ts';
 import { calcDistanceKm } from './server/geo.ts';
 import { sendBookingConfirmation } from './server/email.ts';
 import {
@@ -769,6 +769,57 @@ export function createApp(dependencies: AppDependencies = {}) {
         return res.status(409).json({ error: 'A listing with this id already exists.' });
       }
       serverError(res, 'Salon creation failed');
+    }
+  });
+
+  // API Route: List all users (admin-only, passwords stripped)
+  app.get('/api/users', authenticateToken, requireAdmin, async (req: any, res) => {
+    try {
+      const users = await appStore.getUsers();
+      res.json(users.map(sanitizeUser));
+    } catch (error: any) {
+      serverError(res, 'Could not load users');
+    }
+  });
+
+  // API Route: Update user as admin (role changes, salon linkage, profile fields)
+  app.patch('/api/users/:id', authenticateToken, requireAdmin, async (req: any, res) => {
+    try {
+      const parsed = adminUserUpdateSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ error: parsed.error.issues[0].message });
+      }
+      if (Object.keys(parsed.data).length === 0) {
+        return res.status(400).json({ error: 'Provide at least one field to update.' });
+      }
+      // An administrator cannot remove their own administrator access:
+      // with a single admin seed this would lock everyone out.
+      if (req.params.id === req.user.id && parsed.data.role !== undefined && parsed.data.role !== 'admin') {
+        return res.status(403).json({ error: 'You cannot remove your own administrator access.' });
+      }
+      const patch: Partial<User> & { password?: string } = { ...parsed.data };
+      if (patch.salonId !== undefined) {
+        const linked = patch.salonId ? patch.salonId.trim() : '';
+        if (!linked) {
+          patch.salonId = undefined;
+        } else {
+          const salon = await appStore.getSalon(linked);
+          if (!salon) {
+            return res.status(404).json({ error: 'Salon not found' });
+          }
+          patch.salonId = linked;
+        }
+      }
+      const updated = await appStore.updateUser(req.params.id, patch);
+      res.json(sanitizeUser(updated));
+    } catch (error: any) {
+      if (error?.message === 'User not found') {
+        return res.status(404).json({ error: 'User not found' });
+      }
+      if (error?.message === 'Email already registered') {
+        return res.status(409).json({ error: 'Email already registered' });
+      }
+      serverError(res, 'User update failed');
     }
   });
 

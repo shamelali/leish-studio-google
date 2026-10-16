@@ -2,7 +2,7 @@ import type { Salon } from '../types';
 
 export type AppRoute =
   | { tab: 'explore'; salonId?: string }
-  | { tab: 'lookbook' | 'ai-stylist' | 'workspace' | 'client' | 'provider' | 'image-studio' | 'video-studio' | 'concierge' };
+  | { tab: 'lookbook' | 'ai-stylist' | 'workspace' | 'client' | 'provider' | 'admin' | 'image-studio' | 'video-studio' | 'concierge' };
 
 const TABS = new Set([
   'lookbook',
@@ -10,6 +10,7 @@ const TABS = new Set([
   'workspace',
   'client',
   'provider',
+  'admin',
   'image-studio',
   'video-studio',
   'concierge',
