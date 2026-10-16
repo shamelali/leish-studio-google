@@ -140,6 +140,10 @@ const INITIAL_USERS: StoredUser[] = [
     email: 'studio',
     password: hashPassword('password123'),
     role: 'provider',
+    // Shares the flagship demo atelier so the Studio/MUA demo can manage
+    // real bookings end to end (browse → confirm). Cross-salon isolation
+    // is unchanged: this account still cannot touch other salons.
+    salonId: 'salon-1',
     phone: '+60 12-000 0001',
     avatar: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&q=80&w=200',
     bio: 'Demo studio/MUA account for exploring the provider portal.',
