@@ -20,7 +20,6 @@ import {
   Menu,
   X,
   Palette,
-  HardDrive,
   MoreHorizontal,
   Image as ImageIcon,
   Video,
@@ -30,7 +29,7 @@ import {
 import type { LucideIcon } from 'lucide-react';
 import { useStore } from '../lib/store';
 
-type NavTab = 'explore' | 'lookbook' | 'ai-stylist' | 'workspace' | 'client' | 'provider' | 'admin' | 'image-studio' | 'video-studio' | 'concierge';
+type NavTab = 'explore' | 'lookbook' | 'ai-stylist' | 'client' | 'provider' | 'admin' | 'image-studio' | 'video-studio' | 'concierge';
 
 interface NavItem {
   id: NavTab;
@@ -54,7 +53,6 @@ const PRIMARY_ITEMS: NavItem[] = [
 
 /** Personal destinations — live in the account / "More" menus, not the top bar. */
 const TOOL_ITEMS: NavItem[] = [
-  { id: 'workspace', label: 'Workspace', icon: HardDrive },
   { id: 'client', label: 'My Bookings', icon: Calendar },
   { id: 'image-studio', label: 'Image Studio', icon: ImageIcon },
   { id: 'video-studio', label: 'Video Studio', icon: Video },
@@ -200,7 +198,6 @@ export default function Navbar({
   if (showSalonPortal) toolItems.push(SALON_ITEM);
   if (isAdmin) toolItems.push(ADMIN_ITEM);
   const personalActive =
-    activeTab === 'workspace' ||
     activeTab === 'client' ||
     activeTab === 'admin' ||
     activeTab === 'image-studio' ||
@@ -401,7 +398,7 @@ export default function Navbar({
             </kbd>
           </button>
 
-          {/* Guest-only "More" menu keeps Workspace / Bookings / Portal reachable when signed out */}
+          {/* Guest-only "More" menu keeps Bookings / Portal reachable when signed out */}
           {!currentUser && (
             <div className="relative hidden md:block" ref={moreRef}>
               <button
@@ -412,8 +409,8 @@ export default function Navbar({
                 }}
                 aria-expanded={moreOpen}
                 aria-controls="nav-more-menu"
-                aria-label="Workspace and portals"
-                title="Workspace and portals"
+                aria-label="Portals and tools"
+                title="Portals and tools"
                 className={`inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-medium transition-colors ${FOCUS_RING} ${
                   personalActive || moreOpen
                      ? 'bg-primary/20 text-fg'
@@ -438,7 +435,7 @@ export default function Navbar({
                     className={menuPanelClass}
                   >
                     <p className="px-3 pb-1 pt-2 font-mono text-[10px] uppercase tracking-widest text-fg-dim">
-                      Workspace &amp; portals
+                      Portals &amp; tools
                     </p>
                     {toolItems.map((item) => (
                       <MenuRow
@@ -522,12 +519,6 @@ export default function Navbar({
                         setAccountOpen(false);
                         onOpenProfile();
                       }}
-                    />
-                    <MenuRow
-                      icon={HardDrive}
-                      label="Workspace"
-                      active={activeTab === 'workspace'}
-                      onClick={() => goTab('workspace')}
                     />
                     <MenuRow
                       icon={Calendar}
@@ -615,7 +606,7 @@ export default function Navbar({
                 ))}
               </MobileGroup>
 
-              <MobileGroup labelId="nav-group-tools" label="Workspace & portals">
+              <MobileGroup labelId="nav-group-tools" label="Tools">
                 {toolItems.map((item) => (
                   <MobileRow
                     key={item.id}

@@ -8,7 +8,6 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Search, Sparkles, Star, MapPin, Calendar, Heart, Shield, RefreshCw, Loader2, Compass, Building2, User as UserIconAlt, Map as MapIcon, ShieldCheck, Car, Image as ImageIcon, Check, Filter, ArrowUpDown, SlidersHorizontal } from 'lucide-react';
 import Navbar from './components/Navbar';
 import SalonCard from './components/SalonCard';
-import SalonDetails from './components/SalonDetails';
 import MUACard from './components/MUACard';
 import LoadingSpinner from './components/LoadingSpinner';
 import { Salon, Service, Booking, User, LookbookItem } from './types';
@@ -20,8 +19,9 @@ import { analytics } from './lib/analytics';
 import { applyPageSeo } from './lib/seo';
 
 // Keep the initial discovery experience small. These feature surfaces are only
-// needed after the user opens a detail page, workspace, portal, or modal.
+// needed after the user opens a detail page, portal, or modal.
 const AIStylist = React.lazy(() => import('./components/AIStylist'));
+const SalonDetails = React.lazy(() => import('./components/SalonDetails'));
 const BookingModal = React.lazy(() => import('./components/BookingModal'));
 const ClientPortal = React.lazy(() => import('./components/ClientPortal'));
 const ProviderDashboard = React.lazy(() => import('./components/ProviderDashboard'));
@@ -30,7 +30,6 @@ const AuthModal = React.lazy(() => import('./components/AuthModal'));
 const ProfileModal = React.lazy(() => import('./components/ProfileModal'));
 const LookbookStudio = React.lazy(() => import('./components/LookbookStudio'));
 const InteractiveMap = React.lazy(() => import('./components/InteractiveMap'));
-const WorkspaceHub = React.lazy(() => import('./components/WorkspaceHub'));
 const ImageStudio = React.lazy(() => import('./components/ImageStudio'));
 const VeoVideoStudio = React.lazy(() => import('./components/VeoVideoStudio'));
 const GeminiChatbot = React.lazy(() => import('./components/GeminiChatbot'));
@@ -733,19 +732,6 @@ export default function App() {
                   />
                 </div>
               )}
-            </motion.div>
-          )}
-
-          {activeTab === 'workspace' && (
-            <motion.div
-              key="workspace-view"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3 }}
-              className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8"
-            >
-              <WorkspaceHub />
             </motion.div>
           )}
 

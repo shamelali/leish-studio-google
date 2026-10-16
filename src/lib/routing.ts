@@ -2,12 +2,11 @@ import type { Salon } from '../types';
 
 export type AppRoute =
   | { tab: 'explore'; salonId?: string }
-  | { tab: 'lookbook' | 'ai-stylist' | 'workspace' | 'client' | 'provider' | 'admin' | 'image-studio' | 'video-studio' | 'concierge' };
+  | { tab: 'lookbook' | 'ai-stylist' | 'client' | 'provider' | 'admin' | 'image-studio' | 'video-studio' | 'concierge' };
 
 const TABS = new Set([
   'lookbook',
   'ai-stylist',
-  'workspace',
   'client',
   'provider',
   'admin',
