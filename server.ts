@@ -1,5 +1,5 @@
 import express from 'express';
-import { store, SlotConflictError, type DataStore, type IdempotencyInput } from './server/data-store.ts';
+import { store, SlotConflictError, type DataStore, type IdempotencyInput, type StoredUser } from './server/data-store.ts';
 import { createHash } from 'node:crypto';
 import { GoogleGenAI, Type, GenerateVideosOperation } from '@google/genai';
 import type { Booking, Review, Service, Salon, User } from './src/types.ts';
@@ -24,6 +24,7 @@ import {
   verifySupabaseToken,
   createSupabaseUser,
   deleteSupabaseUser,
+  type VerifiedIdentity,
 } from './server/supabase-auth.ts';
 import { logger, withLogging, recordMetric, Metrics } from './server/monitoring.ts';
 
@@ -586,16 +587,21 @@ export function createApp(dependencies: AppDependencies = {}) {
         : 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200';
 
       // Supabase Auth owns credentials when configured: pre-confirmed Auth
-      // user first, then the app profile keyed by the Auth id. The plaintext
-      // password is still stored hashed so the legacy path keeps working.
+      // user first, then the app profile keyed by the Auth id. If Supabase
+      // Auth user creation fails (e.g. FK constraint on shared tables), fall
+      // through to the legacy bcrypt path so registration keeps working.
+      let supabaseIdentity: VerifiedIdentity | null = null;
       if (isSupabaseAuthConfigured()) {
-        const identity = await createSupabaseUser(normalizedEmail, password, name.trim());
-        if (!identity) {
-          return res.status(500).json({ error: 'Registration failed' });
-        }
+        supabaseIdentity = await createSupabaseUser(normalizedEmail, password, name.trim());
+      }
+
+      let newUser: StoredUser;
+      let token: string;
+
+      if (supabaseIdentity) {
         try {
-          const newUser = await appStore.createUser({
-            id: identity.id,
+          newUser = await appStore.createUser({
+            id: supabaseIdentity.id,
             name: name.trim(),
             email: normalizedEmail,
             password,
@@ -605,14 +611,14 @@ export function createApp(dependencies: AppDependencies = {}) {
             avatar: defaultAvatar,
             createdAt: new Date().toISOString()
           });
-          const token = jwt.sign({ userId: newUser.id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+          token = jwt.sign({ userId: newUser.id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
           return res.status(201).json({
             user: sanitizeUser(newUser),
             token,
             message: 'Account successfully registered!'
           });
         } catch (error: any) {
-          await deleteSupabaseUser(identity.id);
+          await deleteSupabaseUser(supabaseIdentity.id);
           if (error?.message && /already (exists|registered)/i.test(error.message)) {
             return res.status(400).json({ error: 'An account with this email already exists. Please sign in instead.' });
           }
@@ -620,7 +626,8 @@ export function createApp(dependencies: AppDependencies = {}) {
         }
       }
 
-      const newUser = await appStore.createUser({
+      // Legacy bcrypt path (Supabase Auth not configured or user creation failed).
+      newUser = await appStore.createUser({
         id: `user-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
         name: name.trim(),
         email: normalizedEmail,
@@ -633,7 +640,7 @@ export function createApp(dependencies: AppDependencies = {}) {
         createdAt: new Date().toISOString()
       });
 
-      const token = jwt.sign({ userId: newUser.id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+      token = jwt.sign({ userId: newUser.id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 
       res.status(201).json({
         user: sanitizeUser(newUser),
@@ -654,33 +661,35 @@ export function createApp(dependencies: AppDependencies = {}) {
       }
 
       const { email, password } = parsed.data;
-      // Supabase Auth verifies credentials when configured; sessions stay
-      // app JWTs so the client shape and middleware are unchanged.
-      if (isSupabaseAuthConfigured()) {
-        const normalizedEmail = email.trim().toLowerCase();
-        const identity = await verifySupabasePassword(email, password);
-        const user = identity
-          ? (await appStore.getUserById(identity.id)) ?? (await appStore.getUserByEmail(identity.email.trim().toLowerCase()))
-          : undefined;
-        if (!identity || !user || user.email.trim().toLowerCase() !== normalizedEmail) {
-          return res.status(401).json({ error: 'Invalid email or password.' });
-        }
-        const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
-        return res.json({
-          user: sanitizeUser(user),
-          token,
-          message: `Welcome back, ${user.name}!`
-        });
-      }
       const normalizedEmail = email.trim().toLowerCase();
-      const user = await appStore.getUserByEmail(normalizedEmail);
-      if (!user) {
-        return res.status(401).json({ error: 'Invalid email or password.' });
+
+      // Supabase Auth verifies credentials when configured; sessions stay
+      // app JWTs so the client shape and middleware are unchanged. If the
+      // user is not found in Supabase Auth (e.g. registered via legacy
+      // bcrypt path), fall through to the legacy check instead of 401.
+      let supabaseIdentity: VerifiedIdentity | null = null;
+      if (isSupabaseAuthConfigured()) {
+        supabaseIdentity = await verifySupabasePassword(email, password);
       }
 
-      const passwordValid = await bcrypt.compare(password, user.password);
-      if (!passwordValid) {
-        return res.status(401).json({ error: 'Invalid email or password.' });
+      let user: StoredUser | undefined;
+
+      if (supabaseIdentity) {
+        user = (await appStore.getUserById(supabaseIdentity.id)) ?? (await appStore.getUserByEmail(supabaseIdentity.email.trim().toLowerCase()));
+        if (!user || user.email.trim().toLowerCase() !== normalizedEmail) {
+          return res.status(401).json({ error: 'Invalid email or password.' });
+        }
+      } else {
+        // Legacy bcrypt path.
+        user = await appStore.getUserByEmail(normalizedEmail);
+        if (!user) {
+          return res.status(401).json({ error: 'Invalid email or password.' });
+        }
+
+        const passwordValid = await bcrypt.compare(password, user.password);
+        if (!passwordValid) {
+          return res.status(401).json({ error: 'Invalid email or password.' });
+        }
       }
 
       const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
