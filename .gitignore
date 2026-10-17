@@ -27,3 +27,7 @@ db_store.json
 
 # FUSE/NTFS deleted-but-open file handles
 .fuse_hidden*
+
+# Agent skill infrastructure (OpenCode skills — local only, not project code).
+.agents/
+skills-lock.json
