@@ -192,9 +192,9 @@ export default function AdminSidebar({
         )}
       </div>
 
-      {/* Mobile overlay backdrop */}
+      {/* Mobile overlay backdrop — hidden on desktop, shown on mobile */}
       <div
-        className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm hidden md:block"
+        className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm md:hidden"
         onClick={() => setCollapsed(false)}
         aria-hidden="true"
       />
