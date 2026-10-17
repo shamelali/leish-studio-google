@@ -81,3 +81,26 @@ describe('rate-limit buckets (TR-8)', () => {
     expect(String(last.body.error)).toMatch(/attempts|requests/i);
   });
 });
+
+describe('rate-limit buckets — booking writes (FR-008)', () => {
+  it('gives booking writes their own 20/min bucket, isolated from verification (AC-012)', async () => {
+    // Verification sends must not consume the write budget: five throttled
+    // verify-requests (invalid contact → 422), then a booking create still
+    // reaches the handler (400 = validation, not 429 = limiter).
+    for (let i = 0; i < 5; i++) {
+      const vr = await request(app).post('/api/bookings/verify-request').send({ contact: 'not-an-email' });
+      expect([422, 429]).toContain(vr.status);
+    }
+    const beforeBurst = await request(app).post('/api/bookings').send({ salonId: 'y' });
+    expect(beforeBurst.status).toBe(400);
+
+    // Burst: the write bucket allows 20/min; each invalid body still counts.
+    // 1 already spent above, so requests 2–20 pass and the 21st trips 429.
+    let blocked = 0;
+    for (let i = 0; i < 20; i++) {
+      const res = await request(app).post('/api/bookings').send({ salonId: 'x' });
+      if (res.status === 429) blocked++;
+    }
+    expect(blocked).toBe(1);
+  });
+});

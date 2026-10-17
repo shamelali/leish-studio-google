@@ -1,5 +1,6 @@
 import express from 'express';
-import { store, type DataStore } from './server/data-store.ts';
+import { store, SlotConflictError, type DataStore, type IdempotencyInput } from './server/data-store.ts';
+import { createHash } from 'node:crypto';
 import { GoogleGenAI, Type, GenerateVideosOperation } from '@google/genai';
 import type { Booking, Review, Service, Salon, User } from './src/types.ts';
 import bcrypt from 'bcrypt';
@@ -8,9 +9,15 @@ import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import { z } from 'zod';
 import { registerConciergeRoute } from './server/concierge.ts';
-import { bookingSchema, adminUserUpdateSchema, salonCreateSchema, salonUpdateSchema, serviceUpdateSchema, serviceCreateSchema } from './server/validation.ts';
+import { bookingSchema, adminUserUpdateSchema, pageQuerySchema, salonCreateSchema, salonUpdateSchema, serviceUpdateSchema, serviceCreateSchema, verifyRequestSchema } from './server/validation.ts';
+import { DEFAULT_PAGE_LIMIT } from './server/pagination.ts';
 import { calcDistanceKm } from './server/geo.ts';
-import { sendBookingConfirmation } from './server/email.ts';
+import { sendBookingConfirmation, sendVerificationCode, isEmailAddress } from './server/email.ts';
+import {
+  isVerificationEnabled,
+  isIssueThrottled,
+  newVerificationRecord,
+} from './server/contact-verification.ts';
 import {
   isSupabaseAuthConfigured,
   verifySupabasePassword,
@@ -319,9 +326,31 @@ export function createApp(dependencies: AppDependencies = {}) {
   const readLimiter = rateLimit({
     windowMs: 60 * 1000,
     max: 120,
-    skip: (req) => rateLimitOff || req.path.startsWith('/auth') || req.path.startsWith('/gemini'),
+    skip: (req) => rateLimitOff || req.path.startsWith('/auth') || req.path.startsWith('/gemini') ||
+      (req.method === 'POST' && (req.path === '/bookings' || req.path === '/bookings/verify-request')),
     message: { error: 'Too many requests, please try again later.' }
   });
+  // Booking creates get their own bucket (FR-008/AC-012) so a write burst
+  // cannot consume the shared read budget. Mounted at /api/bookings: only
+  // POST to the collection itself ('/') counts — reads and status patches
+  // stay in their own buckets.
+  const writeLimiter = rateLimit({
+    windowMs: 60 * 1000,
+    max: 20,
+    skip: (req) => rateLimitOff || !(req.method === 'POST' && req.path === '/'),
+    message: { error: 'Too many booking attempts, please try again shortly.' }
+  });
+  // Verification codes cost money (Brevo) and can be abused for mail-bombing,
+  // so issuing them is throttled hardest (per-IP; per-contact throttle is in
+  // the handler via isIssueThrottled).
+  const verifyLimiter = rateLimit({
+    windowMs: 10 * 60 * 1000,
+    max: 10,
+    skip: () => rateLimitOff,
+    message: { error: 'Too many verification requests, please try again later.' }
+  });
+  app.use('/api/bookings/verify-request', verifyLimiter);
+  app.use('/api/bookings', writeLimiter);
   app.use('/api/auth/', authLimiter);
   app.use('/api/gemini/', aiLimiter);
   app.use('/api/', readLimiter);
@@ -626,7 +655,7 @@ export function createApp(dependencies: AppDependencies = {}) {
         return res.status(401).json({ error: 'Invalid email or password.' });
       }
 
-      const passwordValid = bcrypt.compareSync(password, user.password);
+      const passwordValid = await bcrypt.compare(password, user.password);
       if (!passwordValid) {
         return res.status(401).json({ error: 'Invalid email or password.' });
       }
@@ -772,11 +801,18 @@ export function createApp(dependencies: AppDependencies = {}) {
     }
   });
 
-  // API Route: List all users (admin-only, passwords stripped)
+  // API Route: List all users (admin-only, passwords stripped, paginated)
   app.get('/api/users', authenticateToken, requireAdmin, async (req: any, res) => {
     try {
-      const users = await appStore.getUsers();
-      res.json(users.map(sanitizeUser));
+      const parsed = pageQuerySchema.safeParse(req.query);
+      if (!parsed.success) {
+        return res.status(400).json({ error: parsed.error.issues[0].message });
+      }
+      const page = await appStore.listUsers({
+        page: parsed.data.page ?? 1,
+        limit: parsed.data.limit ?? DEFAULT_PAGE_LIMIT,
+      });
+      res.json({ data: page.data.map(sanitizeUser), pagination: page.pagination });
     } catch (error: any) {
       serverError(res, 'Could not load users');
     }
@@ -860,11 +896,17 @@ export function createApp(dependencies: AppDependencies = {}) {
     }
   });
 
-  // API Route: Get all salons
+  // API Route: Get all salons (paginated envelope)
   app.get('/api/salons', async (req, res) => {
     try {
-      const salons = await appStore.getSalons();
-      res.json(salons);
+      const parsed = pageQuerySchema.safeParse(req.query);
+      if (!parsed.success) {
+        return res.status(400).json({ error: parsed.error.issues[0].message });
+      }
+      res.json(await appStore.listSalons({
+        page: parsed.data.page ?? 1,
+        limit: parsed.data.limit ?? DEFAULT_PAGE_LIMIT,
+      }));
     } catch (error: any) {
       res.status(500).json({ error: 'Could not load salons' });
     }
@@ -980,36 +1022,68 @@ export function createApp(dependencies: AppDependencies = {}) {
     }
   });
 
-  // API Route: Get bookings — authenticated and scoped by identity (1.2):
+  // API Route: Get bookings — authenticated and scoped by identity (1.2),
+  // paginated (FR-006/FR-007). Role filters are computed here and enforced
+  // at the store level so durable backends never fetch full collections:
   //   client    → only bookings made with their own email
   //   provider  → only bookings for the salon they manage
   //   admin     → may filter freely
   app.get('/api/bookings', authenticateToken, async (req: any, res) => {
     try {
-      let bookings = await appStore.getBookings();
-
+      const parsed = pageQuerySchema.safeParse(req.query);
+      if (!parsed.success) {
+        return res.status(400).json({ error: parsed.error.issues[0].message });
+      }
+      const params = {
+        page: parsed.data.page ?? 1,
+        limit: parsed.data.limit ?? DEFAULT_PAGE_LIMIT,
+      };
       if (req.user.role === 'admin') {
-        const email = req.query.email as string | undefined;
-        const salonId = req.query.salonId as string | undefined;
-        if (email) {
-          bookings = bookings.filter(b => b.clientEmail.toLowerCase() === email.toLowerCase());
-        }
-        if (salonId) {
-          bookings = bookings.filter(b => b.salonId === salonId);
-        }
-      } else if (req.user.role === 'provider') {
+        res.json(await appStore.listBookings(params, {
+          email: req.query.email as string | undefined,
+          salonId: req.query.salonId as string | undefined,
+        }));
+        return;
+      }
+      if (req.user.role === 'provider') {
         if (!req.user.salonId) {
           return res.status(403).json({ error: 'No salon is linked to this account.' });
         }
-        bookings = bookings.filter(b => b.salonId === req.user.salonId);
-      } else {
-        const email = req.user.email.toLowerCase();
-        bookings = bookings.filter(b => b.clientEmail.toLowerCase() === email);
+        res.json(await appStore.listBookings(params, { salonId: req.user.salonId }));
+        return;
       }
-
-      res.json(bookings);
+      res.json(await appStore.listBookings(params, { email: req.user.email }));
     } catch (error: any) {
       serverError(res, 'Could not load bookings');
+    }
+  });
+
+  // API Route: Request a guest verification code (FR-001/G1). 202 for any
+  // valid email (no account enumeration); a failed send is fatal (503,
+  // TD-5) because a code that can silently fail verifies nothing.
+  app.post('/api/bookings/verify-request', async (req, res) => {
+    try {
+      const parsed = verifyRequestSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ error: parsed.error.issues[0].message });
+      }
+      const contact = parsed.data.contact.trim().toLowerCase();
+      if (!isEmailAddress(contact)) {
+        return res.status(422).json({ code: 'invalid_contact', error: 'Enter a valid email address to verify.' });
+      }
+      const existing = await appStore.getContactVerification(contact);
+      if (existing && isIssueThrottled(existing)) {
+        return res.status(429).json({ code: 'issue_throttled', error: 'Please wait a minute before requesting another code.' });
+      }
+      const issued = newVerificationRecord(contact);
+      await appStore.saveContactVerification(issued.record);
+      const sent = await sendVerificationCode(contact, issued.code);
+      if (!sent.sent) {
+        return res.status(503).json({ code: 'verification_unavailable', error: 'We could not send a verification email right now. Please try again shortly.' });
+      }
+      res.status(202).json({ message: 'Verification code sent. Check your inbox.' });
+    } catch (error: any) {
+      serverError(res, 'Verification request failed');
     }
   });
 
@@ -1052,18 +1126,62 @@ export function createApp(dependencies: AppDependencies = {}) {
         return res.status(404).json({ error: 'Staff member not found' });
       }
 
-      // Determine clientId from authenticated user if available, otherwise leave undefined for anonymous bookings
+      // Strict token handling (FR-003/AC-001): any present Authorization
+      // header must carry a valid Bearer JWT — garbage or expired tokens are
+      // rejected with 401 instead of being silently downgraded to a guest.
       const authHeader = req.headers.authorization;
       let clientId: string | undefined;
-      if (authHeader && authHeader.startsWith('Bearer ')) {
+      if (authHeader !== undefined) {
+        const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : '';
+        if (!token) {
+          return res.status(401).json({ code: 'invalid_token', error: 'A Bearer token is required when an Authorization header is present. Sign in again or continue as a guest.' });
+        }
         try {
-          const token = authHeader.replace('Bearer ', '').trim();
           const decoded = jwt.verify(token, JWT_SECRET, { algorithms: ['HS256'] }) as { userId?: unknown };
           if (typeof decoded.userId === 'string' && decoded.userId) {
             clientId = decoded.userId;
+          } else {
+            return res.status(401).json({ code: 'invalid_token', error: 'Your session is invalid. Sign in again or continue as a guest.' });
           }
         } catch {
-          // Token invalid/expired, proceed as anonymous booking
+          return res.status(401).json({ code: 'invalid_token', error: 'Your session has expired. Sign in again or continue as a guest.' });
+        }
+      }
+
+      // Contact verification gate (FR-001/FR-002, D1b/G1/G2): guests must
+      // present a fresh OTP for their email; authenticated users booking
+      // with their own account email are implicitly verified, any other
+      // contact needs the code too.
+      const contactCode = parsed.data.contactCode;
+      const normalizedContact = clientEmail.trim().toLowerCase();
+      let contactVerified: boolean | undefined;
+      const unverifiedResponse = (outcome: string) => res.status(422).json({
+        code: 'contact_unverified',
+        error: outcome === 'expired'
+          ? 'That verification code has expired. Request a new code and try again.'
+          : outcome === 'locked'
+          ? 'Too many incorrect codes. Request a new verification code to continue.'
+          : 'Verify this email address before booking — request a code, then enter the six digits we emailed you.',
+      });
+      if (isVerificationEnabled()) {
+        if (clientId) {
+          const account = await appStore.getUserById(clientId);
+          const ownEmail = Boolean(account) && (account as User).email.trim().toLowerCase() === normalizedContact;
+          if (!ownEmail) {
+            const outcome = await appStore.verifyAndConsumeContact(normalizedContact, contactCode ?? '');
+            if (outcome !== 'ok') return unverifiedResponse(outcome);
+          }
+          contactVerified = true;
+        } else {
+          if (!isEmailAddress(normalizedContact)) {
+            return res.status(422).json({
+              code: 'invalid_contact',
+              error: 'Enter a valid email address so we can confirm your booking.',
+            });
+          }
+          const outcome = await appStore.verifyAndConsumeContact(normalizedContact, contactCode ?? '');
+          if (outcome !== 'ok') return unverifiedResponse(outcome);
+          contactVerified = true;
         }
       }
 
@@ -1081,7 +1199,9 @@ export function createApp(dependencies: AppDependencies = {}) {
         date,
         time,
         clientName,
-        clientEmail,
+        // Normalized so store-level exact-match filters (FR-007) stay
+        // case-insensitive in practice; matching always lowercases both sides.
+        clientEmail: clientEmail.trim().toLowerCase(),
         clientPhone,
         clientId,
         notes,
@@ -1090,11 +1210,39 @@ export function createApp(dependencies: AppDependencies = {}) {
         isLocationEvent: Boolean(isLocationEvent),
         eventVenue: eventVenue || undefined,
         travelSurcharge: travelSurcharge ? Number(travelSurcharge) : undefined,
-        attachedMoodboard: attachedMoodboard || undefined
+        attachedMoodboard: attachedMoodboard || undefined,
+        contactVerified
       };
 
-      const created = await appStore.createBooking(booking);
-      res.status(201).json(created);
+      // Idempotent, conflict-checked create (FR-004/FR-005). The key is the
+      // client's Idempotency-Key header, falling back to a payload hash so
+      // plain double-submits are still deduplicated (G3). Scoped per owner:
+      // a key never replays another user's booking (BR-3).
+      const headerKey = Array.isArray(req.headers['idempotency-key'])
+        ? req.headers['idempotency-key'][0]
+        : req.headers['idempotency-key'];
+      const trimmedKey = typeof headerKey === 'string' ? headerKey.trim() : '';
+      const effectiveKey = trimmedKey && trimmedKey.length <= 200
+        ? trimmedKey
+        : createHash('sha256').update(JSON.stringify(parsed.data)).digest('hex');
+      const idempotency: IdempotencyInput = {
+        key: effectiveKey,
+        scope: clientId ? `user:${clientId}` : `guest:${clientEmail.trim().toLowerCase()}`,
+      };
+
+      let result;
+      try {
+        result = await appStore.createBookingIdempotent(booking, idempotency);
+      } catch (error) {
+        if (error instanceof SlotConflictError) {
+          return res.status(409).json({
+            code: 'slot_conflict',
+            error: 'That time slot has just been booked. Please choose another time.',
+          });
+        }
+        throw error;
+      }
+      res.status(result.replayed ? 200 : 201).json(result.booking);
     } catch (error: any) {
       serverError(res, 'Booking creation failed');
     }
@@ -1133,11 +1281,17 @@ export function createApp(dependencies: AppDependencies = {}) {
     }
   });
 
-  // API Route: Get reviews
+  // API Route: Get reviews (paginated envelope)
   app.get('/api/reviews/:salonId', async (req, res) => {
     try {
-      const reviews = await appStore.getSalonReviews(req.params.salonId);
-      res.json(reviews);
+      const parsed = pageQuerySchema.safeParse(req.query);
+      if (!parsed.success) {
+        return res.status(400).json({ error: parsed.error.issues[0].message });
+      }
+      res.json(await appStore.listSalonReviews(req.params.salonId, {
+        page: parsed.data.page ?? 1,
+        limit: parsed.data.limit ?? DEFAULT_PAGE_LIMIT,
+      }));
     } catch (error: any) {
       serverError(res, 'Could not load reviews');
     }

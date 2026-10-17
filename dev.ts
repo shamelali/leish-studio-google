@@ -32,9 +32,31 @@ async function bootstrap() {
   }
 
   const port = Number(process.env.PORT) || 3000;
-  app.listen(port, '0.0.0.0', () => {
+  const server = app.listen(port, '0.0.0.0', () => {
     console.log(`Leish! Full-stack server running on http://0.0.0.0:${port}`);
   });
+
+  // Graceful shutdown: drain connections, finish in-flight work, exit cleanly.
+  let shuttingDown = false;
+  const shutdown = (signal: string) => {
+    if (shuttingDown) return;
+    shuttingDown = true;
+    console.log(`[leish] ${signal} received, draining connections...`);
+    server.close((err) => {
+      if (err) {
+        console.error('[leish] Error during shutdown', err);
+        process.exit(1);
+      }
+      process.exit(0);
+    });
+    // Force exit if connections hang (e.g. long uploads, SSE).
+    setTimeout(() => {
+      console.error('[leish] Graceful shutdown timed out, forcing exit');
+      process.exit(1);
+    }, 10000).unref();
+  };
+  process.on('SIGTERM', () => shutdown('SIGTERM'));
+  process.on('SIGINT', () => shutdown('SIGINT'));
 }
 
 bootstrap();

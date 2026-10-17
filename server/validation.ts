@@ -44,9 +44,19 @@ export const bookingSchema = z.object({
   eventVenue: z.string().trim().max(200).optional(),
   travelSurcharge: nonNegativeNumber.optional(),
   attachedMoodboard: moodboardSchema.optional(),
+  // Guest contact verification (FR-001/G1): the 6-digit OTP from
+  // POST /api/bookings/verify-request. Optional in the schema; required by
+  // the handler whenever verification is enabled and the contact is not
+  // already bound to the authenticated account.
+  contactCode: z.string().trim().regex(/^\d{6}$/, 'Verification codes are six digits.').optional(),
 }).refine(data => !data.isLocationEvent || Boolean(data.eventVenue), {
   message: 'A venue is required for an on-location booking',
   path: ['eventVenue'],
+});
+
+/** Body for POST /api/bookings/verify-request (guest email OTP, G1/G2). */
+export const verifyRequestSchema = z.object({
+  contact: z.string().trim().min(3).max(254),
 });
 
 const serviceFieldsSchema = z.object({
@@ -146,3 +156,13 @@ export const salonUpdateSchema = z.object({
   instagramHandle: z.string().trim().max(100),
   startingPrice: nonNegativeNumber,
 }).partial();
+
+/**
+ * List pagination query (FR-006). `page` is 1-based (default 1), `limit`
+ * defaults to 20 and caps at 100. Non-numeric or out-of-range values are
+ * rejected with 400 by the handlers.
+ */
+export const pageQuerySchema = z.object({
+  page: z.coerce.number().int().min(1).optional(),
+  limit: z.coerce.number().int().min(1).max(100).optional(),
+});

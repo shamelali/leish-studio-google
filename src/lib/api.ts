@@ -14,8 +14,11 @@ export async function apiRequest<T = any>(url: string, options?: RequestInit): P
     },
   });
   if (!res.ok) {
-    const error = await res.json().catch(() => ({ error: 'Request failed' }));
-    throw new Error(error.error || 'Request failed');
+    const payload = await res.json().catch(() => ({ error: 'Request failed' }));
+    const error = new Error(payload.error || 'Request failed') as Error & { code?: string };
+    // Machine-readable code (e.g. contact_unverified) drives UI branches.
+    error.code = typeof payload.code === 'string' ? payload.code : undefined;
+    throw error;
   }
   return res.json();
 }
@@ -32,6 +35,17 @@ export const apiClient = {
   delete: <T = any>(url: string) => apiRequest<T>(url, { method: 'DELETE' }),
 };
 
+// Paginated list envelope (server pagination contract, FR-006).
+export interface PaginatedResponse<T> {
+  data: T[];
+  pagination: { page: number; limit: number; total: number; pages: number };
+}
+
+/** Unwrap a paginated envelope, tolerating legacy bare arrays. */
+function unwrapPage<T>(payload: PaginatedResponse<T> | T[]): T[] {
+  return Array.isArray(payload) ? payload : payload.data;
+}
+
 // Auth API
 export const authApi = {
   register: (data: { name: string; email: string; password: string; role?: string; phone?: string; bio?: string }) =>
@@ -47,7 +61,7 @@ export const authApi = {
 
 // Salons API
 export const salonsApi = {
-  getAll: () => apiClient.get('/salons'),
+  getAll: async () => unwrapPage<Salon>(await apiClient.get<PaginatedResponse<Salon> | Salon[]>('/salons')),
   getById: (id: string) => apiClient.get(`/salons/${id}`),
   update: (id: string, data: Partial<Salon>) =>
     apiClient.put(`/salons/${id}`, data),
@@ -61,9 +75,9 @@ export const salonsApi = {
 
 // Bookings API
 export const bookingsApi = {
-  getAll: (params?: { email?: string; salonId?: string }) => {
+  getAll: async (params?: { email?: string; salonId?: string }) => {
     const query = new URLSearchParams(params as any).toString();
-    return apiClient.get(`/bookings${query ? `?${query}` : ''}`);
+    return unwrapPage<Booking>(await apiClient.get<PaginatedResponse<Booking> | Booking[]>(`/bookings${query ? `?${query}` : ''}`));
   },
   create: (data: any) =>
     apiClient.post('/bookings', data),
@@ -73,7 +87,7 @@ export const bookingsApi = {
 
 // Users API (admin panel)
 export const usersApi = {
-  list: () => apiClient.get('/users'),
+  list: async () => unwrapPage<User>(await apiClient.get<PaginatedResponse<User> | User[]>('/users')),
   update: (id: string, data: { name?: string; role?: string; salonId?: string | null; phone?: string; bio?: string }) =>
     apiClient.patch(`/users/${id}`, data),
   remove: (id: string) => apiClient.delete(`/users/${id}`),
@@ -81,7 +95,8 @@ export const usersApi = {
 
 // Reviews API
 export const reviewsApi = {
-  getBySalon: (salonId: string) => apiClient.get(`/reviews/${salonId}`),
+  getBySalon: async (salonId: string) =>
+    unwrapPage<Review>(await apiClient.get<PaginatedResponse<Review> | Review[]>(`/reviews/${salonId}`)),
   create: (data: { salonId: string; clientName?: string; bookingId?: string; rating: number; text: string }) =>
     apiClient.post('/reviews', data),
 };

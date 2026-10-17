@@ -2,7 +2,23 @@ import { createHash } from 'node:crypto';
 import bcrypt from 'bcrypt';
 import type { Firestore } from 'firebase-admin/firestore';
 import type { Booking, Review, Salon } from '../src/types.ts';
-import type { DataStore, StoredUser } from './data-store.ts';
+import type {
+  BookingListFilter,
+  DataStore,
+  IdempotencyInput,
+  BookingWriteResult,
+  StoredUser,
+} from './data-store.ts';
+import {
+  SlotConflictError,
+  idempotencyExpiry,
+  isIdempotencyLive,
+} from './data-store.ts';
+import type { ContactVerificationRecord } from './contact-verification.ts';
+import { classifyAttempt, contactKey } from './contact-verification.ts';
+import type { PageParams, Paginated } from './pagination.ts';
+import { pageOffset, paginate } from './pagination.ts';
+import { bookingsConflict } from './slots.ts';
 
 const normalizeEmail = (email: string) => email.trim().toLowerCase();
 const emailKey = (email: string) => createHash('sha256').update(normalizeEmail(email)).digest('hex');
@@ -66,6 +82,18 @@ export class FirestoreStore implements DataStore {
     return (await db.collection('salons').get()).docs.map(doc => doc.data() as Salon);
   }
 
+  async listSalons(params: PageParams): Promise<Paginated<Salon>> {
+    const db = await this.dbPromise;
+    // Document-ID order is chronological for app-generated `salon-<ms>-*` ids
+    // and, unlike `name`, is unique — required for stable pagination.
+    const collection = db.collection('salons');
+    const [total, page] = await Promise.all([
+      collection.count().get().then(snap => snap.data().count),
+      collection.orderBy('__name__').limit(params.limit).offset(pageOffset(params)).get(),
+    ]);
+    return paginate(page.docs.map(doc => doc.data() as Salon), total, params);
+  }
+
   async getSalon(id: string): Promise<Salon | undefined> {
     const db = await this.dbPromise;
     const doc = await db.collection('salons').doc(id).get();
@@ -99,6 +127,21 @@ export class FirestoreStore implements DataStore {
     return docs.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   }
 
+  async listBookings(params: PageParams, filter: BookingListFilter = {}): Promise<Paginated<Booking>> {
+    const db = await this.dbPromise;
+    // Emails are normalized to lowercase at creation (server.ts), so an
+    // exact match is case-insensitive in practice.
+    let filtered = db.collection('bookings') as FirebaseFirestore.Query;
+    if (filter.salonId) filtered = filtered.where('salonId', '==', filter.salonId);
+    if (filter.email) filtered = filtered.where('clientEmail', '==', filter.email.toLowerCase());
+    const ordered = filtered.orderBy('createdAt', 'desc');
+    const [total, page] = await Promise.all([
+      filtered.count().get().then(snap => snap.data().count),
+      ordered.limit(params.limit).offset(pageOffset(params)).get(),
+    ]);
+    return paginate(page.docs.map(doc => doc.data() as Booking), total, params);
+  }
+
   async getBooking(id: string): Promise<Booking | undefined> {
     const db = await this.dbPromise;
     const doc = await db.collection('bookings').doc(id).get();
@@ -109,6 +152,75 @@ export class FirestoreStore implements DataStore {
     const db = await this.dbPromise;
     await db.collection('bookings').doc(booking.id).create(booking);
     return booking;
+  }
+
+  async createBookingIdempotent(booking: Booking, idempotency: IdempotencyInput): Promise<BookingWriteResult> {
+    const db = await this.dbPromise;
+    // Hashing keeps doc ids within Firestore's 1500-byte/UTF-8-safe key rules
+    // regardless of what a client sends in the header.
+    const keyRef = db.collection('idempotencyKeys').doc(
+      createHash('sha256').update(`${idempotency.scope}:${idempotency.key}`).digest('hex'),
+    );
+    return db.runTransaction(async tx => {
+      // All reads precede all writes (Firestore transaction contract).
+      // Concurrent same-key creates contend on keyRef: the loser aborts,
+      // retries, then observes the winner's key and replays it.
+      const keySnapshot = await tx.get(keyRef);
+      if (keySnapshot.exists) {
+        const record = keySnapshot.data() as { bookingId: string; expiresAt: string };
+        if (isIdempotencyLive(record.expiresAt)) {
+          const original = await tx.get(db.collection('bookings').doc(record.bookingId));
+          if (original.exists) {
+            return { booking: original.data() as Booking, replayed: true };
+          }
+        }
+      }
+      const candidates = await tx.get(
+        db.collection('bookings')
+          .where('salonId', '==', booking.salonId)
+          .where('staffId', '==', booking.staffId)
+          .where('date', '==', booking.date),
+      );
+      const conflict = candidates.docs
+        .map(doc => doc.data() as Booking)
+        .some(candidate => candidate.status !== 'cancelled' && bookingsConflict(candidate, booking));
+      if (conflict) throw new SlotConflictError();
+      tx.create(db.collection('bookings').doc(booking.id), booking);
+      tx.set(keyRef, { bookingId: booking.id, expiresAt: idempotencyExpiry() });
+      return { booking, replayed: false };
+    });
+  }
+
+  async saveContactVerification(record: ContactVerificationRecord): Promise<void> {
+    const db = await this.dbPromise;
+    await db.collection('contactVerifications').doc(contactKey(record.contact)).set(record);
+  }
+
+  async getContactVerification(contact: string): Promise<ContactVerificationRecord | undefined> {
+    const db = await this.dbPromise;
+    const doc = await db.collection('contactVerifications').doc(contactKey(contact)).get();
+    return doc.exists ? doc.data() as ContactVerificationRecord : undefined;
+  }
+
+  async verifyAndConsumeContact(
+    contact: string,
+    code: string,
+  ): Promise<'ok' | 'invalid' | 'expired' | 'locked'> {
+    const db = await this.dbPromise;
+    const recordRef = db.collection('contactVerifications').doc(contactKey(contact));
+    // Transaction makes the consume single-use: concurrent attempts with the
+    // same code contend on the record; only one sees it.
+    return db.runTransaction(async tx => {
+      const snapshot = await tx.get(recordRef);
+      const record = snapshot.exists ? snapshot.data() as ContactVerificationRecord : undefined;
+      const result = classifyAttempt(record, contact, code);
+      if (record && result.consume) {
+        tx.delete(recordRef);
+      } else if (record && result.nextAttempts !== undefined) {
+        tx.set(recordRef, { ...record, attempts: result.nextAttempts });
+      }
+      return result.outcome;
+    });
   }
 
   async updateBookingStatus(id: string, status: Booking['status']): Promise<Booking> {
@@ -127,6 +239,18 @@ export class FirestoreStore implements DataStore {
     const db = await this.dbPromise;
     const snapshot = await db.collection('reviews').where('salonId', '==', salonId).get();
     return snapshot.docs.map(doc => doc.data() as Review).sort((a, b) => b.date.localeCompare(a.date));
+  }
+
+  async listSalonReviews(salonId: string, params: PageParams): Promise<Paginated<Review>> {
+    const db = await this.dbPromise;
+    // where + orderBy needs the composite index in firestore.indexes.json.
+    const filtered = db.collection('reviews').where('salonId', '==', salonId);
+    const ordered = filtered.orderBy('date', 'desc');
+    const [total, page] = await Promise.all([
+      filtered.count().get().then(snap => snap.data().count),
+      ordered.limit(params.limit).offset(pageOffset(params)).get(),
+    ]);
+    return paginate(page.docs.map(doc => doc.data() as Review), total, params);
   }
 
   async createReview(review: Review): Promise<Review> {
@@ -173,6 +297,18 @@ export class FirestoreStore implements DataStore {
   async getUsers(): Promise<StoredUser[]> {
     const db = await this.dbPromise;
     return (await db.collection('users').get()).docs.map(doc => doc.data() as StoredUser);
+  }
+
+  async listUsers(params: PageParams): Promise<Paginated<StoredUser>> {
+    const db = await this.dbPromise;
+    // Document-ID order (app ids are `user-<ms>-*`, chronological); `email`
+    // would also work but ids are guaranteed unique for stable pages.
+    const collection = db.collection('users');
+    const [total, page] = await Promise.all([
+      collection.count().get().then(snap => snap.data().count),
+      collection.orderBy('__name__').limit(params.limit).offset(pageOffset(params)).get(),
+    ]);
+    return paginate(page.docs.map(doc => doc.data() as StoredUser), total, params);
   }
 
   async getUserById(id: string): Promise<StoredUser | undefined> {

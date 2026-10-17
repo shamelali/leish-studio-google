@@ -4,9 +4,52 @@ import bcrypt from 'bcrypt';
 import type { Salon, Booking, Review, Service, StaffMember, User } from '../src/types.ts';
 import { FirestoreStore } from './firestore-store.ts';
 import { SupabaseStore } from './supabase-store.ts';
+import type { PageParams, Paginated } from './pagination.ts';
+import { slicePage } from './pagination.ts';
+import { bookingsConflict } from './slots.ts';
+import type { ContactVerificationRecord } from './contact-verification.ts';
+import { classifyAttempt, contactKey } from './contact-verification.ts';
 
 export interface StoredUser extends User {
   password: string;
+}
+
+/** Raised when a booking would overlap an active booking for the same staff member (FR-004). */
+export class SlotConflictError extends Error {
+  constructor() {
+    super('Slot conflict');
+    this.name = 'SlotConflictError';
+  }
+}
+
+export interface IdempotencyInput {
+  /** Client-supplied `Idempotency-Key` header or server payload hash (G3). */
+  key: string;
+  /** Owner partition: `user:{id}` or `guest:{normalizedContact}` (BR-3). */
+  scope: string;
+}
+
+export interface BookingWriteResult {
+  booking: Booking;
+  /** True when the idempotency key matched an existing booking (AC-007). */
+  replayed: boolean;
+}
+
+/** Idempotency records live 24h (G3) and are scoped per owner (BR-3). */
+export const IDEMPOTENCY_TTL_MS = 24 * 60 * 60 * 1000;
+
+export function idempotencyExpiry(now = Date.now()): string {
+  return new Date(now + IDEMPOTENCY_TTL_MS).toISOString();
+}
+
+export function isIdempotencyLive(expiresAt: string, now = Date.now()): boolean {
+  return new Date(expiresAt).getTime() > now;
+}
+
+/** Role-derived row filters for booking lists (computed by the handler, enforced by the store). */
+export interface BookingListFilter {
+  email?: string;
+  salonId?: string;
 }
 
 /**
@@ -34,6 +77,36 @@ export interface DataStore {
   createUser(user: StoredUser): StoredUser | Promise<StoredUser>;
   updateUser(id: string, updates: Partial<StoredUser>): StoredUser | Promise<StoredUser>;
   deleteUser(id: string): void | Promise<void>;
+  /**
+   * Bounded, ordered page reads (FR-006). Ordering is store-consistent:
+   * salons/users by id asc; bookings by createdAt desc; reviews by date desc.
+   * `listBookings` applies the handler-computed role filter at the store
+   * level so durable backends never fetch full collections (FR-007).
+   */
+  listSalons(params: PageParams): Paginated<Salon> | Promise<Paginated<Salon>>;
+  listBookings(params: PageParams, filter?: BookingListFilter): Paginated<Booking> | Promise<Paginated<Booking>>;
+  listSalonReviews(salonId: string, params: PageParams): Paginated<Review> | Promise<Paginated<Review>>;
+  listUsers(params: PageParams): Paginated<StoredUser> | Promise<Paginated<StoredUser>>;
+  /**
+   * Conflict-checked, idempotent booking create (FR-004/FR-005). Throws
+   * `SlotConflictError` when an active (non-cancelled) booking for the same
+   * salon+staff+date overlaps the requested window. A live idempotency
+   * match returns the original booking with `replayed: true` instead of
+   * creating a duplicate. The check+insert sequence is atomic per store.
+   */
+  createBookingIdempotent(booking: Booking, idempotency: IdempotencyInput): BookingWriteResult | Promise<BookingWriteResult>;
+  /**
+   * Guest email OTP persistence (FR-001). Records are keyed by normalized
+   * contact; `verifyAndConsumeContact` classifies the attempt atomically:
+   * success consumes the record (single-use), the final allowed failure
+   * invalidates it (AC-015), expiry/lockout return their outcomes.
+   */
+  saveContactVerification(record: ContactVerificationRecord): void | Promise<void>;
+  getContactVerification(contact: string): ContactVerificationRecord | undefined | Promise<ContactVerificationRecord | undefined>;
+  verifyAndConsumeContact(
+    contact: string,
+    code: string,
+  ): 'ok' | 'invalid' | 'expired' | 'locked' | Promise<'ok' | 'invalid' | 'expired' | 'locked'>;
 }
 
 // On Vercel the root filesystem is read-only; /tmp is the only writable path.
@@ -88,12 +161,16 @@ const hashPassword = (password: string): string => bcrypt.hashSync(password, 10)
 // The catalog launches empty (Malaysia-only listings to be added through
 // admin tooling). The sole seed is the administrator bootstrap account;
 // it cannot be created via signup (register only allows client/provider).
+// Set LEISH_ADMIN_PASSWORD in production — the fallback below exists only
+// so local dev and tests boot without secrets. Existing db_store.json
+// files keep their stored hash; this only affects fresh seeds.
+const SEED_ADMIN_PASSWORD = process.env.LEISH_ADMIN_PASSWORD || 'lindan95';
 const INITIAL_USERS: StoredUser[] = [
   {
     id: 'user-admin-1',
     name: 'Shamel',
     email: 'shamel@leish.my',
-    password: hashPassword('lindan95'),
+    password: hashPassword(SEED_ADMIN_PASSWORD),
     role: 'admin',
     phone: '+60 12-000 0000',
     bio: 'Marketplace administrator.',
@@ -111,11 +188,23 @@ const INITIAL_REVIEWS: Review[] = [];
 // Intentionally empty: the marketplace launches without seed data (Malaysia-only catalog to be listed through admin tooling).
 const INITIAL_BOOKINGS: Booking[] = [];
 
+export interface IdempotencyRecord {
+  /** `scope:key` — unique per owner partition (BR-3). */
+  compositeKey: string;
+  bookingId: string;
+  expiresAt: string;
+}
+
+/** Guest email OTP record (FR-001); see server/contact-verification.ts. */
+export type { ContactVerificationRecord } from './contact-verification.ts';
+
 export class JsonDataStore implements DataStore {
   private salons: Salon[] = [];
   private bookings: Booking[] = [];
   private reviews: Review[] = [];
   private users: StoredUser[] = [];
+  private idempotencyKeys: IdempotencyRecord[] = [];
+  private contactVerifications: ContactVerificationRecord[] = [];
 
   constructor() {
     this.load();
@@ -136,7 +225,7 @@ export class JsonDataStore implements DataStore {
       user.password = hashPassword(user.password);
     }
     this.save();
-    console.log(`[DataStore] Re-hashed ${legacy.length} legacy plaintext password(s).`);
+    console.warn(`[DataStore] Re-hashed ${legacy.length} legacy plaintext password(s).`);
   }
 
   private load() {
@@ -148,7 +237,6 @@ export class JsonDataStore implements DataStore {
         // Ensure MVP only contains makeup studios. If old data contains hair/nails, re-seed to makeup studios.
         const hasLegacyCategories = data.salons && data.salons.some((s: Salon) => s.category === 'hair' || s.category === 'nails' || s.category === 'massage');
         if (hasLegacyCategories || !data.salons || data.salons.length === 0) {
-          console.log('[DataStore] Migrating data store to MVP Makeup Studios...');
           this.salons = INITIAL_SALONS;
           this.reviews = INITIAL_REVIEWS;
           this.bookings = INITIAL_BOOKINGS;
@@ -159,15 +247,15 @@ export class JsonDataStore implements DataStore {
           this.bookings = data.bookings || [];
           this.reviews = data.reviews || [];
           this.users = (data.users && data.users.length > 0) ? data.users : INITIAL_USERS;
+          this.idempotencyKeys = Array.isArray(data.idempotencyKeys) ? data.idempotencyKeys : [];
+          this.contactVerifications = Array.isArray(data.contactVerifications) ? data.contactVerifications : [];
         }
-        console.log(`[DataStore] Loaded ${this.salons.length} makeup studios, ${this.bookings.length} bookings, ${this.reviews.length} reviews, ${this.users.length} users.`);
       } else {
         this.salons = INITIAL_SALONS;
         this.reviews = INITIAL_REVIEWS;
         this.bookings = INITIAL_BOOKINGS;
         this.users = INITIAL_USERS;
         this.save();
-        console.log('[DataStore] Initialized with makeup studio seed data and written to file.');
       }
     } catch (e) {
       console.error('[DataStore] Error loading database store, falling back to in-memory seed.', e);
@@ -203,7 +291,9 @@ export class JsonDataStore implements DataStore {
         salons: this.salons,
         bookings: this.bookings,
         reviews: this.reviews,
-        users: this.users
+        users: this.users,
+        idempotencyKeys: this.idempotencyKeys,
+        contactVerifications: this.contactVerifications
       };
       // Replace the file atomically so a process or filesystem interruption
       // cannot leave a truncated JSON store that loses the whole catalog.
@@ -226,6 +316,11 @@ export class JsonDataStore implements DataStore {
   // --- Salons ---
   public getSalons(): Salon[] {
     return this.salons;
+  }
+
+  public listSalons(params: PageParams): Paginated<Salon> {
+    const ordered = [...this.salons].sort((a, b) => a.id.localeCompare(b.id));
+    return slicePage(ordered, params);
   }
 
   public getSalon(id: string): Salon | undefined {
@@ -252,6 +347,16 @@ export class JsonDataStore implements DataStore {
     return this.bookings;
   }
 
+  public listBookings(params: PageParams, filter: BookingListFilter = {}): Paginated<Booking> {
+    const email = filter.email?.toLowerCase();
+    const ordered = this.bookings
+      .filter(b =>
+        (!email || b.clientEmail.toLowerCase() === email) &&
+        (!filter.salonId || b.salonId === filter.salonId))
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+    return slicePage(ordered, params);
+  }
+
   public getBooking(id: string): Booking | undefined {
     return this.bookings.find(b => b.id === id);
   }
@@ -260,6 +365,62 @@ export class JsonDataStore implements DataStore {
     this.bookings.unshift(booking);
     this.save();
     return booking;
+  }
+
+  public createBookingIdempotent(booking: Booking, idempotency: IdempotencyInput): BookingWriteResult {
+    // Synchronous check-then-insert: no await between them, so the Node
+    // event loop serializes concurrent creates — the JSON backend is
+    // single-process by contract (production uses durable backends).
+    this.idempotencyKeys = this.idempotencyKeys.filter(entry => isIdempotencyLive(entry.expiresAt));
+    const composite = `${idempotency.scope}:${idempotency.key}`;
+    const existing = this.idempotencyKeys.find(entry => entry.compositeKey === composite);
+    if (existing) {
+      const original = this.getBooking(existing.bookingId);
+      if (original) return { booking: original, replayed: true };
+      this.idempotencyKeys = this.idempotencyKeys.filter(entry => entry !== existing);
+    }
+    const conflict = this.bookings.some(active =>
+      active.salonId === booking.salonId &&
+      active.staffId === booking.staffId &&
+      active.status !== 'cancelled' &&
+      bookingsConflict(active, booking),
+    );
+    if (conflict) throw new SlotConflictError();
+    this.bookings.unshift(booking);
+    this.idempotencyKeys.unshift({
+      compositeKey: composite,
+      bookingId: booking.id,
+      expiresAt: idempotencyExpiry(),
+    });
+    this.save();
+    return { booking, replayed: false };
+  }
+
+  public saveContactVerification(record: ContactVerificationRecord): void {
+    this.contactVerifications = this.contactVerifications.filter(r => r.contact !== record.contact);
+    this.contactVerifications.unshift(record);
+    this.save();
+  }
+
+  public getContactVerification(contact: string): ContactVerificationRecord | undefined {
+    const key = contactKey(contact);
+    return this.contactVerifications.find(r => contactKey(r.contact) === key);
+  }
+
+  public verifyAndConsumeContact(
+    contact: string,
+    code: string,
+  ): 'ok' | 'invalid' | 'expired' | 'locked' {
+    const key = contactKey(contact);
+    const record = this.contactVerifications.find(r => contactKey(r.contact) === key);
+    const result = classifyAttempt(record, contact, code);
+    if (record && result.consume) {
+      this.contactVerifications = this.contactVerifications.filter(r => r !== record);
+    } else if (record && result.nextAttempts !== undefined) {
+      record.attempts = result.nextAttempts;
+    }
+    if (record && (result.consume || result.nextAttempts !== undefined)) this.save();
+    return result.outcome;
   }
 
   public updateBookingStatus(id: string, status: Booking['status']): Booking {
@@ -273,6 +434,13 @@ export class JsonDataStore implements DataStore {
   // --- Reviews ---
   public getSalonReviews(salonId: string): Review[] {
     return this.reviews.filter(r => r.salonId === salonId);
+  }
+
+  public listSalonReviews(salonId: string, params: PageParams): Paginated<Review> {
+    const ordered = this.reviews
+      .filter(r => r.salonId === salonId)
+      .sort((a, b) => b.date.localeCompare(a.date));
+    return slicePage(ordered, params);
   }
 
   public createReview(review: Review): Review {
@@ -297,6 +465,11 @@ export class JsonDataStore implements DataStore {
   // --- Users & Authentication ---
   public getUsers(): StoredUser[] {
     return this.users;
+  }
+
+  public listUsers(params: PageParams): Paginated<StoredUser> {
+    const ordered = [...this.users].sort((a, b) => a.id.localeCompare(b.id));
+    return slicePage(ordered, params);
   }
 
   public getUserById(id: string): StoredUser | undefined {

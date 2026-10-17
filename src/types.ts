@@ -80,6 +80,8 @@ export interface Booking {
   notes?: string;
   status: BookingStatus;
   createdAt: string;
+  /** True when the contact email was verified (own account email or OTP). */
+  contactVerified?: boolean;
   isLocationEvent?: boolean;
   eventVenue?: string;
   travelSurcharge?: number;

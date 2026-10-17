@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { ArrowLeft, Star, MapPin, Clock, Calendar, MessageSquare, Sparkles, Loader2, Car, Calculator } from 'lucide-react';
 import { Salon, Service, Review } from '../types';
-import { apiClient } from '../lib/api';
+import { apiClient, type PaginatedResponse } from '../lib/api';
 
 interface SalonDetailsProps {
   salon: Salon;
@@ -72,8 +72,8 @@ export default function SalonDetails({ salon, onBack, onInitiateBooking }: Salon
     const fetchReviews = async () => {
       setLoadingReviews(true);
       try {
-        const data = await apiClient.get<Review[]>(`/reviews/${salon.id}`);
-        setReviews(data);
+        const data = await apiClient.get<PaginatedResponse<Review> | Review[]>(`/reviews/${salon.id}`);
+        setReviews(Array.isArray(data) ? data : data.data);
       } catch (err) {
         console.error('Failed to load reviews', err);
       } finally {

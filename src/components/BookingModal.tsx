@@ -57,6 +57,13 @@ export default function BookingModal({
   const [scheduleErrors, setScheduleErrors] = useState<{ staff?: string; date?: string; time?: string }>({});
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [errorFocusVersion, setErrorFocusVersion] = useState(0);
+  // Guest email verification (FR-001): appears when the API answers
+  // 422 contact_unverified; a code is requested automatically, the guest
+  // enters it, and the next submit carries it as contactCode.
+  const [verificationNeeded, setVerificationNeeded] = useState(false);
+  const [verificationCode, setVerificationCode] = useState('');
+  const [verificationSent, setVerificationSent] = useState(false);
+  const [verificationBusy, setVerificationBusy] = useState(false);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const errorSummaryRef = useRef<HTMLDivElement>(null);
@@ -194,15 +201,47 @@ export default function BookingModal({
     setStep(3);
   };
 
+  const requestVerificationCode = async (email: string, resend = false) => {
+    if (!email) return false;
+    setVerificationBusy(true);
+    try {
+      await apiClient.post('/bookings/verify-request', { contact: email });
+      setVerificationSent(true);
+      setSubmitError(resend ? null : 'Enter the six-digit code we just emailed you to confirm your address.');
+      return true;
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : 'We could not send a verification email. Try again shortly.');
+      return false;
+    } finally {
+      setVerificationBusy(false);
+    }
+  };
+
   const onSubmit = async () => {
     if (step !== 3 || !reviewedRequest || submitting.current || !validateSchedule()) return;
     submitting.current = true;
     setSubmitError(null);
     let result: Booking;
     try {
-      result = await createBooking.mutateAsync(reviewedRequest);
+      result = await createBooking.mutateAsync({
+        ...reviewedRequest,
+        contactCode: verificationCode.trim() ? verificationCode.trim() : undefined,
+      } as BookingRequest);
     } catch (error) {
-      setSubmitError(`We couldn't send your booking request. ${error instanceof Error ? error.message : 'Please check your connection.'} Review the details or try again.`);
+      const code = (error as { code?: string })?.code;
+      if (code === 'contact_unverified' || code === 'invalid_contact') {
+        setVerificationNeeded(true);
+        if (!verificationSent) {
+          const email = (reviewedRequest as { clientEmail?: string }).clientEmail ?? '';
+          void requestVerificationCode(email);
+        } else {
+          setSubmitError('Enter the six-digit verification code we emailed you, then try again.');
+        }
+      } else if (code === 'invalid_token') {
+        setSubmitError(`${error instanceof Error ? error.message : 'Your session has expired.'}`);
+      } else {
+        setSubmitError(`We couldn't send your booking request. ${error instanceof Error ? error.message : 'Please check your connection.'} Review the details or try again.`);
+      }
       focusErrors();
       return;
     } finally {
@@ -701,6 +740,42 @@ export default function BookingModal({
                   onEdit={() => { setSubmitError(null); setStep(2); }}
                   onSubmit={onSubmit}
                 />
+                {verificationNeeded && (
+                  <div className="mt-4 space-y-2 rounded-xl border border-warning-border/40 bg-warning-surface/10 p-4 text-sm">
+                    <p className="font-medium text-fg">
+                      {verificationSent ? 'Enter your verification code' : 'Verify your email address'}
+                    </p>
+                    <p className="text-xs text-fg-muted">
+                      {verificationSent
+                        ? 'Check the inbox for the six-digit code we sent, enter it below, then submit again.'
+                        : 'We need to confirm this email address is yours before the booking is created.'}
+                    </p>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        autoComplete="one-time-code"
+                        maxLength={6}
+                        value={verificationCode}
+                        onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, ''))}
+                        placeholder="6-digit code"
+                        aria-label="Email verification code"
+                        className="w-36 rounded-lg border border-accent-soft bg-surface px-3 py-2 text-sm tracking-[0.3em] text-fg focus:border-accent-strong focus:outline-none"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const email = (reviewedRequest as { clientEmail?: string }).clientEmail ?? '';
+                          void requestVerificationCode(email, verificationSent);
+                        }}
+                        disabled={verificationBusy}
+                        className="rounded-lg border border-line bg-elevated px-3 py-2 text-xs font-semibold text-fg transition-colors hover:border-accent-soft disabled:opacity-50"
+                      >
+                        {verificationBusy ? 'Sending…' : verificationSent ? 'Resend code' : 'Send code'}
+                      </button>
+                    </div>
+                  </div>
+                )}
               </motion.div>
             )}
 

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { randomUUID } from 'node:crypto';
 import { FirestoreStore } from './firestore-store.ts';
+import { SlotConflictError } from './data-store.ts';
 import type { Booking, Salon } from '../src/types.ts';
 
 const emulatorEnabled = Boolean(process.env.FIRESTORE_EMULATOR_HOST && process.env.FIREBASE_PROJECT_ID);
@@ -54,6 +55,38 @@ describe.skipIf(!emulatorEnabled)('FirestoreStore emulator integration', () => {
     expect((await store.getUserByEmail(`FIRESTORE-${id}@EXAMPLE.TEST`))?.id).toBe(id);
     await expect(store.createUser({ ...created, id: `${id}-duplicate`, password: 'other' }))
       .rejects.toThrow('Email already registered');
+  });
+
+  it('rejects overlapping slot creates and replays idempotent retries (AC-005/AC-007/AC-008 store level)', async () => {
+    const store = new FirestoreStore();
+    const db = await (store as unknown as { dbPromise: Promise<import('firebase-admin/firestore').Firestore> }).dbPromise;
+    const run = Date.now();
+    const slot = { salonId: `conflict-salon-${run}`, staffId: 'staff-x', date: '2026-11-10', time: '10:00 AM' };
+    const make = (suffix: string): Booking => ({
+      id: `book-${run}-${suffix}`,
+      salonId: slot.salonId, salonName: 'S', salonAddress: 'A',
+      serviceId: 'svc', serviceName: 'S', servicePrice: 10, serviceDuration: 60,
+      staffId: slot.staffId, staffName: 'T', date: slot.date, time: slot.time,
+      clientName: 'C', clientEmail: `${suffix}@example.test`, clientPhone: '',
+      status: 'pending', createdAt: new Date().toISOString(),
+    });
+    const idem = { key: `k-${run}`, scope: 'guest:x@example.test' };
+    try {
+      const first = await store.createBookingIdempotent(make('aaaaaa'), idem);
+      expect(first.replayed).toBe(false);
+      const replay = await store.createBookingIdempotent(make('bbbbbb'), idem);
+      expect(replay.replayed).toBe(true);
+      expect(replay.booking.id).toBe(first.booking.id);
+      await expect(
+        store.createBookingIdempotent(make('cccccc'), { key: `k2-${run}`, scope: 'guest:y@example.test' }),
+      ).rejects.toBeInstanceOf(SlotConflictError);
+      // The conflicting attempt must not have left a row behind.
+      const rows = await db.collection('bookings').where('salonId', '==', slot.salonId).get();
+      expect(rows.docs).toHaveLength(1);
+    } finally {
+      const snap = await db.collection('bookings').where('salonId', '==', slot.salonId).get();
+      await Promise.all(snap.docs.map(doc => doc.ref.delete()));
+    }
   });
 
   it('updates review aggregates transactionally', async () => {

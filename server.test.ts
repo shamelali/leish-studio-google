@@ -16,6 +16,7 @@ import request from 'supertest';
 import fs from 'fs';
 import bcrypt from 'bcrypt';
 import type { BookingStatus } from './src/types.ts';
+import { hashCode } from './server/contact-verification.ts';
 
 const TEST_DB = `/tmp/omnirush/leish-server-test-${process.pid}-${Date.now()}.json`;
 
@@ -24,6 +25,9 @@ process.env.LEISH_DB_PATH = TEST_DB;
 process.env.STORE_BACKEND = 'json';
 process.env.LEISH_DISABLE_RATE_LIMIT = '1';
 process.env.GEMINI_API_KEY = '';
+// Legacy booking tests run with guest verification disabled; the dedicated
+// verification describe re-enables it and restores this after.
+process.env.LEISH_REQUIRE_CONTACT_VERIFICATION = '0';
 
 let app: any;
 let stripJsonFences: (text: string) => string;
@@ -68,11 +72,19 @@ afterAll(() => {
   fs.rmSync(TEST_DB, { force: true });
 });
 
+// Each call generates a fresh date so repeated validBooking() creates never
+// collide with the frozen slot-conflict rule (FR-004) — tests that need a
+// specific slot pass an explicit `date`/`time` override. Generated dates
+// start in 2027, away from every explicitly dated fixture (2026-11-xx).
+let bookingDateCounter = 0;
+const nextBookingDate = () =>
+  new Date(Date.UTC(2027, 0, 5 + bookingDateCounter++)).toISOString().slice(0, 10);
+
 const validBooking = () => ({
   salonId: 'salon-1',
   serviceId: 'serv-1-1',
   staffId: 'staff-1-1',
-  date: '2026-10-20',
+  date: nextBookingDate(),
   time: '10:30 AM',
   clientName: 'Regression Test',
   clientEmail: 'regression@leish.test',
@@ -88,21 +100,265 @@ const validMoodboard = () => ({
 });
 
 describe('GET /api/salons', () => {
-  it('returns the seeded catalog', async () => {
+  it('returns the seeded catalog in a paginated envelope', async () => {
     const res = await request(app).get('/api/salons');
     expect(res.status).toBe(200);
-    expect(Array.isArray(res.body)).toBe(true);
-    expect(res.body.some((s: any) => s.id === 'salon-1')).toBe(true);
+    expect(Array.isArray(res.body.data)).toBe(true);
+    expect(res.body.pagination).toMatchObject({ page: 1, limit: 20 });
+    expect(typeof res.body.pagination.total).toBe('number');
+    expect(res.body.data.some((s: any) => s.id === 'salon-1')).toBe(true);
+  });
+});
+
+describe('list pagination contract (FR-006/FR-007)', () => {
+  let adminToken = '';
+  let providerToken = '';
+
+  beforeAll(async () => {
+    const admin = await request(app)
+      .post('/api/auth/login')
+      .send({ email: 'shamel@leish.my', password: 'lindan95' });
+    expect(admin.status).toBe(200);
+    adminToken = admin.body.token;
+    const provider = await request(app)
+      .post('/api/auth/login')
+      .send({ email: 'aina@leish.test', password: 'password123' });
+    expect(provider.status).toBe(200);
+    providerToken = provider.body.token;
+
+    // Seed past one default page (20) so pagination math is observable.
+    for (let i = 0; i < 22; i++) {
+      const res = await request(app)
+        .post('/api/salons')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({
+          name: `Pagination Probe Atelier ${i}`,
+          category: 'soft-glam',
+          location: 'Klang Valley',
+          address: `${100 + i} Probe Lane`,
+        });
+      expect(res.status).toBe(201);
+    }
+  });
+
+  it('returns envelope defaults on all four list endpoints', async () => {
+    const salons = await request(app).get('/api/salons');
+    expect(salons.status).toBe(200);
+    expect(salons.body.pagination).toMatchObject({ page: 1, limit: 20 });
+    expect(salons.body.data.length).toBeLessThanOrEqual(20);
+
+    const bookings = await request(app)
+      .get('/api/bookings')
+      .set('Authorization', `Bearer ${providerToken}`);
+    expect(bookings.status).toBe(200);
+    expect(bookings.body.pagination).toMatchObject({ page: 1, limit: 20 });
+    expect(Array.isArray(bookings.body.data)).toBe(true);
+
+    const users = await request(app)
+      .get('/api/users')
+      .set('Authorization', `Bearer ${adminToken}`);
+    expect(users.status).toBe(200);
+    expect(users.body.pagination).toMatchObject({ page: 1, limit: 20 });
+    for (const user of users.body.data) expect(user).not.toHaveProperty('password');
+
+    const reviews = await request(app).get('/api/reviews/salon-1');
+    expect(reviews.status).toBe(200);
+    expect(reviews.body.pagination).toMatchObject({ page: 1, limit: 20 });
+    expect(Array.isArray(reviews.body.data)).toBe(true);
+  });
+
+  it('honors page/limit and reports total+pages consistently', async () => {
+    const page1 = await request(app).get('/api/salons?page=1&limit=5');
+    const page2 = await request(app).get('/api/salons?page=2&limit=5');
+    expect(page1.status).toBe(200);
+    expect(page2.status).toBe(200);
+    expect(page1.body.data.length).toBe(5);
+    expect(page2.body.data.length).toBe(5);
+    expect(page1.body.pagination).toMatchObject({ page: 1, limit: 5 });
+    expect(page2.body.pagination.page).toBe(2);
+    expect(page1.body.data.map((s: any) => s.id)).not.toEqual(page2.body.data.map((s: any) => s.id));
+    const total = page1.body.pagination.total;
+    expect(page1.body.pagination.pages).toBe(Math.ceil(total / 5));
+    expect(page2.body.pagination.total).toBe(total);
+  });
+
+  it('rejects limit over the 100 cap, zero pages, and non-numeric values', async () => {
+    expect((await request(app).get('/api/salons?limit=1000')).status).toBe(400);
+    expect((await request(app).get('/api/salons?limit=abc')).status).toBe(400);
+    expect((await request(app).get('/api/salons?page=0')).status).toBe(400);
+  });
+
+  it('preserves role scoping and admin filters under pagination', async () => {
+    const scoped = await request(app)
+      .get('/api/bookings?email=mei@leish.test&page=1&limit=5')
+      .set('Authorization', `Bearer ${adminToken}`);
+    expect(scoped.status).toBe(200);
+    expect(scoped.body.pagination).toMatchObject({ page: 1, limit: 5 });
+    for (const b of scoped.body.data) {
+      expect(b.clientEmail.toLowerCase()).toBe('mei@leish.test');
+    }
+
+    const nosalon = await request(app).post('/api/auth/register').send({
+      name: 'Pagination Unlinked',
+      email: `pagi-nosalon-${Date.now()}@leish.test`,
+      password: 'Sup3rSecret!',
+      role: 'provider',
+    });
+    expect(nosalon.status).toBe(201);
+    const forbidden = await request(app)
+      .get('/api/bookings?page=1&limit=5')
+      .set('Authorization', `Bearer ${nosalon.body.token}`);
+    expect(forbidden.status).toBe(403);
+  });
+});
+
+describe('booking slot conflicts + idempotency (FR-004/FR-005)', () => {
+  let adminToken = '';
+  let salonProviderToken = '';
+
+  beforeAll(async () => {
+    const admin = await request(app)
+      .post('/api/auth/login')
+      .send({ email: 'shamel@leish.my', password: 'lindan95' });
+    expect(admin.status).toBe(200);
+    adminToken = admin.body.token;
+    const provider = await request(app)
+      .post('/api/auth/login')
+      .send({ email: 'aina@leish.test', password: 'password123' });
+    expect(provider.status).toBe(200);
+    salonProviderToken = provider.body.token;
+  });
+
+  const at = (over: Record<string, unknown> = {}) => ({ ...validBooking(), ...over });
+  const slotRows = async (filter: Record<string, string>) => {
+    const query = new URLSearchParams(filter).toString();
+    const list = await request(app)
+      .get(`/api/bookings?${query}`)
+      .set('Authorization', `Bearer ${adminToken}`);
+    expect(list.status).toBe(200);
+    return list.body.data;
+  };
+
+  it('rejects a second booking for the exact same slot (AC-005)', async () => {
+    const first = await request(app)
+      .post('/api/bookings')
+      .send(at({ date: '2026-11-02', time: '10:30 AM', clientEmail: 'slot-a@leish.test' }));
+    expect(first.status).toBe(201);
+    const second = await request(app)
+      .post('/api/bookings')
+      .send(at({ date: '2026-11-02', time: '10:30 AM', clientEmail: 'slot-b@leish.test', clientName: 'Other Client' }));
+    expect(second.status).toBe(409);
+    expect(second.body.code).toBe('slot_conflict');
+    const rows = (await slotRows({ salonId: 'salon-1' })).filter(
+      (b: any) => b.staffId === 'staff-1-1' && b.date === '2026-11-02' && b.time === '10:30 AM',
+    );
+    expect(rows).toHaveLength(1);
+  });
+
+  it('flags overlapping windows but allows back-to-back (AC-006)', async () => {
+    // serv-1-1 is 120 min: 10:00 AM → 12:00 PM.
+    const anchor = await request(app)
+      .post('/api/bookings')
+      .send(at({ date: '2026-11-03', time: '10:00 AM', clientEmail: 'slot-c@leish.test' }));
+    expect(anchor.status).toBe(201);
+    // serv-1-2 (75 min) at 11:00 AM → 11:00-12:15, inside the anchor.
+    const overlap = await request(app)
+      .post('/api/bookings')
+      .send(at({ date: '2026-11-03', time: '11:00 AM', serviceId: 'serv-1-2', clientEmail: 'slot-d@leish.test' }));
+    expect(overlap.status).toBe(409);
+    expect(overlap.body.code).toBe('slot_conflict');
+    // 12:00 PM starts exactly when the anchor ends — back-to-back is allowed.
+    const adjacent = await request(app)
+      .post('/api/bookings')
+      .send(at({ date: '2026-11-03', time: '12:00 PM', serviceId: 'serv-1-2', clientEmail: 'slot-e@leish.test' }));
+    expect(adjacent.status).toBe(201);
+  });
+
+  it('cancelled bookings free the slot (AC-014)', async () => {
+    const original = await request(app)
+      .post('/api/bookings')
+      .send(at({ date: '2026-11-04', time: '2:00 PM', clientEmail: 'slot-f@leish.test' }));
+    expect(original.status).toBe(201);
+    const cancel = await request(app)
+      .patch(`/api/bookings/${original.body.id}/status`)
+      .set('Authorization', `Bearer ${salonProviderToken}`)
+      .send({ status: 'cancelled' });
+    expect(cancel.status).toBe(200);
+    const rebook = await request(app)
+      .post('/api/bookings')
+      .send(at({ date: '2026-11-04', time: '2:00 PM', clientEmail: 'slot-g@leish.test' }));
+    expect(rebook.status).toBe(201);
+  });
+
+  it('replays the original booking for a repeated Idempotency-Key (AC-007)', async () => {
+    const key = `test-key-${Date.now()}`;
+    const payload = at({ date: '2026-11-05', time: '9:00 AM', clientEmail: 'idem-a@leish.test' });
+    const first = await request(app).post('/api/bookings').set('Idempotency-Key', key).send(payload);
+    expect(first.status).toBe(201);
+    const replay = await request(app).post('/api/bookings').set('Idempotency-Key', key).send(payload);
+    expect(replay.status).toBe(200);
+    expect(replay.body.id).toBe(first.body.id);
+    const rows = (await slotRows({ email: 'idem-a@leish.test' })).filter((b: any) => b.date === '2026-11-05');
+    expect(rows).toHaveLength(1);
+  });
+
+  it('deduplicates a headerless double-submit via the payload hash (AC-007)', async () => {
+    const payload = at({ date: '2026-11-06', time: '9:30 AM', clientEmail: 'idem-b@leish.test' });
+    const first = await request(app).post('/api/bookings').send(payload);
+    expect(first.status).toBe(201);
+    const replay = await request(app).post('/api/bookings').send(payload);
+    expect(replay.status).toBe(200);
+    expect(replay.body.id).toBe(first.body.id);
+  });
+
+  it('scopes idempotency keys per contact, so the same key never replays another guest (BR-3)', async () => {
+    const key = `shared-key-${Date.now()}`;
+    const first = await request(app)
+      .post('/api/bookings')
+      .set('Idempotency-Key', key)
+      .send(at({ date: '2026-11-07', time: '1:00 PM', clientEmail: 'idem-c@leish.test' }));
+    expect(first.status).toBe(201);
+    // Same header key, different guest + different staff (no conflict either).
+    const other = await request(app)
+      .post('/api/bookings')
+      .set('Idempotency-Key', key)
+      .send(at({
+        date: '2026-11-07',
+        time: '1:00 PM',
+        staffId: 'staff-1-2',
+        serviceId: 'serv-1-2',
+        clientEmail: 'idem-d@leish.test',
+      }));
+    expect(other.status).toBe(201);
+    expect(other.body.id).not.toBe(first.body.id);
+  });
+
+  it('races concurrent same-slot creates into exactly one booking (AC-008)', async () => {
+    const attempts = [0, 1, 2, 3, 4].map(i =>
+      request(app)
+        .post('/api/bookings')
+        .set('Idempotency-Key', `race-${Date.now()}-${i}`)
+        .send(at({ date: '2026-11-08', time: '3:00 PM', clientEmail: `race-${i}@leish.test` })),
+    );
+    const results = await Promise.all(attempts);
+    const created = results.filter(r => r.status === 201);
+    const conflicted = results.filter(r => r.status === 409);
+    expect(created).toHaveLength(1);
+    expect(conflicted.length).toBe(4);
+    const ids = new Set(results.map(r => r.body?.id).filter(Boolean));
+    expect(ids.size).toBe(1);
   });
 });
 
 describe('POST /api/bookings (defect 0.1)', () => {
   it('creates a booking with a YYYY-MM-DD date', async () => {
-    const res = await request(app).post('/api/bookings').send(validBooking());
+    const payload = validBooking();
+    const res = await request(app).post('/api/bookings').send(payload);
 
     expect(res.status).toBe(201);
     expect(res.body.status).toBe('pending');
-    expect(res.body.date).toBe('2026-10-20');
+    // The server must preserve the calendar date string exactly as sent.
+    expect(res.body.date).toBe(payload.date);
     expect(res.body.salonName).toBeTruthy();
     bookingId = res.body.id;
   });
@@ -173,7 +429,7 @@ describe('PATCH /api/bookings/:id/status (auth)', () => {
       .get('/api/bookings')
       .set('Authorization', `Bearer ${providerToken}`);
     expect(res.status).toBe(200);
-    const found = res.body.find((b: any) => b.id === bookingId);
+    const found = res.body.data.find((b: any) => b.id === bookingId);
     expect(found).toBeTruthy();
     expect(found.status).toBe('confirmed');
   });
@@ -349,11 +605,11 @@ describe('TR-7 authorization matrix (Phase 1)', () => {
         .get('/api/bookings?email=crosstenant@leish.test')
         .set('Authorization', `Bearer ${clientToken}`);
       expect(res.status).toBe(200);
-      expect(res.body.length).toBeGreaterThan(0);
-      for (const b of res.body) {
+      expect(res.body.data.length).toBeGreaterThan(0);
+      for (const b of res.body.data) {
         expect(b.clientEmail.toLowerCase()).toBe('mei@leish.test');
       }
-      const ids = res.body.map((b: any) => b.id);
+      const ids = res.body.data.map((b: any) => b.id);
       expect(ids).toContain(clientBookingId);
       expect(ids).not.toContain(otherSalonBookingId);
     });
@@ -363,9 +619,9 @@ describe('TR-7 authorization matrix (Phase 1)', () => {
         .get('/api/bookings?salonId=salon-2')
         .set('Authorization', `Bearer ${providerToken}`);
       expect(res.status).toBe(200);
-      expect(res.body.length).toBeGreaterThan(0);
-      for (const b of res.body) expect(b.salonId).toBe('salon-1');
-      const ids = res.body.map((b: any) => b.id);
+      expect(res.body.data.length).toBeGreaterThan(0);
+      for (const b of res.body.data) expect(b.salonId).toBe('salon-1');
+      const ids = res.body.data.map((b: any) => b.id);
       expect(ids).not.toContain(otherSalonBookingId);
     });
 
@@ -374,7 +630,7 @@ describe('TR-7 authorization matrix (Phase 1)', () => {
         .get('/api/bookings')
         .set('Authorization', `Bearer ${otherProviderToken}`);
       expect(res.status).toBe(200);
-      const ids = res.body.map((b: any) => b.id);
+      const ids = res.body.data.map((b: any) => b.id);
       expect(ids).toContain(otherSalonBookingId);
       expect(ids).not.toContain(clientBookingId);
     });
@@ -671,7 +927,7 @@ describe('TR-7 authorization matrix (Phase 1)', () => {
       expect(posted.status).toBe(201);
       const res = await request(app).get('/api/reviews/salon-1');
       expect(res.status).toBe(200);
-      expect(res.body.some((review: any) => review.id === posted.body.id)).toBe(true);
+      expect(res.body.data.some((review: any) => review.id === posted.body.id)).toBe(true);
     });
 
     it('allows only one review for the same completed booking and reviewer', async () => {
@@ -1137,7 +1393,7 @@ describe('Vercel rewrite envelope (GET /api/[...path]?...path=…)', () => {
   it('routes single-segment API paths carried in the ...path param', async () => {
     const res = await request(app).get('/api/[...path]').query({ '...path': 'salons' });
     expect(res.status).toBe(200);
-    expect(Array.isArray(res.body)).toBe(true);
+    expect(Array.isArray(res.body.data)).toBe(true);
   });
 
   it('routes multi-segment paths and preserves the remaining query string', async () => {
@@ -1236,9 +1492,9 @@ describe('admin users panel (GET+PATCH /api/users)', () => {
   it('lists every user sanitized as admin', async () => {
     const res = await authed(adminToken).get('/api/users');
     expect(res.status).toBe(200);
-    expect(res.body.length).toBeGreaterThan(0);
-    expect(res.body.some((u: any) => u.email === 'shamel@leish.my' && u.role === 'admin')).toBe(true);
-    for (const user of res.body) expect(user).not.toHaveProperty('password');
+    expect(res.body.data.length).toBeGreaterThan(0);
+    expect(res.body.data.some((u: any) => u.email === 'shamel@leish.my' && u.role === 'admin')).toBe(true);
+    for (const user of res.body.data) expect(user).not.toHaveProperty('password');
   });
 
   it('403s providers and 401s anonymous callers', async () => {
@@ -1274,7 +1530,7 @@ describe('admin users panel (GET+PATCH /api/users)', () => {
     expect((await authed(adminToken).patch(`/api/users/${reg.body.user.id}`).send({ role: 'superadmin' })).status).toBe(400);
 
     const me = await authed(adminToken).get('/api/users');
-    const selfId = me.body.find((u: any) => u.email === 'shamel@leish.my').id;
+    const selfId = me.body.data.find((u: any) => u.email === 'shamel@leish.my').id;
     expect((await authed(adminToken).patch(`/api/users/${selfId}`).send({ role: 'client' })).status).toBe(403);
   });
 
@@ -1294,13 +1550,13 @@ describe('admin users panel (GET+PATCH /api/users)', () => {
     expect((await authed(adminToken).delete(`/api/users/${id}`)).status).toBe(404);
 
     const me = await authed(adminToken).get('/api/users');
-    const selfId = me.body.find((u: any) => u.email === 'shamel@leish.my').id;
+    const selfId = me.body.data.find((u: any) => u.email === 'shamel@leish.my').id;
     expect((await authed(adminToken).delete(`/api/users/${selfId}`)).status).toBe(403);
   });
 
   it('refuses to delete the last administrator and accounts with bookings', async () => {
     const me = await authed(adminToken).get('/api/users');
-    const selfId = me.body.find((u: any) => u.email === 'shamel@leish.my').id;
+    const selfId = me.body.data.find((u: any) => u.email === 'shamel@leish.my').id;
     expect((await authed(adminToken).delete(`/api/users/${selfId}`)).status).toBe(403);
 
     const reg = await request(app).post('/api/auth/register').send({
@@ -1309,5 +1565,155 @@ describe('admin users panel (GET+PATCH /api/users)', () => {
     const made = await request(app).post('/api/bookings').send({ ...validBooking(), clientEmail: reg.body.user.email });
     expect(made.status).toBe(201);
     expect((await authed(adminToken).delete(`/api/users/${reg.body.user.id}`)).status).toBe(409);
+  });
+});
+
+describe('booking contact verification (FR-001/FR-002/FR-003)', () => {
+  let fetchSpy: ReturnType<typeof vi.fn>;
+  let lastVerificationEmail: { textContent?: string } | undefined;
+
+  const issueCode = async (contact: string): Promise<string> => {
+    const res = await request(app).post('/api/bookings/verify-request').send({ contact });
+    expect(res.status).toBe(202);
+    const code = /code is (\d{6})/.exec(lastVerificationEmail?.textContent ?? '')?.[1];
+    expect(code).toBeTruthy();
+    return code as string;
+  };
+
+  beforeAll(async () => {
+    // Enable verification for this describe; restore legacy mode afterwards.
+    delete process.env.LEISH_REQUIRE_CONTACT_VERIFICATION;
+    process.env.BREVO_API_KEY = 'test-key';
+    lastVerificationEmail = undefined;
+    fetchSpy = vi.fn(async (_url: unknown, init?: { body?: string }) => {
+      lastVerificationEmail = JSON.parse(init?.body ?? '{}');
+      return { ok: true };
+    });
+    vi.stubGlobal('fetch', fetchSpy);
+  });
+
+  afterAll(() => {
+    vi.unstubAllGlobals();
+    delete process.env.BREVO_API_KEY;
+    process.env.LEISH_REQUIRE_CONTACT_VERIFICATION = '0';
+  });
+
+  it('rejects a garbage Bearer token with 401 and persists nothing (AC-001)', async () => {
+    const before = testStore.getBookings().length;
+    const res = await request(app)
+      .post('/api/bookings')
+      .set('Authorization', 'Bearer garbage-token')
+      .send(validBooking());
+    expect(res.status).toBe(401);
+    expect(res.body.code).toBe('invalid_token');
+    expect(testStore.getBookings().length).toBe(before);
+  });
+
+  it('binds authenticated bookings to the account email (AC-002)', async () => {
+    const emailA = `autha-${Date.now()}@leish.test`;
+    const emailB = `authb-${Date.now()}@leish.test`;
+    const regA = await request(app).post('/api/auth/register').send({ name: 'Auth A', email: emailA, password: 'Sup3rSecret!', role: 'client' });
+    const regB = await request(app).post('/api/auth/register').send({ name: 'Auth B', email: emailB, password: 'Sup3rSecret!', role: 'client' });
+    expect(regA.status).toBe(201);
+    expect(regB.status).toBe(201);
+
+    // Own account email → no code needed, booking attributed to the user.
+    const own = await request(app)
+      .post('/api/bookings')
+      .set('Authorization', `Bearer ${regA.body.token}`)
+      .send({ ...validBooking(), clientEmail: emailA });
+    expect(own.status).toBe(201);
+    expect(own.body.contactVerified).toBe(true);
+    expect(own.body.clientId).toBe(regA.body.user.id);
+
+    // Someone else's email without a code → 422, nothing persisted.
+    const before = testStore.getBookings().length;
+    const other = await request(app)
+      .post('/api/bookings')
+      .set('Authorization', `Bearer ${regA.body.token}`)
+      .send({ ...validBooking(), clientEmail: emailB });
+    expect(other.status).toBe(422);
+    expect(other.body.code).toBe('contact_unverified');
+    expect(testStore.getBookings().length).toBe(before);
+  });
+
+  it('guest verifies email then books; unverified guest is rejected (AC-003)', async () => {
+    const contact = `guest-v-${Date.now()}@leish.test`;
+    const payload = { ...validBooking(), clientEmail: contact };
+
+    const before = testStore.getBookings().length;
+    const unverified = await request(app).post('/api/bookings').send(payload);
+    expect(unverified.status).toBe(422);
+    expect(unverified.body.code).toBe('contact_unverified');
+    expect(testStore.getBookings().length).toBe(before);
+
+    const issued = await request(app).post('/api/bookings/verify-request').send({ contact });
+    expect(issued.status).toBe(202);
+    const code = /code is (\d{6})/.exec(lastVerificationEmail?.textContent ?? '')?.[1];
+    expect(code).toBeTruthy();
+
+    const verified = await request(app)
+      .post('/api/bookings')
+      .send({ ...payload, contactCode: code });
+    expect(verified.status).toBe(201);
+    expect(verified.body.contactVerified).toBe(true);
+  });
+
+  it('rejects non-email guest contacts on both endpoints without emailing (AC-004)', async () => {
+    const beforeRows = testStore.getBookings().length;
+    const beforeSends = fetchSpy.mock.calls.length;
+
+    const vr = await request(app).post('/api/bookings/verify-request').send({ contact: 'client' });
+    expect(vr.status).toBe(422);
+    const create = await request(app).post('/api/bookings').send({ ...validBooking(), clientEmail: 'client' });
+    expect(create.status).toBe(422);
+
+    expect(testStore.getBookings().length).toBe(beforeRows);
+    expect(fetchSpy.mock.calls.length).toBe(beforeSends);
+  });
+
+  it('codes are single-use, expire, and lock out after five failures (AC-015)', async () => {
+    // Single-use: a consumed code cannot be replayed.
+    const contact1 = `single-${Date.now()}@leish.test`;
+    const code1 = await issueCode(contact1);
+    const ok = await request(app)
+      .post('/api/bookings')
+      .send({ ...validBooking(), clientEmail: contact1, contactCode: code1 });
+    expect(ok.status).toBe(201);
+    const reuse = await request(app)
+      .post('/api/bookings')
+      .send({ ...validBooking(), clientEmail: contact1, contactCode: code1 });
+    expect(reuse.status).toBe(422);
+    expect(reuse.body.code).toBe('contact_unverified');
+
+    // Expiry: a record older than 10 minutes is rejected even with the right code.
+    const contact2 = `expired-${Date.now()}@leish.test`;
+    const expiredCode = '123456';
+    testStore.saveContactVerification({
+      contact: contact2,
+      codeHash: hashCode(contact2, expiredCode),
+      expiresAt: new Date(Date.now() - 60_000).toISOString(),
+      attempts: 0,
+    });
+    const expired = await request(app)
+      .post('/api/bookings')
+      .send({ ...validBooking(), clientEmail: contact2, contactCode: expiredCode });
+    expect(expired.status).toBe(422);
+    expect(expired.body.code).toBe('contact_unverified');
+
+    // Lockout: five wrong attempts invalidate the record; the correct code fails too.
+    const contact3 = `locked-${Date.now()}@leish.test`;
+    const code3 = await issueCode(contact3);
+    for (let i = 0; i < 5; i++) {
+      const wrong = await request(app)
+        .post('/api/bookings')
+        .send({ ...validBooking(), clientEmail: contact3, contactCode: '000000' });
+      expect(wrong.status).toBe(422);
+    }
+    const afterLock = await request(app)
+      .post('/api/bookings')
+      .send({ ...validBooking(), clientEmail: contact3, contactCode: code3 });
+    expect(afterLock.status).toBe(422);
+    expect(afterLock.body.code).toBe('contact_unverified');
   });
 });
