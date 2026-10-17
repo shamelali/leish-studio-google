@@ -1,0 +1,63 @@
+{
+  "mcpServers": {
+    "supabase": {
+      "command": "npx",
+      "args": ["-y", "@supabase/mcp-server-supabase"],
+      "env": {
+        "SUPABASE_URL": "https://rnlgwckkpjvtmtsowkrj.supabase.co",
+        "SUPABASE_SERVICE_ROLE_KEY": "${SUPABASE_SERVICE_ROLE_KEY}",
+        "SUPABASE_ACCESS_TOKEN": "${SUPABASE_ACCESS_TOKEN}"
+      },
+      "description": "Supabase database management - RLS, tables, functions, observability"
+    },
+    "vercel": {
+      "command": "npx",
+      "args": ["-y", "@vercel/mcp-server"],
+      "env": {
+        "VERCEL_TOKEN": "${VERCEL_TOKEN}"
+      },
+      "description": "Vercel project management - deployments, env vars, domains"
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@github/mcp-server-github"],
+      "env": {
+        "GITHUB_TOKEN": "${GITHUB_TOKEN}"
+      },
+      "description": "GitHub integration - issues, PRs, repo management"
+    },
+    "cloudflare": {
+      "command": "npx",
+      "args": ["-y", "@cloudflare/mcp-server-cloudflare"],
+      "env": {
+        "CLOUDFLARE_API_TOKEN": "${CLOUDFLARE_API_TOKEN}"
+      },
+      "description": "Cloudflare Radar, Pages, Workers management"
+    },
+    "sentry": {
+      "command": "npx",
+      "args": ["-y", "@sentry/mcp-server"],
+      "env": {
+        "SENTRY_AUTH_TOKEN": "${SENTRY_AUTH_TOKEN}"
+      },
+      "description": "Sentry error tracking and performance monitoring"
+    },
+    "brevo": {
+      "command": "npx",
+      "args": ["-y", "@brevo/mcp-server"],
+      "env": {
+        "BREVO_API_KEY": "${BREVO_API_KEY}"
+      },
+      "description": "Brevo email marketing and transactional email"
+    },
+    "opencode": {
+      "command": "npx",
+      "args": ["-y", "@opencode/mcp-server"],
+      "description": "OpenCode session management and skills"
+    }
+  },
+  "instructions": {
+    "setup": "Run 'npm install -g @supabase/mcp-server-supabase @vercel/mcp-server @github/mcp-server-github @cloudflare/mcp-server-cloudflare @sentry/mcp-server @brevo/mcp-server @opencode/mcp-server' to install all MCP servers",
+    "env_vars": "Set SUPABASE_SERVICE_ROLE_KEY, SUPABASE_ACCESS_TOKEN, VERCEL_TOKEN, GITHUB_TOKEN, CLOUDFLARE_API_TOKEN, SENTRY_AUTH_TOKEN, BREVO_API_KEY in your environment"
+  }
+}

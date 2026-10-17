@@ -10,6 +10,8 @@
     "build": "tsc --noEmit && vite build && esbuild server.ts --bundle --platform=node --format=esm --target=node22 --external:bcrypt --outfile=api/handler.js --banner:js=\"import { createRequire } from 'module'; import { fileURLToPath } from 'url'; import { dirname } from 'path'; const require = createRequire(import.meta.url); const __filename = fileURLToPath(import.meta.url); const __dirname = dirname(__filename);\"",
     "start": "NODE_ENV=production node dev.ts",
     "test": "vitest run",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
     "verify": "pnpm run typecheck && pnpm test",
     "emulator:firestore": "npx --yes firebase-tools@13.35.1 emulators:start --only firestore --project leish-local",
     "seed:firestore": "FIRESTORE_EMULATOR_HOST=\"${FIRESTORE_EMULATOR_HOST:-127.0.0.1:8080}\" FIREBASE_PROJECT_ID=leish-local tsx scripts/seed-firestore.ts",
@@ -50,6 +52,7 @@
     "zustand": "^5.0.15"
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.1",
     "@tailwindcss/vite": "^4.3.3",
     "@types/bcrypt": "^6.0.0",
     "@types/express": "^4.17.25",
@@ -60,6 +63,7 @@
     "@types/supertest": "^7.2.1",
     "@vitejs/plugin-react": "^5.2.0",
     "esbuild": "^0.25.12",
+    "playwright": "^1.64.1",
     "supertest": "^7.3.1",
     "tailwindcss": "^4.3.3",
     "tsx": "^4.23.15",
