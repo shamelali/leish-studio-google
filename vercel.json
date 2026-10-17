@@ -15,7 +15,7 @@
     },
     {
       "source": "/healthz",
-      "destination": "/api/healthz"
+      "destination": "/api/handler?...path=healthz"
     },
     {
       "source": "/((?!api/).*)",
