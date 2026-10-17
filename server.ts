@@ -327,6 +327,7 @@ export function createApp(dependencies: AppDependencies = {}) {
     windowMs: 60 * 1000,
     max: 120,
     skip: (req) => rateLimitOff || req.path.startsWith('/auth') || req.path.startsWith('/gemini') ||
+      req.path.startsWith('/healthz') ||
       (req.method === 'POST' && (req.path === '/bookings' || req.path === '/bookings/verify-request')),
     message: { error: 'Too many requests, please try again later.' }
   });
@@ -368,6 +369,28 @@ export function createApp(dependencies: AppDependencies = {}) {
       getHeader('x-vercel-id') ||
       `req-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
     next();
+  });
+
+  // Structured request logging: one JSON line per request with latency and
+  // status, correlated by requestId (wires server/monitoring.ts into the app).
+  app.use((req, res, next) => {
+    const start = process.hrtime.bigint();
+    res.on('finish', () => {
+      logger.info('request', {
+        requestId: req.requestId,
+        method: req.method,
+        route: req.originalUrl?.split('?')[0],
+        statusCode: res.statusCode,
+        latencyMs: Number(process.hrtime.bigint() - start) / 1_000_000,
+      });
+    });
+    next();
+  });
+
+  // Lightweight liveness probe: no store access, safe for high-frequency
+  // uptime checks (exempt from the read limiter below).
+  app.get('/api/healthz', (_req, res) => {
+    res.json({ ok: true, uptime: process.uptime(), timestamp: new Date().toISOString() });
   });
 
   registerConciergeRoute(app, { getSalons: () => appStore.getSalons() });
@@ -1111,24 +1134,8 @@ export function createApp(dependencies: AppDependencies = {}) {
         attachedMoodboard
       } = parsed.data;
 
-      const salon = await appStore.getSalon(salonId);
-      if (!salon) {
-        return res.status(404).json({ error: 'Salon not found' });
-      }
-
-      const service = salon.services.find(s => s.id === serviceId);
-      if (!service) {
-        return res.status(404).json({ error: 'Service not found' });
-      }
-
-      const staff = salon.staff.find(st => st.id === staffId);
-      if (!staff) {
-        return res.status(404).json({ error: 'Staff member not found' });
-      }
-
-      // Strict token handling (FR-003/AC-001): any present Authorization
-      // header must carry a valid Bearer JWT — garbage or expired tokens are
-      // rejected with 401 instead of being silently downgraded to a guest.
+      // Auth strictness runs BEFORE resource lookups: an invalid token must
+      // always be 401, never a 404 that reveals whether a salon id exists.
       const authHeader = req.headers.authorization;
       let clientId: string | undefined;
       if (authHeader !== undefined) {
@@ -1146,6 +1153,21 @@ export function createApp(dependencies: AppDependencies = {}) {
         } catch {
           return res.status(401).json({ code: 'invalid_token', error: 'Your session has expired. Sign in again or continue as a guest.' });
         }
+      }
+
+      const salon = await appStore.getSalon(salonId);
+      if (!salon) {
+        return res.status(404).json({ error: 'Salon not found' });
+      }
+
+      const service = salon.services.find(s => s.id === serviceId);
+      if (!service) {
+        return res.status(404).json({ error: 'Service not found' });
+      }
+
+      const staff = salon.staff.find(st => st.id === staffId);
+      if (!staff) {
+        return res.status(404).json({ error: 'Staff member not found' });
       }
 
       // Contact verification gate (FR-001/FR-002, D1b/G1/G2): guests must
@@ -1243,6 +1265,7 @@ export function createApp(dependencies: AppDependencies = {}) {
         throw error;
       }
       res.status(result.replayed ? 200 : 201).json(result.booking);
+      if (!result.replayed) recordMetric(Metrics.BOOKING_CREATED, 1, { salonId });
     } catch (error: any) {
       serverError(res, 'Booking creation failed');
     }

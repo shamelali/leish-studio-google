@@ -1609,6 +1609,24 @@ describe('booking contact verification (FR-001/FR-002/FR-003)', () => {
     expect(testStore.getBookings().length).toBe(before);
   });
 
+  it('answers 401 before resource lookups, even for unknown salon ids', async () => {
+    // Auth-before-lookup: an invalid token must never leak whether a salon
+    // id exists via a 404/401 differential.
+    const res = await request(app)
+      .post('/api/bookings')
+      .set('Authorization', 'Bearer garbage-token')
+      .send({ ...validBooking(), salonId: 'no-such-salon' });
+    expect(res.status).toBe(401);
+    expect(res.body.code).toBe('invalid_token');
+  });
+
+  it('exposes a limiter-exempt liveness probe at /api/healthz', async () => {
+    const res = await request(app).get('/api/healthz');
+    expect(res.status).toBe(200);
+    expect(res.body.ok).toBe(true);
+    expect(typeof res.body.uptime).toBe('number');
+  });
+
   it('binds authenticated bookings to the account email (AC-002)', async () => {
     const emailA = `autha-${Date.now()}@leish.test`;
     const emailB = `authb-${Date.now()}@leish.test`;

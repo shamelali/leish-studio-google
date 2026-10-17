@@ -37,7 +37,7 @@
 
 - [ ] Structured logging (request ID, latency, status) — see `monitoring.ts`
 - [ ] Error tracking (Sentry/LogRocket) configured
-- [ ] Uptime monitor on `/api/salons` (health check)
+- [ ] Uptime monitor on `/healthz` (liveness; no store access, limiter-exempt)
 - [ ] Alert on: 5xx rate > 1%, 429 rate > 5%, p95 latency > 2s
 - [ ] Firestore usage alerts (reads/writes/day)
 
@@ -54,7 +54,7 @@
 
 ```bash
 # Health
-curl -s https://your-domain.com/api/salons | jq 'length'
+curl -s https://your-domain.com/healthz | jq '.ok'
 
 # Auth flow
 TOKEN=$(curl -s -X POST https://your-domain.com/api/auth/login \
