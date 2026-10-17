@@ -448,15 +448,6 @@ export default function AuthModal({
           </form>
         )}
 
-        <div className="mt-6 pt-5 border-t border-line">
-          <p className="text-[11px] font-mono uppercase tracking-wider text-center text-fg-dim mb-3">
-            Demo Accounts
-          </p>
-          <p className="text-xs text-center text-fg-muted">
-            Demo sign-in is disabled in this build. Create an account above to explore the marketplace.
-          </p>
-        </div>
-
         <div className="mt-4 flex items-center justify-center space-x-1.5 text-[11px] text-fg-dim">
           <ShieldCheck className="h-3.5 w-3.5 text-accent-text" />
           <span>Encrypted Beauty Profile • Leish! Aesthetic Security</span>
