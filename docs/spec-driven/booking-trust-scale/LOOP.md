@@ -3,9 +3,9 @@
 Current state: accepted
 Current loop: LOOP-004
 Frozen specification: docs/spec-driven/booking-trust-scale/{PRD,TECH_DESIGN,ACCEPTANCE,AGENT_PLAN}.md (Frozen, approved 2026-10-16)
-Current objective: Delivered — booking trust & scale (all three tasks). ACCEPTED_WITH_CAVEATS.
-Blocking issue: AC-011 staging browser pass pending (requires deploy + real Brevo sends).
-Next action: Optional — staging deploy: Supabase migrations 002-004, firestore.indexes.json, browser pass for AC-011.
+Current objective: Delivered + deployed to production (leish.my). ACCEPTED_WITH_CAVEATS — two user actions remain.
+Blocking issue: AC-011 visual pass needs (1) BREVO_API_KEY on Vercel project leish-studio-google, (2) user browser pass behind Vercel Authentication with a seeded catalog.
+Next action: User adds BREVO_API_KEY + pushes 93d45ef (SSH passphrase pending); visual AC-011 pass.
 Last updated: 2026-10-17
 
 ## Final Acceptance Matrix (all 15 ACs)
@@ -29,6 +29,15 @@ Last updated: 2026-10-17
 | AC-015 code lifecycle | PASS | single-use, 10-min expiry, 5-attempt lockout all 422 | — |
 
 Judgment: ACCEPTED_WITH_CAVEATS — 13/15 PASS with evidence, AC-012 PASS (non-blocking), AC-011 pending staging environment.
+
+## Production verification (2026-10-17, post-deploy to leish.my)
+
+- Deployed commit 93d45ef via Vercel CLI (archive=tgz; project leish-studio-google; production URL https://leish.my). Build green remotely.
+- LIVE API evidence: `/api/salons` returns `{ data, pagination }` envelope (AC-009 live); `verify-request` rejects non-emails with 422 invalid_contact (AC-004 live); real-email request returns 503 verification_unavailable because BREVO_API_KEY is not configured (TD-5 degradation working as designed).
+- Catalog is empty (total 0) — expected: listings are created via admin tooling; admin seed account exists in leish_users.
+- User actions remaining for AC-011: add BREVO_API_KEY (production env), seed a listing, browser pass (Vercel Authentication is enabled — access via logged-in browser or disable for launch).
+- Follow-up hardening noted: booking-create handler resolves salon/service/staff before the token check, so garbage Bearer + unknown salon returns 404 rather than 401 on an empty catalog (no leak — salons are public data; consider reordering auth before lookups in a later pass).
+- Supabase advisor Auth-RLS warnings (user report) apply to the OTHER app's unprefixed tables sharing leish-launch (profiles/bookings/availability_*/services/payments/user); the leish_* tables have deny-by-default RLS with zero policies and no auth.uid() calls, so those warnings do not apply to this project's schema.
 
 ## Current Loop — LOOP-004 (closed; matrix above)
 
