@@ -5,7 +5,7 @@
 
 import React, { Suspense, useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Search, Sparkles, Star, MapPin, Calendar, Heart, Shield, RefreshCw, Loader2, Compass, Building2, User as UserIconAlt, Map as MapIcon, ShieldCheck, Car, Image as ImageIcon, Check, Filter, ArrowUpDown, SlidersHorizontal } from 'lucide-react';
+import { Search, Sparkles, Star, MapPin, Calendar, Heart, Shield, RefreshCw, Loader2, Compass, Building2, User as UserIconAlt, User as UserIcon, Map as MapIcon, ShieldCheck, Car, Image as ImageIcon, Check, Filter, ArrowUpDown, SlidersHorizontal } from 'lucide-react';
 import Navbar from './components/Navbar';
 import SalonCard from './components/SalonCard';
 import MUACard from './components/MUACard';
@@ -218,6 +218,16 @@ export default function App() {
   // OAuth return pickup (Supabase): after Google consent redirects back to
   // the site root, exchange the Supabase session for an app session once.
   const oauthHandled = React.useRef(false);
+  const [oauthPendingIdentity, setOauthPendingIdentity] = useState<{
+    id: string;
+    email: string;
+    name?: string;
+    avatar?: string;
+  } | null>(null);
+  const [showRolePicker, setShowRolePicker] = useState(false);
+  const [busy, setBusy] = useState<'idle' | 'signing-in' | 'signing-up' | 'oauth'>('idle');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   React.useEffect(() => {
     if (oauthHandled.current || currentUser) return;
     oauthHandled.current = true;
@@ -226,6 +236,11 @@ export default function App() {
         const supabaseToken = await getSupabaseSessionToken();
         if (!supabaseToken) return;
         const session = await authApi.oauth(supabaseToken);
+        if ((session as any).needs_role_selection) {
+          setOauthPendingIdentity((session as any).identity);
+          setShowRolePicker(true);
+          return;
+        }
         handleAuthSuccess(session.user, session.token);
       } catch {
         // No usable OAuth session (or exchange failed); stay signed out.
@@ -234,6 +249,23 @@ export default function App() {
     // handleAuthSuccess is stable enough for mount-only pickup.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleOAuthRoleSelect = async (role: string) => {
+    if (!oauthPendingIdentity) return;
+    setBusy('oauth');
+    try {
+      const supabaseToken = await getSupabaseSessionToken();
+      if (!supabaseToken) throw new Error('No Supabase session');
+      const session = await authApi.oauthComplete(supabaseToken, role);
+      handleAuthSuccess(session.user, session.token);
+      setOauthPendingIdentity(null);
+      setShowRolePicker(false);
+      setBusy('idle');
+    } catch (error: any) {
+      setErrorMessage(error.message || 'Role selection failed. Please try again.');
+      setBusy('idle');
+    }
+  };
 
   const handleSignOut = () => {
     setCurrentUser(null);
@@ -862,6 +894,61 @@ export default function App() {
                 onAuthSuccess={handleAuthSuccess}
                 onClose={() => navigateTab('explore')}
               />
+            </motion.div>
+          )}
+
+          {showRolePicker && oauthPendingIdentity && (
+            <motion.div
+              key="role-picker-view"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="flex-grow flex items-center justify-center p-4 sm:p-6 lg:p-8"
+            >
+              <div className="w-full max-w-md rounded-3xl border border-line bg-recessed p-6 sm:p-8 shadow-2xl shadow-black/90">
+                <div className="text-center mb-8">
+                  <div className="inline-flex items-baseline font-serif text-3xl font-semibold tracking-tight text-brand-champagne mb-1">
+                    <span>Lei</span>
+                    <span className="text-brand-gold italic font-bold">sh</span>
+                    <span className="text-brand-champagne text-2xl ml-0.5">!</span>
+                  </div>
+                  <p className="text-xs font-mono uppercase tracking-wider text-fg">
+                    Aesthetic Marketplace
+                  </p>
+                </div>
+                <h3 className="font-serif text-xl font-semibold text-fg mb-4">
+                  Choose your role
+                </h3>
+                <p className="text-xs text-fg-muted mb-6">
+                  Tell us who you are so we can set up your account correctly.
+                </p>
+                <div className="space-y-3">
+                  {[
+                    { id: 'client', label: 'Makeup Client', desc: 'Book glam & trials', icon: Sparkles },
+                    { id: 'MUA', label: 'Makeup Artist', desc: 'Independent MUA', icon: UserIcon },
+                    { id: 'studio', label: 'Salon Owner', desc: 'Own your listing', icon: Building2 },
+                  ].map((role) => (
+                    <button
+                      key={role.id}
+                      type="button"
+                      onClick={() => handleOAuthRoleSelect(role.id)}
+                      disabled={busy === 'oauth'}
+                      className={`flex items-center justify-center space-x-3 rounded-xl border py-3 px-4 text-left transition-all ${
+                        busy === 'oauth'
+                          ? 'border-line text-fg-dim hover:bg-surface disabled:opacity-50'
+                          : 'border-accent bg-accent/5 text-fg hover:bg-accent/10'
+                      }`}
+                    >
+                      {role.icon ? <role.icon className="h-5 w-5" /> : null}
+                      <div className="text-left">
+                        <p className="text-sm font-medium text-fg">{role.label}</p>
+                        <p className="text-[10px] text-fg-muted">{role.desc}</p>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
             </motion.div>
           )}
 

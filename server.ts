@@ -771,18 +771,16 @@ export function createApp(dependencies: AppDependencies = {}) {
       const normalizedEmail = identity.email.trim().toLowerCase();
       let user = (await appStore.getUserById(identity.id)) ?? (await appStore.getUserByEmail(normalizedEmail));
       if (!user) {
-        const displayName = identity.name?.trim().slice(0, 100) || normalizedEmail.split('@')[0];
-        user = await appStore.createUser({
-          id: identity.id,
-          name: displayName,
-          email: normalizedEmail,
-          // Random unguessable secret: OAuth-linked accounts authenticate
-          // via token exchange, never via password login.
-          password: `oauth-${Date.now()}-${Math.random().toString(36).slice(2, 18)}`,
-          role: 'client',
-          bio: 'Signed up with OAuth.',
-          avatar: identity.avatar,
-          createdAt: new Date().toISOString(),
+        // New OAuth user: return needs_role_selection so the client can
+        // show a role picker before creating the profile.
+        return res.json({
+          needs_role_selection: true,
+          identity: {
+            id: identity.id,
+            email: normalizedEmail,
+            name: identity.name?.trim().slice(0, 100) || normalizedEmail.split('@')[0],
+            avatar: identity.avatar,
+          },
         });
       }
       const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
@@ -793,6 +791,73 @@ export function createApp(dependencies: AppDependencies = {}) {
       });
     } catch (error: any) {
       serverError(res, 'OAuth sign-in failed');
+    }
+  });
+
+  // API Route: Complete OAuth registration with role selection.
+  // Called after /api/auth/oauth returns needs_role_selection: true.
+  // Verifies the Supabase access token (same as /api/auth/oauth) and creates
+  // the app profile with the selected role.
+  app.post('/api/auth/oauth/complete', async (req: any, res) => {
+    try {
+      const authHeader = req.headers.authorization;
+      const supabaseToken = authHeader && authHeader.startsWith('Bearer ') ? authHeader.replace('Bearer ', '').trim() : '';
+      if (!supabaseToken) {
+        return res.status(401).json({ error: 'A sign-in token is required.' });
+      }
+      const identity = await verifySupabaseToken(supabaseToken);
+      if (!identity?.email) {
+        return res.status(401).json({ error: 'Invalid sign-in. Please try again.' });
+      }
+      const z = require('zod');
+      const schema = z.object({
+        role: z.enum(['client', 'provider', 'admin']).optional(),
+      });
+      const parsed = schema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ error: parsed.error.issues[0].message });
+      }
+      const { role } = parsed.data;
+      const normalizedEmail = identity.email.trim().toLowerCase();
+      const existing = await appStore.getUserById(identity.id) ?? await appStore.getUserByEmail(normalizedEmail);
+      if (!existing) {
+        const displayName = identity.name?.trim().slice(0, 100) || normalizedEmail.split('@')[0];
+        const user = await appStore.createUser({
+          id: identity.id,
+          name: displayName,
+          email: normalizedEmail,
+          password: `oauth-${Date.now()}-${Math.random().toString(36).slice(2, 18)}`,
+          role,
+          bio: 'Signed up with OAuth.',
+          avatar: identity.avatar,
+          createdAt: new Date().toISOString(),
+        });
+        const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+        return res.json({
+          user: sanitizeUser(user),
+          token,
+          message: `Welcome${user.name ? `, ${user.name}` : ''}!`,
+        });
+      }
+      // User already exists (e.g. registered via email): just update role if different.
+      if (existing.role !== role) {
+        await appStore.updateUser(existing.id, { role });
+        const updated = await appStore.getUserById(existing.id);
+        const token = jwt.sign({ userId: updated.id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+        return res.json({
+          user: sanitizeUser(updated),
+          token,
+          message: `Welcome back, ${updated.name}!`,
+        });
+      }
+      const token = jwt.sign({ userId: existing.id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+      res.json({
+        user: sanitizeUser(existing),
+        token,
+        message: `Welcome back, ${existing.name}!`,
+      });
+    } catch (error: any) {
+      serverError(res, 'OAuth completion failed');
     }
   });
 

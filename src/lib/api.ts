@@ -54,6 +54,12 @@ export const authApi = {
     apiClient.post('/auth/login', data),
   oauth: (supabaseToken: string) =>
     apiRequest('/auth/oauth', { method: 'POST', headers: { Authorization: `Bearer ${supabaseToken}` } }),
+  oauthComplete: (supabaseToken: string, role: string) =>
+    apiRequest('/auth/oauth/complete', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${supabaseToken}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ role }),
+    }),
   getMe: () => apiClient.get('/auth/me'),
   updateProfile: (data: { id: string; name?: string; phone?: string; bio?: string; avatar?: string }) =>
     apiClient.put('/auth/profile', data),
