@@ -10,6 +10,7 @@ import Navbar from './components/Navbar';
 import SalonCard from './components/SalonCard';
 import MUACard from './components/MUACard';
 import LoadingSpinner from './components/LoadingSpinner';
+import Dashboard from './components/Dashboard';
 import { Salon, Service, Booking, User, LookbookItem } from './types';
 import { useSalons, authApi } from './lib/api';
 import { getSupabaseSessionToken } from './lib/supabase';
@@ -24,6 +25,7 @@ const AIStylist = React.lazy(() => import('./components/AIStylist'));
 const SalonDetails = React.lazy(() => import('./components/SalonDetails'));
 const BookingModal = React.lazy(() => import('./components/BookingModal'));
 const ClientPortal = React.lazy(() => import('./components/ClientPortal'));
+const DashboardLazy = React.lazy(() => import('./components/Dashboard'));
 const ProviderDashboard = React.lazy(() => import('./components/ProviderDashboard'));
 const AdminUsers = React.lazy(() => import('./components/AdminUsers'));
 const AdminSidebar = React.lazy(() => import('./components/AdminSidebar'));
@@ -832,12 +834,13 @@ export default function App() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <ProviderDashboard
-                salons={salons}
-                onSalonUpdated={() => {}}
-                currentUser={currentUser}
-                onOpenAuth={handleOpenAuth}
-              />
+              <Suspense fallback={<LoadingSpinner size="lg" message="Loading salon panel..." />}>
+                <DashboardLazy
+                  salons={salons}
+                  currentUser={currentUser}
+                  onOpenAuth={handleOpenAuth}
+                />
+              </Suspense>
             </motion.div>
           )}
 
