@@ -30,6 +30,12 @@ Auth fix: register/login fall back to legacy bcrypt when Supabase Auth creation 
 
 Note: Do NOT use `https://www.leish.my/auth/callback` as Google's Authorized redirect URI unless that is exactly the callback URL Supabase displays. That URL belongs in Supabase's Redirect URLs list.
 
+If using the **apex domain** `https://leish.my` instead of `www`:
+- Site URL: `https://leish.my`
+- Add `https://leish.my` as an Authorized JavaScript origin in Google Cloud.
+- Add `leish.my` callback URLs under Supabase Redirect URLs.
+If both domains should work, allowlist both and redirect one to the other for a consistent sign-in destination.
+
 Last updated: 2026-10-17
 
 ## Final Acceptance Matrix (all 15 ACs)
