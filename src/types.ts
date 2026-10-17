@@ -96,7 +96,7 @@ export interface Booking {
   /** Payment URL (present when paymentStatus === 'pending'). */
   paymentUrl?: string | null;
   /** Payment method used. */
-  paymentMethod?: 'hitpay' | null;
+  paymentMethod?: 'billplz' | null;
   /** Timestamp when payment was confirmed. */
   paymentPaidAt?: string | null;
 }
