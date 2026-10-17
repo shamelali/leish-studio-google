@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { randomUUID } from 'node:crypto';
 import { SupabaseStore } from './supabase-store.ts';
+import { SlotConflictError } from './data-store.ts';
 import type { Booking } from '../src/types.ts';
 
 // Live integration: runs only when Supabase credentials are present
@@ -27,7 +28,36 @@ describe.skipIf(!supabaseEnabled)('SupabaseStore live integration', () => {
       expect((await reader.getBooking(id))?.status).toBe('confirmed');
       await expect(reader.updateBookingStatus(`${id}-missing`, 'confirmed')).rejects.toThrow('Booking not found');
     } finally {
-      await store['db'].from('bookings').delete().eq('id', id);
+      await store['db'].from('leish_bookings').delete().eq('id', id);
+    }
+  });
+
+  it('enforces slot exclusion and idempotent replay (AC-005/AC-007/AC-008 store level)', async () => {
+    const store = new SupabaseStore();
+    const run = Date.now();
+    const slot = { salonId: `conflict-salon-${run}`, staffId: 'staff-x', date: '2026-11-10', time: '10:00 AM' };
+    const make = (suffix: string): Booking => ({
+      id: `book-${run}-${suffix}`,
+      salonId: slot.salonId, salonName: 'S', salonAddress: 'A',
+      serviceId: 'svc', serviceName: 'S', servicePrice: 10, serviceDuration: 60,
+      staffId: slot.staffId, staffName: 'T', date: slot.date, time: slot.time,
+      clientName: 'C', clientEmail: `${suffix}@example.test`, clientPhone: '',
+      status: 'pending', createdAt: new Date().toISOString(),
+    });
+    const idem = { key: `k-${run}`, scope: 'guest:x@example.test' };
+    const keyHash = (await import('node:crypto')).createHash('sha256').update(`${idem.scope}:${idem.key}`).digest('hex');
+    try {
+      const first = await store.createBookingIdempotent(make('aaaaaa'), idem);
+      expect(first.replayed).toBe(false);
+      const replay = await store.createBookingIdempotent(make('bbbbbb'), idem);
+      expect(replay.replayed).toBe(true);
+      expect(replay.booking.id).toBe(first.booking.id);
+      await expect(
+        store.createBookingIdempotent(make('cccccc'), { key: `k2-${run}`, scope: 'guest:y@example.test' }),
+      ).rejects.toBeInstanceOf(SlotConflictError);
+    } finally {
+      await store['db'].from('leish_idempotency_keys').delete().eq('idem_key', keyHash);
+      await store['db'].from('leish_bookings').delete().eq('salon_id', slot.salonId);
     }
   });
 
@@ -49,8 +79,8 @@ describe.skipIf(!supabaseEnabled)('SupabaseStore live integration', () => {
       const renamed = await store.updateUser(id, { name: 'Renamed' });
       expect(renamed.name).toBe('Renamed');
     } finally {
-      await store['db'].from('user_emails').delete().eq('user_id', id);
-      await store['db'].from('users').delete().eq('id', id);
+      await store['db'].from('leish_user_emails').delete().eq('user_id', id);
+      await store['db'].from('leish_users').delete().eq('id', id);
     }
   });
 
@@ -68,7 +98,7 @@ describe.skipIf(!supabaseEnabled)('SupabaseStore live integration', () => {
       expect(await store.getSalon(id)).toMatchObject({ id, name: 'Adapter Atelier' });
       await expect(store.createSalon(salon)).rejects.toThrow('Salon already exists');
     } finally {
-      await store['db'].from('salons').delete().eq('id', id);
+      await store['db'].from('leish_salons').delete().eq('id', id);
     }
   });
 

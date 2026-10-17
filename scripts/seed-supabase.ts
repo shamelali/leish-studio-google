@@ -10,8 +10,18 @@ import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { createClient } from '@supabase/supabase-js';
 
-const tables = ['salons', 'bookings', 'reviews', 'users'] as const;
+const tables = ['leish_salons', 'leish_bookings', 'leish_reviews', 'leish_users'] as const;
 type Table = (typeof tables)[number];
+
+/** Table name → matching key in db_store.json (JSON keys are unprefixed). */
+const jsonKey = (table: Table): string => {
+  switch (table) {
+    case 'leish_salons': return 'salons';
+    case 'leish_bookings': return 'bookings';
+    case 'leish_reviews': return 'reviews';
+    case 'leish_users': return 'users';
+  }
+};
 
 interface RecordWithId {
   id: string;
@@ -45,12 +55,12 @@ async function main(): Promise<void> {
   if (!raw || typeof raw !== 'object' || Array.isArray(raw)) throw new Error('Invalid JSON store');
   const data = raw as Record<string, unknown>;
   const records = Object.fromEntries(
-    tables.map(name => [name, requireRecords(data[name], name)]),
+    tables.map(name => [name, requireRecords(data[jsonKey(name)], name)]),
   ) as Record<Table, RecordWithId[]>;
-  if (!records.salons.length) throw new Error('Refusing empty catalog seed');
+  if (!records.leish_users.length) throw new Error('Refusing seed: no users to bootstrap');
 
   const claims = new Map<string, string>();
-  for (const user of records.users) {
+  for (const user of records.leish_users) {
     if (
       typeof user.email !== 'string' || !user.email.trim() ||
       typeof user.password !== 'string' || !/^\$2[aby]\$\d{2}\$/.test(user.password)
@@ -64,7 +74,7 @@ async function main(): Promise<void> {
   }
 
   const db = createClient(url, serviceKey, { auth: { persistSession: false, autoRefreshToken: false } });
-  for (const name of [...tables, 'user_emails', 'review_claims'] as const) {
+  for (const name of [...tables, 'leish_user_emails', 'leish_review_claims'] as const) {
     const probe = await db.from(name).select('*', { count: 'exact', head: true });
     if (probe.error) throw new Error(`Seed preflight failed on ${name}: ${probe.error.message}`);
     if ((probe.count ?? 0) > 0) {
@@ -77,26 +87,32 @@ async function main(): Promise<void> {
     const { error } = await db.from(table).insert(rows);
     if (error) throw new Error(`Seed insert into ${table} failed: ${error.message}`);
   };
-  await insertAll('salons', records.salons.map(record => ({ id: record.id, data: record })));
+  await insertAll('leish_salons', records.leish_salons.map(record => ({ id: record.id, data: record })));
   await insertAll(
-    'bookings',
-    records.bookings.map(record => ({
+    'leish_bookings',
+    records.leish_bookings.map(record => ({
       id: record.id,
       salon_id: record.salonId,
       client_email: record.clientEmail,
+      created_at: record.createdAt,
+      staff_id: record.staffId,
+      booking_date: record.date,
+      status: record.status,
+      starts_at: record.createdAt,
+      ends_at: record.createdAt,
       data: record,
     })),
   );
   await insertAll(
-    'reviews',
-    records.reviews.map(record => ({ id: record.id, salon_id: record.salonId, data: record })),
+    'leish_reviews',
+    records.leish_reviews.map(record => ({ id: record.id, salon_id: record.salonId, date: record.createdAt, data: record })),
   );
   await insertAll(
-    'users',
-    records.users.map(record => ({ id: record.id, email: record.email, data: record })),
+    'leish_users',
+    records.leish_users.map(record => ({ id: record.id, email: record.email, data: record })),
   );
   await insertAll(
-    'user_emails',
+    'leish_user_emails',
     [...claims].map(([email, userId]) => ({
       email_key: createHash('sha256').update(email).digest('hex'),
       user_id: userId,
