@@ -31,3 +31,5 @@ db_store.json
 # Agent skill infrastructure (OpenCode skills — local only, not project code).
 .agents/
 skills-lock.json
+playwright-report/
+tests/e2e/test-results/

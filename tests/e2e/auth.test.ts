@@ -18,13 +18,17 @@ test.describe('Authentication', () => {
     await page.goto('/');
     await page.getByRole('button', { name: /get started/i }).first().click();
     
-    // Select a role
+    // Wait for role picker to appear
+    await page.getByText('Makeup Client').waitFor({ state: 'visible', timeout: 10000 });
     await page.getByText('Makeup Client').click();
     
     // Fill in registration details
     await page.getByPlaceholder(/Camille Laurent/i).fill('Test User');
     await page.getByPlaceholder(/name@example.com/i).fill(`test${Date.now()}@leish.test`);
     await page.getByPlaceholder(/••••••••/i).fill('TestPass123!');
+    
+    // Wait for submit button to be enabled (form validation)
+    await expect(page.getByRole('button', { name: /create my account/i })).toBeEnabled({ timeout: 10000 });
     
     // Submit registration
     await page.getByRole('button', { name: /create my account/i }).click();

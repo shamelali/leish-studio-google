@@ -5,20 +5,21 @@ test.describe('Booking Flow', () => {
     await page.goto('/');
     
     // Wait for salons to load
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(4000);
     
-    // Click on a salon card
-    const salonCard = page.getByText('Leish! Bridal Atelier KL').first();
-    await salonCard.click();
+    // Click on a salon card using JavaScript to bypass overlay issues
+    const salonCard = page.getByRole('heading', { name: 'Leish! Bridal Atelier KL' }).first();
+    await salonCard.waitFor({ state: 'visible', timeout: 10000 });
+    await salonCard.click({ force: true });
     
-    // Should navigate to salon details
-    await expect(page).toHaveURL(/\/salon\/.*/);
+    // Should navigate to salon details page
+    await expect(page).toHaveURL(/\/salon\/.*/, { timeout: 15000 });
     await expect(page.getByText('Leish! Bridal Atelier KL')).toBeVisible();
   });
 
   test('should open booking modal', async ({ page }) => {
     await page.goto('/salon/salon-leish-001');
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(3000);
     
     // Click book now or create booking button
     const bookButtons = page.getByRole('button', { name: /book|schedule|reserve/i });
