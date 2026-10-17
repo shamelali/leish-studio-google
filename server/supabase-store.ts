@@ -498,6 +498,16 @@ export class SupabaseStore implements DataStore {
     if (error) throw new Error(`Supabase booking delete failed: ${error.message}`);
   }
 
+  async updateBookingPayment(
+    id: string,
+    updates: { paymentStatus: Booking['paymentStatus']; paymentMethod?: Booking['paymentMethod'] | null; paymentUrl?: Booking['paymentUrl'] | null; paymentPaidAt?: Booking['paymentPaidAt'] | null },
+  ): Promise<void> {
+    const booking = await this.getBooking(id);
+    if (!booking) throw new Error('Booking not found');
+    const { error } = await this.db.from('leish_bookings').update(updates).eq('id', id);
+    if (error) throw new Error(`Supabase booking payment update failed: ${error.message}`);
+  }
+
   async listAllReviews(params: PageParams): Promise<Paginated<Review>> {
     const { data, error, count } = await this.db
       .from('leish_reviews')

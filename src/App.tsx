@@ -33,6 +33,7 @@ const AdminBookings = React.lazy(() => import('./components/AdminBookings'));
 const AdminReviews = React.lazy(() => import('./components/AdminReviews'));
 const AdminSettings = React.lazy(() => import('./components/AdminSettings'));
 const AuthModal = React.lazy(() => import('./components/AuthModal'));
+const AuthChoice = React.lazy(() => import('./components/AuthChoice'));
 const ProfileModal = React.lazy(() => import('./components/ProfileModal'));
 const LookbookStudio = React.lazy(() => import('./components/LookbookStudio'));
 const InteractiveMap = React.lazy(() => import('./components/InteractiveMap'));
@@ -340,6 +341,7 @@ export default function App() {
         activeTab={activeTab}
          setActiveTab={navigateTab}
         onOpenAuth={handleOpenAuth}
+        onOpenAuthPage={() => navigateTab('auth')}
         onOpenProfile={() => setProfileModalOpen(true)}
       />
 
@@ -844,6 +846,22 @@ export default function App() {
                   <AdminSettings />
                 )}
               </main>
+            </motion.div>
+          )}
+
+          {activeTab === 'auth' && (
+            <motion.div
+              key="auth-view"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="flex-grow"
+            >
+              <AuthChoice
+                onAuthSuccess={handleAuthSuccess}
+                onClose={() => navigateTab('explore')}
+              />
             </motion.div>
           )}
 

@@ -41,6 +41,7 @@ interface NavbarProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
   onOpenAuth: (mode: 'signin' | 'signup') => void;
+  onOpenAuthPage: () => void;
   onOpenProfile: () => void;
 }
 

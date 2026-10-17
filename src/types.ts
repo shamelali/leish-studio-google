@@ -91,6 +91,14 @@ export interface Booking {
     lipFormula: string;
     eyeStyle: string;
   };
+  /** Payment status — 'pending' until payment gateway confirms payment. */
+  paymentStatus?: 'pending' | 'paid' | 'failed' | 'refunded';
+  /** Payment URL (present when paymentStatus === 'pending'). */
+  paymentUrl?: string | null;
+  /** Payment method used. */
+  paymentMethod?: 'hitpay' | null;
+  /** Timestamp when payment was confirmed. */
+  paymentPaidAt?: string | null;
 }
 
 export interface Review {

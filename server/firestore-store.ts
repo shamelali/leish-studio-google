@@ -412,6 +412,17 @@ export class FirestoreStore implements DataStore {
     await ref.delete();
   }
 
+  async updateBookingPayment(
+    id: string,
+    updates: { paymentStatus: Booking['paymentStatus']; paymentMethod?: Booking['paymentMethod'] | null; paymentUrl?: Booking['paymentUrl'] | null; paymentPaidAt?: Booking['paymentPaidAt'] | null },
+  ): Promise<void> {
+    const db = await this.dbPromise;
+    const ref = db.collection('bookings').doc(id);
+    const snapshot = await ref.get();
+    if (!snapshot.exists) throw new Error('Booking not found');
+    await ref.update(updates);
+  }
+
   async listAllReviews(params: PageParams): Promise<Paginated<Review>> {
     const db = await this.dbPromise;
     const collection = db.collection('reviews');

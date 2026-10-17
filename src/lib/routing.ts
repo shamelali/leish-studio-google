@@ -2,7 +2,7 @@ import type { Salon } from '../types';
 
 export type AppRoute =
   | { tab: 'explore'; salonId?: string }
-  | { tab: 'lookbook' | 'ai-stylist' | 'client' | 'provider' | 'admin' | 'image-studio' | 'video-studio' | 'concierge' };
+  | { tab: 'lookbook' | 'ai-stylist' | 'client' | 'provider' | 'admin' | 'image-studio' | 'video-studio' | 'concierge' | 'auth' };
 
 const TABS = new Set([
   'lookbook',
@@ -13,6 +13,7 @@ const TABS = new Set([
   'image-studio',
   'video-studio',
   'concierge',
+  'auth',
 ]);
 
 function decodeSegment(segment: string) {

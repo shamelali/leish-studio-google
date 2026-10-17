@@ -134,4 +134,5 @@ export const Metrics = {
   RATE_LIMIT_HIT: 'ratelimit.hit',
   DB_WRITE_LATENCY: 'db.write.latency',
   DB_READ_LATENCY: 'db.read.latency',
+  BOOKING_PAID: 'booking.paid',
 } as const;

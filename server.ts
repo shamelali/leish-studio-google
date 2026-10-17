@@ -414,6 +414,52 @@ export function createApp(dependencies: AppDependencies = {}) {
   const JWT_SECRET = getJwtSecret();
   const JWT_EXPIRES_IN = '7d';
 
+  // Hitpay payment configuration (Malaysia/Singapore payment gateway).
+  const HITPAY_API_KEY = process.env.HITPAY_API_KEY;
+  const HITPAY_SECRET_KEY = process.env.HITPAY_SECRET_KEY;
+  const HITPAY_BASE_URL = process.env.HITPAY_BASE_URL || 'https://api.hitpay.com/v1';
+
+  /** Create a Hitpay payment link for a booking and return the payment URL + payment id. */
+  async function createHitpayPayment(params: {
+    amount: number; // in MYR cents (e.g. RM150.00 = 15000)
+    description: string;
+    email: string;
+    name: string;
+    phone?: string;
+    callbackUrl: string;
+    returnUrl: string;
+    metadata?: Record<string, unknown>;
+  }) {
+    if (!HITPAY_API_KEY) {
+      throw new Error('Hitpay is not configured on the server.');
+    }
+    const res = await fetch(`${HITPAY_BASE_URL}/payments`, {
+      method: 'POST',
+      headers: {
+        'x-api-key': HITPAY_API_KEY,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        amount: params.amount,
+        currency: 'MYR',
+        description: params.description,
+        customer: {
+          name: params.name,
+          email: params.email,
+          phone: params.phone || '',
+        },
+        callback_url: params.callbackUrl,
+        return_url: params.returnUrl,
+        metadata: params.metadata,
+      }),
+    });
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`Hitpay API error (${res.status}): ${text}`);
+    }
+    return res.json();
+  }
+
   // Auth middleware
   const authenticateToken = async (req: any, res: any, next: any) => {
     const authHeader = req.headers.authorization;
@@ -1362,6 +1408,102 @@ export function createApp(dependencies: AppDependencies = {}) {
       if (!result.replayed) recordMetric(Metrics.BOOKING_CREATED, 1, { salonId });
     } catch (error: any) {
       serverError(res, 'Booking creation failed');
+    }
+  });
+
+  // ── Hitpay payment (Malaysia/Singapore gateway) ─────────────────────────
+
+  // API Route: Create a Hitpay payment link for a pending booking. Returns
+  // the Hitpay payment URL to redirect the customer to.
+  app.post('/api/bookings/:id/pay', authenticateToken, async (req: any, res) => {
+    try {
+      const booking = await appStore.getBooking(req.params.id);
+      if (!booking) {
+        return res.status(404).json({ error: 'Booking not found' });
+      }
+      // Only the booking client (or an admin) may initiate payment.
+      if (booking.clientId && booking.clientId !== req.user.id && req.user.role !== 'admin') {
+        return res.status(403).json({ error: 'You can only pay for your own bookings.' });
+      }
+      if (booking.paymentStatus === 'paid') {
+        return res.status(400).json({ error: 'This booking has already been paid.' });
+      }
+      if (!HITPAY_API_KEY) {
+        return res.status(503).json({ error: 'Hitpay is not configured on the server.' });
+      }
+
+      const amountCents = Math.round((booking.servicePrice + (booking.travelSurcharge || 0)) * 100);
+      const origin = req.headers.origin || `https://${req.headers.host}`;
+      const callbackUrl = `${origin}/api/bookings/${booking.id}/pay/callback`;
+      const redirectUrl = `${origin}/booking/${booking.id}/payment`;
+
+      const payment = await createHitpayPayment({
+        amount: amountCents,
+        description: `Leish! booking ${booking.id} — ${booking.serviceName} at ${booking.salonName}`,
+        email: booking.clientEmail,
+        name: booking.clientName,
+        phone: booking.clientPhone || '',
+        callbackUrl,
+        returnUrl: redirectUrl,
+        metadata: {
+          booking_id: booking.id,
+          salon_id: booking.salonId,
+          service_id: booking.serviceId,
+        },
+      });
+
+      await appStore.updateBookingPayment(booking.id, {
+        paymentStatus: 'pending',
+        paymentMethod: 'hitpay',
+        paymentUrl: payment.payment_url || payment.checkout_url || payment.url,
+      });
+
+      res.json({
+        paymentUrl: payment.payment_url || payment.checkout_url || payment.url,
+        paymentId: payment.id || payment.payment_id,
+        amount: amountCents,
+        currency: 'MYR',
+      });
+    } catch (error: any) {
+      serverError(res, 'Payment initiation failed');
+    }
+  });
+
+  // API Route: Hitpay webhook callback — called by Hitpay when payment
+  // status changes. Updates the booking's paymentStatus accordingly.
+  app.post('/api/bookings/:id/pay/callback', async (req: any, res) => {
+    try {
+      // Hitpay sends a POST with payment status in the body.
+      const { payment_id, status, order_id } = req.body as {
+        payment_id?: string;
+        status?: string;
+        order_id?: string;
+      };
+      if (!payment_id && !order_id) {
+        return res.status(400).json({ error: 'Missing payment_id or order_id' });
+      }
+
+      // Find the booking — Hitpay may send metadata or we look up by URL param.
+      const booking = await appStore.getBooking(req.params.id);
+      if (!booking) {
+        return res.status(404).json({ error: 'Booking not found' });
+      }
+
+      const paid = status === 'paid' || status === 'completed' || status === 'success';
+      const newStatus = paid ? 'paid' : 'failed';
+      await appStore.updateBookingPayment(booking.id, {
+        paymentStatus: newStatus,
+        paymentPaidAt: new Date().toISOString(),
+      });
+
+      if (paid) {
+        recordMetric(Metrics.BOOKING_PAID, 1, { salonId: booking.salonId });
+      }
+
+      // Return 200 so Hitpay doesn't retry.
+      res.status(200).json({ received: true });
+    } catch (error: any) {
+      serverError(res, 'Payment callback failed');
     }
   });
 

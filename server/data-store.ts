@@ -94,6 +94,13 @@ export interface DataStore {
    */
   listAllReviews(params: PageParams): Paginated<Review> | Promise<Paginated<Review>>;
   /**
+   * Payment: update a booking's payment status and related fields.
+   */
+  updateBookingPayment(
+    id: string,
+    updates: { paymentStatus: Booking['paymentStatus']; paymentMethod?: Booking['paymentMethod'] | null; paymentUrl?: Booking['paymentUrl'] | null; paymentPaidAt?: Booking['paymentPaidAt'] | null },
+  ): void | Promise<void>;
+  /**
    * Bounded, ordered page reads (FR-006). Ordering is store-consistent:
    * salons/users by id asc; bookings by createdAt desc; reviews by date desc.
    * `listBookings` applies the handler-computed role filter at the store
@@ -546,6 +553,16 @@ export class JsonDataStore implements DataStore {
   public listAllReviews(params: PageParams): Paginated<Review> {
     const ordered = [...this.reviews].sort((a, b) => b.date.localeCompare(a.date));
     return slicePage(ordered, params);
+  }
+
+  public updateBookingPayment(
+    id: string,
+    updates: { paymentStatus: Booking['paymentStatus']; paymentMethod?: Booking['paymentMethod'] | null; paymentUrl?: Booking['paymentUrl'] | null; paymentPaidAt?: Booking['paymentPaidAt'] | null },
+  ): void {
+    const idx = this.bookings.findIndex(b => b.id === id);
+    if (idx === -1) throw new Error('Booking not found');
+    this.bookings[idx] = { ...this.bookings[idx], ...updates };
+    this.save();
   }
 }
 
