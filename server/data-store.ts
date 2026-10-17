@@ -78,6 +78,22 @@ export interface DataStore {
   updateUser(id: string, updates: Partial<StoredUser>): StoredUser | Promise<StoredUser>;
   deleteUser(id: string): void | Promise<void>;
   /**
+   * Admin-only: remove a salon and all its services.
+   */
+  deleteSalon(id: string): void | Promise<void>;
+  /**
+   * Admin-only: remove a review.
+   */
+  deleteReview(id: string): void | Promise<void>;
+  /**
+   * Admin-only: remove a booking.
+   */
+  deleteBooking(id: string): void | Promise<void>;
+  /**
+   * Admin-only: list all reviews across all salons, paginated.
+   */
+  listAllReviews(params: PageParams): Paginated<Review> | Promise<Paginated<Review>>;
+  /**
    * Bounded, ordered page reads (FR-006). Ordering is store-consistent:
    * salons/users by id asc; bookings by createdAt desc; reviews by date desc.
    * `listBookings` applies the handler-computed role filter at the store
@@ -504,6 +520,32 @@ export class JsonDataStore implements DataStore {
     if (idx === -1) throw new Error('User not found');
     this.users.splice(idx, 1);
     this.save();
+  }
+
+  public deleteSalon(id: string): void {
+    const idx = this.salons.findIndex(s => s.id === id);
+    if (idx === -1) throw new Error('Salon not found');
+    this.salons.splice(idx, 1);
+    this.save();
+  }
+
+  public deleteReview(id: string): void {
+    const idx = this.reviews.findIndex(r => r.id === id);
+    if (idx === -1) throw new Error('Review not found');
+    this.reviews.splice(idx, 1);
+    this.save();
+  }
+
+  public deleteBooking(id: string): void {
+    const idx = this.bookings.findIndex(b => b.id === id);
+    if (idx === -1) throw new Error('Booking not found');
+    this.bookings.splice(idx, 1);
+    this.save();
+  }
+
+  public listAllReviews(params: PageParams): Paginated<Review> {
+    const ordered = [...this.reviews].sort((a, b) => b.date.localeCompare(a.date));
+    return slicePage(ordered, params);
   }
 }
 

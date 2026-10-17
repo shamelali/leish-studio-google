@@ -1054,6 +1054,91 @@ export function createApp(dependencies: AppDependencies = {}) {
     }
   });
 
+  // ── Admin salon management ─────────────────────────────────────────────
+
+  // API Route: Update any salon as admin (featured flag, details, etc.)
+  app.put('/api/admin/salons/:id', authenticateToken, requireAdmin, async (req: any, res) => {
+    try {
+      const parsed = salonUpdateSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ error: parsed.error.issues[0].message });
+      }
+      const salon = await appStore.getSalon(req.params.id);
+      if (!salon) {
+        return res.status(404).json({ error: 'Salon not found' });
+      }
+      const updated = await appStore.updateSalon(req.params.id, parsed.data);
+      res.json(updated);
+    } catch (error: any) {
+      res.status(500).json({ error: 'Salon update failed' });
+    }
+  });
+
+  // API Route: Delete a salon as admin (cascades services; bookings remain
+  // with a dangling salon reference — use with care).
+  app.delete('/api/admin/salons/:id', authenticateToken, requireAdmin, async (req: any, res) => {
+    try {
+      const salon = await appStore.getSalon(req.params.id);
+      if (!salon) {
+        return res.status(404).json({ error: 'Salon not found' });
+      }
+      await appStore.deleteSalon(req.params.id);
+      res.json({ deleted: req.params.id });
+    } catch (error: any) {
+      if (error?.message === 'Salon not found') {
+        return res.status(404).json({ error: 'Salon not found' });
+      }
+      res.status(500).json({ error: 'Salon deletion failed' });
+    }
+  });
+
+  // ── Admin review moderation ────────────────────────────────────────────
+
+  // API Route: List all reviews across all salons (admin-only, paginated)
+  app.get('/api/admin/reviews', authenticateToken, requireAdmin, async (req: any, res) => {
+    try {
+      const parsed = pageQuerySchema.safeParse(req.query);
+      if (!parsed.success) {
+        return res.status(400).json({ error: parsed.error.issues[0].message });
+      }
+      const page = await appStore.listAllReviews({
+        page: parsed.data.page ?? 1,
+        limit: parsed.data.limit ?? DEFAULT_PAGE_LIMIT,
+      });
+      res.json(page);
+    } catch (error: any) {
+      res.status(500).json({ error: 'Could not load reviews' });
+    }
+  });
+
+  // API Route: Delete a review as admin
+  app.delete('/api/admin/reviews/:id', authenticateToken, requireAdmin, async (req: any, res) => {
+    try {
+      await appStore.deleteReview(req.params.id);
+      res.json({ deleted: req.params.id });
+    } catch (error: any) {
+      if (error?.message === 'Review not found') {
+        return res.status(404).json({ error: 'Review not found' });
+      }
+      res.status(500).json({ error: 'Review deletion failed' });
+    }
+  });
+
+  // ── Admin booking management ───────────────────────────────────────────
+
+  // API Route: Delete a booking as admin
+  app.delete('/api/admin/bookings/:id', authenticateToken, requireAdmin, async (req: any, res) => {
+    try {
+      await appStore.deleteBooking(req.params.id);
+      res.json({ deleted: req.params.id });
+    } catch (error: any) {
+      if (error?.message === 'Booking not found') {
+        return res.status(404).json({ error: 'Booking not found' });
+      }
+      res.status(500).json({ error: 'Booking deletion failed' });
+    }
+  });
+
   // API Route: Get bookings — authenticated and scoped by identity (1.2),
   // paginated (FR-006/FR-007). Role filters are computed here and enforced
   // at the store level so durable backends never fetch full collections:

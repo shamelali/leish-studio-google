@@ -26,6 +26,12 @@ const BookingModal = React.lazy(() => import('./components/BookingModal'));
 const ClientPortal = React.lazy(() => import('./components/ClientPortal'));
 const ProviderDashboard = React.lazy(() => import('./components/ProviderDashboard'));
 const AdminUsers = React.lazy(() => import('./components/AdminUsers'));
+const AdminSidebar = React.lazy(() => import('./components/AdminSidebar'));
+const AdminDashboard = React.lazy(() => import('./components/AdminDashboard'));
+const AdminSalons = React.lazy(() => import('./components/AdminSalons'));
+const AdminBookings = React.lazy(() => import('./components/AdminBookings'));
+const AdminReviews = React.lazy(() => import('./components/AdminReviews'));
+const AdminSettings = React.lazy(() => import('./components/AdminSettings'));
 const AuthModal = React.lazy(() => import('./components/AuthModal'));
 const ProfileModal = React.lazy(() => import('./components/ProfileModal'));
 const LookbookStudio = React.lazy(() => import('./components/LookbookStudio'));
@@ -68,6 +74,9 @@ export default function App() {
     } catch {}
     return '';
   });
+
+  // Admin sub-section state — persists the active admin panel within the sidebar.
+  const [adminSection, setAdminSection] = useState<string>('dashboard');
 
   // Hero Section Image Gallery curation
   const CURATED_HERO_IMAGES = [
@@ -805,11 +814,36 @@ export default function App() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
+              className="flex min-h-[calc(100vh-80px)]"
             >
-              <AdminUsers
-                currentUser={currentUser}
+              <AdminSidebar
+                activeSection={adminSection}
+                setActiveSection={setAdminSection}
                 onOpenAuth={handleOpenAuth}
               />
+              <main className="flex-1 overflow-y-auto bg-canvas">
+                {adminSection === 'dashboard' && (
+                  <AdminDashboard />
+                )}
+                {adminSection === 'users' && (
+                  <AdminUsers
+                    currentUser={currentUser}
+                    onOpenAuth={handleOpenAuth}
+                  />
+                )}
+                {adminSection === 'salons' && (
+                  <AdminSalons />
+                )}
+                {adminSection === 'bookings' && (
+                  <AdminBookings />
+                )}
+                {adminSection === 'reviews' && (
+                  <AdminReviews />
+                )}
+                {adminSection === 'settings' && (
+                  <AdminSettings />
+                )}
+              </main>
             </motion.div>
           )}
 

@@ -476,4 +476,35 @@ export class SupabaseStore implements DataStore {
     const { error } = await this.db.from('leish_users').delete().eq('id', id);
     if (error) throw new Error(`Supabase user delete failed: ${error.message}`);
   }
+
+  async deleteSalon(id: string): Promise<void> {
+    const salon = await this.getSalon(id);
+    if (!salon) throw new Error('Salon not found');
+    const { error } = await this.db.from('leish_salons').delete().eq('id', id);
+    if (error) throw new Error(`Supabase salon delete failed: ${error.message}`);
+  }
+
+  async deleteReview(id: string): Promise<void> {
+    const review = await this.rowById<Review>('leish_reviews', id);
+    if (!review) throw new Error('Review not found');
+    const { error } = await this.db.from('leish_reviews').delete().eq('id', id);
+    if (error) throw new Error(`Supabase review delete failed: ${error.message}`);
+  }
+
+  async deleteBooking(id: string): Promise<void> {
+    const booking = await this.getBooking(id);
+    if (!booking) throw new Error('Booking not found');
+    const { error } = await this.db.from('leish_bookings').delete().eq('id', id);
+    if (error) throw new Error(`Supabase booking delete failed: ${error.message}`);
+  }
+
+  async listAllReviews(params: PageParams): Promise<Paginated<Review>> {
+    const { data, error, count } = await this.db
+      .from('leish_reviews')
+      .select('data', { count: 'exact' })
+      .order('date', { ascending: false })
+      .range(pageOffset(params), pageOffset(params) + params.limit - 1);
+    if (error) throw new Error(`Supabase reviews page failed: ${error.message}`);
+    return paginate((data ?? []).map(row => (row as { data: Review }).data), count ?? 0, params);
+  }
 }

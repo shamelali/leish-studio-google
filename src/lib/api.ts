@@ -73,6 +73,13 @@ export const salonsApi = {
     apiClient.delete(`/salons/${id}/services/${serviceId}`),
 };
 
+// Admin Salon API
+export const adminSalonsApi = {
+  update: (id: string, data: Partial<Salon>) =>
+    apiClient.put(`/admin/salons/${id}`, data),
+  remove: (id: string) => apiClient.delete(`/admin/salons/${id}`),
+};
+
 // Bookings API
 export const bookingsApi = {
   getAll: async (params?: { email?: string; salonId?: string }) => {
@@ -83,6 +90,11 @@ export const bookingsApi = {
     apiClient.post('/bookings', data),
   updateStatus: (id: string, status: string) =>
     apiClient.patch(`/bookings/${id}/status`, { status }),
+};
+
+// Admin Booking API
+export const adminBookingsApi = {
+  remove: (id: string) => apiClient.delete(`/admin/bookings/${id}`),
 };
 
 // Users API (admin panel)
@@ -99,6 +111,15 @@ export const reviewsApi = {
     unwrapPage<Review>(await apiClient.get<PaginatedResponse<Review> | Review[]>(`/reviews/${salonId}`)),
   create: (data: { salonId: string; clientName?: string; bookingId?: string; rating: number; text: string }) =>
     apiClient.post('/reviews', data),
+};
+
+// Admin Review API
+export const adminReviewsApi = {
+  getAll: async (params?: { page?: number; limit?: number }) => {
+    const query = new URLSearchParams(params as any).toString();
+    return apiClient.get<PaginatedResponse<Review>>(`/admin/reviews${query ? `?${query}` : ''}`);
+  },
+  remove: (id: string) => apiClient.delete(`/admin/reviews/${id}`),
 };
 
 // React Query hooks

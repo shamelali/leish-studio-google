@@ -387,4 +387,38 @@ export class FirestoreStore implements DataStore {
       tx.delete(db.collection('userEmails').doc(emailKey(normalizeEmail(user.email))));
     });
   }
+
+  async deleteSalon(id: string): Promise<void> {
+    const db = await this.dbPromise;
+    const ref = db.collection('salons').doc(id);
+    const snapshot = await ref.get();
+    if (!snapshot.exists) throw new Error('Salon not found');
+    await ref.delete();
+  }
+
+  async deleteReview(id: string): Promise<void> {
+    const db = await this.dbPromise;
+    const ref = db.collection('reviews').doc(id);
+    const snapshot = await ref.get();
+    if (!snapshot.exists) throw new Error('Review not found');
+    await ref.delete();
+  }
+
+  async deleteBooking(id: string): Promise<void> {
+    const db = await this.dbPromise;
+    const ref = db.collection('bookings').doc(id);
+    const snapshot = await ref.get();
+    if (!snapshot.exists) throw new Error('Booking not found');
+    await ref.delete();
+  }
+
+  async listAllReviews(params: PageParams): Promise<Paginated<Review>> {
+    const db = await this.dbPromise;
+    const collection = db.collection('reviews');
+    const [total, page] = await Promise.all([
+      collection.count().get().then(snap => snap.data().count),
+      collection.orderBy('date', 'desc').limit(params.limit).offset(pageOffset(params)).get(),
+    ]);
+    return paginate(page.docs.map(doc => doc.data() as Review), total, params);
+  }
 }
