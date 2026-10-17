@@ -6,9 +6,9 @@ Frozen specification: docs/spec-driven/booking-trust-scale/{PRD,TECH_DESIGN,ACCE
 Current objective: Delivered + deployed to production (leish.my). ACCEPTED_WITH_CAVEATS — one user action remains for full AC-011.
 Blocking issue: AC-011 visual pass needs (1) BREVO_API_KEY on Vercel project leish-studio-google — DONE, (2) user browser pass behind Vercel Authentication with a seeded catalog.
 Next action: User seeds a catalog listing + completes visual AC-011 pass on https://leish.my (guest OTP e2e now live: verify-request returns 202 "Verification code sent").
-Push status: RESOLVED — all commits pushed to origin main (4f92099). Pre-push hook passed (307/307 tests).
+Push status: RESOLVED — all commits pushed to origin main (d79a106). Pre-push hook passed (307/307 tests).
 Production env: BREVO_API_KEY + BREVO_MCP_KEY + VITE_SUPABASE_URL + VITE_SUPABASE_ANON_KEY configured on leish-studio-google (production + preview). Deploy dpl_7tHWm5uh4UVHKib1xwp5y7mWbtqv live.
-Auth fix: register/login fall back to legacy bcrypt when Supabase Auth creation fails (FK constraint on public.profiles blocks Supabase Auth user creation). VITE_SUPABASE_URL/ANON_KEY added so browser Supabase client works for Google OAuth.
+Auth fix: register/login fall back to legacy bcrypt when Supabase Auth creation fails. Dropped broken on_auth_user_created trigger on auth.users (was calling handle_new_auth_user() → FK violation on public.profiles). Supabase Auth register/login now works end-to-end; Google OAuth ready once provider is configured in Supabase Auth settings.
 Last updated: 2026-10-17
 
 ## Final Acceptance Matrix (all 15 ACs)
