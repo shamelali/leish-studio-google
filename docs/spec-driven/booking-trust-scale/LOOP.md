@@ -9,6 +9,27 @@ Next action: User seeds a catalog listing + completes visual AC-011 pass on http
 Push status: RESOLVED — all commits pushed to origin main (d79a106). Pre-push hook passed (307/307 tests).
 Production env: BREVO_API_KEY + BREVO_MCP_KEY + VITE_SUPABASE_URL + VITE_SUPABASE_ANON_KEY configured on leish-studio-google (production + preview). Deploy dpl_7tHWm5uh4UVHKib1xwp5y7mWbtqv live.
 Auth fix: register/login fall back to legacy bcrypt when Supabase Auth creation fails. Dropped broken on_auth_user_created trigger on auth.users (was calling handle_new_auth_user() → FK violation on public.profiles). Supabase Auth register/login now works end-to-end; Google OAuth ready once provider is configured in Supabase Auth settings.
+
+## Supabase Auth configuration (www.leish.my) — dashboard actions
+
+1. **URL Configuration** (Authentication → URL Configuration):
+   - Site URL: `https://www.leish.my`
+   - Redirect URLs: add `https://www.leish.my/auth/callback` (or your app's exact post-auth route), plus email-confirmation / password-reset destinations and local dev URLs as needed. Keep production redirects specific, not wildcard.
+
+2. **Google provider** (Authentication → Providers → Google):
+   - In Google Cloud → Google Auth Platform, create a Web application OAuth client.
+   - Authorized JavaScript origin: `https://www.leish.my`
+   - Authorized redirect URI: the callback URL shown in Supabase (normally `https://rnlgwckkpjvtmtsowkrj.supabase.co/auth/v1/callback` unless using a Supabase custom domain).
+   - Copy Client ID + Client Secret into Supabase, enable provider, save.
+
+3. **Email/password provider** (Authentication → Providers): enabled by default; decide whether to require email confirmation (hosted Supabase requires it by default). For production delivery, configure custom SMTP in Authentication → SMTP Settings.
+
+4. **Browser app sign-in calls** (src/lib/supabase.ts uses supabase-js):
+   - Google: `supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: 'https://www.leish.my/auth/callback' } })`
+   - Email: `supabase.auth.signUp()` / `supabase.auth.signInWithPassword()`
+
+Note: Do NOT use `https://www.leish.my/auth/callback` as Google's Authorized redirect URI unless that is exactly the callback URL Supabase displays. That URL belongs in Supabase's Redirect URLs list.
+
 Last updated: 2026-10-17
 
 ## Final Acceptance Matrix (all 15 ACs)
