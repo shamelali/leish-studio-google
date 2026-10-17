@@ -3,9 +3,10 @@
 Current state: accepted
 Current loop: LOOP-004
 Frozen specification: docs/spec-driven/booking-trust-scale/{PRD,TECH_DESIGN,ACCEPTANCE,AGENT_PLAN}.md (Frozen, approved 2026-10-16)
-Current objective: Delivered + deployed to production (leish.my). ACCEPTED_WITH_CAVEATS — two user actions remain.
+Current objective: Delivered + deployed to production (leish.my). ACCEPTED_WITH_CAVEATS — one user action remains.
 Blocking issue: AC-011 visual pass needs (1) BREVO_API_KEY on Vercel project leish-studio-google, (2) user browser pass behind Vercel Authentication with a seeded catalog.
-Next action: User adds BREVO_API_KEY + pushes 93d45ef (SSH passphrase pending); visual AC-011 pass.
+Next action: User adds BREVO_API_KEY + seeds a listing; visual AC-011 pass on https://leish.my.
+Push status: RESOLVED — all commits pushed to origin main (bee1a7b). Pre-push hook passed (307/307 tests).
 Last updated: 2026-10-17
 
 ## Final Acceptance Matrix (all 15 ACs)
