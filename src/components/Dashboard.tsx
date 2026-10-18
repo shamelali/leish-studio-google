@@ -22,13 +22,13 @@ interface DashboardProps {
 }
 
 export default function Dashboard({ salons, currentUser, onOpenAuth }: DashboardProps) {
-  const initialSalonId = (currentUser?.role === 'provider' && currentUser?.salonId)
+  const initialSalonId = (currentUser?.role === 'studio' && currentUser?.salonId)
     ? currentUser.salonId
     : (salons[0]?.id || '');
   const [selectedSalonId, setSelectedSalonId] = useState<string>(initialSalonId);
 
   useEffect(() => {
-    if (currentUser?.role === 'provider' && currentUser?.salonId) {
+    if (currentUser?.role === 'studio' && currentUser?.salonId) {
       setSelectedSalonId(currentUser.salonId);
     }
   }, [currentUser]);
@@ -95,7 +95,7 @@ export default function Dashboard({ salons, currentUser, onOpenAuth }: Dashboard
       setEditHours(latestSalon.workingHours);
       setNewServiceCategory(latestSalon.category);
 
-      if (currentUser?.role === 'provider' && currentUser.salonId === selectedSalonId) {
+      if (currentUser?.role === 'studio' && currentUser.salonId === selectedSalonId) {
         const salonBookings = (await bookingsApi.getAll()) as Booking[];
         salonBookings.sort((a: Booking, b: Booking) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
         setBookings(salonBookings);
@@ -286,7 +286,7 @@ export default function Dashboard({ salons, currentUser, onOpenAuth }: Dashboard
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
-      {currentUser?.role === 'provider' ? (
+      {currentUser?.role === 'studio' ? (
         <div className="rounded-2xl border border-accent-soft/40 bg-inset p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
           <div className="flex items-center space-x-3">
             <span className="h-2.5 w-2.5 rounded-full bg-success-surface animate-pulse" />
@@ -431,7 +431,7 @@ export default function Dashboard({ salons, currentUser, onOpenAuth }: Dashboard
               <div className="space-y-4">
                 {bookings.length === 0 ? (
                   <div className="text-center py-16 border border-line rounded-xl bg-panel text-fg-muted text-xs">
-                    {currentUser?.role === 'provider' && currentUser.salonId === selectedSalonId
+                    {currentUser?.role === 'studio' && currentUser.salonId === selectedSalonId
                       ? 'No bookings registered for this salon yet.'
                       : 'Appointments are visible to the partner account that manages this studio. Sign in with the studio account to see them.'}
                   </div>
