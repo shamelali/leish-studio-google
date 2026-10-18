@@ -29,8 +29,8 @@ export default function ProviderDashboard({
   currentUser,
   onOpenAuth
 }: ProviderDashboardProps) {
-      if (currentUser?.role === 'studio' && currentUser?.salonId) {
-  const [selectedSalonId, setSelectedSalonId] = useState<string>(initialSalonId);
+      const initialSalonId = currentUser?.role === 'studio' ? currentUser.salonId : null;
+      const [selectedSalonId, setSelectedSalonId] = useState<string>(initialSalonId);
 
   // Sync when currentUser changes
   useEffect(() => {
@@ -873,4 +873,3 @@ export default function ProviderDashboard({
   );
 }
 
-}

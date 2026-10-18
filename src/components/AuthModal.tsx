@@ -384,7 +384,7 @@ export default function AuthModal({
               </div>
             </div>
 
-            {registerForm.watch('role') === 'provider' && (
+            {registerForm.watch('role') === 'studio' && (
               <p className="text-xs text-fg-muted">A studio administrator will link your account to a listing after verification.</p>
             )}
 

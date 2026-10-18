@@ -47,8 +47,8 @@ beforeAll(async () => {
     bookings: [],
     reviews: [],
     users: [
-      { id: 'user-provider-1', name: 'Aina Rahman', email: 'aina@leish.test', password: hashPassword('password123'), role: 'provider', salonId: 'salon-1', phone: '+60 12-890 1234', createdAt: '2026-01-10T10:00:00.000Z' },
-      { id: 'user-provider-2', name: 'Siti Ahmad', email: 'siti@leish.test', password: hashPassword('password123'), role: 'provider', salonId: 'salon-2', phone: '+60 12-456 7890', createdAt: '2026-01-12T12:00:00.000Z' },
+      { id: 'user-provider-1', name: 'Aina Rahman', email: 'aina@leish.test', password: hashPassword('password123'), role: 'studio', salonId: 'salon-1', phone: '+60 12-890 1234', createdAt: '2026-01-10T10:00:00.000Z' },
+      { id: 'user-provider-2', name: 'Siti Ahmad', email: 'siti@leish.test', password: hashPassword('password123'), role: 'studio', salonId: 'salon-2', phone: '+60 12-456 7890', createdAt: '2026-01-12T12:00:00.000Z' },
       { id: 'user-client-1', name: 'Mei Ling', email: 'mei@leish.test', password: hashPassword('password123'), role: 'client', phone: '+60 12-345 6789', createdAt: '2026-01-15T08:00:00.000Z' },
       { id: 'user-admin-1', name: 'Shamel', email: 'shamel@leish.my', password: hashPassword('lindan95'), role: 'admin', phone: '+60 12-000 0000', createdAt: '2026-10-17T00:00:00.000Z' },
     ],
@@ -202,7 +202,7 @@ describe('list pagination contract (FR-006/FR-007)', () => {
       name: 'Pagination Unlinked',
       email: `pagi-nosalon-${Date.now()}@leish.test`,
       password: 'Sup3rSecret!',
-      role: 'provider',
+      role: 'studio',
     });
     expect(nosalon.status).toBe(201);
     const forbidden = await request(app)
@@ -640,7 +640,7 @@ describe('TR-7 authorization matrix (Phase 1)', () => {
         name: 'Unlinked Provider',
         email: `nosalon-${Date.now()}@leish.test`,
         password: 'Sup3rSecret!',
-        role: 'provider',
+        role: 'studio',
       });
       expect(reg.status).toBe(201);
       nosalonProviderToken = reg.body.token;
@@ -658,7 +658,7 @@ describe('TR-7 authorization matrix (Phase 1)', () => {
         name: 'Unverified Provider',
         email: `claim-${Date.now()}@leish.test`,
         password: 'Sup3rSecret!',
-        role: 'provider',
+        role: 'studio',
         salonId: 'salon-1',
       });
       expect(reg.status).toBe(201);
@@ -1127,7 +1127,7 @@ describe('booking status privilege boundaries', () => {
     expect(login.status).toBe(200);
     clientToken = login.body.token;
     const registration = await request(app).post('/api/auth/register').send({
-      name: 'Unlinked Customer Provider', email: unlinkedEmail, password: 'Sup3rSecret!', role: 'provider',
+      name: 'Unlinked Customer Provider', email: unlinkedEmail, password: 'Sup3rSecret!', role: 'studio',
     });
     expect(registration.status).toBe(201);
     unlinkedToken = registration.body.token;
@@ -1500,7 +1500,7 @@ describe('admin users panel (GET+PATCH /api/users)', () => {
   it('403s providers and 401s anonymous callers', async () => {
     expect((await authed(providerToken).get('/api/users')).status).toBe(403);
     expect((await request(app).get('/api/users')).status).toBe(401);
-    expect((await authed(providerToken).patch('/api/users/user-client-1').send({ role: 'provider' })).status).toBe(403);
+    expect((await authed(providerToken).patch('/api/users/user-client-1').send({ role: 'studio' })).status).toBe(403);
   });
 
   it('changes roles and links salons, then unlinks', async () => {
@@ -1510,9 +1510,9 @@ describe('admin users panel (GET+PATCH /api/users)', () => {
     expect(reg.status).toBe(201);
     const id = reg.body.user.id;
 
-    const promote = await authed(adminToken).patch(`/api/users/${id}`).send({ role: 'provider', salonId: 'salon-1' });
+    const promote = await authed(adminToken).patch(`/api/users/${id}`).send({ role: 'studio', salonId: 'salon-1' });
     expect(promote.status).toBe(200);
-    expect(promote.body).toMatchObject({ id, role: 'provider', salonId: 'salon-1' });
+    expect(promote.body).toMatchObject({ id, role: 'studio', salonId: 'salon-1' });
     expect(promote.body).not.toHaveProperty('password');
 
     const unlink = await authed(adminToken).patch(`/api/users/${id}`).send({ salonId: null });

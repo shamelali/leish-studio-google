@@ -575,7 +575,7 @@ export function createApp(dependencies: AppDependencies = {}) {
     name: z.string().min(1).max(100),
     email: z.string().email(),
     password: z.string().min(6).max(100),
-    role: z.enum(['client', 'provider']).optional(),
+    role: z.enum(['client', 'MUA', 'studio', 'admin']).optional(),
     phone: z.string().optional(),
     bio: z.string().max(500).optional(),
   });
@@ -627,7 +627,7 @@ export function createApp(dependencies: AppDependencies = {}) {
         return res.status(400).json({ error: 'An account with this email already exists. Please sign in instead.' });
       }
 
-      const defaultAvatar = role === 'provider'
+      const defaultAvatar = role === 'studio'
         ? 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200'
         : 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200';
 
@@ -811,7 +811,7 @@ export function createApp(dependencies: AppDependencies = {}) {
       }
       const z = require('zod');
       const schema = z.object({
-        role: z.enum(['client', 'provider', 'admin']).optional(),
+        role: z.enum(['client', 'MUA', 'studio', 'admin']).optional(),
       });
       const parsed = schema.safeParse(req.body);
       if (!parsed.success) {
@@ -1272,7 +1272,7 @@ export function createApp(dependencies: AppDependencies = {}) {
         }));
         return;
       }
-      if (req.user.role === 'provider') {
+      if (req.user.role === 'studio') {
         if (!req.user.salonId) {
           return res.status(403).json({ error: 'No salon is linked to this account.' });
         }

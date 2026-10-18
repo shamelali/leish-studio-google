@@ -141,7 +141,7 @@ export default function AdminDashboard() {
           <div className="space-y-3">
             {[
               ['admin', totalAdmins] as [string, number],
-              ['provider', totalProviders] as [string, number],
+              ['studio', totalStudios] as [string, number],
               ['client', totalClients] as [string, number],
             ].map(([role, count]) => {
               const roleLabel = role.charAt(0).toUpperCase() + role.slice(1);
