@@ -147,7 +147,7 @@ export default function ClientPortal({
               <div className="flex items-center space-x-2">
                 <h3 className="font-serif text-base font-semibold text-fg">{currentUser.name}</h3>
                 <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full bg-accent/20 text-fg border border-accent-soft/40">
-                  {currentUser.role === 'provider' ? 'Studio Director' : 'VIP Client'}
+                  {currentUser.role === 'studio' ? 'Studio Director' : 'VIP Client'}
                 </span>
               </div>
               <p className="text-xs text-fg-muted">

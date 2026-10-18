@@ -107,7 +107,7 @@ const workingHoursSchema = z.object({
 /** Schema for admin user edits — role changes and salon linkage only. */
 export const adminUserUpdateSchema = z.object({
   name: z.string().trim().min(1).max(100).optional(),
-  role: z.enum(['client', 'provider', 'admin']).optional(),
+  role: z.enum(['client', 'MUA', 'studio', 'admin']).optional(),
   salonId: z.string().trim().max(120).nullable().optional(),
   phone: z.string().trim().max(50).optional(),
   bio: z.string().trim().max(500).optional(),

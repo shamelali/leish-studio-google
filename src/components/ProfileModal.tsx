@@ -119,7 +119,7 @@ export default function ProfileModal({
               )}
             </div>
             <span className={`absolute bottom-0 right-0 h-4 w-4 rounded-full border-2 border-recessed ${
-              currentUser.role === 'provider' ? 'bg-primary' : 'bg-panel'
+              currentUser.role === 'studio' ? 'bg-primary' : 'bg-panel'
             }`} />
           </div>
 
@@ -129,7 +129,7 @@ export default function ProfileModal({
           <p className="text-xs font-mono text-fg-muted mt-0.5">{currentUser.email}</p>
 
           <div className="mt-2.5 inline-flex items-center space-x-1.5 rounded-full border border-accent-soft/30 bg-accent/15 px-3 py-1 text-xs text-fg">
-            {currentUser.role === 'provider' ? (
+            {currentUser.role === 'studio' ? (
               <>
                 <Building2 className="h-3 w-3 text-fg" />
                 <span className="font-medium">Makeup Studio Director & MUA</span>
@@ -155,7 +155,7 @@ export default function ProfileModal({
                 <span className="text-fg font-mono">{currentUser.phone || 'Not provided'}</span>
               </div>
 
-              {currentUser.role === 'provider' && linkedSalon && (
+              {currentUser.role === 'studio' && linkedSalon && (
                 <div className="flex items-center justify-between text-fg-dim pt-2 border-t border-line">
                   <span className="flex items-center space-x-2">
                     <Building2 className="h-3.5 w-3.5 text-accent-text" />
@@ -175,7 +175,7 @@ export default function ProfileModal({
 
             {/* Quick Action Navigation */}
             <div className="grid grid-cols-2 gap-2 pt-1">
-              {currentUser.role === 'provider' ? (
+              {currentUser.role === 'studio' ? (
                 <button
                   type="button"
                   onClick={() => {

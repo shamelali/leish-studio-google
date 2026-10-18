@@ -489,7 +489,7 @@ export function createApp(dependencies: AppDependencies = {}) {
 
   // --- AUTHORIZATION (TR-7) — enforced in middleware, not per-handler ---
   const canUpdateSalon = (user: User, salonId: string): boolean =>
-    user.role === 'admin' || (user.role === 'provider' && user.salonId === salonId);
+    user.role === 'admin' || (user.role === 'studio' && user.salonId === salonId);
 
   const canModifyBooking = (user: User, booking: Booking): boolean =>
     canUpdateSalon(user, booking.salonId) ||
@@ -650,9 +650,9 @@ export function createApp(dependencies: AppDependencies = {}) {
             name: name.trim(),
             email: normalizedEmail,
             password,
-            role: role === 'provider' ? 'provider' : 'client',
+            role: role === 'studio' ? 'studio' : role === 'MUA' ? 'MUA' : 'client',
             phone: phone ? phone.trim() : undefined,
-            bio: bio ? bio.trim() : (role === 'provider' ? 'Boutique beauty specialist at Leish! Aesthetic Marketplace.' : 'Beauty enthusiast exploring curated salon treatments.'),
+            bio: bio ? bio.trim() : (role === 'studio' ? 'Boutique beauty specialist at Leish! Aesthetic Marketplace.' : 'Beauty enthusiast exploring curated salon treatments.'),
             avatar: defaultAvatar,
             createdAt: new Date().toISOString()
           });
@@ -677,10 +677,10 @@ export function createApp(dependencies: AppDependencies = {}) {
         name: name.trim(),
         email: normalizedEmail,
         password,
-        role: role === 'provider' ? 'provider' : 'client',
+        role: role === 'studio' ? 'studio' : role === 'MUA' ? 'MUA' : 'client',
         phone: phone ? phone.trim() : undefined,
-        // Salon ownership is provisioned by an administrator, never claimed at signup.
-        bio: bio ? bio.trim() : (role === 'provider' ? 'Boutique beauty specialist at Leish! Aesthetic Marketplace.' : 'Beauty enthusiast exploring curated salon treatments.'),
+        // Studio ownership is provisioned by an administrator, never claimed at signup.
+        bio: bio ? bio.trim() : (role === 'studio' ? 'Boutique beauty specialist at Leish! Aesthetic Marketplace.' : 'Beauty enthusiast exploring curated salon treatments.'),
         avatar: defaultAvatar,
         createdAt: new Date().toISOString()
       });

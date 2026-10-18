@@ -29,14 +29,12 @@ export default function ProviderDashboard({
   currentUser,
   onOpenAuth
 }: ProviderDashboardProps) {
-  const initialSalonId = (currentUser?.role === 'provider' && currentUser?.salonId) 
-    ? currentUser.salonId 
-    : (salons[0]?.id || '');
+      if (currentUser?.role === 'studio' && currentUser?.salonId) {
   const [selectedSalonId, setSelectedSalonId] = useState<string>(initialSalonId);
 
   // Sync when currentUser changes
   useEffect(() => {
-    if (currentUser?.role === 'provider' && currentUser?.salonId) {
+    if (currentUser?.role === 'studio' && currentUser?.salonId) {
       setSelectedSalonId(currentUser.salonId);
     }
   }, [currentUser]);
@@ -107,7 +105,7 @@ export default function ProviderDashboard({
 
       // Appointments are only visible to the signed-in partner who manages
       // this salon — the API scopes them by identity (TR-7).
-      if (currentUser?.role === 'provider' && currentUser.salonId === selectedSalonId) {
+      if (currentUser?.role === 'studio' && currentUser.salonId === selectedSalonId) {
         const salonBookings = (await bookingsApi.getAll()) as Booking[];
         // Sort bookings: newest first
         salonBookings.sort((a: Booking, b: Booking) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
@@ -280,7 +278,7 @@ export default function ProviderDashboard({
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
       {/* Partner Notice or Authenticated Partner Banner */}
-      {currentUser?.role === 'provider' ? (
+      {currentUser.role === 'studio' ? (
         <div className="rounded-2xl border border-accent-soft/40 bg-inset p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
           <div className="flex items-center space-x-3">
             <span className="h-2.5 w-2.5 rounded-full bg-success-surface animate-pulse" />
@@ -430,7 +428,7 @@ export default function ProviderDashboard({
               <div className="space-y-4">
                 {bookings.length === 0 ? (
                   <div className="text-center py-16 border border-line rounded-xl bg-panel text-fg-muted text-xs">
-                    {currentUser?.role === 'provider' && currentUser.salonId === selectedSalonId
+                    {currentUser?.role === 'studio' && currentUser.salonId === selectedSalonId
                       ? 'No bookings registered for this salon yet.'
                       : 'Appointments are visible to the partner account that manages this studio. Sign in with the studio account to see them.'}
                   </div>
@@ -873,4 +871,6 @@ export default function ProviderDashboard({
       ) : null}
     </div>
   );
+}
+
 }

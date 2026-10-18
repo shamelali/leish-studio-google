@@ -148,7 +148,7 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  role: 'client' | 'provider' | 'admin';
+  role: 'client' | 'MUA' | 'studio' | 'admin';
   phone?: string;
   avatar?: string;
   salonId?: string;

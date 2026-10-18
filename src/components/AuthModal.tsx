@@ -44,7 +44,7 @@ const registerSchema = z.object({
   name: z.string().min(1, 'Name is required').max(100),
   email: z.string().email('Invalid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters').max(100),
-  role: z.enum(['client', 'provider', 'admin']).optional(),
+  role: z.enum(['client', 'MUA', 'studio', 'admin']).optional(),
   phone: z.string().optional(),
   bio: z.string().max(500).optional(),
 });
@@ -337,14 +337,14 @@ export default function AuthModal({
 
                 <button
                   type="button"
-                  onClick={() => registerForm.setValue('role', 'provider')}
+                  onClick={() => registerForm.setValue('role', 'studio')}
                   className={`flex flex-col items-center justify-center p-3 rounded-xl border text-center transition-all ${
-                    registerForm.watch('role') === 'provider'
+                    registerForm.watch('role') === 'studio'
                       ? 'border-accent bg-accent/15 text-fg'
                       : 'border-line bg-inset text-fg-dim hover:border-line'
                   }`}
                 >
-                  <Building2 className={`h-4 w-4 mb-1.5 ${registerForm.watch('role') === 'provider' ? 'text-fg' : 'text-fg-dim'}`} />
+                  <Building2 className={`h-4 w-4 mb-1.5 ${registerForm.watch('role') === 'studio' ? 'text-fg' : 'text-fg-dim'}`} />
                   <span className="text-xs font-medium">Studio / MUA</span>
                   <span className="text-[10px] text-fg-muted mt-0.5">Makeup Artist Director</span>
                 </button>

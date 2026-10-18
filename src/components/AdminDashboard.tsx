@@ -61,7 +61,7 @@ export default function AdminDashboard() {
 
   const totalUsers = userList.length;
   const totalAdmins = userList.filter(u => u.role === 'admin').length;
-  const totalProviders = userList.filter(u => u.role === 'provider').length;
+  const totalStudios = userList.filter(u => u.role === 'studio').length;
   const totalClients = userList.filter(u => u.role === 'client').length;
   const totalSalons = salonList.length;
   const featuredSalons = salonList.filter(s => s.featured).length;

@@ -191,10 +191,10 @@ export default function Navbar({
   const moreRef = useRef<HTMLDivElement>(null);
   const searchTimers = useRef<number[]>([]);
 
-  const isProvider = currentUser?.role === 'provider';
+  const isStudio = currentUser?.role === 'studio';
   const isAdmin = currentUser?.role === 'admin';
   // Guests get the salon portal as an acquisition entry; providers get their own tool.
-  const showSalonPortal = !currentUser || isProvider;
+  const showSalonPortal = !currentUser || isStudio;
   const toolItems = [...TOOL_ITEMS];
   if (showSalonPortal) toolItems.push(SALON_ITEM);
   if (isAdmin) toolItems.push(ADMIN_ITEM);
@@ -485,7 +485,7 @@ export default function Navbar({
                     {currentUser.name}
                   </span>
                   <span className="block font-mono text-[10px] capitalize text-fg-subtle">
-                    {isProvider ? 'Salon Director' : 'VIP Client'}
+                    {isStudio ? 'Salon Director' : 'VIP Client'}
                   </span>
                 </span>
                 <ChevronDown
@@ -509,7 +509,7 @@ export default function Navbar({
                         {currentUser.email}
                       </p>
                       <span className="mt-1 inline-block rounded-full border border-accent/40 bg-accent/20 px-2 py-0.5 font-mono text-[9px] uppercase tracking-wider text-fg">
-                        {isProvider ? 'Salon Partner' : 'Client Account'}
+                        {isStudio ? 'Salon Partner' : 'Client Account'}
                       </span>
                     </div>
 
@@ -527,7 +527,7 @@ export default function Navbar({
                       active={activeTab === 'client'}
                       onClick={() => goTab('client')}
                     />
-                    {isProvider && (
+                    {isStudio && (
                       <MenuRow
                         icon={Scissors}
                         label="Salon Portal"
