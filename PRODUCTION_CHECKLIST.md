@@ -2,20 +2,21 @@
 
 ## Pre-Deploy (Environment)
 
-- [ ] `STORE_BACKEND=firestore` set in Vercel/project environment
+- [ ] `STORE_BACKEND=supabase` set in the deployment environment
+- [ ] `SUPABASE_URL` set in the deployment environment
+- [ ] `SUPABASE_SERVICE_ROLE_KEY` set as a server-only secret
 - [ ] `JWT_SECRET` — 64+ character random string (not placeholder)
 - [ ] `GEMINI_API_KEY` — valid production key with billing enabled
 - [ ] `NODE_ENV=production`
 - [ ] `VERCEL=1` (auto-set on Vercel)
 - [ ] `LEISH_DISABLE_RATE_LIMIT` NOT set (or = "0")
 
-## Firestore Setup
+## Supabase Setup
 
-- [ ] Firestore database created (Native mode)
-- [ ] Indexes deployed: `firebase deploy --only firestore:indexes`
-- [ ] Security rules deployed: `firebase deploy --only firestore:rules`
-- [ ] Verify collections exist: `salons`, `bookings`, `reviews`, `users`
-- [ ] TTL indexes for expired bookings (if applicable)
+- [ ] Apply `supabase/migrations/001_leish_marketplace.sql`
+- [ ] Apply `supabase/migrations/002_slot_exclusion.sql`
+- [ ] Verify the `leish_*` tables and booking exclusion constraint exist
+- [ ] Confirm backups and point-in-time recovery are enabled
 
 ## Rate Limit Verification
 
@@ -39,7 +40,7 @@
 - [ ] Error tracking (Sentry/LogRocket) configured
 - [ ] Uptime monitor on `/healthz` (liveness; no store access, limiter-exempt)
 - [ ] Alert on: 5xx rate > 1%, 429 rate > 5%, p95 latency > 2s
-- [ ] Firestore usage alerts (reads/writes/day)
+- [ ] Supabase database usage alerts configured
 
 ## Load Testing (Pre-Prod)
 
@@ -77,7 +78,7 @@ curl -s -X POST https://your-domain.com/api/gemini/advice \
 
 - [ ] Previous commit SHA recorded: `0b89be6`
 - [ ] Vercel rollback: `vercel rollback [deployment-url]`
-- [ ] Firestore: point-in-time recovery enabled (PITR)
+- [ ] Supabase: point-in-time recovery and a tested restore procedure
 
 ---
 
