@@ -42,6 +42,21 @@ function isUniqueViolation(error: unknown): boolean {
   return typeof error === 'object' && error !== null && (error as { code?: unknown }).code === '23505';
 }
 
+function bookingRow(booking: Booking): Record<string, unknown> {
+  return {
+    id: booking.id,
+    salon_id: booking.salonId,
+    client_email: booking.clientEmail,
+    created_at: booking.createdAt,
+    staff_id: booking.staffId,
+    booking_date: booking.date,
+    status: booking.status,
+    starts_at: slotStartIso(booking.date, booking.time),
+    ends_at: slotEndIso(booking.date, booking.time, booking.serviceDuration),
+    data: booking,
+  };
+}
+
 /** Postgres-backed store: one row per entity, whole object in `data`. Reads never use a process-wide cache. */
 export class SupabaseStore implements DataStore {
   private readonly db: SupabaseClient;
@@ -130,13 +145,7 @@ export class SupabaseStore implements DataStore {
   }
 
   async createBooking(booking: Booking): Promise<Booking> {
-    const { error } = await this.db.from('leish_bookings').insert({
-      id: booking.id,
-      salon_id: booking.salonId,
-      client_email: booking.clientEmail,
-      created_at: booking.createdAt,
-      data: booking,
-    });
+    const { error } = await this.db.from('leish_bookings').insert(bookingRow(booking));
     if (error) throw new Error(`Supabase booking create failed: ${error.message}`);
     return booking;
   }
@@ -159,7 +168,7 @@ export class SupabaseStore implements DataStore {
     }
 
     // 2. Application-level pre-check for a friendly 409 (the exclusion
-    // constraint from migration 003 is the authoritative race arbiter).
+    // constraint from migration 002 is the authoritative race arbiter).
     const { data: candidates, error: conflictReadError } = await this.db
       .from('leish_bookings')
       .select('data')
@@ -174,18 +183,7 @@ export class SupabaseStore implements DataStore {
 
     // 3. Insert. A concurrent same-slot insert trips the exclusion
     // constraint (23P01) → slot conflict.
-    const { error } = await this.db.from('leish_bookings').insert({
-      id: booking.id,
-      salon_id: booking.salonId,
-      client_email: booking.clientEmail,
-      created_at: booking.createdAt,
-      staff_id: booking.staffId,
-      booking_date: booking.date,
-      status: booking.status,
-      starts_at: slotStartIso(booking.date, booking.time),
-      ends_at: slotEndIso(booking.date, booking.time, booking.serviceDuration),
-      data: booking,
-    });
+    const { error } = await this.db.from('leish_bookings').insert(bookingRow(booking));
     if (error) {
       if ((error as { code?: unknown }).code === '23P01') throw new SlotConflictError();
       throw new Error(`Supabase booking create failed: ${error.message}`);
@@ -273,7 +271,7 @@ export class SupabaseStore implements DataStore {
     const current = await this.getBooking(id);
     if (!current) throw new Error('Booking not found');
     const booking = { ...current, status };
-    const { error } = await this.db.from('leish_bookings').update({ data: booking }).eq('id', id);
+    const { error } = await this.db.from('leish_bookings').update({ status, data: booking }).eq('id', id);
     if (error) throw new Error(`Supabase booking update failed: ${error.message}`);
     return booking;
   }
@@ -504,7 +502,8 @@ export class SupabaseStore implements DataStore {
   ): Promise<void> {
     const booking = await this.getBooking(id);
     if (!booking) throw new Error('Booking not found');
-    const { error } = await this.db.from('leish_bookings').update(updates).eq('id', id);
+    const updated = { ...booking, ...updates };
+    const { error } = await this.db.from('leish_bookings').update({ data: updated }).eq('id', id);
     if (error) throw new Error(`Supabase booking payment update failed: ${error.message}`);
   }
 
