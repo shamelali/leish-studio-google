@@ -10,7 +10,11 @@ services:
       - key: NODE_ENV
         value: production
       - key: STORE_BACKEND
-        value: firestore
+        value: supabase
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
       - key: JWT_SECRET
         generateValue: true
       - key: GEMINI_API_KEY

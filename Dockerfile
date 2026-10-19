@@ -23,5 +23,12 @@ EXPOSE 3000
 ENV NODE_ENV=production
 ENV PORT=3000
 
+# Runtime secrets (pass at container start, never baked into image):
+#   -e STORE_BACKEND=supabase
+#   -e SUPABASE_URL=https://<project>.supabase.co
+#   -e SUPABASE_SERVICE_ROLE_KEY=<server-only key>
+#   -e JWT_SECRET=<random 64+ char string>
+#   -e GEMINI_API_KEY=<your Gemini API key>
+
 # Production entry point: serves dist/ static assets + Express API
 CMD ["npx", "tsx", "dev.ts"]
