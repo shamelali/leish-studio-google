@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Calendar, MapPin, Clock, DollarSign, XCircle, Star, MessageSquarePlus, CheckCircle, AlertCircle, Loader2, Sparkles } from 'lucide-react';
 import { Booking, Review, User } from '../types';
 import { bookingsApi, reviewsApi } from '../lib/api';
+import { isProviderRole } from '../lib/roles';
 
 interface ClientPortalProps {
   currentUser: User | null;
@@ -147,7 +148,7 @@ export default function ClientPortal({
               <div className="flex items-center space-x-2">
                 <h3 className="font-serif text-base font-semibold text-fg">{currentUser.name}</h3>
                 <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full bg-accent/20 text-fg border border-accent-soft/40">
-                  {currentUser.role === 'studio' ? 'Studio Director' : 'VIP Client'}
+                  {isProviderRole(currentUser.role) ? (currentUser.role === 'MUA' ? 'Makeup Artist' : 'Studio Operator') : 'VIP Client'}
                 </span>
               </div>
               <p className="text-xs text-fg-muted">

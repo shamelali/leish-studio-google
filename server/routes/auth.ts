@@ -49,7 +49,7 @@ const loginSchema = z.object({
 });
 
 const oauthCompleteSchema = z.object({
-  role: z.enum(['client', 'MUA', 'studio']).optional(),
+  role: z.enum(['client', 'MUA', 'studio']),
 });
 
 const updateProfileSchema = z.object({
@@ -298,15 +298,10 @@ export function registerAuthRoutes(app: Express, ctx: RouteContext): void {
           message: `Welcome${user.name ? `, ${user.name}` : ''}!`,
         });
       }
-      // User already exists (e.g. registered via email): just update role if different.
+      // Role selection is only for a new OAuth profile. Existing profiles must
+      // keep their role; privilege changes belong to the admin workflow.
       if (existing.role !== role) {
-        await appStore.updateUser(existing.id, { role });
-        const updated = await appStore.getUserById(existing.id);
-        return res.json({
-          user: sanitizeUser(updated),
-          token: issueToken(updated.id, JWT_SECRET),
-          message: `Welcome back, ${updated.name}!`,
-        });
+        return res.status(409).json({ error: 'This account already has a role. Contact an administrator to change it.' });
       }
       res.json({
         user: sanitizeUser(existing),

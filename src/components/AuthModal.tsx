@@ -320,7 +320,7 @@ export default function AuthModal({
               <label className="block text-xs font-mono uppercase tracking-wider text-fg-muted mb-2">
                 I want to join as:
               </label>
-              <div className="grid grid-cols-2 gap-2.5">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                 <button
                   type="button"
                   onClick={() => registerForm.setValue('role', 'client')}
@@ -337,6 +337,20 @@ export default function AuthModal({
 
                 <button
                   type="button"
+                  onClick={() => registerForm.setValue('role', 'MUA')}
+                  className={`flex flex-col items-center justify-center p-3 rounded-xl border text-center transition-all ${
+                    registerForm.watch('role') === 'MUA'
+                      ? 'border-accent bg-accent/15 text-fg'
+                      : 'border-line bg-inset text-fg-dim hover:border-line'
+                  }`}
+                >
+                  <UserIcon className={`h-4 w-4 mb-1.5 ${registerForm.watch('role') === 'MUA' ? 'text-fg' : 'text-fg-dim'}`} />
+                  <span className="text-xs font-medium">Makeup Artist</span>
+                  <span className="text-[10px] text-fg-muted mt-0.5">Manage a linked profile</span>
+                </button>
+
+                <button
+                  type="button"
                   onClick={() => registerForm.setValue('role', 'studio')}
                   className={`flex flex-col items-center justify-center p-3 rounded-xl border text-center transition-all ${
                     registerForm.watch('role') === 'studio'
@@ -345,8 +359,8 @@ export default function AuthModal({
                   }`}
                 >
                   <Building2 className={`h-4 w-4 mb-1.5 ${registerForm.watch('role') === 'studio' ? 'text-fg' : 'text-fg-dim'}`} />
-                  <span className="text-xs font-medium">Studio / MUA</span>
-                  <span className="text-[10px] text-fg-muted mt-0.5">Makeup Artist Director</span>
+                  <span className="text-xs font-medium">Studio Operator</span>
+                  <span className="text-[10px] text-fg-muted mt-0.5">Manage a linked listing</span>
                 </button>
               </div>
             </div>
@@ -384,8 +398,8 @@ export default function AuthModal({
               </div>
             </div>
 
-            {registerForm.watch('role') === 'studio' && (
-              <p className="text-xs text-fg-muted">A studio administrator will link your account to a listing after verification.</p>
+            {(registerForm.watch('role') === 'studio' || registerForm.watch('role') === 'MUA') && (
+              <p className="text-xs text-fg-muted">A marketplace administrator will verify your account and link it to a listing before provider tools are enabled.</p>
             )}
 
             <div>

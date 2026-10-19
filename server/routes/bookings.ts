@@ -99,7 +99,7 @@ export function registerBookingRoutes(app: Express, ctx: RouteContext): void {
         }));
         return;
       }
-      if (req.user!.role === 'studio') {
+      if (req.user!.role === 'studio' || req.user!.role === 'MUA') {
         if (!req.user!.salonId) {
           return res.status(403).json({ error: 'No salon is linked to this account.' });
         }

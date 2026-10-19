@@ -6,7 +6,7 @@
 import type { Booking, Review, User } from '../src/types.ts';
 
 export function canUpdateSalon(user: User | undefined, salonId: string): boolean {
-  return user?.role === 'admin' || (user?.role === 'studio' && user.salonId === salonId);
+  return user?.role === 'admin' || ((user?.role === 'studio' || user?.role === 'MUA') && user.salonId === salonId);
 }
 
 export function canModifyBooking(user: User | undefined, booking: Booking): boolean {

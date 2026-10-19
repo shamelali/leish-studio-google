@@ -8,6 +8,7 @@ import React, { useCallback } from 'react';
 import { useStore } from '../lib/store';
 import { useUsers, useSalons, useBookings } from '../lib/api';
 import type { User, Salon, Booking } from '../types';
+import { isProviderRole } from '../lib/roles';
 import {
   Users as UsersIcon,
   Building2 as BuildingIcon,
@@ -61,7 +62,7 @@ export default function AdminDashboard() {
 
   const totalUsers = userList.length;
   const totalAdmins = userList.filter(u => u.role === 'admin').length;
-  const totalStudios = userList.filter(u => u.role === 'studio').length;
+  const totalProviders = userList.filter(u => isProviderRole(u.role)).length;
   const totalClients = userList.filter(u => u.role === 'client').length;
   const totalSalons = salonList.length;
   const featuredSalons = salonList.filter(s => s.featured).length;
@@ -141,7 +142,7 @@ export default function AdminDashboard() {
           <div className="space-y-3">
             {[
               ['admin', totalAdmins] as [string, number],
-              ['studio', totalStudios] as [string, number],
+              ['providers', totalProviders] as [string, number],
               ['client', totalClients] as [string, number],
             ].map(([role, count]) => {
               const roleLabel = role.charAt(0).toUpperCase() + role.slice(1);

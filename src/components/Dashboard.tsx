@@ -5,10 +5,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Store, TrendingUp, Star, DollarSign, Calendar, Settings, Plus, Trash2, Edit3, Save, Check, Loader2, AlertCircle, Image as ImageIcon, ImageOff, Upload } from 'lucide-react';
+import { Store, TrendingUp, Star, DollarSign, Calendar, Settings, Plus, Trash2, Edit3, Save, Check, Loader2, AlertCircle, Building2, Image as ImageIcon, ImageOff, Upload } from 'lucide-react';
 import { Salon, Service, Booking, WorkingHours, User } from '../types';
 import { apiClient, bookingsApi, salonsApi } from '../lib/api';
 import { serviceFormSchema } from '../lib/service-form';
+import { isProviderRole } from '../lib/roles';
 
 const PREDEFINED_CATEGORIES = ['bridal', 'editorial', 'soft-glam', 'airbrush', 'masterclass', 'glam'] as const;
 type PredefinedCategory = typeof PREDEFINED_CATEGORIES[number];
@@ -22,13 +23,13 @@ interface DashboardProps {
 }
 
 export default function Dashboard({ salons, currentUser, onOpenAuth }: DashboardProps) {
-  const initialSalonId = (currentUser?.role === 'studio' && currentUser?.salonId)
+  const initialSalonId = (isProviderRole(currentUser?.role) && currentUser?.salonId)
     ? currentUser.salonId
     : (salons[0]?.id || '');
   const [selectedSalonId, setSelectedSalonId] = useState<string>(initialSalonId);
 
   useEffect(() => {
-    if (currentUser?.role === 'studio' && currentUser?.salonId) {
+    if (isProviderRole(currentUser?.role) && currentUser?.salonId) {
       setSelectedSalonId(currentUser.salonId);
     }
   }, [currentUser]);
@@ -95,7 +96,7 @@ export default function Dashboard({ salons, currentUser, onOpenAuth }: Dashboard
       setEditHours(latestSalon.workingHours);
       setNewServiceCategory(latestSalon.category);
 
-      if (currentUser?.role === 'studio' && currentUser.salonId === selectedSalonId) {
+      if (isProviderRole(currentUser?.role) && currentUser.salonId === selectedSalonId) {
         const salonBookings = (await bookingsApi.getAll()) as Booking[];
         salonBookings.sort((a: Booking, b: Booking) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
         setBookings(salonBookings);
@@ -284,14 +285,28 @@ export default function Dashboard({ salons, currentUser, onOpenAuth }: Dashboard
     );
   }
 
+  if (isProviderRole(currentUser?.role) && !currentUser?.salonId) {
+    return (
+      <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="rounded-2xl border border-accent-soft/40 bg-inset p-8 text-center">
+          <Building2 className="mx-auto mb-4 h-8 w-8 text-accent-text" />
+          <h1 className="font-serif text-2xl font-bold text-fg">Your provider profile is pending</h1>
+          <p className="mt-3 text-sm leading-6 text-fg-muted">
+            An administrator needs to verify your account and link it to a studio or artist listing before provider tools are enabled.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
-      {currentUser?.role === 'studio' ? (
+      {isProviderRole(currentUser?.role) ? (
         <div className="rounded-2xl border border-accent-soft/40 bg-inset p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
           <div className="flex items-center space-x-3">
             <span className="h-2.5 w-2.5 rounded-full bg-success-surface animate-pulse" />
             <p className="text-fg-muted">
-              Logged in as <span className="text-fg font-semibold">{currentUser.name}</span> (Studio Director & Lead MUA)
+              Logged in as <span className="text-fg font-semibold">{currentUser.name}</span> ({currentUser.role === 'MUA' ? 'Independent Makeup Artist' : 'Studio Operator'})
             </p>
           </div>
           <span className="font-mono text-[11px] text-fg bg-accent/20 border border-accent-soft/40 px-3 py-1 rounded-full">
@@ -431,7 +446,7 @@ export default function Dashboard({ salons, currentUser, onOpenAuth }: Dashboard
               <div className="space-y-4">
                 {bookings.length === 0 ? (
                   <div className="text-center py-16 border border-line rounded-xl bg-panel text-fg-muted text-xs">
-                    {currentUser?.role === 'studio' && currentUser.salonId === selectedSalonId
+                    {isProviderRole(currentUser?.role) && currentUser.salonId === selectedSalonId
                       ? 'No bookings registered for this salon yet.'
                       : 'Appointments are visible to the partner account that manages this studio. Sign in with the studio account to see them.'}
                   </div>

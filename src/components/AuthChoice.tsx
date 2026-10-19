@@ -315,7 +315,7 @@ export default function AuthChoice({ onAuthSuccess, onClose }: AuthChoiceProps) 
                           <span className="text-[10px] text-fg-muted mt-0.5">Independent MUA</span>
                         </button>
 
-                        <button
+                         <button
                           type="button"
                           onClick={() => registerForm.setValue('role', 'studio')}
                           className={`flex flex-col items-center justify-center p-3 rounded-xl border text-center transition-all ${
@@ -325,22 +325,8 @@ export default function AuthChoice({ onAuthSuccess, onClose }: AuthChoiceProps) 
                           }`}
                         >
                           <Building2 className={`h-4 w-4 mb-1.5 ${registerForm.watch('role') === 'studio' ? 'text-fg' : 'text-fg-dim'}`} />
-                          <span className="text-xs font-medium">Salon Admin</span>
-                          <span className="text-[10px] text-fg-muted mt-0.5">Manage a salon</span>
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={() => registerForm.setValue('role', 'studio')}
-                          className={`flex flex-col items-center justify-center p-3 rounded-xl border text-center transition-all ${
-                            registerForm.watch('role') === 'studio'
-                              ? 'border-accent bg-accent/15 text-fg'
-                              : 'border-line bg-inset text-fg-dim hover:border-line'
-                          }`}
-                        >
-                          <Building2 className={`h-4 w-4 mb-1.5 ${registerForm.watch('role') === 'studio' ? 'text-fg' : 'text-fg-dim'}`} />
-                          <span className="text-xs font-medium">Salon Owner</span>
-                          <span className="text-[10px] text-fg-muted mt-0.5">Own your listing</span>
+                           <span className="text-xs font-medium">Studio Operator</span>
+                           <span className="text-[10px] text-fg-muted mt-0.5">Manage a linked listing</span>
                         </button>
                       </div>
                     </div>

@@ -178825,6 +178825,20 @@ function supabaseClient() {
 function isUniqueViolation(error62) {
   return typeof error62 === "object" && error62 !== null && error62.code === "23505";
 }
+function bookingRow(booking) {
+  return {
+    id: booking.id,
+    salon_id: booking.salonId,
+    client_email: booking.clientEmail,
+    created_at: booking.createdAt,
+    staff_id: booking.staffId,
+    booking_date: booking.date,
+    status: booking.status,
+    starts_at: slotStartIso(booking.date, booking.time),
+    ends_at: slotEndIso(booking.date, booking.time, booking.serviceDuration),
+    data: booking
+  };
+}
 var SupabaseStore = class {
   constructor(client) {
     this.db = client ?? supabaseClient();
@@ -178887,13 +178901,7 @@ var SupabaseStore = class {
     return this.rowById("leish_bookings", id);
   }
   async createBooking(booking) {
-    const { error: error62 } = await this.db.from("leish_bookings").insert({
-      id: booking.id,
-      salon_id: booking.salonId,
-      client_email: booking.clientEmail,
-      created_at: booking.createdAt,
-      data: booking
-    });
+    const { error: error62 } = await this.db.from("leish_bookings").insert(bookingRow(booking));
     if (error62) throw new Error(`Supabase booking create failed: ${error62.message}`);
     return booking;
   }
@@ -178910,18 +178918,7 @@ var SupabaseStore = class {
     if (conflictReadError) throw new Error(`Supabase booking conflict read failed: ${conflictReadError.message}`);
     const conflict = (candidates ?? []).map((row) => row.data).some((candidate) => candidate.status !== "cancelled" && bookingsConflict(candidate, booking));
     if (conflict) throw new SlotConflictError();
-    const { error: error62 } = await this.db.from("leish_bookings").insert({
-      id: booking.id,
-      salon_id: booking.salonId,
-      client_email: booking.clientEmail,
-      created_at: booking.createdAt,
-      staff_id: booking.staffId,
-      booking_date: booking.date,
-      status: booking.status,
-      starts_at: slotStartIso(booking.date, booking.time),
-      ends_at: slotEndIso(booking.date, booking.time, booking.serviceDuration),
-      data: booking
-    });
+    const { error: error62 } = await this.db.from("leish_bookings").insert(bookingRow(booking));
     if (error62) {
       if (error62.code === "23P01") throw new SlotConflictError();
       throw new Error(`Supabase booking create failed: ${error62.message}`);
@@ -178983,7 +178980,7 @@ var SupabaseStore = class {
     const current = await this.getBooking(id);
     if (!current) throw new Error("Booking not found");
     const booking = { ...current, status };
-    const { error: error62 } = await this.db.from("leish_bookings").update({ data: booking }).eq("id", id);
+    const { error: error62 } = await this.db.from("leish_bookings").update({ status, data: booking }).eq("id", id);
     if (error62) throw new Error(`Supabase booking update failed: ${error62.message}`);
     return booking;
   }
@@ -179155,7 +179152,8 @@ var SupabaseStore = class {
   async updateBookingPayment(id, updates) {
     const booking = await this.getBooking(id);
     if (!booking) throw new Error("Booking not found");
-    const { error: error62 } = await this.db.from("leish_bookings").update(updates).eq("id", id);
+    const updated = { ...booking, ...updates };
+    const { error: error62 } = await this.db.from("leish_bookings").update({ data: updated }).eq("id", id);
     if (error62) throw new Error(`Supabase booking payment update failed: ${error62.message}`);
   }
   async listAllReviews(params) {
@@ -179580,7 +179578,7 @@ function getJwtSecret(environment = process.env.NODE_ENV, configuredSecret = pro
 
 // server/authz.ts
 function canUpdateSalon(user, salonId) {
-  return user?.role === "admin" || user?.role === "studio" && user.salonId === salonId;
+  return user?.role === "admin" || (user?.role === "studio" || user?.role === "MUA") && user.salonId === salonId;
 }
 function canModifyBooking(user, booking) {
   if (!user) return false;
@@ -200490,7 +200488,7 @@ var loginSchema = external_exports.object({
   password: external_exports.string().min(1)
 });
 var oauthCompleteSchema = external_exports.object({
-  role: external_exports.enum(["client", "MUA", "studio"]).optional()
+  role: external_exports.enum(["client", "MUA", "studio"])
 });
 var updateProfileSchema = external_exports.object({
   id: external_exports.string().min(1),
@@ -200685,13 +200683,7 @@ function registerAuthRoutes(app2, ctx) {
         });
       }
       if (existing.role !== role) {
-        await appStore.updateUser(existing.id, { role });
-        const updated = await appStore.getUserById(existing.id);
-        return res.json({
-          user: sanitizeUser(updated),
-          token: issueToken(updated.id, JWT_SECRET),
-          message: `Welcome back, ${updated.name}!`
-        });
+        return res.status(409).json({ error: "This account already has a role. Contact an administrator to change it." });
       }
       res.json({
         user: sanitizeUser(existing),
@@ -201322,7 +201314,7 @@ function registerBookingRoutes(app2, ctx) {
         }));
         return;
       }
-      if (req.user.role === "studio") {
+      if (req.user.role === "studio" || req.user.role === "MUA") {
         if (!req.user.salonId) {
           return res.status(403).json({ error: "No salon is linked to this account." });
         }

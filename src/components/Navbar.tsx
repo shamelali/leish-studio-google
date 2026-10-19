@@ -28,6 +28,7 @@ import {
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { useStore } from '../lib/store';
+import { isProviderRole } from '../lib/roles';
 
 type NavTab = 'explore' | 'lookbook' | 'ai-stylist' | 'client' | 'provider' | 'admin' | 'image-studio' | 'video-studio' | 'concierge';
 
@@ -191,7 +192,7 @@ export default function Navbar({
   const moreRef = useRef<HTMLDivElement>(null);
   const searchTimers = useRef<number[]>([]);
 
-  const isStudio = currentUser?.role === 'studio';
+  const isStudio = isProviderRole(currentUser?.role);
   const isAdmin = currentUser?.role === 'admin';
   // Guests get the salon portal as an acquisition entry; providers get their own tool.
   const showSalonPortal = !currentUser || isStudio;

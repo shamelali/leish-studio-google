@@ -932,7 +932,7 @@ export default function App() {
                   {[
                     { id: 'client', label: 'Makeup Client', desc: 'Book glam & trials', icon: Sparkles },
                     { id: 'MUA', label: 'Makeup Artist', desc: 'Independent MUA', icon: UserIcon },
-                    { id: 'studio', label: 'Salon Owner', desc: 'Own your listing', icon: Building2 },
+                     { id: 'studio', label: 'Studio Operator', desc: 'Manage a linked listing', icon: Building2 },
                   ].map((role) => (
                     <button
                       key={role.id}
