@@ -6,7 +6,7 @@ WORKDIR /app
 RUN corepack enable && corepack prepare pnpm@12.9.1 --activate
 
 # Copy dependency files first for better layer caching
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 # Install all dependencies (includes devDependencies needed for build)
 RUN pnpm install --frozen-lockfile
@@ -31,4 +31,4 @@ ENV PORT=3000
 #   -e GEMINI_API_KEY=<your Gemini API key>
 
 # Production entry point: serves dist/ static assets + Express API
-CMD ["npx", "tsx", "dev.ts"]
+CMD ["pnpm", "exec", "tsx", "dev.ts"]

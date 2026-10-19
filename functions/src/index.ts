@@ -13,7 +13,7 @@ setGlobalOptions({ region: "us-central1" });
 
 const cfg = (() => {
   try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { functions } = require("firebase-functions/v2");
     return functions.config() as Record<string, Record<string, string>> | undefined;
   } catch {
