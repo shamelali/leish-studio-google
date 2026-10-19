@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Typecheck & test (Node 22)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        # packageManager field in package.json pins the version.
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.x' # matches "engines" in package.json; native WebSocket required by @supabase/realtime-js
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm run typecheck
+
+      # ESLint gate: errors fail CI; the ~215 existing warnings (mostly
+      # no-explicit-any / unused-vars debt) are reported but non-blocking.
+      - name: Lint
+        run: pnpm exec eslint . --max-warnings=500
+
+      - name: Unit tests
+        run: pnpm test
+        env:
+          LEISH_DISABLE_RATE_LIMIT: '1'
+
+      # server/data-store.backend.test.ts auto-selects the Supabase/Firestore
+      # backends when their env credentials are present and skips otherwise,
+      # so these secrets are optional — add them in repo settings to widen
+      # backend coverage. The Firestore suites skip unless FIRESTORE_EMULATOR_HOST
+      # is set (they target the emulator), so also run the local emulator job.
+      - name: Backend integration tests (Supabase)
+        if: vars.BACKEND_INTEGRATION == '1'
+        run: pnpm vitest run server/data-store.backend.test.ts
+        env:
+          LEISH_DISABLE_RATE_LIMIT: '1'
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+
+      - name: Install Firebase CLI (Firestore emulator)
+        if: vars.BACKEND_INTEGRATION == '1'
+        run: pnpm add -g firebase-tools@13.35.1 || npm i -g firebase-tools@13.35.1
+
+      - name: Backend integration tests (Firestore emulator)
+        if: vars.BACKEND_INTEGRATION == '1'
+        run: |
+          firebase emulators:start --only firestore --project leish-local > /tmp/firestore-emulator.log 2>&1 &
+          for i in $(seq 1 60); do
+            curl -s "http://127.0.0.1:8080/?project=leish-local" >/dev/null && break
+            sleep 1
+          done
+          pnpm vitest run server/firestore-store.test.ts
+        env:
+          LEISH_DISABLE_RATE_LIMIT: '1'
+          FIRESTORE_EMULATOR_HOST: '127.0.0.1:8080'
+          FIREBASE_PROJECT_ID: leish-local
+
+      - name: Build (vite + server bundle)
+        run: pnpm run build

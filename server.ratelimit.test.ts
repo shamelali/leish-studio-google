@@ -18,7 +18,7 @@ delete process.env.LEISH_DISABLE_RATE_LIMIT;
 fs.rmSync(TEST_DB, { force: true });
 
 let app: any;
-let probePassword = 'password123';
+const probePassword = 'password123';
 
 beforeAll(async () => {
   const mod = await import('./server.ts');

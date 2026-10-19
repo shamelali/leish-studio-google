@@ -74,7 +74,9 @@ export default function App() {
         const u = JSON.parse(stored);
         if (u.email) return u.email;
       }
-    } catch {}
+    } catch {
+      // Corrupt localStorage entry — fall through to the empty default.
+    }
     return '';
   });
 

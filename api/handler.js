@@ -1026,9 +1026,9 @@ var require_ms = __commonJS({
   }
 });
 
-// node_modules/.pnpm/debug@2.6.9/node_modules/debug/src/debug.js
+// node_modules/.pnpm/debug@2.6.9_supports-color@7.2.0/node_modules/debug/src/debug.js
 var require_debug = __commonJS({
-  "node_modules/.pnpm/debug@2.6.9/node_modules/debug/src/debug.js"(exports, module) {
+  "node_modules/.pnpm/debug@2.6.9_supports-color@7.2.0/node_modules/debug/src/debug.js"(exports, module) {
     exports = module.exports = createDebug.debug = createDebug["default"] = createDebug;
     exports.coerce = coerce;
     exports.disable = disable;
@@ -1131,9 +1131,9 @@ var require_debug = __commonJS({
   }
 });
 
-// node_modules/.pnpm/debug@2.6.9/node_modules/debug/src/browser.js
+// node_modules/.pnpm/debug@2.6.9_supports-color@7.2.0/node_modules/debug/src/browser.js
 var require_browser = __commonJS({
-  "node_modules/.pnpm/debug@2.6.9/node_modules/debug/src/browser.js"(exports, module) {
+  "node_modules/.pnpm/debug@2.6.9_supports-color@7.2.0/node_modules/debug/src/browser.js"(exports, module) {
     exports = module.exports = require_debug();
     exports.log = log;
     exports.formatArgs = formatArgs;
@@ -1217,9 +1217,9 @@ var require_browser = __commonJS({
   }
 });
 
-// node_modules/.pnpm/debug@2.6.9/node_modules/debug/src/node.js
+// node_modules/.pnpm/debug@2.6.9_supports-color@7.2.0/node_modules/debug/src/node.js
 var require_node = __commonJS({
-  "node_modules/.pnpm/debug@2.6.9/node_modules/debug/src/node.js"(exports, module) {
+  "node_modules/.pnpm/debug@2.6.9_supports-color@7.2.0/node_modules/debug/src/node.js"(exports, module) {
     var tty = __require("tty");
     var util = __require("util");
     exports = module.exports = require_debug();
@@ -1337,9 +1337,9 @@ var require_node = __commonJS({
   }
 });
 
-// node_modules/.pnpm/debug@2.6.9/node_modules/debug/src/index.js
+// node_modules/.pnpm/debug@2.6.9_supports-color@7.2.0/node_modules/debug/src/index.js
 var require_src = __commonJS({
-  "node_modules/.pnpm/debug@2.6.9/node_modules/debug/src/index.js"(exports, module) {
+  "node_modules/.pnpm/debug@2.6.9_supports-color@7.2.0/node_modules/debug/src/index.js"(exports, module) {
     if (typeof process !== "undefined" && process.type === "renderer") {
       module.exports = require_browser();
     } else {
@@ -5250,9 +5250,9 @@ var require_on_finished = __commonJS({
   }
 });
 
-// node_modules/.pnpm/body-parser@1.20.8/node_modules/body-parser/lib/read.js
+// node_modules/.pnpm/body-parser@1.20.8_supports-color@7.2.0/node_modules/body-parser/lib/read.js
 var require_read = __commonJS({
-  "node_modules/.pnpm/body-parser@1.20.8/node_modules/body-parser/lib/read.js"(exports, module) {
+  "node_modules/.pnpm/body-parser@1.20.8_supports-color@7.2.0/node_modules/body-parser/lib/read.js"(exports, module) {
     "use strict";
     var createError = require_http_errors();
     var destroy = require_destroy();
@@ -14228,9 +14228,9 @@ var require_type_is = __commonJS({
   }
 });
 
-// node_modules/.pnpm/body-parser@1.20.8/node_modules/body-parser/lib/types/json.js
+// node_modules/.pnpm/body-parser@1.20.8_supports-color@7.2.0/node_modules/body-parser/lib/types/json.js
 var require_json = __commonJS({
-  "node_modules/.pnpm/body-parser@1.20.8/node_modules/body-parser/lib/types/json.js"(exports, module) {
+  "node_modules/.pnpm/body-parser@1.20.8_supports-color@7.2.0/node_modules/body-parser/lib/types/json.js"(exports, module) {
     "use strict";
     var bytes = require_bytes();
     var contentType = require_content_type();
@@ -14362,9 +14362,9 @@ var require_json = __commonJS({
   }
 });
 
-// node_modules/.pnpm/body-parser@1.20.8/node_modules/body-parser/lib/types/raw.js
+// node_modules/.pnpm/body-parser@1.20.8_supports-color@7.2.0/node_modules/body-parser/lib/types/raw.js
 var require_raw = __commonJS({
-  "node_modules/.pnpm/body-parser@1.20.8/node_modules/body-parser/lib/types/raw.js"(exports, module) {
+  "node_modules/.pnpm/body-parser@1.20.8_supports-color@7.2.0/node_modules/body-parser/lib/types/raw.js"(exports, module) {
     "use strict";
     var bytes = require_bytes();
     var debug = require_src()("body-parser:raw");
@@ -14421,9 +14421,9 @@ var require_raw = __commonJS({
   }
 });
 
-// node_modules/.pnpm/body-parser@1.20.8/node_modules/body-parser/lib/types/text.js
+// node_modules/.pnpm/body-parser@1.20.8_supports-color@7.2.0/node_modules/body-parser/lib/types/text.js
 var require_text = __commonJS({
-  "node_modules/.pnpm/body-parser@1.20.8/node_modules/body-parser/lib/types/text.js"(exports, module) {
+  "node_modules/.pnpm/body-parser@1.20.8_supports-color@7.2.0/node_modules/body-parser/lib/types/text.js"(exports, module) {
     "use strict";
     var bytes = require_bytes();
     var contentType = require_content_type();
@@ -17088,9 +17088,9 @@ var require_lib2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/body-parser@1.20.8/node_modules/body-parser/lib/types/urlencoded.js
+// node_modules/.pnpm/body-parser@1.20.8_supports-color@7.2.0/node_modules/body-parser/lib/types/urlencoded.js
 var require_urlencoded = __commonJS({
-  "node_modules/.pnpm/body-parser@1.20.8/node_modules/body-parser/lib/types/urlencoded.js"(exports, module) {
+  "node_modules/.pnpm/body-parser@1.20.8_supports-color@7.2.0/node_modules/body-parser/lib/types/urlencoded.js"(exports, module) {
     "use strict";
     var bytes = require_bytes();
     var contentType = require_content_type();
@@ -17264,9 +17264,9 @@ var require_urlencoded = __commonJS({
   }
 });
 
-// node_modules/.pnpm/body-parser@1.20.8/node_modules/body-parser/index.js
+// node_modules/.pnpm/body-parser@1.20.8_supports-color@7.2.0/node_modules/body-parser/index.js
 var require_body_parser = __commonJS({
-  "node_modules/.pnpm/body-parser@1.20.8/node_modules/body-parser/index.js"(exports, module) {
+  "node_modules/.pnpm/body-parser@1.20.8_supports-color@7.2.0/node_modules/body-parser/index.js"(exports, module) {
     "use strict";
     var deprecate3 = require_depd()("body-parser");
     var parsers = /* @__PURE__ */ Object.create(null);
@@ -17514,9 +17514,9 @@ var require_parseurl = __commonJS({
   }
 });
 
-// node_modules/.pnpm/finalhandler@1.3.2/node_modules/finalhandler/index.js
+// node_modules/.pnpm/finalhandler@1.3.2_supports-color@7.2.0/node_modules/finalhandler/index.js
 var require_finalhandler = __commonJS({
-  "node_modules/.pnpm/finalhandler@1.3.2/node_modules/finalhandler/index.js"(exports, module) {
+  "node_modules/.pnpm/finalhandler@1.3.2_supports-color@7.2.0/node_modules/finalhandler/index.js"(exports, module) {
     "use strict";
     var debug = require_src()("finalhandler");
     var encodeUrl = require_encodeurl();
@@ -17809,9 +17809,9 @@ var require_path_to_regexp = __commonJS({
   }
 });
 
-// node_modules/.pnpm/express@4.22.3/node_modules/express/lib/router/layer.js
+// node_modules/.pnpm/express@4.22.3_supports-color@7.2.0/node_modules/express/lib/router/layer.js
 var require_layer = __commonJS({
-  "node_modules/.pnpm/express@4.22.3/node_modules/express/lib/router/layer.js"(exports, module) {
+  "node_modules/.pnpm/express@4.22.3_supports-color@7.2.0/node_modules/express/lib/router/layer.js"(exports, module) {
     "use strict";
     var pathRegexp = require_path_to_regexp();
     var debug = require_src()("express:router:layer");
@@ -17948,9 +17948,9 @@ var require_methods = __commonJS({
   }
 });
 
-// node_modules/.pnpm/express@4.22.3/node_modules/express/lib/router/route.js
+// node_modules/.pnpm/express@4.22.3_supports-color@7.2.0/node_modules/express/lib/router/route.js
 var require_route = __commonJS({
-  "node_modules/.pnpm/express@4.22.3/node_modules/express/lib/router/route.js"(exports, module) {
+  "node_modules/.pnpm/express@4.22.3_supports-color@7.2.0/node_modules/express/lib/router/route.js"(exports, module) {
     "use strict";
     var debug = require_src()("express:router:route");
     var flatten = require_array_flatten();
@@ -18074,9 +18074,9 @@ var require_utils_merge = __commonJS({
   }
 });
 
-// node_modules/.pnpm/express@4.22.3/node_modules/express/lib/router/index.js
+// node_modules/.pnpm/express@4.22.3_supports-color@7.2.0/node_modules/express/lib/router/index.js
 var require_router = __commonJS({
-  "node_modules/.pnpm/express@4.22.3/node_modules/express/lib/router/index.js"(exports, module) {
+  "node_modules/.pnpm/express@4.22.3_supports-color@7.2.0/node_modules/express/lib/router/index.js"(exports, module) {
     "use strict";
     var Route = require_route();
     var Layer = require_layer();
@@ -18457,9 +18457,9 @@ var require_router = __commonJS({
   }
 });
 
-// node_modules/.pnpm/express@4.22.3/node_modules/express/lib/middleware/init.js
+// node_modules/.pnpm/express@4.22.3_supports-color@7.2.0/node_modules/express/lib/middleware/init.js
 var require_init = __commonJS({
-  "node_modules/.pnpm/express@4.22.3/node_modules/express/lib/middleware/init.js"(exports) {
+  "node_modules/.pnpm/express@4.22.3_supports-color@7.2.0/node_modules/express/lib/middleware/init.js"(exports) {
     "use strict";
     var setPrototypeOf = require_setprototypeof();
     exports.init = function(app2) {
@@ -18477,9 +18477,9 @@ var require_init = __commonJS({
   }
 });
 
-// node_modules/.pnpm/express@4.22.3/node_modules/express/lib/middleware/query.js
+// node_modules/.pnpm/express@4.22.3_supports-color@7.2.0/node_modules/express/lib/middleware/query.js
 var require_query = __commonJS({
-  "node_modules/.pnpm/express@4.22.3/node_modules/express/lib/middleware/query.js"(exports, module) {
+  "node_modules/.pnpm/express@4.22.3_supports-color@7.2.0/node_modules/express/lib/middleware/query.js"(exports, module) {
     "use strict";
     var merge2 = require_utils_merge();
     var parseUrl = require_parseurl();
@@ -18505,9 +18505,9 @@ var require_query = __commonJS({
   }
 });
 
-// node_modules/.pnpm/express@4.22.3/node_modules/express/lib/view.js
+// node_modules/.pnpm/express@4.22.3_supports-color@7.2.0/node_modules/express/lib/view.js
 var require_view = __commonJS({
-  "node_modules/.pnpm/express@4.22.3/node_modules/express/lib/view.js"(exports, module) {
+  "node_modules/.pnpm/express@4.22.3_supports-color@7.2.0/node_modules/express/lib/view.js"(exports, module) {
     "use strict";
     var debug = require_src()("express:view");
     var path3 = __require("path");
@@ -19179,9 +19179,9 @@ var require_range_parser = __commonJS({
   }
 });
 
-// node_modules/.pnpm/send@0.19.2/node_modules/send/index.js
+// node_modules/.pnpm/send@0.19.2_supports-color@7.2.0/node_modules/send/index.js
 var require_send = __commonJS({
-  "node_modules/.pnpm/send@0.19.2/node_modules/send/index.js"(exports, module) {
+  "node_modules/.pnpm/send@0.19.2_supports-color@7.2.0/node_modules/send/index.js"(exports, module) {
     "use strict";
     var createError = require_http_errors();
     var debug = require_src()("send");
@@ -20568,9 +20568,9 @@ var require_proxy_addr = __commonJS({
   }
 });
 
-// node_modules/.pnpm/express@4.22.3/node_modules/express/lib/utils.js
+// node_modules/.pnpm/express@4.22.3_supports-color@7.2.0/node_modules/express/lib/utils.js
 var require_utils2 = __commonJS({
-  "node_modules/.pnpm/express@4.22.3/node_modules/express/lib/utils.js"(exports) {
+  "node_modules/.pnpm/express@4.22.3_supports-color@7.2.0/node_modules/express/lib/utils.js"(exports) {
     "use strict";
     var Buffer5 = require_safe_buffer().Buffer;
     var contentDisposition = require_content_disposition();
@@ -20706,9 +20706,9 @@ var require_utils2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/express@4.22.3/node_modules/express/lib/application.js
+// node_modules/.pnpm/express@4.22.3_supports-color@7.2.0/node_modules/express/lib/application.js
 var require_application = __commonJS({
-  "node_modules/.pnpm/express@4.22.3/node_modules/express/lib/application.js"(exports, module) {
+  "node_modules/.pnpm/express@4.22.3_supports-color@7.2.0/node_modules/express/lib/application.js"(exports, module) {
     "use strict";
     var finalhandler = require_finalhandler();
     var Router = require_router();
@@ -21560,9 +21560,9 @@ var require_accepts = __commonJS({
   }
 });
 
-// node_modules/.pnpm/express@4.22.3/node_modules/express/lib/request.js
+// node_modules/.pnpm/express@4.22.3_supports-color@7.2.0/node_modules/express/lib/request.js
 var require_request = __commonJS({
-  "node_modules/.pnpm/express@4.22.3/node_modules/express/lib/request.js"(exports, module) {
+  "node_modules/.pnpm/express@4.22.3_supports-color@7.2.0/node_modules/express/lib/request.js"(exports, module) {
     "use strict";
     var accepts = require_accepts();
     var deprecate3 = require_depd()("express");
@@ -21984,9 +21984,9 @@ var require_vary = __commonJS({
   }
 });
 
-// node_modules/.pnpm/express@4.22.3/node_modules/express/lib/response.js
+// node_modules/.pnpm/express@4.22.3_supports-color@7.2.0/node_modules/express/lib/response.js
 var require_response = __commonJS({
-  "node_modules/.pnpm/express@4.22.3/node_modules/express/lib/response.js"(exports, module) {
+  "node_modules/.pnpm/express@4.22.3_supports-color@7.2.0/node_modules/express/lib/response.js"(exports, module) {
     "use strict";
     var Buffer5 = require_safe_buffer().Buffer;
     var contentDisposition = require_content_disposition();
@@ -22526,9 +22526,9 @@ var require_response = __commonJS({
   }
 });
 
-// node_modules/.pnpm/serve-static@1.16.3/node_modules/serve-static/index.js
+// node_modules/.pnpm/serve-static@1.16.3_supports-color@7.2.0/node_modules/serve-static/index.js
 var require_serve_static = __commonJS({
-  "node_modules/.pnpm/serve-static@1.16.3/node_modules/serve-static/index.js"(exports, module) {
+  "node_modules/.pnpm/serve-static@1.16.3_supports-color@7.2.0/node_modules/serve-static/index.js"(exports, module) {
     "use strict";
     var encodeUrl = require_encodeurl();
     var escapeHtml2 = require_escape_html();
@@ -22631,9 +22631,9 @@ var require_serve_static = __commonJS({
   }
 });
 
-// node_modules/.pnpm/express@4.22.3/node_modules/express/lib/express.js
+// node_modules/.pnpm/express@4.22.3_supports-color@7.2.0/node_modules/express/lib/express.js
 var require_express = __commonJS({
-  "node_modules/.pnpm/express@4.22.3/node_modules/express/lib/express.js"(exports, module) {
+  "node_modules/.pnpm/express@4.22.3_supports-color@7.2.0/node_modules/express/lib/express.js"(exports, module) {
     "use strict";
     var bodyParser = require_body_parser();
     var EventEmitter = __require("events").EventEmitter;
@@ -22700,9 +22700,9 @@ var require_express = __commonJS({
   }
 });
 
-// node_modules/.pnpm/express@4.22.3/node_modules/express/index.js
+// node_modules/.pnpm/express@4.22.3_supports-color@7.2.0/node_modules/express/index.js
 var require_express2 = __commonJS({
-  "node_modules/.pnpm/express@4.22.3/node_modules/express/index.js"(exports, module) {
+  "node_modules/.pnpm/express@4.22.3_supports-color@7.2.0/node_modules/express/index.js"(exports, module) {
     "use strict";
     module.exports = require_express();
   }
@@ -26861,9 +26861,9 @@ var require_extend = __commonJS({
   }
 });
 
-// node_modules/.pnpm/gaxios@7.3.1/node_modules/gaxios/package.json
+// node_modules/.pnpm/gaxios@7.3.1_supports-color@7.2.0/node_modules/gaxios/package.json
 var require_package = __commonJS({
-  "node_modules/.pnpm/gaxios@7.3.1/node_modules/gaxios/package.json"(exports, module) {
+  "node_modules/.pnpm/gaxios@7.3.1_supports-color@7.2.0/node_modules/gaxios/package.json"(exports, module) {
     module.exports = {
       name: "gaxios",
       version: "7.3.1",
@@ -26972,18 +26972,18 @@ var require_package = __commonJS({
   }
 });
 
-// node_modules/.pnpm/gaxios@7.3.1/node_modules/gaxios/build/cjs/src/util.cjs
+// node_modules/.pnpm/gaxios@7.3.1_supports-color@7.2.0/node_modules/gaxios/build/cjs/src/util.cjs
 var require_util = __commonJS({
-  "node_modules/.pnpm/gaxios@7.3.1/node_modules/gaxios/build/cjs/src/util.cjs"(exports, module) {
+  "node_modules/.pnpm/gaxios@7.3.1_supports-color@7.2.0/node_modules/gaxios/build/cjs/src/util.cjs"(exports, module) {
     "use strict";
     var pkg = require_package();
     module.exports = { pkg };
   }
 });
 
-// node_modules/.pnpm/gaxios@7.3.1/node_modules/gaxios/build/cjs/src/common.js
+// node_modules/.pnpm/gaxios@7.3.1_supports-color@7.2.0/node_modules/gaxios/build/cjs/src/common.js
 var require_common = __commonJS({
-  "node_modules/.pnpm/gaxios@7.3.1/node_modules/gaxios/build/cjs/src/common.js"(exports) {
+  "node_modules/.pnpm/gaxios@7.3.1_supports-color@7.2.0/node_modules/gaxios/build/cjs/src/common.js"(exports) {
     "use strict";
     var __importDefault2 = exports && exports.__importDefault || function(mod3) {
       return mod3 && mod3.__esModule ? mod3 : { "default": mod3 };
@@ -27223,9 +27223,9 @@ var require_common = __commonJS({
   }
 });
 
-// node_modules/.pnpm/gaxios@7.3.1/node_modules/gaxios/build/cjs/src/retry.js
+// node_modules/.pnpm/gaxios@7.3.1_supports-color@7.2.0/node_modules/gaxios/build/cjs/src/retry.js
 var require_retry3 = __commonJS({
-  "node_modules/.pnpm/gaxios@7.3.1/node_modules/gaxios/build/cjs/src/retry.js"(exports) {
+  "node_modules/.pnpm/gaxios@7.3.1_supports-color@7.2.0/node_modules/gaxios/build/cjs/src/retry.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.getRetryConfig = getRetryConfig;
@@ -27328,9 +27328,9 @@ var require_retry3 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/gaxios@7.3.1/node_modules/gaxios/build/cjs/src/interceptor.js
+// node_modules/.pnpm/gaxios@7.3.1_supports-color@7.2.0/node_modules/gaxios/build/cjs/src/interceptor.js
 var require_interceptor = __commonJS({
-  "node_modules/.pnpm/gaxios@7.3.1/node_modules/gaxios/build/cjs/src/interceptor.js"(exports) {
+  "node_modules/.pnpm/gaxios@7.3.1_supports-color@7.2.0/node_modules/gaxios/build/cjs/src/interceptor.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.GaxiosInterceptorManager = void 0;
@@ -27340,9 +27340,9 @@ var require_interceptor = __commonJS({
   }
 });
 
-// node_modules/.pnpm/debug@4.4.3/node_modules/debug/src/common.js
+// node_modules/.pnpm/debug@4.4.3_supports-color@7.2.0/node_modules/debug/src/common.js
 var require_common2 = __commonJS({
-  "node_modules/.pnpm/debug@4.4.3/node_modules/debug/src/common.js"(exports, module) {
+  "node_modules/.pnpm/debug@4.4.3_supports-color@7.2.0/node_modules/debug/src/common.js"(exports, module) {
     function setup(env2) {
       createDebug.debug = createDebug;
       createDebug.default = createDebug;
@@ -27517,9 +27517,9 @@ var require_common2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/debug@4.4.3/node_modules/debug/src/browser.js
+// node_modules/.pnpm/debug@4.4.3_supports-color@7.2.0/node_modules/debug/src/browser.js
 var require_browser2 = __commonJS({
-  "node_modules/.pnpm/debug@4.4.3/node_modules/debug/src/browser.js"(exports, module) {
+  "node_modules/.pnpm/debug@4.4.3_supports-color@7.2.0/node_modules/debug/src/browser.js"(exports, module) {
     exports.formatArgs = formatArgs;
     exports.save = save;
     exports.load = load;
@@ -27687,9 +27687,124 @@ var require_browser2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/debug@4.4.3/node_modules/debug/src/node.js
+// node_modules/.pnpm/has-flag@4.0.0/node_modules/has-flag/index.js
+var require_has_flag = __commonJS({
+  "node_modules/.pnpm/has-flag@4.0.0/node_modules/has-flag/index.js"(exports, module) {
+    "use strict";
+    module.exports = (flag, argv = process.argv) => {
+      const prefix = flag.startsWith("-") ? "" : flag.length === 1 ? "-" : "--";
+      const position = argv.indexOf(prefix + flag);
+      const terminatorPosition = argv.indexOf("--");
+      return position !== -1 && (terminatorPosition === -1 || position < terminatorPosition);
+    };
+  }
+});
+
+// node_modules/.pnpm/supports-color@7.2.0/node_modules/supports-color/index.js
+var require_supports_color = __commonJS({
+  "node_modules/.pnpm/supports-color@7.2.0/node_modules/supports-color/index.js"(exports, module) {
+    "use strict";
+    var os = __require("os");
+    var tty = __require("tty");
+    var hasFlag = require_has_flag();
+    var { env: env2 } = process;
+    var forceColor;
+    if (hasFlag("no-color") || hasFlag("no-colors") || hasFlag("color=false") || hasFlag("color=never")) {
+      forceColor = 0;
+    } else if (hasFlag("color") || hasFlag("colors") || hasFlag("color=true") || hasFlag("color=always")) {
+      forceColor = 1;
+    }
+    if ("FORCE_COLOR" in env2) {
+      if (env2.FORCE_COLOR === "true") {
+        forceColor = 1;
+      } else if (env2.FORCE_COLOR === "false") {
+        forceColor = 0;
+      } else {
+        forceColor = env2.FORCE_COLOR.length === 0 ? 1 : Math.min(parseInt(env2.FORCE_COLOR, 10), 3);
+      }
+    }
+    function translateLevel(level) {
+      if (level === 0) {
+        return false;
+      }
+      return {
+        level,
+        hasBasic: true,
+        has256: level >= 2,
+        has16m: level >= 3
+      };
+    }
+    function supportsColor(haveStream, streamIsTTY) {
+      if (forceColor === 0) {
+        return 0;
+      }
+      if (hasFlag("color=16m") || hasFlag("color=full") || hasFlag("color=truecolor")) {
+        return 3;
+      }
+      if (hasFlag("color=256")) {
+        return 2;
+      }
+      if (haveStream && !streamIsTTY && forceColor === void 0) {
+        return 0;
+      }
+      const min = forceColor || 0;
+      if (env2.TERM === "dumb") {
+        return min;
+      }
+      if (process.platform === "win32") {
+        const osRelease = os.release().split(".");
+        if (Number(osRelease[0]) >= 10 && Number(osRelease[2]) >= 10586) {
+          return Number(osRelease[2]) >= 14931 ? 3 : 2;
+        }
+        return 1;
+      }
+      if ("CI" in env2) {
+        if (["TRAVIS", "CIRCLECI", "APPVEYOR", "GITLAB_CI", "GITHUB_ACTIONS", "BUILDKITE"].some((sign) => sign in env2) || env2.CI_NAME === "codeship") {
+          return 1;
+        }
+        return min;
+      }
+      if ("TEAMCITY_VERSION" in env2) {
+        return /^(9\.(0*[1-9]\d*)\.|\d{2,}\.)/.test(env2.TEAMCITY_VERSION) ? 1 : 0;
+      }
+      if (env2.COLORTERM === "truecolor") {
+        return 3;
+      }
+      if ("TERM_PROGRAM" in env2) {
+        const version5 = parseInt((env2.TERM_PROGRAM_VERSION || "").split(".")[0], 10);
+        switch (env2.TERM_PROGRAM) {
+          case "iTerm.app":
+            return version5 >= 3 ? 3 : 2;
+          case "Apple_Terminal":
+            return 2;
+        }
+      }
+      if (/-256(color)?$/i.test(env2.TERM)) {
+        return 2;
+      }
+      if (/^screen|^xterm|^vt100|^vt220|^rxvt|color|ansi|cygwin|linux/i.test(env2.TERM)) {
+        return 1;
+      }
+      if ("COLORTERM" in env2) {
+        return 1;
+      }
+      return min;
+    }
+    function getSupportLevel(stream) {
+      const level = supportsColor(stream, stream && stream.isTTY);
+      return translateLevel(level);
+    }
+    module.exports = {
+      supportsColor: getSupportLevel,
+      stdout: translateLevel(supportsColor(true, tty.isatty(1))),
+      stderr: translateLevel(supportsColor(true, tty.isatty(2)))
+    };
+  }
+});
+
+// node_modules/.pnpm/debug@4.4.3_supports-color@7.2.0/node_modules/debug/src/node.js
 var require_node2 = __commonJS({
-  "node_modules/.pnpm/debug@4.4.3/node_modules/debug/src/node.js"(exports, module) {
+  "node_modules/.pnpm/debug@4.4.3_supports-color@7.2.0/node_modules/debug/src/node.js"(exports, module) {
     var tty = __require("tty");
     var util = __require("util");
     exports.init = init;
@@ -27705,7 +27820,7 @@ var require_node2 = __commonJS({
     );
     exports.colors = [6, 2, 3, 4, 5, 1];
     try {
-      const supportsColor = __require("supports-color");
+      const supportsColor = require_supports_color();
       if (supportsColor && (supportsColor.stderr || supportsColor).level >= 2) {
         exports.colors = [
           20,
@@ -27861,9 +27976,9 @@ var require_node2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/debug@4.4.3/node_modules/debug/src/index.js
+// node_modules/.pnpm/debug@4.4.3_supports-color@7.2.0/node_modules/debug/src/index.js
 var require_src2 = __commonJS({
-  "node_modules/.pnpm/debug@4.4.3/node_modules/debug/src/index.js"(exports, module) {
+  "node_modules/.pnpm/debug@4.4.3_supports-color@7.2.0/node_modules/debug/src/index.js"(exports, module) {
     if (typeof process === "undefined" || process.type === "renderer" || process.browser === true || process.__nwjs) {
       module.exports = require_browser2();
     } else {
@@ -28098,9 +28213,9 @@ var require_dist = __commonJS({
   }
 });
 
-// node_modules/.pnpm/https-proxy-agent@7.0.6/node_modules/https-proxy-agent/dist/parse-proxy-response.js
+// node_modules/.pnpm/https-proxy-agent@7.0.6_supports-color@7.2.0/node_modules/https-proxy-agent/dist/parse-proxy-response.js
 var require_parse_proxy_response = __commonJS({
-  "node_modules/.pnpm/https-proxy-agent@7.0.6/node_modules/https-proxy-agent/dist/parse-proxy-response.js"(exports) {
+  "node_modules/.pnpm/https-proxy-agent@7.0.6_supports-color@7.2.0/node_modules/https-proxy-agent/dist/parse-proxy-response.js"(exports) {
     "use strict";
     var __importDefault2 = exports && exports.__importDefault || function(mod3) {
       return mod3 && mod3.__esModule ? mod3 : { "default": mod3 };
@@ -28194,9 +28309,9 @@ var require_parse_proxy_response = __commonJS({
   }
 });
 
-// node_modules/.pnpm/https-proxy-agent@7.0.6/node_modules/https-proxy-agent/dist/index.js
+// node_modules/.pnpm/https-proxy-agent@7.0.6_supports-color@7.2.0/node_modules/https-proxy-agent/dist/index.js
 var require_dist2 = __commonJS({
-  "node_modules/.pnpm/https-proxy-agent@7.0.6/node_modules/https-proxy-agent/dist/index.js"(exports) {
+  "node_modules/.pnpm/https-proxy-agent@7.0.6_supports-color@7.2.0/node_modules/https-proxy-agent/dist/index.js"(exports) {
     "use strict";
     var __createBinding2 = exports && exports.__createBinding || (Object.create ? (function(o, m2, k, k2) {
       if (k2 === void 0) k2 = k;
@@ -34831,9 +34946,9 @@ var init_src = __esm({
   }
 });
 
-// node_modules/.pnpm/gaxios@7.3.1/node_modules/gaxios/build/cjs/src/gaxios.js
+// node_modules/.pnpm/gaxios@7.3.1_supports-color@7.2.0/node_modules/gaxios/build/cjs/src/gaxios.js
 var require_gaxios = __commonJS({
-  "node_modules/.pnpm/gaxios@7.3.1/node_modules/gaxios/build/cjs/src/gaxios.js"(exports) {
+  "node_modules/.pnpm/gaxios@7.3.1_supports-color@7.2.0/node_modules/gaxios/build/cjs/src/gaxios.js"(exports) {
     "use strict";
     var __importDefault2 = exports && exports.__importDefault || function(mod3) {
       return mod3 && mod3.__esModule ? mod3 : { "default": mod3 };
@@ -35305,9 +35420,9 @@ Content-Type: ${partContentType}\r
   }
 });
 
-// node_modules/.pnpm/gaxios@7.3.1/node_modules/gaxios/build/cjs/src/index.js
+// node_modules/.pnpm/gaxios@7.3.1_supports-color@7.2.0/node_modules/gaxios/build/cjs/src/index.js
 var require_src3 = __commonJS({
-  "node_modules/.pnpm/gaxios@7.3.1/node_modules/gaxios/build/cjs/src/index.js"(exports) {
+  "node_modules/.pnpm/gaxios@7.3.1_supports-color@7.2.0/node_modules/gaxios/build/cjs/src/index.js"(exports) {
     "use strict";
     var __createBinding2 = exports && exports.__createBinding || (Object.create ? (function(o, m2, k, k2) {
       if (k2 === void 0) k2 = k;
@@ -37104,9 +37219,9 @@ var require_json_bigint = __commonJS({
   }
 });
 
-// node_modules/.pnpm/gcp-metadata@8.1.2/node_modules/gcp-metadata/build/src/gcp-residency.js
+// node_modules/.pnpm/gcp-metadata@8.1.2_supports-color@7.2.0/node_modules/gcp-metadata/build/src/gcp-residency.js
 var require_gcp_residency = __commonJS({
-  "node_modules/.pnpm/gcp-metadata@8.1.2/node_modules/gcp-metadata/build/src/gcp-residency.js"(exports) {
+  "node_modules/.pnpm/gcp-metadata@8.1.2_supports-color@7.2.0/node_modules/gcp-metadata/build/src/gcp-residency.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.GCE_LINUX_BIOS_PATHS = void 0;
@@ -37534,9 +37649,9 @@ var require_src4 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/gcp-metadata@8.1.2/node_modules/gcp-metadata/build/src/index.js
+// node_modules/.pnpm/gcp-metadata@8.1.2_supports-color@7.2.0/node_modules/gcp-metadata/build/src/index.js
 var require_src5 = __commonJS({
-  "node_modules/.pnpm/gcp-metadata@8.1.2/node_modules/gcp-metadata/build/src/index.js"(exports) {
+  "node_modules/.pnpm/gcp-metadata@8.1.2_supports-color@7.2.0/node_modules/gcp-metadata/build/src/index.js"(exports) {
     "use strict";
     var __createBinding2 = exports && exports.__createBinding || (Object.create ? (function(o, m2, k, k2) {
       if (k2 === void 0) k2 = k;
@@ -37891,9 +38006,9 @@ var require_base64_js = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/crypto/shared.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/crypto/shared.js
 var require_shared = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/crypto/shared.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/crypto/shared.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.fromArrayBufferToHex = fromArrayBufferToHex;
@@ -37906,9 +38021,9 @@ var require_shared = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/crypto/browser/crypto.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/crypto/browser/crypto.js
 var require_crypto = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/crypto/browser/crypto.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/crypto/browser/crypto.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.BrowserCrypto = void 0;
@@ -38002,9 +38117,9 @@ var require_crypto = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/crypto/node/crypto.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/crypto/node/crypto.js
 var require_crypto2 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/crypto/node/crypto.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/crypto/node/crypto.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.NodeCrypto = void 0;
@@ -38071,9 +38186,9 @@ var require_crypto2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/crypto/crypto.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/crypto/crypto.js
 var require_crypto3 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/crypto/crypto.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/crypto/crypto.js"(exports) {
     "use strict";
     var __createBinding2 = exports && exports.__createBinding || (Object.create ? (function(o, m2, k, k2) {
       if (k2 === void 0) k2 = k;
@@ -38109,9 +38224,9 @@ var require_crypto3 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/util.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/util.js
 var require_util2 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/util.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/util.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.LRUCache = void 0;
@@ -38224,9 +38339,9 @@ var require_util2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/package.json
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/package.json
 var require_package2 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/package.json"(exports, module) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/package.json"(exports, module) {
     module.exports = {
       name: "google-auth-library",
       version: "10.9.1",
@@ -38320,9 +38435,9 @@ var require_package2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/shared.cjs
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/shared.cjs
 var require_shared2 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/shared.cjs"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/shared.cjs"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.USER_AGENT = exports.PRODUCT_NAME = exports.pkg = void 0;
@@ -38335,9 +38450,9 @@ var require_shared2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/authclient.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/authclient.js
 var require_authclient = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/authclient.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/authclient.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.AuthClient = exports.DEFAULT_EAGER_REFRESH_THRESHOLD_MILLIS = exports.DEFAULT_UNIVERSE = void 0;
@@ -38570,9 +38685,9 @@ var require_authclient = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/loginticket.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/loginticket.js
 var require_loginticket = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/loginticket.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/loginticket.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.LoginTicket = void 0;
@@ -38622,9 +38737,9 @@ var require_loginticket = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/oauth2client.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/oauth2client.js
 var require_oauth2client = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/oauth2client.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/oauth2client.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.OAuth2Client = exports.ClientAuthentication = exports.CertificateFormat = exports.CodeChallengeMethod = void 0;
@@ -39303,9 +39418,9 @@ var require_oauth2client = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/computeclient.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/computeclient.js
 var require_computeclient = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/computeclient.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/computeclient.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Compute = void 0;
@@ -39395,9 +39510,9 @@ var require_computeclient = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/idtokenclient.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/idtokenclient.js
 var require_idtokenclient = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/idtokenclient.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/idtokenclient.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.IdTokenClient = void 0;
@@ -39441,9 +39556,9 @@ var require_idtokenclient = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/envDetect.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/envDetect.js
 var require_envDetect = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/envDetect.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/envDetect.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.GCPEnv = void 0;
@@ -39518,9 +39633,9 @@ var require_envDetect = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/gtoken/jwsSign.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/gtoken/jwsSign.js
 var require_jwsSign = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/gtoken/jwsSign.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/gtoken/jwsSign.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.buildPayloadForJwsSign = buildPayloadForJwsSign;
@@ -39552,9 +39667,9 @@ var require_jwsSign = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/gtoken/getToken.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/gtoken/getToken.js
 var require_getToken = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/gtoken/getToken.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/gtoken/getToken.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.getToken = getToken;
@@ -39596,9 +39711,9 @@ var require_getToken = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/gtoken/errorWithCode.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/gtoken/errorWithCode.js
 var require_errorWithCode = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/gtoken/errorWithCode.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/gtoken/errorWithCode.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ErrorWithCode = void 0;
@@ -39613,9 +39728,9 @@ var require_errorWithCode = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/gtoken/getCredentials.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/gtoken/getCredentials.js
 var require_getCredentials = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/gtoken/getCredentials.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/gtoken/getCredentials.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.getCredentials = getCredentials;
@@ -39714,9 +39829,9 @@ var require_getCredentials = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/gtoken/tokenHandler.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/gtoken/tokenHandler.js
 var require_tokenHandler = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/gtoken/tokenHandler.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/gtoken/tokenHandler.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.TokenHandler = void 0;
@@ -39805,9 +39920,9 @@ var require_tokenHandler = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/gtoken/revokeToken.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/gtoken/revokeToken.js
 var require_revokeToken = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/gtoken/revokeToken.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/gtoken/revokeToken.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.revokeToken = revokeToken;
@@ -39823,9 +39938,9 @@ var require_revokeToken = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/gtoken/googleToken.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/gtoken/googleToken.js
 var require_googleToken = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/gtoken/googleToken.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/gtoken/googleToken.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.GoogleToken = void 0;
@@ -39929,9 +40044,9 @@ var require_googleToken = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/jwtaccess.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/jwtaccess.js
 var require_jwtaccess = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/jwtaccess.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/jwtaccess.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.JWTAccess = void 0;
@@ -40099,9 +40214,9 @@ var require_jwtaccess = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/jwtclient.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/jwtclient.js
 var require_jwtclient = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/jwtclient.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/jwtclient.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.JWT = void 0;
@@ -40371,9 +40486,9 @@ var require_jwtclient = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/refreshclient.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/refreshclient.js
 var require_refreshclient = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/refreshclient.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/refreshclient.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.UserRefreshClient = exports.USER_REFRESH_ACCOUNT_TYPE = void 0;
@@ -40499,9 +40614,9 @@ var require_refreshclient = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/impersonated.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/impersonated.js
 var require_impersonated = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/impersonated.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/impersonated.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Impersonated = exports.IMPERSONATED_ACCOUNT_TYPE = void 0;
@@ -40678,9 +40793,9 @@ var require_impersonated = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/oauth2common.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/oauth2common.js
 var require_oauth2common = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/oauth2common.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/oauth2common.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.OAuthClientAuthHandler = void 0;
@@ -40826,9 +40941,9 @@ var require_oauth2common = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/stscredentials.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/stscredentials.js
 var require_stscredentials = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/stscredentials.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/stscredentials.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.StsCredentials = void 0;
@@ -40914,9 +41029,9 @@ var require_stscredentials = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/baseexternalclient.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/baseexternalclient.js
 var require_baseexternalclient = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/baseexternalclient.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/baseexternalclient.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.BaseExternalAccountClient = exports.CLOUD_RESOURCE_MANAGER = exports.EXTERNAL_ACCOUNT_TYPE = exports.EXPIRATION_TIME_OFFSET = void 0;
@@ -41293,9 +41408,9 @@ var require_baseexternalclient = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/filesubjecttokensupplier.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/filesubjecttokensupplier.js
 var require_filesubjecttokensupplier = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/filesubjecttokensupplier.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/filesubjecttokensupplier.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FileSubjectTokenSupplier = void 0;
@@ -41358,9 +41473,9 @@ var require_filesubjecttokensupplier = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/urlsubjecttokensupplier.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/urlsubjecttokensupplier.js
 var require_urlsubjecttokensupplier = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/urlsubjecttokensupplier.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/urlsubjecttokensupplier.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.UrlSubjectTokenSupplier = void 0;
@@ -41416,9 +41531,9 @@ var require_urlsubjecttokensupplier = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/certificatesubjecttokensupplier.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/certificatesubjecttokensupplier.js
 var require_certificatesubjecttokensupplier = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/certificatesubjecttokensupplier.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/certificatesubjecttokensupplier.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.CertificateSubjectTokenSupplier = exports.InvalidConfigurationError = exports.CertificateSourceUnavailableError = exports.CERTIFICATE_CONFIGURATION_ENV_VARIABLE = void 0;
@@ -41600,9 +41715,9 @@ var require_certificatesubjecttokensupplier = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/identitypoolclient.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/identitypoolclient.js
 var require_identitypoolclient = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/identitypoolclient.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/identitypoolclient.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.IdentityPoolClient = void 0;
@@ -41712,9 +41827,9 @@ var require_identitypoolclient = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/awsrequestsigner.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/awsrequestsigner.js
 var require_awsrequestsigner = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/awsrequestsigner.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/awsrequestsigner.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.AwsRequestSigner = void 0;
@@ -41862,9 +41977,9 @@ ${credentialScope}
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/defaultawssecuritycredentialssupplier.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/defaultawssecuritycredentialssupplier.js
 var require_defaultawssecuritycredentialssupplier = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/defaultawssecuritycredentialssupplier.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/defaultawssecuritycredentialssupplier.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.DefaultAwsSecurityCredentialsSupplier = void 0;
@@ -42017,9 +42132,9 @@ var require_defaultawssecuritycredentialssupplier = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/awsclient.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/awsclient.js
 var require_awsclient = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/awsclient.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/awsclient.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.AwsClient = void 0;
@@ -42131,9 +42246,9 @@ var require_awsclient = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/executable-response.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/executable-response.js
 var require_executable_response = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/executable-response.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/executable-response.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.InvalidSubjectTokenError = exports.InvalidMessageFieldError = exports.InvalidCodeFieldError = exports.InvalidTokenTypeFieldError = exports.InvalidExpirationTimeFieldError = exports.InvalidSuccessFieldError = exports.InvalidVersionFieldError = exports.ExecutableResponseError = exports.ExecutableResponse = void 0;
@@ -42262,9 +42377,9 @@ var require_executable_response = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/pluggable-auth-handler.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/pluggable-auth-handler.js
 var require_pluggable_auth_handler = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/pluggable-auth-handler.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/pluggable-auth-handler.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.PluggableAuthHandler = exports.ExecutableError = void 0;
@@ -42403,9 +42518,9 @@ var require_pluggable_auth_handler = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/pluggable-auth-client.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/pluggable-auth-client.js
 var require_pluggable_auth_client = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/pluggable-auth-client.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/pluggable-auth-client.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.PluggableAuthClient = exports.ExecutableError = void 0;
@@ -42530,9 +42645,9 @@ var require_pluggable_auth_client = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/externalclient.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/externalclient.js
 var require_externalclient = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/externalclient.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/externalclient.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ExternalAccountClient = void 0;
@@ -42579,9 +42694,9 @@ var require_externalclient = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/externalAccountAuthorizedUserClient.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/externalAccountAuthorizedUserClient.js
 var require_externalAccountAuthorizedUserClient = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/externalAccountAuthorizedUserClient.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/externalAccountAuthorizedUserClient.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ExternalAccountAuthorizedUserClient = exports.EXTERNAL_ACCOUNT_AUTHORIZED_USER_TYPE = void 0;
@@ -42766,9 +42881,9 @@ var require_externalAccountAuthorizedUserClient = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/gdchclient.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/gdchclient.js
 var require_gdchclient = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/gdchclient.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/gdchclient.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.GdchClient = exports.GDCH_SERVICE_ACCOUNT_TYPE = void 0;
@@ -43049,9 +43164,9 @@ var require_gdchclient = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/googleauth.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/googleauth.js
 var require_googleauth = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/googleauth.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/googleauth.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.GoogleAuth = exports.GoogleAuthExceptionMessages = void 0;
@@ -43857,9 +43972,9 @@ var require_googleauth = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/iam.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/iam.js
 var require_iam = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/iam.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/iam.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.IAMAuth = void 0;
@@ -43893,9 +44008,9 @@ var require_iam = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/downscopedclient.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/downscopedclient.js
 var require_downscopedclient = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/downscopedclient.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/downscopedclient.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.DownscopedClient = exports.EXPIRATION_TIME_OFFSET = exports.MAX_ACCESS_BOUNDARY_RULES_COUNT = void 0;
@@ -44078,9 +44193,9 @@ var require_downscopedclient = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/passthrough.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/passthrough.js
 var require_passthrough = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/auth/passthrough.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/passthrough.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.PassThroughClient = void 0;
@@ -44123,9 +44238,9 @@ var require_passthrough = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/index.js
+// node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/index.js
 var require_src6 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@10.9.1/node_modules/google-auth-library/build/src/index.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@10.9.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/index.js"(exports) {
     "use strict";
     var __createBinding2 = exports && exports.__createBinding || (Object.create ? (function(o, m2, k, k2) {
       if (k2 === void 0) k2 = k;
@@ -47942,9 +48057,9 @@ var require_websocket_server = __commonJS({
   }
 });
 
-// node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2/node_modules/firebase-admin/lib/utils/deep-copy.js
+// node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2_supports-color@7.2.0/node_modules/firebase-admin/lib/utils/deep-copy.js
 var require_deep_copy = __commonJS({
-  "node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2/node_modules/firebase-admin/lib/utils/deep-copy.js"(exports) {
+  "node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2_supports-color@7.2.0/node_modules/firebase-admin/lib/utils/deep-copy.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.deepCopy = deepCopy;
@@ -47983,9 +48098,9 @@ var require_deep_copy = __commonJS({
   }
 });
 
-// node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2/node_modules/firebase-admin/lib/utils/error.js
+// node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2_supports-color@7.2.0/node_modules/firebase-admin/lib/utils/error.js
 var require_error = __commonJS({
-  "node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2/node_modules/firebase-admin/lib/utils/error.js"(exports) {
+  "node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2_supports-color@7.2.0/node_modules/firebase-admin/lib/utils/error.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.InstanceIdClientErrorCode = exports.InstallationsClientErrorCode = exports.MessagingClientErrorCode = exports.AuthClientErrorCode = exports.AppErrorCodes = exports.FirebaseProjectManagementError = exports.FirebaseMessagingSessionError = exports.FirebaseMessagingError = exports.FirebaseInstallationsError = exports.FirebaseInstanceIdError = exports.FirebaseFirestoreError = exports.FirebaseDatabaseError = exports.FirebaseAuthError = exports.FirebaseAppError = exports.PrefixedFirebaseError = exports.FirebaseError = void 0;
@@ -48938,9 +49053,9 @@ var require_error = __commonJS({
   }
 });
 
-// node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2/node_modules/firebase-admin/lib/utils/validator.js
+// node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2_supports-color@7.2.0/node_modules/firebase-admin/lib/utils/validator.js
 var require_validator = __commonJS({
-  "node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2/node_modules/firebase-admin/lib/utils/validator.js"(exports) {
+  "node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2_supports-color@7.2.0/node_modules/firebase-admin/lib/utils/validator.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.isBuffer = isBuffer2;
@@ -49077,9 +49192,9 @@ var require_validator = __commonJS({
   }
 });
 
-// node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2/node_modules/firebase-admin/lib/app/credential-internal.js
+// node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2_supports-color@7.2.0/node_modules/firebase-admin/lib/app/credential-internal.js
 var require_credential_internal = __commonJS({
-  "node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2/node_modules/firebase-admin/lib/app/credential-internal.js"(exports) {
+  "node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2_supports-color@7.2.0/node_modules/firebase-admin/lib/app/credential-internal.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ImpersonatedServiceAccountCredential = exports.RefreshTokenCredential = exports.ServiceAccountCredential = exports.ApplicationDefaultCredential = void 0;
@@ -49420,9 +49535,9 @@ var require_credential_internal = __commonJS({
   }
 });
 
-// node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2/node_modules/firebase-admin/package.json
+// node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2_supports-color@7.2.0/node_modules/firebase-admin/package.json
 var require_package3 = __commonJS({
-  "node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2/node_modules/firebase-admin/package.json"(exports, module) {
+  "node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2_supports-color@7.2.0/node_modules/firebase-admin/package.json"(exports, module) {
     module.exports = {
       name: "firebase-admin",
       version: "13.10.0",
@@ -49708,9 +49823,9 @@ var require_package3 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2/node_modules/firebase-admin/lib/utils/index.js
+// node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2_supports-color@7.2.0/node_modules/firebase-admin/lib/utils/index.js
 var require_utils3 = __commonJS({
-  "node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2/node_modules/firebase-admin/lib/utils/index.js"(exports) {
+  "node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2_supports-color@7.2.0/node_modules/firebase-admin/lib/utils/index.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.getSdkVersion = getSdkVersion;
@@ -49871,9 +49986,9 @@ var require_utils3 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2/node_modules/firebase-admin/lib/app/firebase-app.js
+// node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2_supports-color@7.2.0/node_modules/firebase-admin/lib/app/firebase-app.js
 var require_firebase_app = __commonJS({
-  "node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2/node_modules/firebase-admin/lib/app/firebase-app.js"(exports) {
+  "node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2_supports-color@7.2.0/node_modules/firebase-admin/lib/app/firebase-app.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FirebaseApp = exports.FirebaseAppInternals = void 0;
@@ -50094,9 +50209,9 @@ var require_fast_deep_equal = __commonJS({
   }
 });
 
-// node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2/node_modules/firebase-admin/lib/app/lifecycle.js
+// node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2_supports-color@7.2.0/node_modules/firebase-admin/lib/app/lifecycle.js
 var require_lifecycle = __commonJS({
-  "node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2/node_modules/firebase-admin/lib/app/lifecycle.js"(exports) {
+  "node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2_supports-color@7.2.0/node_modules/firebase-admin/lib/app/lifecycle.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FIREBASE_CONFIG_VAR = exports.defaultAppStore = exports.AppStore = void 0;
@@ -50226,9 +50341,9 @@ var require_lifecycle = __commonJS({
   }
 });
 
-// node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2/node_modules/firebase-admin/lib/app/credential-factory.js
+// node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2_supports-color@7.2.0/node_modules/firebase-admin/lib/app/credential-factory.js
 var require_credential_factory = __commonJS({
-  "node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2/node_modules/firebase-admin/lib/app/credential-factory.js"(exports) {
+  "node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2_supports-color@7.2.0/node_modules/firebase-admin/lib/app/credential-factory.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.applicationDefault = applicationDefault2;
@@ -50265,9 +50380,9 @@ var require_credential_factory = __commonJS({
   }
 });
 
-// node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2/node_modules/firebase-admin/lib/app/index.js
+// node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2_supports-color@7.2.0/node_modules/firebase-admin/lib/app/index.js
 var require_app = __commonJS({
-  "node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2/node_modules/firebase-admin/lib/app/index.js"(exports) {
+  "node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2_supports-color@7.2.0/node_modules/firebase-admin/lib/app/index.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.SDK_VERSION = exports.AppErrorCodes = exports.FirebaseAppError = exports.refreshToken = exports.cert = exports.applicationDefault = exports.deleteApp = exports.getApps = exports.getApp = exports.initializeApp = void 0;
@@ -50306,7 +50421,7 @@ var require_app = __commonJS({
   }
 });
 
-// node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2/node_modules/firebase-admin/lib/esm/app/index.js
+// node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2_supports-color@7.2.0/node_modules/firebase-admin/lib/esm/app/index.js
 var app_exports = {};
 __export(app_exports, {
   AppErrorCodes: () => AppErrorCodes,
@@ -50322,7 +50437,7 @@ __export(app_exports, {
 });
 var import_app, AppErrorCodes, FirebaseAppError, SDK_VERSION2, applicationDefault, cert, deleteApp, getApp, getApps, initializeApp, refreshToken;
 var init_app = __esm({
-  "node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2/node_modules/firebase-admin/lib/esm/app/index.js"() {
+  "node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2_supports-color@7.2.0/node_modules/firebase-admin/lib/esm/app/index.js"() {
     import_app = __toESM(require_app(), 1);
     AppErrorCodes = import_app.default.AppErrorCodes;
     FirebaseAppError = import_app.default.FirebaseAppError;
@@ -50337,9 +50452,9 @@ var init_app = __esm({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/v1/firestore_client_config.json
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/v1/firestore_client_config.json
 var require_firestore_client_config = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/v1/firestore_client_config.json"(exports, module) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/v1/firestore_client_config.json"(exports, module) {
     module.exports = {
       interfaces: {
         "google.firestore.v1.Firestore": {
@@ -57416,9 +57531,9 @@ var require_protobufjs = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/featureDetection.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/featureDetection.js
 var require_featureDetection = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/featureDetection.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/featureDetection.js"(exports) {
     "use strict";
     var _a4;
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -57446,9 +57561,9 @@ var require_featureDetection = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/warnings.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/warnings.js
 var require_warnings = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/warnings.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/warnings.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.warn = warn;
@@ -57824,9 +57939,9 @@ var init_esm_node = __esm({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/util.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/util.js
 var require_util4 = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/util.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/util.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.camelToSnakeCase = camelToSnakeCase;
@@ -57894,9 +58009,9 @@ var require_util4 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/status.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/status.js
 var require_status = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/status.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/status.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.HttpCodeToRpcCodeMap = exports.Status = void 0;
@@ -57952,9 +58067,9 @@ var require_status = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/gax.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/gax.js
 var require_gax = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/gax.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/gax.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.CallSettings = exports.RetryOptions = void 0;
@@ -58288,9 +58403,9 @@ var require_gax = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/routingHeader.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/routingHeader.js
 var require_routingHeader = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/routingHeader.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/routingHeader.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.fromParams = fromParams;
@@ -61322,9 +61437,9 @@ var require_is_stream = __commonJS({
   }
 });
 
-// node_modules/.pnpm/gaxios@6.7.1/node_modules/gaxios/package.json
+// node_modules/.pnpm/gaxios@6.7.1_supports-color@7.2.0/node_modules/gaxios/package.json
 var require_package4 = __commonJS({
-  "node_modules/.pnpm/gaxios@6.7.1/node_modules/gaxios/package.json"(exports, module) {
+  "node_modules/.pnpm/gaxios@6.7.1_supports-color@7.2.0/node_modules/gaxios/package.json"(exports, module) {
     module.exports = {
       name: "gaxios",
       version: "6.7.1",
@@ -61424,9 +61539,9 @@ var require_package4 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/gaxios@6.7.1/node_modules/gaxios/build/src/util.js
+// node_modules/.pnpm/gaxios@6.7.1_supports-color@7.2.0/node_modules/gaxios/build/src/util.js
 var require_util5 = __commonJS({
-  "node_modules/.pnpm/gaxios@6.7.1/node_modules/gaxios/build/src/util.js"(exports) {
+  "node_modules/.pnpm/gaxios@6.7.1_supports-color@7.2.0/node_modules/gaxios/build/src/util.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.pkg = void 0;
@@ -61434,9 +61549,9 @@ var require_util5 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/gaxios@6.7.1/node_modules/gaxios/build/src/common.js
+// node_modules/.pnpm/gaxios@6.7.1_supports-color@7.2.0/node_modules/gaxios/build/src/common.js
 var require_common4 = __commonJS({
-  "node_modules/.pnpm/gaxios@6.7.1/node_modules/gaxios/build/src/common.js"(exports) {
+  "node_modules/.pnpm/gaxios@6.7.1_supports-color@7.2.0/node_modules/gaxios/build/src/common.js"(exports) {
     "use strict";
     var __importDefault2 = exports && exports.__importDefault || function(mod3) {
       return mod3 && mod3.__esModule ? mod3 : { "default": mod3 };
@@ -61573,9 +61688,9 @@ var require_common4 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/gaxios@6.7.1/node_modules/gaxios/build/src/retry.js
+// node_modules/.pnpm/gaxios@6.7.1_supports-color@7.2.0/node_modules/gaxios/build/src/retry.js
 var require_retry4 = __commonJS({
-  "node_modules/.pnpm/gaxios@6.7.1/node_modules/gaxios/build/src/retry.js"(exports) {
+  "node_modules/.pnpm/gaxios@6.7.1_supports-color@7.2.0/node_modules/gaxios/build/src/retry.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.getRetryConfig = getRetryConfig;
@@ -61680,9 +61795,9 @@ var require_retry4 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/gaxios@6.7.1/node_modules/gaxios/build/src/interceptor.js
+// node_modules/.pnpm/gaxios@6.7.1_supports-color@7.2.0/node_modules/gaxios/build/src/interceptor.js
 var require_interceptor2 = __commonJS({
-  "node_modules/.pnpm/gaxios@6.7.1/node_modules/gaxios/build/src/interceptor.js"(exports) {
+  "node_modules/.pnpm/gaxios@6.7.1_supports-color@7.2.0/node_modules/gaxios/build/src/interceptor.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.GaxiosInterceptorManager = void 0;
@@ -61692,9 +61807,9 @@ var require_interceptor2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/gaxios@6.7.1/node_modules/gaxios/build/src/gaxios.js
+// node_modules/.pnpm/gaxios@6.7.1_supports-color@7.2.0/node_modules/gaxios/build/src/gaxios.js
 var require_gaxios2 = __commonJS({
-  "node_modules/.pnpm/gaxios@6.7.1/node_modules/gaxios/build/src/gaxios.js"(exports) {
+  "node_modules/.pnpm/gaxios@6.7.1_supports-color@7.2.0/node_modules/gaxios/build/src/gaxios.js"(exports) {
     "use strict";
     var __createBinding2 = exports && exports.__createBinding || (Object.create ? (function(o, m2, k, k2) {
       if (k2 === void 0) k2 = k;
@@ -62117,9 +62232,9 @@ Content-Type: ${partContentType}\r
   }
 });
 
-// node_modules/.pnpm/gaxios@6.7.1/node_modules/gaxios/build/src/index.js
+// node_modules/.pnpm/gaxios@6.7.1_supports-color@7.2.0/node_modules/gaxios/build/src/index.js
 var require_src8 = __commonJS({
-  "node_modules/.pnpm/gaxios@6.7.1/node_modules/gaxios/build/src/index.js"(exports) {
+  "node_modules/.pnpm/gaxios@6.7.1_supports-color@7.2.0/node_modules/gaxios/build/src/index.js"(exports) {
     "use strict";
     var __createBinding2 = exports && exports.__createBinding || (Object.create ? (function(o, m2, k, k2) {
       if (k2 === void 0) k2 = k;
@@ -62156,9 +62271,9 @@ var require_src8 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/gcp-metadata@6.1.1/node_modules/gcp-metadata/build/src/gcp-residency.js
+// node_modules/.pnpm/gcp-metadata@6.1.1_supports-color@7.2.0/node_modules/gcp-metadata/build/src/gcp-residency.js
 var require_gcp_residency2 = __commonJS({
-  "node_modules/.pnpm/gcp-metadata@6.1.1/node_modules/gcp-metadata/build/src/gcp-residency.js"(exports) {
+  "node_modules/.pnpm/gcp-metadata@6.1.1_supports-color@7.2.0/node_modules/gcp-metadata/build/src/gcp-residency.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.GCE_LINUX_BIOS_PATHS = void 0;
@@ -62561,9 +62676,9 @@ var require_src9 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/gcp-metadata@6.1.1/node_modules/gcp-metadata/build/src/index.js
+// node_modules/.pnpm/gcp-metadata@6.1.1_supports-color@7.2.0/node_modules/gcp-metadata/build/src/index.js
 var require_src10 = __commonJS({
-  "node_modules/.pnpm/gcp-metadata@6.1.1/node_modules/gcp-metadata/build/src/index.js"(exports) {
+  "node_modules/.pnpm/gcp-metadata@6.1.1_supports-color@7.2.0/node_modules/gcp-metadata/build/src/index.js"(exports) {
     "use strict";
     var __createBinding2 = exports && exports.__createBinding || (Object.create ? (function(o, m2, k, k2) {
       if (k2 === void 0) k2 = k;
@@ -62814,9 +62929,9 @@ var require_src10 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/crypto/browser/crypto.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/crypto/browser/crypto.js
 var require_crypto4 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/crypto/browser/crypto.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/crypto/browser/crypto.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.BrowserCrypto = void 0;
@@ -62910,9 +63025,9 @@ var require_crypto4 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/crypto/node/crypto.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/crypto/node/crypto.js
 var require_crypto5 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/crypto/node/crypto.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/crypto/node/crypto.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.NodeCrypto = void 0;
@@ -62974,9 +63089,9 @@ var require_crypto5 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/crypto/crypto.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/crypto/crypto.js
 var require_crypto6 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/crypto/crypto.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/crypto/crypto.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.createCrypto = createCrypto;
@@ -63002,9 +63117,9 @@ var require_crypto6 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/options.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/options.js
 var require_options = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/options.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/options.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.validate = validate3;
@@ -63024,9 +63139,9 @@ var require_options = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/package.json
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/package.json
 var require_package5 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/package.json"(exports, module) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/package.json"(exports, module) {
     module.exports = {
       name: "google-auth-library",
       version: "9.15.1",
@@ -63124,9 +63239,9 @@ var require_package5 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/transporters.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/transporters.js
 var require_transporters = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/transporters.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/transporters.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.DefaultTransporter = void 0;
@@ -63209,9 +63324,9 @@ var require_transporters = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/util.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/util.js
 var require_util6 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/util.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/util.js"(exports) {
     "use strict";
     var __classPrivateFieldGet2 = exports && exports.__classPrivateFieldGet || function(receiver, state, kind, f3) {
       if (kind === "a" && !f3) throw new TypeError("Private accessor was defined without a getter");
@@ -63287,9 +63402,9 @@ var require_util6 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/authclient.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/authclient.js
 var require_authclient2 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/authclient.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/authclient.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.AuthClient = exports.DEFAULT_EAGER_REFRESH_THRESHOLD_MILLIS = exports.DEFAULT_UNIVERSE = void 0;
@@ -63380,9 +63495,9 @@ var require_authclient2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/loginticket.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/loginticket.js
 var require_loginticket2 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/loginticket.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/loginticket.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.LoginTicket = void 0;
@@ -63430,9 +63545,9 @@ var require_loginticket2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/oauth2client.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/oauth2client.js
 var require_oauth2client2 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/oauth2client.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/oauth2client.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.OAuth2Client = exports.ClientAuthentication = exports.CertificateFormat = exports.CodeChallengeMethod = void 0;
@@ -64082,9 +64197,9 @@ var require_oauth2client2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/computeclient.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/computeclient.js
 var require_computeclient2 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/computeclient.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/computeclient.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Compute = void 0;
@@ -64172,9 +64287,9 @@ var require_computeclient2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/idtokenclient.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/idtokenclient.js
 var require_idtokenclient2 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/idtokenclient.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/idtokenclient.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.IdTokenClient = void 0;
@@ -64216,9 +64331,9 @@ var require_idtokenclient2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/envDetect.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/envDetect.js
 var require_envDetect2 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/envDetect.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/envDetect.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.GCPEnv = void 0;
@@ -64287,9 +64402,9 @@ var require_envDetect2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/gtoken@7.1.0/node_modules/gtoken/build/src/index.js
+// node_modules/.pnpm/gtoken@7.1.0_supports-color@7.2.0/node_modules/gtoken/build/src/index.js
 var require_src11 = __commonJS({
-  "node_modules/.pnpm/gtoken@7.1.0/node_modules/gtoken/build/src/index.js"(exports) {
+  "node_modules/.pnpm/gtoken@7.1.0_supports-color@7.2.0/node_modules/gtoken/build/src/index.js"(exports) {
     "use strict";
     var __classPrivateFieldGet2 = exports && exports.__classPrivateFieldGet || function(receiver, state, kind, f3) {
       if (kind === "a" && !f3) throw new TypeError("Private accessor was defined without a getter");
@@ -64551,9 +64666,9 @@ var require_src11 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/jwtaccess.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/jwtaccess.js
 var require_jwtaccess2 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/jwtaccess.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/jwtaccess.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.JWTAccess = void 0;
@@ -64716,9 +64831,9 @@ var require_jwtaccess2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/jwtclient.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/jwtclient.js
 var require_jwtclient2 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/jwtclient.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/jwtclient.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.JWT = void 0;
@@ -64968,9 +65083,9 @@ var require_jwtclient2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/refreshclient.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/refreshclient.js
 var require_refreshclient2 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/refreshclient.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/refreshclient.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.UserRefreshClient = exports.USER_REFRESH_ACCOUNT_TYPE = void 0;
@@ -65083,9 +65198,9 @@ var require_refreshclient2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/impersonated.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/impersonated.js
 var require_impersonated2 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/impersonated.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/impersonated.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Impersonated = exports.IMPERSONATED_ACCOUNT_TYPE = void 0;
@@ -65252,9 +65367,9 @@ var require_impersonated2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/oauth2common.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/oauth2common.js
 var require_oauth2common2 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/oauth2common.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/oauth2common.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.OAuthClientAuthHandler = void 0;
@@ -65405,9 +65520,9 @@ var require_oauth2common2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/stscredentials.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/stscredentials.js
 var require_stscredentials2 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/stscredentials.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/stscredentials.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.StsCredentials = void 0;
@@ -65494,9 +65609,9 @@ var require_stscredentials2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/baseexternalclient.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/baseexternalclient.js
 var require_baseexternalclient2 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/baseexternalclient.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/baseexternalclient.js"(exports) {
     "use strict";
     var __classPrivateFieldGet2 = exports && exports.__classPrivateFieldGet || function(receiver, state, kind, f3) {
       if (kind === "a" && !f3) throw new TypeError("Private accessor was defined without a getter");
@@ -65864,9 +65979,9 @@ var require_baseexternalclient2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/filesubjecttokensupplier.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/filesubjecttokensupplier.js
 var require_filesubjecttokensupplier2 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/filesubjecttokensupplier.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/filesubjecttokensupplier.js"(exports) {
     "use strict";
     var _a4;
     var _b;
@@ -65929,9 +66044,9 @@ var require_filesubjecttokensupplier2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/urlsubjecttokensupplier.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/urlsubjecttokensupplier.js
 var require_urlsubjecttokensupplier2 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/urlsubjecttokensupplier.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/urlsubjecttokensupplier.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.UrlSubjectTokenSupplier = void 0;
@@ -65980,9 +66095,9 @@ var require_urlsubjecttokensupplier2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/identitypoolclient.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/identitypoolclient.js
 var require_identitypoolclient2 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/identitypoolclient.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/identitypoolclient.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.IdentityPoolClient = void 0;
@@ -66070,9 +66185,9 @@ var require_identitypoolclient2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/awsrequestsigner.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/awsrequestsigner.js
 var require_awsrequestsigner2 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/awsrequestsigner.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/awsrequestsigner.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.AwsRequestSigner = void 0;
@@ -66215,9 +66330,9 @@ ${credentialScope}
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/defaultawssecuritycredentialssupplier.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/defaultawssecuritycredentialssupplier.js
 var require_defaultawssecuritycredentialssupplier2 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/defaultawssecuritycredentialssupplier.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/defaultawssecuritycredentialssupplier.js"(exports) {
     "use strict";
     var __classPrivateFieldGet2 = exports && exports.__classPrivateFieldGet || function(receiver, state, kind, f3) {
       if (kind === "a" && !f3) throw new TypeError("Private accessor was defined without a getter");
@@ -66368,9 +66483,9 @@ var require_defaultawssecuritycredentialssupplier2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/awsclient.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/awsclient.js
 var require_awsclient2 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/awsclient.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/awsclient.js"(exports) {
     "use strict";
     var __classPrivateFieldGet2 = exports && exports.__classPrivateFieldGet || function(receiver, state, kind, f3) {
       if (kind === "a" && !f3) throw new TypeError("Private accessor was defined without a getter");
@@ -66488,9 +66603,9 @@ var require_awsclient2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/executable-response.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/executable-response.js
 var require_executable_response2 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/executable-response.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/executable-response.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.InvalidSubjectTokenError = exports.InvalidMessageFieldError = exports.InvalidCodeFieldError = exports.InvalidTokenTypeFieldError = exports.InvalidExpirationTimeFieldError = exports.InvalidSuccessFieldError = exports.InvalidVersionFieldError = exports.ExecutableResponseError = exports.ExecutableResponse = void 0;
@@ -66588,9 +66703,9 @@ var require_executable_response2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/pluggable-auth-handler.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/pluggable-auth-handler.js
 var require_pluggable_auth_handler2 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/pluggable-auth-handler.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/pluggable-auth-handler.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.PluggableAuthHandler = void 0;
@@ -66715,9 +66830,9 @@ var require_pluggable_auth_handler2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/pluggable-auth-client.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/pluggable-auth-client.js
 var require_pluggable_auth_client2 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/pluggable-auth-client.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/pluggable-auth-client.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.PluggableAuthClient = exports.ExecutableError = void 0;
@@ -66833,9 +66948,9 @@ var require_pluggable_auth_client2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/externalclient.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/externalclient.js
 var require_externalclient2 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/externalclient.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/externalclient.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ExternalAccountClient = void 0;
@@ -66879,9 +66994,9 @@ var require_externalclient2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/externalAccountAuthorizedUserClient.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/externalAccountAuthorizedUserClient.js
 var require_externalAccountAuthorizedUserClient2 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/externalAccountAuthorizedUserClient.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/externalAccountAuthorizedUserClient.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ExternalAccountAuthorizedUserClient = exports.EXTERNAL_ACCOUNT_AUTHORIZED_USER_TYPE = void 0;
@@ -67073,9 +67188,9 @@ var require_externalAccountAuthorizedUserClient2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/googleauth.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/googleauth.js
 var require_googleauth2 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/googleauth.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/googleauth.js"(exports) {
     "use strict";
     var __classPrivateFieldGet2 = exports && exports.__classPrivateFieldGet || function(receiver, state, kind, f3) {
       if (kind === "a" && !f3) throw new TypeError("Private accessor was defined without a getter");
@@ -67798,9 +67913,9 @@ var require_googleauth2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/iam.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/iam.js
 var require_iam2 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/iam.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/iam.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.IAMAuth = void 0;
@@ -67832,9 +67947,9 @@ var require_iam2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/downscopedclient.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/downscopedclient.js
 var require_downscopedclient2 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/downscopedclient.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/downscopedclient.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.DownscopedClient = exports.EXPIRATION_TIME_OFFSET = exports.MAX_ACCESS_BOUNDARY_RULES_COUNT = void 0;
@@ -68016,9 +68131,9 @@ var require_downscopedclient2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/passthrough.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/passthrough.js
 var require_passthrough2 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/auth/passthrough.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/auth/passthrough.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.PassThroughClient = void 0;
@@ -68063,9 +68178,9 @@ var require_passthrough2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/index.js
+// node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/index.js
 var require_src12 = __commonJS({
-  "node_modules/.pnpm/google-auth-library@9.15.1/node_modules/google-auth-library/build/src/index.js"(exports) {
+  "node_modules/.pnpm/google-auth-library@9.15.1_supports-color@7.2.0/node_modules/google-auth-library/build/src/index.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.GoogleAuth = exports.auth = exports.DefaultTransporter = exports.PassThroughClient = exports.ExecutableError = exports.PluggableAuthClient = exports.DownscopedClient = exports.BaseExternalAccountClient = exports.ExternalAccountClient = exports.IdentityPoolClient = exports.AwsRequestSigner = exports.AwsClient = exports.UserRefreshClient = exports.LoginTicket = exports.ClientAuthentication = exports.OAuth2Client = exports.CodeChallengeMethod = exports.Impersonated = exports.JWT = exports.JWTAccess = exports.IdTokenClient = exports.IAMAuth = exports.GCPEnv = exports.Compute = exports.DEFAULT_UNIVERSE = exports.AuthClient = exports.gaxios = exports.gcpMetadata = void 0;
@@ -68860,16 +68975,16 @@ var require_src13 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/protos/status.json
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/protos/status.json
 var require_status2 = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/protos/status.json"(exports, module) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/protos/status.json"(exports, module) {
     module.exports = { nested: { google: { nested: { protobuf: { nested: { Any: { fields: { type_url: { type: "string", id: 1 }, value: { type: "bytes", id: 2 } } }, Duration: { fields: { seconds: { type: "int64", id: 1 }, nanos: { type: "int32", id: 2 } } } } }, rpc: { options: { cc_enable_arenas: true, go_package: "google.golang.org/genproto/googleapis/rpc/errdetails;errdetails", java_multiple_files: true, java_outer_classname: "ErrorDetailsProto", java_package: "com.google.rpc", objc_class_prefix: "RPC" }, nested: { Status: { fields: { code: { type: "int32", id: 1 }, message: { type: "string", id: 2 }, details: { rule: "repeated", type: "google.protobuf.Any", id: 3 } } }, RetryInfo: { fields: { retryDelay: { type: "google.protobuf.Duration", id: 1 } } }, DebugInfo: { fields: { stackEntries: { rule: "repeated", type: "string", id: 1 }, detail: { type: "string", id: 2 } } }, QuotaFailure: { fields: { violations: { rule: "repeated", type: "Violation", id: 1 } }, nested: { Violation: { fields: { subject: { type: "string", id: 1 }, description: { type: "string", id: 2 } } } } }, ErrorInfo: { fields: { reason: { type: "string", id: 1 }, domain: { type: "string", id: 2 }, metadata: { keyType: "string", type: "string", id: 3 } } }, PreconditionFailure: { fields: { violations: { rule: "repeated", type: "Violation", id: 1 } }, nested: { Violation: { fields: { type: { type: "string", id: 1 }, subject: { type: "string", id: 2 }, description: { type: "string", id: 3 } } } } }, BadRequest: { fields: { fieldViolations: { rule: "repeated", type: "FieldViolation", id: 1 } }, nested: { FieldViolation: { fields: { field: { type: "string", id: 1 }, description: { type: "string", id: 2 } } } } }, RequestInfo: { fields: { requestId: { type: "string", id: 1 }, servingData: { type: "string", id: 2 } } }, ResourceInfo: { fields: { resourceType: { type: "string", id: 1 }, resourceName: { type: "string", id: 2 }, owner: { type: "string", id: 3 }, description: { type: "string", id: 4 } } }, Help: { fields: { links: { rule: "repeated", type: "Link", id: 1 } }, nested: { Link: { fields: { description: { type: "string", id: 1 }, url: { type: "string", id: 2 } } } } }, LocalizedMessage: { fields: { locale: { type: "string", id: 1 }, message: { type: "string", id: 2 } } } } } } } } };
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/googleError.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/googleError.js
 var require_googleError = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/googleError.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/googleError.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.GoogleErrorDecoder = exports.GoogleError = void 0;
@@ -69048,9 +69163,9 @@ var require_googleError = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/call.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/call.js
 var require_call = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/call.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/call.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.OngoingCallPromise = exports.OngoingCall = void 0;
@@ -69152,9 +69267,9 @@ var require_call = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/normalCalls/normalApiCaller.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/normalCalls/normalApiCaller.js
 var require_normalApiCaller = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/normalCalls/normalApiCaller.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/normalCalls/normalApiCaller.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.NormalApiCaller = void 0;
@@ -69183,9 +69298,9 @@ var require_normalApiCaller = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/apiCaller.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/apiCaller.js
 var require_apiCaller = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/apiCaller.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/apiCaller.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.createAPICaller = createAPICaller;
@@ -69199,9 +69314,9 @@ var require_apiCaller = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/normalCalls/timeout.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/normalCalls/timeout.js
 var require_timeout = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/normalCalls/timeout.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/normalCalls/timeout.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.addTimeoutArg = addTimeoutArg;
@@ -69217,9 +69332,9 @@ var require_timeout = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/normalCalls/retries.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/normalCalls/retries.js
 var require_retries = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/normalCalls/retries.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/normalCalls/retries.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.retryable = retryable;
@@ -72313,9 +72428,9 @@ var require_duplexify = __commonJS({
   }
 });
 
-// node_modules/.pnpm/retry-request@7.0.2/node_modules/retry-request/index.js
+// node_modules/.pnpm/retry-request@7.0.2_supports-color@7.2.0/node_modules/retry-request/index.js
 var require_retry_request = __commonJS({
-  "node_modules/.pnpm/retry-request@7.0.2/node_modules/retry-request/index.js"(exports, module) {
+  "node_modules/.pnpm/retry-request@7.0.2_supports-color@7.2.0/node_modules/retry-request/index.js"(exports, module) {
     "use strict";
     var { PassThrough: PassThrough3 } = __require("stream");
     var extend2 = require_extend();
@@ -72536,9 +72651,9 @@ var require_retry_request = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/streamingCalls/streaming.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/streamingCalls/streaming.js
 var require_streaming = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/streamingCalls/streaming.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/streamingCalls/streaming.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.StreamProxy = exports.StreamType = void 0;
@@ -72888,9 +73003,9 @@ var require_streaming = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/streamingCalls/streamingApiCaller.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/streamingCalls/streamingApiCaller.js
 var require_streamingApiCaller = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/streamingCalls/streamingApiCaller.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/streamingCalls/streamingApiCaller.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.StreamingApiCaller = void 0;
@@ -72942,9 +73057,9 @@ var require_streamingApiCaller = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/createApiCall.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/createApiCall.js
 var require_createApiCall = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/createApiCall.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/createApiCall.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.createApiCall = createApiCall;
@@ -73019,9 +73134,9 @@ var require_minimal2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/protos/operations.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/protos/operations.js
 var require_operations = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/protos/operations.js"(exports, module) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/protos/operations.js"(exports, module) {
     ((e2) => {
       "function" == typeof define && define.amd ? define(["protobufjs/minimal"], e2) : "function" == typeof __require && "object" == typeof module && module && module.exports && (module.exports = e2(require_minimal2()));
     })(function(o) {
@@ -75981,9 +76096,9 @@ var require_operations = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/longRunningCalls/longrunning.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/longRunningCalls/longrunning.js
 var require_longrunning = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/longRunningCalls/longrunning.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/longRunningCalls/longrunning.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Operation = void 0;
@@ -76225,9 +76340,9 @@ var require_longrunning = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/longRunningCalls/longRunningApiCaller.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/longRunningCalls/longRunningApiCaller.js
 var require_longRunningApiCaller = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/longRunningCalls/longRunningApiCaller.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/longRunningCalls/longRunningApiCaller.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.LongrunningApiCaller = void 0;
@@ -76287,9 +76402,9 @@ var require_longRunningApiCaller = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/longRunningCalls/longRunningDescriptor.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/longRunningCalls/longRunningDescriptor.js
 var require_longRunningDescriptor = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/longRunningCalls/longRunningDescriptor.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/longRunningCalls/longRunningDescriptor.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.LongRunningDescriptor = void 0;
@@ -76308,9 +76423,9 @@ var require_longRunningDescriptor = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/paginationCalls/resourceCollector.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/paginationCalls/resourceCollector.js
 var require_resourceCollector = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/paginationCalls/resourceCollector.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/paginationCalls/resourceCollector.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ResourceCollector = void 0;
@@ -76352,9 +76467,9 @@ var require_resourceCollector = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/paginationCalls/pagedApiCaller.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/paginationCalls/pagedApiCaller.js
 var require_pagedApiCaller = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/paginationCalls/pagedApiCaller.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/paginationCalls/pagedApiCaller.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.PagedApiCaller = void 0;
@@ -76477,9 +76592,9 @@ var require_pagedApiCaller = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/paginationCalls/pageDescriptor.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/paginationCalls/pageDescriptor.js
 var require_pageDescriptor = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/paginationCalls/pageDescriptor.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/paginationCalls/pageDescriptor.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.PageDescriptor = void 0;
@@ -76613,9 +76728,9 @@ var require_pageDescriptor = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/streamingCalls/streamDescriptor.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/streamingCalls/streamDescriptor.js
 var require_streamDescriptor = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/streamingCalls/streamDescriptor.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/streamingCalls/streamDescriptor.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.StreamDescriptor = void 0;
@@ -76635,9 +76750,9 @@ var require_streamDescriptor = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/bundlingCalls/bundleApiCaller.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/bundlingCalls/bundleApiCaller.js
 var require_bundleApiCaller = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/bundlingCalls/bundleApiCaller.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/bundlingCalls/bundleApiCaller.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.BundleApiCaller = void 0;
@@ -76676,9 +76791,9 @@ var require_bundleApiCaller = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/bundlingCalls/bundlingUtils.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/bundlingCalls/bundlingUtils.js
 var require_bundlingUtils = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/bundlingCalls/bundlingUtils.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/bundlingCalls/bundlingUtils.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.computeBundleId = computeBundleId;
@@ -76710,9 +76825,9 @@ var require_bundlingUtils = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/bundlingCalls/task.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/bundlingCalls/task.js
 var require_task = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/bundlingCalls/task.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/bundlingCalls/task.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Task = void 0;
@@ -76899,9 +77014,9 @@ var require_task = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/bundlingCalls/bundleExecutor.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/bundlingCalls/bundleExecutor.js
 var require_bundleExecutor = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/bundlingCalls/bundleExecutor.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/bundlingCalls/bundleExecutor.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.BundleExecutor = void 0;
@@ -77062,9 +77177,9 @@ var require_bundleExecutor = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/bundlingCalls/bundleDescriptor.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/bundlingCalls/bundleDescriptor.js
 var require_bundleDescriptor = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/bundlingCalls/bundleDescriptor.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/bundlingCalls/bundleDescriptor.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.BundleDescriptor = void 0;
@@ -77121,9 +77236,9 @@ var require_bundleDescriptor = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/descriptor.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/descriptor.js
 var require_descriptor = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/descriptor.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/descriptor.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.BundleDescriptor = exports.StreamDescriptor = exports.PageDescriptor = exports.LongrunningDescriptor = void 0;
@@ -77146,9 +77261,9 @@ var require_descriptor = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/operations_client_config.json
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/operations_client_config.json
 var require_operations_client_config = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/operations_client_config.json"(exports, module) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/operations_client_config.json"(exports, module) {
     module.exports = {
       interfaces: {
         "google.longrunning.Operations": {
@@ -77198,16 +77313,16 @@ var require_operations_client_config = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/protos/operations.json
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/protos/operations.json
 var require_operations2 = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/protos/operations.json"(exports, module) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/protos/operations.json"(exports, module) {
     module.exports = { nested: { google: { nested: { longrunning: { options: { cc_enable_arenas: true, csharp_namespace: "Google.LongRunning", go_package: "google.golang.org/genproto/googleapis/longrunning;longrunning", java_multiple_files: true, java_outer_classname: "OperationsProto", java_package: "com.google.longrunning", php_namespace: "Google\\LongRunning" }, nested: { operationInfo: { type: "google.longrunning.OperationInfo", id: 1049, extend: "google.protobuf.MethodOptions" }, Operations: { options: { "(google.api.default_host)": "longrunning.googleapis.com" }, methods: { ListOperations: { requestType: "ListOperationsRequest", responseType: "ListOperationsResponse", options: { "(google.api.http).get": "/v1/{name=operations}", "(google.api.method_signature)": "name,filter" }, parsedOptions: [{ "(google.api.http)": { get: "/v1/{name=operations}" } }, { "(google.api.method_signature)": "name,filter" }] }, GetOperation: { requestType: "GetOperationRequest", responseType: "Operation", options: { "(google.api.http).get": "/v1/operations/{name}", "(google.api.method_signature)": "name" }, parsedOptions: [{ "(google.api.http)": { get: "/v1/operations/{name}" } }, { "(google.api.method_signature)": "name" }] }, DeleteOperation: { requestType: "DeleteOperationRequest", responseType: "google.protobuf.Empty", options: { "(google.api.http).delete": "/v1/{name=operations/**}", "(google.api.method_signature)": "name" }, parsedOptions: [{ "(google.api.http)": { delete: "/v1/{name=operations/**}" } }, { "(google.api.method_signature)": "name" }] }, CancelOperation: { requestType: "CancelOperationRequest", responseType: "google.protobuf.Empty", options: { "(google.api.http).post": "/v1/{name=operations/**}:cancel", "(google.api.http).body": "*", "(google.api.method_signature)": "name" }, parsedOptions: [{ "(google.api.http)": { post: "/v1/{name=operations/**}:cancel", body: "*" } }, { "(google.api.method_signature)": "name" }] }, WaitOperation: { requestType: "WaitOperationRequest", responseType: "Operation" } } }, Operation: { oneofs: { result: { oneof: ["error", "response"] } }, fields: { name: { type: "string", id: 1 }, metadata: { type: "google.protobuf.Any", id: 2 }, done: { type: "bool", id: 3 }, error: { type: "google.rpc.Status", id: 4 }, response: { type: "google.protobuf.Any", id: 5 } } }, GetOperationRequest: { fields: { name: { type: "string", id: 1 } } }, ListOperationsRequest: { fields: { name: { type: "string", id: 4 }, filter: { type: "string", id: 1 }, pageSize: { type: "int32", id: 2 }, pageToken: { type: "string", id: 3 } } }, ListOperationsResponse: { fields: { operations: { rule: "repeated", type: "Operation", id: 1 }, nextPageToken: { type: "string", id: 2 } } }, CancelOperationRequest: { fields: { name: { type: "string", id: 1 } } }, DeleteOperationRequest: { fields: { name: { type: "string", id: 1 } } }, WaitOperationRequest: { fields: { name: { type: "string", id: 1 }, timeout: { type: "google.protobuf.Duration", id: 2 } } }, OperationInfo: { fields: { responseType: { type: "string", id: 1 }, metadataType: { type: "string", id: 2 } } } } }, api: { options: { go_package: "google.golang.org/genproto/googleapis/api/annotations;annotations", java_multiple_files: true, java_outer_classname: "ClientProto", java_package: "com.google.api", objc_class_prefix: "GAPI", cc_enable_arenas: true }, nested: { http: { type: "HttpRule", id: 72295728, extend: "google.protobuf.MethodOptions" }, Http: { fields: { rules: { rule: "repeated", type: "HttpRule", id: 1 }, fullyDecodeReservedExpansion: { type: "bool", id: 2 } } }, HttpRule: { oneofs: { pattern: { oneof: ["get", "put", "post", "delete", "patch", "custom"] } }, fields: { selector: { type: "string", id: 1 }, get: { type: "string", id: 2 }, put: { type: "string", id: 3 }, post: { type: "string", id: 4 }, delete: { type: "string", id: 5 }, patch: { type: "string", id: 6 }, custom: { type: "CustomHttpPattern", id: 8 }, body: { type: "string", id: 7 }, responseBody: { type: "string", id: 12 }, additionalBindings: { rule: "repeated", type: "HttpRule", id: 11 } } }, CustomHttpPattern: { fields: { kind: { type: "string", id: 1 }, path: { type: "string", id: 2 } } }, methodSignature: { rule: "repeated", type: "string", id: 1051, extend: "google.protobuf.MethodOptions" }, defaultHost: { type: "string", id: 1049, extend: "google.protobuf.ServiceOptions" }, oauthScopes: { type: "string", id: 1050, extend: "google.protobuf.ServiceOptions" } } }, protobuf: { options: { go_package: "github.com/golang/protobuf/protoc-gen-go/descriptor;descriptor", java_package: "com.google.protobuf", java_outer_classname: "DescriptorProtos", csharp_namespace: "Google.Protobuf.Reflection", objc_class_prefix: "GPB", cc_enable_arenas: true, optimize_for: "SPEED" }, nested: { FileDescriptorSet: { fields: { file: { rule: "repeated", type: "FileDescriptorProto", id: 1 } } }, FileDescriptorProto: { fields: { name: { type: "string", id: 1 }, package: { type: "string", id: 2 }, dependency: { rule: "repeated", type: "string", id: 3 }, publicDependency: { rule: "repeated", type: "int32", id: 10, options: { packed: false } }, weakDependency: { rule: "repeated", type: "int32", id: 11, options: { packed: false } }, messageType: { rule: "repeated", type: "DescriptorProto", id: 4 }, enumType: { rule: "repeated", type: "EnumDescriptorProto", id: 5 }, service: { rule: "repeated", type: "ServiceDescriptorProto", id: 6 }, extension: { rule: "repeated", type: "FieldDescriptorProto", id: 7 }, options: { type: "FileOptions", id: 8 }, sourceCodeInfo: { type: "SourceCodeInfo", id: 9 }, syntax: { type: "string", id: 12 } } }, DescriptorProto: { fields: { name: { type: "string", id: 1 }, field: { rule: "repeated", type: "FieldDescriptorProto", id: 2 }, extension: { rule: "repeated", type: "FieldDescriptorProto", id: 6 }, nestedType: { rule: "repeated", type: "DescriptorProto", id: 3 }, enumType: { rule: "repeated", type: "EnumDescriptorProto", id: 4 }, extensionRange: { rule: "repeated", type: "ExtensionRange", id: 5 }, oneofDecl: { rule: "repeated", type: "OneofDescriptorProto", id: 8 }, options: { type: "MessageOptions", id: 7 }, reservedRange: { rule: "repeated", type: "ReservedRange", id: 9 }, reservedName: { rule: "repeated", type: "string", id: 10 } }, nested: { ExtensionRange: { fields: { start: { type: "int32", id: 1 }, end: { type: "int32", id: 2 }, options: { type: "ExtensionRangeOptions", id: 3 } } }, ReservedRange: { fields: { start: { type: "int32", id: 1 }, end: { type: "int32", id: 2 } } } } }, ExtensionRangeOptions: { fields: { uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]] }, FieldDescriptorProto: { fields: { name: { type: "string", id: 1 }, number: { type: "int32", id: 3 }, label: { type: "Label", id: 4 }, type: { type: "Type", id: 5 }, typeName: { type: "string", id: 6 }, extendee: { type: "string", id: 2 }, defaultValue: { type: "string", id: 7 }, oneofIndex: { type: "int32", id: 9 }, jsonName: { type: "string", id: 10 }, options: { type: "FieldOptions", id: 8 }, proto3Optional: { type: "bool", id: 17 } }, nested: { Type: { values: { TYPE_DOUBLE: 1, TYPE_FLOAT: 2, TYPE_INT64: 3, TYPE_UINT64: 4, TYPE_INT32: 5, TYPE_FIXED64: 6, TYPE_FIXED32: 7, TYPE_BOOL: 8, TYPE_STRING: 9, TYPE_GROUP: 10, TYPE_MESSAGE: 11, TYPE_BYTES: 12, TYPE_UINT32: 13, TYPE_ENUM: 14, TYPE_SFIXED32: 15, TYPE_SFIXED64: 16, TYPE_SINT32: 17, TYPE_SINT64: 18 } }, Label: { values: { LABEL_OPTIONAL: 1, LABEL_REQUIRED: 2, LABEL_REPEATED: 3 } } } }, OneofDescriptorProto: { fields: { name: { type: "string", id: 1 }, options: { type: "OneofOptions", id: 2 } } }, EnumDescriptorProto: { fields: { name: { type: "string", id: 1 }, value: { rule: "repeated", type: "EnumValueDescriptorProto", id: 2 }, options: { type: "EnumOptions", id: 3 }, reservedRange: { rule: "repeated", type: "EnumReservedRange", id: 4 }, reservedName: { rule: "repeated", type: "string", id: 5 } }, nested: { EnumReservedRange: { fields: { start: { type: "int32", id: 1 }, end: { type: "int32", id: 2 } } } } }, EnumValueDescriptorProto: { fields: { name: { type: "string", id: 1 }, number: { type: "int32", id: 2 }, options: { type: "EnumValueOptions", id: 3 } } }, ServiceDescriptorProto: { fields: { name: { type: "string", id: 1 }, method: { rule: "repeated", type: "MethodDescriptorProto", id: 2 }, options: { type: "ServiceOptions", id: 3 } } }, MethodDescriptorProto: { fields: { name: { type: "string", id: 1 }, inputType: { type: "string", id: 2 }, outputType: { type: "string", id: 3 }, options: { type: "MethodOptions", id: 4 }, clientStreaming: { type: "bool", id: 5, options: { default: false } }, serverStreaming: { type: "bool", id: 6, options: { default: false } } } }, FileOptions: { fields: { javaPackage: { type: "string", id: 1 }, javaOuterClassname: { type: "string", id: 8 }, javaMultipleFiles: { type: "bool", id: 10, options: { default: false } }, javaGenerateEqualsAndHash: { type: "bool", id: 20, options: { deprecated: true } }, javaStringCheckUtf8: { type: "bool", id: 27, options: { default: false } }, optimizeFor: { type: "OptimizeMode", id: 9, options: { default: "SPEED" } }, goPackage: { type: "string", id: 11 }, ccGenericServices: { type: "bool", id: 16, options: { default: false } }, javaGenericServices: { type: "bool", id: 17, options: { default: false } }, pyGenericServices: { type: "bool", id: 18, options: { default: false } }, phpGenericServices: { type: "bool", id: 42, options: { default: false } }, deprecated: { type: "bool", id: 23, options: { default: false } }, ccEnableArenas: { type: "bool", id: 31, options: { default: true } }, objcClassPrefix: { type: "string", id: 36 }, csharpNamespace: { type: "string", id: 37 }, swiftPrefix: { type: "string", id: 39 }, phpClassPrefix: { type: "string", id: 40 }, phpNamespace: { type: "string", id: 41 }, phpMetadataNamespace: { type: "string", id: 44 }, rubyPackage: { type: "string", id: 45 }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]], reserved: [[38, 38]], nested: { OptimizeMode: { values: { SPEED: 1, CODE_SIZE: 2, LITE_RUNTIME: 3 } } } }, MessageOptions: { fields: { messageSetWireFormat: { type: "bool", id: 1, options: { default: false } }, noStandardDescriptorAccessor: { type: "bool", id: 2, options: { default: false } }, deprecated: { type: "bool", id: 3, options: { default: false } }, mapEntry: { type: "bool", id: 7 }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]], reserved: [[8, 8], [9, 9]] }, FieldOptions: { fields: { ctype: { type: "CType", id: 1, options: { default: "STRING" } }, packed: { type: "bool", id: 2 }, jstype: { type: "JSType", id: 6, options: { default: "JS_NORMAL" } }, lazy: { type: "bool", id: 5, options: { default: false } }, deprecated: { type: "bool", id: 3, options: { default: false } }, weak: { type: "bool", id: 10, options: { default: false } }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]], reserved: [[4, 4]], nested: { CType: { values: { STRING: 0, CORD: 1, STRING_PIECE: 2 } }, JSType: { values: { JS_NORMAL: 0, JS_STRING: 1, JS_NUMBER: 2 } } } }, OneofOptions: { fields: { uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]] }, EnumOptions: { fields: { allowAlias: { type: "bool", id: 2 }, deprecated: { type: "bool", id: 3, options: { default: false } }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]], reserved: [[5, 5]] }, EnumValueOptions: { fields: { deprecated: { type: "bool", id: 1, options: { default: false } }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]] }, ServiceOptions: { fields: { deprecated: { type: "bool", id: 33, options: { default: false } }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]] }, MethodOptions: { fields: { deprecated: { type: "bool", id: 33, options: { default: false } }, idempotencyLevel: { type: "IdempotencyLevel", id: 34, options: { default: "IDEMPOTENCY_UNKNOWN" } }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]], nested: { IdempotencyLevel: { values: { IDEMPOTENCY_UNKNOWN: 0, NO_SIDE_EFFECTS: 1, IDEMPOTENT: 2 } } } }, UninterpretedOption: { fields: { name: { rule: "repeated", type: "NamePart", id: 2 }, identifierValue: { type: "string", id: 3 }, positiveIntValue: { type: "uint64", id: 4 }, negativeIntValue: { type: "int64", id: 5 }, doubleValue: { type: "double", id: 6 }, stringValue: { type: "bytes", id: 7 }, aggregateValue: { type: "string", id: 8 } }, nested: { NamePart: { fields: { namePart: { rule: "required", type: "string", id: 1 }, isExtension: { rule: "required", type: "bool", id: 2 } } } } }, SourceCodeInfo: { fields: { location: { rule: "repeated", type: "Location", id: 1 } }, nested: { Location: { fields: { path: { rule: "repeated", type: "int32", id: 1 }, span: { rule: "repeated", type: "int32", id: 2 }, leadingComments: { type: "string", id: 3 }, trailingComments: { type: "string", id: 4 }, leadingDetachedComments: { rule: "repeated", type: "string", id: 6 } } } } }, GeneratedCodeInfo: { fields: { annotation: { rule: "repeated", type: "Annotation", id: 1 } }, nested: { Annotation: { fields: { path: { rule: "repeated", type: "int32", id: 1 }, sourceFile: { type: "string", id: 2 }, begin: { type: "int32", id: 3 }, end: { type: "int32", id: 4 } } } } }, Any: { fields: { type_url: { type: "string", id: 1 }, value: { type: "bytes", id: 2 } } }, Duration: { fields: { seconds: { type: "int64", id: 1 }, nanos: { type: "int32", id: 2 } } }, Empty: { fields: {} } } }, rpc: { options: { cc_enable_arenas: true, go_package: "google.golang.org/genproto/googleapis/rpc/status;status", java_multiple_files: true, java_outer_classname: "StatusProto", java_package: "com.google.rpc", objc_class_prefix: "RPC" }, nested: { Status: { fields: { code: { type: "int32", id: 1 }, message: { type: "string", id: 2 }, details: { rule: "repeated", type: "google.protobuf.Any", id: 3 } } } } } } } } };
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/transcoding.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/transcoding.js
 var require_transcoding = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/transcoding.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/transcoding.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.getField = getField;
@@ -77444,9 +77559,9 @@ var require_transcoding = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/package.json
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/package.json
 var require_package6 = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/package.json"(exports, module) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/package.json"(exports, module) {
     module.exports = {
       name: "google-gax",
       version: "4.6.1",
@@ -77563,9 +77678,9 @@ var require_package6 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/operationsClient.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/operationsClient.js
 var require_operationsClient = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/operationsClient.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/operationsClient.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.OperationsClientBuilder = exports.OperationsClient = exports.ALL_SCOPES = exports.SERVICE_ADDRESS = void 0;
@@ -77951,9 +78066,9 @@ var require_operationsClient = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/fallbackRest.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/fallbackRest.js
 var require_fallbackRest = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/fallbackRest.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/fallbackRest.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.encodeRequest = encodeRequest;
@@ -78680,9 +78795,9 @@ var require_abort_controller = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/streamArrayParser.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/streamArrayParser.js
 var require_streamArrayParser = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/streamArrayParser.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/streamArrayParser.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.StreamArrayParser = void 0;
@@ -78807,9 +78922,9 @@ var require_streamArrayParser = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/fallbackServiceStub.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/fallbackServiceStub.js
 var require_fallbackServiceStub = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/fallbackServiceStub.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/fallbackServiceStub.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.generateServiceStub = generateServiceStub;
@@ -78926,9 +79041,9 @@ var require_fallbackServiceStub = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/protos/iam_service.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/protos/iam_service.js
 var require_iam_service = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/protos/iam_service.js"(exports, module) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/protos/iam_service.js"(exports, module) {
     ((e2) => {
       "function" == typeof define && define.amd ? define(["protobufjs/minimal"], e2) : "function" == typeof __require && "object" == typeof module && module && module.exports && (module.exports = e2(require_minimal2()));
     })(function(o) {
@@ -82225,9 +82340,9 @@ var require_iam_service = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/protos/locations.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/protos/locations.js
 var require_locations = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/protos/locations.js"(exports, module) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/protos/locations.js"(exports, module) {
     ((e2) => {
       "function" == typeof define && define.amd ? define(["protobufjs/minimal"], e2) : "function" == typeof __require && "object" == typeof module && module && module.exports && (module.exports = e2(require_minimal2()));
     })(function(o) {
@@ -84923,9 +85038,9 @@ var require_locations = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/pathTemplate.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/pathTemplate.js
 var require_pathTemplate = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/pathTemplate.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/pathTemplate.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.PathTemplate = void 0;
@@ -85122,9 +85237,9 @@ var require_pathTemplate = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/iam_policy_service_client_config.json
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/iam_policy_service_client_config.json
 var require_iam_policy_service_client_config = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/iam_policy_service_client_config.json"(exports, module) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/iam_policy_service_client_config.json"(exports, module) {
     module.exports = {
       interfaces: {
         "google.iam.v1.IAMPolicy": {
@@ -85166,16 +85281,16 @@ var require_iam_policy_service_client_config = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/protos/iam_service.json
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/protos/iam_service.json
 var require_iam_service2 = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/protos/iam_service.json"(exports, module) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/protos/iam_service.json"(exports, module) {
     module.exports = { nested: { google: { nested: { iam: { nested: { v1: { options: { cc_enable_arenas: true, csharp_namespace: "Google.Cloud.Iam.V1", go_package: "google.golang.org/genproto/googleapis/iam/v1;iam", java_multiple_files: true, java_outer_classname: "PolicyProto", java_package: "com.google.iam.v1", php_namespace: "Google\\Cloud\\Iam\\V1" }, nested: { IAMPolicy: { options: { "(google.api.default_host)": "iam-meta-api.googleapis.com" }, methods: { SetIamPolicy: { requestType: "SetIamPolicyRequest", responseType: "Policy", options: { "(google.api.http).post": "/v1/{resource=**}:setIamPolicy", "(google.api.http).body": "*" }, parsedOptions: [{ "(google.api.http)": { post: "/v1/{resource=**}:setIamPolicy", body: "*" } }] }, GetIamPolicy: { requestType: "GetIamPolicyRequest", responseType: "Policy", options: { "(google.api.http).post": "/v1/{resource=**}:getIamPolicy", "(google.api.http).body": "*" }, parsedOptions: [{ "(google.api.http)": { post: "/v1/{resource=**}:getIamPolicy", body: "*" } }] }, TestIamPermissions: { requestType: "TestIamPermissionsRequest", responseType: "TestIamPermissionsResponse", options: { "(google.api.http).post": "/v1/{resource=**}:testIamPermissions", "(google.api.http).body": "*" }, parsedOptions: [{ "(google.api.http)": { post: "/v1/{resource=**}:testIamPermissions", body: "*" } }] } } }, SetIamPolicyRequest: { fields: { resource: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED", "(google.api.resource_reference).type": "*" } }, policy: { type: "Policy", id: 2, options: { "(google.api.field_behavior)": "REQUIRED" } } } }, GetIamPolicyRequest: { fields: { resource: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED", "(google.api.resource_reference).type": "*" } }, options: { type: "GetPolicyOptions", id: 2 } } }, TestIamPermissionsRequest: { fields: { resource: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED", "(google.api.resource_reference).type": "*" } }, permissions: { rule: "repeated", type: "string", id: 2, options: { "(google.api.field_behavior)": "REQUIRED" } } } }, TestIamPermissionsResponse: { fields: { permissions: { rule: "repeated", type: "string", id: 1 } } }, GetPolicyOptions: { fields: { requestedPolicyVersion: { type: "int32", id: 1 } } }, Policy: { fields: { version: { type: "int32", id: 1 }, bindings: { rule: "repeated", type: "Binding", id: 4 }, etag: { type: "bytes", id: 3 } } }, Binding: { fields: { role: { type: "string", id: 1 }, members: { rule: "repeated", type: "string", id: 2 }, condition: { type: "google.type.Expr", id: 3 } } }, PolicyDelta: { fields: { bindingDeltas: { rule: "repeated", type: "BindingDelta", id: 1 }, auditConfigDeltas: { rule: "repeated", type: "AuditConfigDelta", id: 2 } } }, BindingDelta: { fields: { action: { type: "Action", id: 1 }, role: { type: "string", id: 2 }, member: { type: "string", id: 3 }, condition: { type: "google.type.Expr", id: 4 } }, nested: { Action: { values: { ACTION_UNSPECIFIED: 0, ADD: 1, REMOVE: 2 } } } }, AuditConfigDelta: { fields: { action: { type: "Action", id: 1 }, service: { type: "string", id: 2 }, exemptedMember: { type: "string", id: 3 }, logType: { type: "string", id: 4 } }, nested: { Action: { values: { ACTION_UNSPECIFIED: 0, ADD: 1, REMOVE: 2 } } } }, logging: { options: { csharp_namespace: "Google.Cloud.Iam.V1.Logging", go_package: "google.golang.org/genproto/googleapis/iam/v1/logging;logging", java_multiple_files: true, java_outer_classname: "AuditDataProto", java_package: "com.google.iam.v1.logging" }, nested: { AuditData: { fields: { policyDelta: { type: "google.iam.v1.PolicyDelta", id: 2 } } } } } } } } }, api: { options: { go_package: "google.golang.org/genproto/googleapis/api/annotations;annotations", java_multiple_files: true, java_outer_classname: "ResourceProto", java_package: "com.google.api", objc_class_prefix: "GAPI", cc_enable_arenas: true }, nested: { http: { type: "HttpRule", id: 72295728, extend: "google.protobuf.MethodOptions" }, Http: { fields: { rules: { rule: "repeated", type: "HttpRule", id: 1 }, fullyDecodeReservedExpansion: { type: "bool", id: 2 } } }, HttpRule: { oneofs: { pattern: { oneof: ["get", "put", "post", "delete", "patch", "custom"] } }, fields: { selector: { type: "string", id: 1 }, get: { type: "string", id: 2 }, put: { type: "string", id: 3 }, post: { type: "string", id: 4 }, delete: { type: "string", id: 5 }, patch: { type: "string", id: 6 }, custom: { type: "CustomHttpPattern", id: 8 }, body: { type: "string", id: 7 }, responseBody: { type: "string", id: 12 }, additionalBindings: { rule: "repeated", type: "HttpRule", id: 11 } } }, CustomHttpPattern: { fields: { kind: { type: "string", id: 1 }, path: { type: "string", id: 2 } } }, methodSignature: { rule: "repeated", type: "string", id: 1051, extend: "google.protobuf.MethodOptions" }, defaultHost: { type: "string", id: 1049, extend: "google.protobuf.ServiceOptions" }, oauthScopes: { type: "string", id: 1050, extend: "google.protobuf.ServiceOptions" }, fieldBehavior: { rule: "repeated", type: "google.api.FieldBehavior", id: 1052, extend: "google.protobuf.FieldOptions" }, FieldBehavior: { values: { FIELD_BEHAVIOR_UNSPECIFIED: 0, OPTIONAL: 1, REQUIRED: 2, OUTPUT_ONLY: 3, INPUT_ONLY: 4, IMMUTABLE: 5 } }, resourceReference: { type: "google.api.ResourceReference", id: 1055, extend: "google.protobuf.FieldOptions" }, resourceDefinition: { rule: "repeated", type: "google.api.ResourceDescriptor", id: 1053, extend: "google.protobuf.FileOptions" }, resource: { type: "google.api.ResourceDescriptor", id: 1053, extend: "google.protobuf.MessageOptions" }, ResourceDescriptor: { fields: { type: { type: "string", id: 1 }, pattern: { rule: "repeated", type: "string", id: 2 }, nameField: { type: "string", id: 3 }, history: { type: "History", id: 4 }, plural: { type: "string", id: 5 }, singular: { type: "string", id: 6 } }, nested: { History: { values: { HISTORY_UNSPECIFIED: 0, ORIGINALLY_SINGLE_PATTERN: 1, FUTURE_MULTI_PATTERN: 2 } } } }, ResourceReference: { fields: { type: { type: "string", id: 1 }, childType: { type: "string", id: 2 } } } } }, protobuf: { options: { go_package: "github.com/golang/protobuf/protoc-gen-go/descriptor;descriptor", java_package: "com.google.protobuf", java_outer_classname: "DescriptorProtos", csharp_namespace: "Google.Protobuf.Reflection", objc_class_prefix: "GPB", cc_enable_arenas: true, optimize_for: "SPEED" }, nested: { FileDescriptorSet: { fields: { file: { rule: "repeated", type: "FileDescriptorProto", id: 1 } } }, FileDescriptorProto: { fields: { name: { type: "string", id: 1 }, package: { type: "string", id: 2 }, dependency: { rule: "repeated", type: "string", id: 3 }, publicDependency: { rule: "repeated", type: "int32", id: 10, options: { packed: false } }, weakDependency: { rule: "repeated", type: "int32", id: 11, options: { packed: false } }, messageType: { rule: "repeated", type: "DescriptorProto", id: 4 }, enumType: { rule: "repeated", type: "EnumDescriptorProto", id: 5 }, service: { rule: "repeated", type: "ServiceDescriptorProto", id: 6 }, extension: { rule: "repeated", type: "FieldDescriptorProto", id: 7 }, options: { type: "FileOptions", id: 8 }, sourceCodeInfo: { type: "SourceCodeInfo", id: 9 }, syntax: { type: "string", id: 12 } } }, DescriptorProto: { fields: { name: { type: "string", id: 1 }, field: { rule: "repeated", type: "FieldDescriptorProto", id: 2 }, extension: { rule: "repeated", type: "FieldDescriptorProto", id: 6 }, nestedType: { rule: "repeated", type: "DescriptorProto", id: 3 }, enumType: { rule: "repeated", type: "EnumDescriptorProto", id: 4 }, extensionRange: { rule: "repeated", type: "ExtensionRange", id: 5 }, oneofDecl: { rule: "repeated", type: "OneofDescriptorProto", id: 8 }, options: { type: "MessageOptions", id: 7 }, reservedRange: { rule: "repeated", type: "ReservedRange", id: 9 }, reservedName: { rule: "repeated", type: "string", id: 10 } }, nested: { ExtensionRange: { fields: { start: { type: "int32", id: 1 }, end: { type: "int32", id: 2 }, options: { type: "ExtensionRangeOptions", id: 3 } } }, ReservedRange: { fields: { start: { type: "int32", id: 1 }, end: { type: "int32", id: 2 } } } } }, ExtensionRangeOptions: { fields: { uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]] }, FieldDescriptorProto: { fields: { name: { type: "string", id: 1 }, number: { type: "int32", id: 3 }, label: { type: "Label", id: 4 }, type: { type: "Type", id: 5 }, typeName: { type: "string", id: 6 }, extendee: { type: "string", id: 2 }, defaultValue: { type: "string", id: 7 }, oneofIndex: { type: "int32", id: 9 }, jsonName: { type: "string", id: 10 }, options: { type: "FieldOptions", id: 8 }, proto3Optional: { type: "bool", id: 17 } }, nested: { Type: { values: { TYPE_DOUBLE: 1, TYPE_FLOAT: 2, TYPE_INT64: 3, TYPE_UINT64: 4, TYPE_INT32: 5, TYPE_FIXED64: 6, TYPE_FIXED32: 7, TYPE_BOOL: 8, TYPE_STRING: 9, TYPE_GROUP: 10, TYPE_MESSAGE: 11, TYPE_BYTES: 12, TYPE_UINT32: 13, TYPE_ENUM: 14, TYPE_SFIXED32: 15, TYPE_SFIXED64: 16, TYPE_SINT32: 17, TYPE_SINT64: 18 } }, Label: { values: { LABEL_OPTIONAL: 1, LABEL_REQUIRED: 2, LABEL_REPEATED: 3 } } } }, OneofDescriptorProto: { fields: { name: { type: "string", id: 1 }, options: { type: "OneofOptions", id: 2 } } }, EnumDescriptorProto: { fields: { name: { type: "string", id: 1 }, value: { rule: "repeated", type: "EnumValueDescriptorProto", id: 2 }, options: { type: "EnumOptions", id: 3 }, reservedRange: { rule: "repeated", type: "EnumReservedRange", id: 4 }, reservedName: { rule: "repeated", type: "string", id: 5 } }, nested: { EnumReservedRange: { fields: { start: { type: "int32", id: 1 }, end: { type: "int32", id: 2 } } } } }, EnumValueDescriptorProto: { fields: { name: { type: "string", id: 1 }, number: { type: "int32", id: 2 }, options: { type: "EnumValueOptions", id: 3 } } }, ServiceDescriptorProto: { fields: { name: { type: "string", id: 1 }, method: { rule: "repeated", type: "MethodDescriptorProto", id: 2 }, options: { type: "ServiceOptions", id: 3 } } }, MethodDescriptorProto: { fields: { name: { type: "string", id: 1 }, inputType: { type: "string", id: 2 }, outputType: { type: "string", id: 3 }, options: { type: "MethodOptions", id: 4 }, clientStreaming: { type: "bool", id: 5, options: { default: false } }, serverStreaming: { type: "bool", id: 6, options: { default: false } } } }, FileOptions: { fields: { javaPackage: { type: "string", id: 1 }, javaOuterClassname: { type: "string", id: 8 }, javaMultipleFiles: { type: "bool", id: 10, options: { default: false } }, javaGenerateEqualsAndHash: { type: "bool", id: 20, options: { deprecated: true } }, javaStringCheckUtf8: { type: "bool", id: 27, options: { default: false } }, optimizeFor: { type: "OptimizeMode", id: 9, options: { default: "SPEED" } }, goPackage: { type: "string", id: 11 }, ccGenericServices: { type: "bool", id: 16, options: { default: false } }, javaGenericServices: { type: "bool", id: 17, options: { default: false } }, pyGenericServices: { type: "bool", id: 18, options: { default: false } }, phpGenericServices: { type: "bool", id: 42, options: { default: false } }, deprecated: { type: "bool", id: 23, options: { default: false } }, ccEnableArenas: { type: "bool", id: 31, options: { default: true } }, objcClassPrefix: { type: "string", id: 36 }, csharpNamespace: { type: "string", id: 37 }, swiftPrefix: { type: "string", id: 39 }, phpClassPrefix: { type: "string", id: 40 }, phpNamespace: { type: "string", id: 41 }, phpMetadataNamespace: { type: "string", id: 44 }, rubyPackage: { type: "string", id: 45 }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]], reserved: [[38, 38]], nested: { OptimizeMode: { values: { SPEED: 1, CODE_SIZE: 2, LITE_RUNTIME: 3 } } } }, MessageOptions: { fields: { messageSetWireFormat: { type: "bool", id: 1, options: { default: false } }, noStandardDescriptorAccessor: { type: "bool", id: 2, options: { default: false } }, deprecated: { type: "bool", id: 3, options: { default: false } }, mapEntry: { type: "bool", id: 7 }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]], reserved: [[8, 8], [9, 9]] }, FieldOptions: { fields: { ctype: { type: "CType", id: 1, options: { default: "STRING" } }, packed: { type: "bool", id: 2 }, jstype: { type: "JSType", id: 6, options: { default: "JS_NORMAL" } }, lazy: { type: "bool", id: 5, options: { default: false } }, deprecated: { type: "bool", id: 3, options: { default: false } }, weak: { type: "bool", id: 10, options: { default: false } }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]], reserved: [[4, 4]], nested: { CType: { values: { STRING: 0, CORD: 1, STRING_PIECE: 2 } }, JSType: { values: { JS_NORMAL: 0, JS_STRING: 1, JS_NUMBER: 2 } } } }, OneofOptions: { fields: { uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]] }, EnumOptions: { fields: { allowAlias: { type: "bool", id: 2 }, deprecated: { type: "bool", id: 3, options: { default: false } }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]], reserved: [[5, 5]] }, EnumValueOptions: { fields: { deprecated: { type: "bool", id: 1, options: { default: false } }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]] }, ServiceOptions: { fields: { deprecated: { type: "bool", id: 33, options: { default: false } }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]] }, MethodOptions: { fields: { deprecated: { type: "bool", id: 33, options: { default: false } }, idempotencyLevel: { type: "IdempotencyLevel", id: 34, options: { default: "IDEMPOTENCY_UNKNOWN" } }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]], nested: { IdempotencyLevel: { values: { IDEMPOTENCY_UNKNOWN: 0, NO_SIDE_EFFECTS: 1, IDEMPOTENT: 2 } } } }, UninterpretedOption: { fields: { name: { rule: "repeated", type: "NamePart", id: 2 }, identifierValue: { type: "string", id: 3 }, positiveIntValue: { type: "uint64", id: 4 }, negativeIntValue: { type: "int64", id: 5 }, doubleValue: { type: "double", id: 6 }, stringValue: { type: "bytes", id: 7 }, aggregateValue: { type: "string", id: 8 } }, nested: { NamePart: { fields: { namePart: { rule: "required", type: "string", id: 1 }, isExtension: { rule: "required", type: "bool", id: 2 } } } } }, SourceCodeInfo: { fields: { location: { rule: "repeated", type: "Location", id: 1 } }, nested: { Location: { fields: { path: { rule: "repeated", type: "int32", id: 1 }, span: { rule: "repeated", type: "int32", id: 2 }, leadingComments: { type: "string", id: 3 }, trailingComments: { type: "string", id: 4 }, leadingDetachedComments: { rule: "repeated", type: "string", id: 6 } } } } }, GeneratedCodeInfo: { fields: { annotation: { rule: "repeated", type: "Annotation", id: 1 } }, nested: { Annotation: { fields: { path: { rule: "repeated", type: "int32", id: 1 }, sourceFile: { type: "string", id: 2 }, begin: { type: "int32", id: 3 }, end: { type: "int32", id: 4 } } } } } } }, type: { options: { go_package: "google.golang.org/genproto/googleapis/type/expr;expr", java_multiple_files: true, java_outer_classname: "ExprProto", java_package: "com.google.type", objc_class_prefix: "GTP" }, nested: { Expr: { fields: { expression: { type: "string", id: 1 }, title: { type: "string", id: 2 }, description: { type: "string", id: 3 }, location: { type: "string", id: 4 } } } } } } } } };
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/iamService.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/iamService.js
 var require_iamService = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/iamService.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/iamService.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.IamClient = void 0;
@@ -85366,16 +85481,16 @@ var require_iamService = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/protos/locations.json
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/protos/locations.json
 var require_locations2 = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/protos/locations.json"(exports, module) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/protos/locations.json"(exports, module) {
     module.exports = { nested: { google: { nested: { cloud: { nested: { location: { options: { cc_enable_arenas: true, go_package: "google.golang.org/genproto/googleapis/cloud/location;location", java_multiple_files: true, java_outer_classname: "LocationsProto", java_package: "com.google.cloud.location" }, nested: { Locations: { options: { "(google.api.default_host)": "cloud.googleapis.com", "(google.api.oauth_scopes)": "https://www.googleapis.com/auth/cloud-platform" }, methods: { ListLocations: { requestType: "ListLocationsRequest", responseType: "ListLocationsResponse", options: { "(google.api.http).get": "/v1/{name=locations}", "(google.api.http).additional_bindings.get": "/v1/{name=projects/*}/locations" }, parsedOptions: [{ "(google.api.http)": { get: "/v1/{name=locations}", additional_bindings: { get: "/v1/{name=projects/*}/locations" } } }] }, GetLocation: { requestType: "GetLocationRequest", responseType: "Location", options: { "(google.api.http).get": "/v1/{name=locations/*}", "(google.api.http).additional_bindings.get": "/v1/{name=projects/*/locations/*}" }, parsedOptions: [{ "(google.api.http)": { get: "/v1/{name=locations/*}", additional_bindings: { get: "/v1/{name=projects/*/locations/*}" } } }] } } }, ListLocationsRequest: { fields: { name: { type: "string", id: 1 }, filter: { type: "string", id: 2 }, pageSize: { type: "int32", id: 3 }, pageToken: { type: "string", id: 4 } } }, ListLocationsResponse: { fields: { locations: { rule: "repeated", type: "Location", id: 1 }, nextPageToken: { type: "string", id: 2 } } }, GetLocationRequest: { fields: { name: { type: "string", id: 1 } } }, Location: { fields: { name: { type: "string", id: 1 }, locationId: { type: "string", id: 4 }, displayName: { type: "string", id: 5 }, labels: { keyType: "string", type: "string", id: 2 }, metadata: { type: "google.protobuf.Any", id: 3 } } } } } } }, api: { options: { go_package: "google.golang.org/genproto/googleapis/api/annotations;annotations", java_multiple_files: true, java_outer_classname: "ClientProto", java_package: "com.google.api", objc_class_prefix: "GAPI", cc_enable_arenas: true }, nested: { http: { type: "HttpRule", id: 72295728, extend: "google.protobuf.MethodOptions" }, Http: { fields: { rules: { rule: "repeated", type: "HttpRule", id: 1 }, fullyDecodeReservedExpansion: { type: "bool", id: 2 } } }, HttpRule: { oneofs: { pattern: { oneof: ["get", "put", "post", "delete", "patch", "custom"] } }, fields: { selector: { type: "string", id: 1 }, get: { type: "string", id: 2 }, put: { type: "string", id: 3 }, post: { type: "string", id: 4 }, delete: { type: "string", id: 5 }, patch: { type: "string", id: 6 }, custom: { type: "CustomHttpPattern", id: 8 }, body: { type: "string", id: 7 }, responseBody: { type: "string", id: 12 }, additionalBindings: { rule: "repeated", type: "HttpRule", id: 11 } } }, CustomHttpPattern: { fields: { kind: { type: "string", id: 1 }, path: { type: "string", id: 2 } } }, methodSignature: { rule: "repeated", type: "string", id: 1051, extend: "google.protobuf.MethodOptions" }, defaultHost: { type: "string", id: 1049, extend: "google.protobuf.ServiceOptions" }, oauthScopes: { type: "string", id: 1050, extend: "google.protobuf.ServiceOptions" } } }, protobuf: { options: { go_package: "google.golang.org/protobuf/types/descriptorpb", java_package: "com.google.protobuf", java_outer_classname: "DescriptorProtos", csharp_namespace: "Google.Protobuf.Reflection", objc_class_prefix: "GPB", cc_enable_arenas: true, optimize_for: "SPEED" }, nested: { FileDescriptorSet: { fields: { file: { rule: "repeated", type: "FileDescriptorProto", id: 1 } } }, FileDescriptorProto: { fields: { name: { type: "string", id: 1 }, package: { type: "string", id: 2 }, dependency: { rule: "repeated", type: "string", id: 3 }, publicDependency: { rule: "repeated", type: "int32", id: 10, options: { packed: false } }, weakDependency: { rule: "repeated", type: "int32", id: 11, options: { packed: false } }, messageType: { rule: "repeated", type: "DescriptorProto", id: 4 }, enumType: { rule: "repeated", type: "EnumDescriptorProto", id: 5 }, service: { rule: "repeated", type: "ServiceDescriptorProto", id: 6 }, extension: { rule: "repeated", type: "FieldDescriptorProto", id: 7 }, options: { type: "FileOptions", id: 8 }, sourceCodeInfo: { type: "SourceCodeInfo", id: 9 }, syntax: { type: "string", id: 12 } } }, DescriptorProto: { fields: { name: { type: "string", id: 1 }, field: { rule: "repeated", type: "FieldDescriptorProto", id: 2 }, extension: { rule: "repeated", type: "FieldDescriptorProto", id: 6 }, nestedType: { rule: "repeated", type: "DescriptorProto", id: 3 }, enumType: { rule: "repeated", type: "EnumDescriptorProto", id: 4 }, extensionRange: { rule: "repeated", type: "ExtensionRange", id: 5 }, oneofDecl: { rule: "repeated", type: "OneofDescriptorProto", id: 8 }, options: { type: "MessageOptions", id: 7 }, reservedRange: { rule: "repeated", type: "ReservedRange", id: 9 }, reservedName: { rule: "repeated", type: "string", id: 10 } }, nested: { ExtensionRange: { fields: { start: { type: "int32", id: 1 }, end: { type: "int32", id: 2 }, options: { type: "ExtensionRangeOptions", id: 3 } } }, ReservedRange: { fields: { start: { type: "int32", id: 1 }, end: { type: "int32", id: 2 } } } } }, ExtensionRangeOptions: { fields: { uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]] }, FieldDescriptorProto: { fields: { name: { type: "string", id: 1 }, number: { type: "int32", id: 3 }, label: { type: "Label", id: 4 }, type: { type: "Type", id: 5 }, typeName: { type: "string", id: 6 }, extendee: { type: "string", id: 2 }, defaultValue: { type: "string", id: 7 }, oneofIndex: { type: "int32", id: 9 }, jsonName: { type: "string", id: 10 }, options: { type: "FieldOptions", id: 8 }, proto3Optional: { type: "bool", id: 17 } }, nested: { Type: { values: { TYPE_DOUBLE: 1, TYPE_FLOAT: 2, TYPE_INT64: 3, TYPE_UINT64: 4, TYPE_INT32: 5, TYPE_FIXED64: 6, TYPE_FIXED32: 7, TYPE_BOOL: 8, TYPE_STRING: 9, TYPE_GROUP: 10, TYPE_MESSAGE: 11, TYPE_BYTES: 12, TYPE_UINT32: 13, TYPE_ENUM: 14, TYPE_SFIXED32: 15, TYPE_SFIXED64: 16, TYPE_SINT32: 17, TYPE_SINT64: 18 } }, Label: { values: { LABEL_OPTIONAL: 1, LABEL_REQUIRED: 2, LABEL_REPEATED: 3 } } } }, OneofDescriptorProto: { fields: { name: { type: "string", id: 1 }, options: { type: "OneofOptions", id: 2 } } }, EnumDescriptorProto: { fields: { name: { type: "string", id: 1 }, value: { rule: "repeated", type: "EnumValueDescriptorProto", id: 2 }, options: { type: "EnumOptions", id: 3 }, reservedRange: { rule: "repeated", type: "EnumReservedRange", id: 4 }, reservedName: { rule: "repeated", type: "string", id: 5 } }, nested: { EnumReservedRange: { fields: { start: { type: "int32", id: 1 }, end: { type: "int32", id: 2 } } } } }, EnumValueDescriptorProto: { fields: { name: { type: "string", id: 1 }, number: { type: "int32", id: 2 }, options: { type: "EnumValueOptions", id: 3 } } }, ServiceDescriptorProto: { fields: { name: { type: "string", id: 1 }, method: { rule: "repeated", type: "MethodDescriptorProto", id: 2 }, options: { type: "ServiceOptions", id: 3 } } }, MethodDescriptorProto: { fields: { name: { type: "string", id: 1 }, inputType: { type: "string", id: 2 }, outputType: { type: "string", id: 3 }, options: { type: "MethodOptions", id: 4 }, clientStreaming: { type: "bool", id: 5, options: { default: false } }, serverStreaming: { type: "bool", id: 6, options: { default: false } } } }, FileOptions: { fields: { javaPackage: { type: "string", id: 1 }, javaOuterClassname: { type: "string", id: 8 }, javaMultipleFiles: { type: "bool", id: 10, options: { default: false } }, javaGenerateEqualsAndHash: { type: "bool", id: 20, options: { deprecated: true } }, javaStringCheckUtf8: { type: "bool", id: 27, options: { default: false } }, optimizeFor: { type: "OptimizeMode", id: 9, options: { default: "SPEED" } }, goPackage: { type: "string", id: 11 }, ccGenericServices: { type: "bool", id: 16, options: { default: false } }, javaGenericServices: { type: "bool", id: 17, options: { default: false } }, pyGenericServices: { type: "bool", id: 18, options: { default: false } }, phpGenericServices: { type: "bool", id: 42, options: { default: false } }, deprecated: { type: "bool", id: 23, options: { default: false } }, ccEnableArenas: { type: "bool", id: 31, options: { default: true } }, objcClassPrefix: { type: "string", id: 36 }, csharpNamespace: { type: "string", id: 37 }, swiftPrefix: { type: "string", id: 39 }, phpClassPrefix: { type: "string", id: 40 }, phpNamespace: { type: "string", id: 41 }, phpMetadataNamespace: { type: "string", id: 44 }, rubyPackage: { type: "string", id: 45 }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]], reserved: [[38, 38]], nested: { OptimizeMode: { values: { SPEED: 1, CODE_SIZE: 2, LITE_RUNTIME: 3 } } } }, MessageOptions: { fields: { messageSetWireFormat: { type: "bool", id: 1, options: { default: false } }, noStandardDescriptorAccessor: { type: "bool", id: 2, options: { default: false } }, deprecated: { type: "bool", id: 3, options: { default: false } }, mapEntry: { type: "bool", id: 7 }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]], reserved: [[8, 8], [9, 9]] }, FieldOptions: { fields: { ctype: { type: "CType", id: 1, options: { default: "STRING" } }, packed: { type: "bool", id: 2 }, jstype: { type: "JSType", id: 6, options: { default: "JS_NORMAL" } }, lazy: { type: "bool", id: 5, options: { default: false } }, deprecated: { type: "bool", id: 3, options: { default: false } }, weak: { type: "bool", id: 10, options: { default: false } }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]], reserved: [[4, 4]], nested: { CType: { values: { STRING: 0, CORD: 1, STRING_PIECE: 2 } }, JSType: { values: { JS_NORMAL: 0, JS_STRING: 1, JS_NUMBER: 2 } } } }, OneofOptions: { fields: { uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]] }, EnumOptions: { fields: { allowAlias: { type: "bool", id: 2 }, deprecated: { type: "bool", id: 3, options: { default: false } }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]], reserved: [[5, 5]] }, EnumValueOptions: { fields: { deprecated: { type: "bool", id: 1, options: { default: false } }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]] }, ServiceOptions: { fields: { deprecated: { type: "bool", id: 33, options: { default: false } }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]] }, MethodOptions: { fields: { deprecated: { type: "bool", id: 33, options: { default: false } }, idempotencyLevel: { type: "IdempotencyLevel", id: 34, options: { default: "IDEMPOTENCY_UNKNOWN" } }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]], nested: { IdempotencyLevel: { values: { IDEMPOTENCY_UNKNOWN: 0, NO_SIDE_EFFECTS: 1, IDEMPOTENT: 2 } } } }, UninterpretedOption: { fields: { name: { rule: "repeated", type: "NamePart", id: 2 }, identifierValue: { type: "string", id: 3 }, positiveIntValue: { type: "uint64", id: 4 }, negativeIntValue: { type: "int64", id: 5 }, doubleValue: { type: "double", id: 6 }, stringValue: { type: "bytes", id: 7 }, aggregateValue: { type: "string", id: 8 } }, nested: { NamePart: { fields: { namePart: { rule: "required", type: "string", id: 1 }, isExtension: { rule: "required", type: "bool", id: 2 } } } } }, SourceCodeInfo: { fields: { location: { rule: "repeated", type: "Location", id: 1 } }, nested: { Location: { fields: { path: { rule: "repeated", type: "int32", id: 1 }, span: { rule: "repeated", type: "int32", id: 2 }, leadingComments: { type: "string", id: 3 }, trailingComments: { type: "string", id: 4 }, leadingDetachedComments: { rule: "repeated", type: "string", id: 6 } } } } }, GeneratedCodeInfo: { fields: { annotation: { rule: "repeated", type: "Annotation", id: 1 } }, nested: { Annotation: { fields: { path: { rule: "repeated", type: "int32", id: 1 }, sourceFile: { type: "string", id: 2 }, begin: { type: "int32", id: 3 }, end: { type: "int32", id: 4 } } } } }, Any: { fields: { type_url: { type: "string", id: 1 }, value: { type: "bytes", id: 2 } } } } } } } } };
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/locations_client_config.json
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/locations_client_config.json
 var require_locations_client_config = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/locations_client_config.json"(exports, module) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/locations_client_config.json"(exports, module) {
     module.exports = {
       interfaces: {
         "google.cloud.location.Locations": {
@@ -85413,9 +85528,9 @@ var require_locations_client_config = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/locationService.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/locationService.js
 var require_locationService = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/locationService.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/locationService.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.LocationsClient = void 0;
@@ -85725,9 +85840,9 @@ var require_locationService = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/fallback.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/fallback.js
 var require_fallback = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/fallback.js"(exports, module) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/fallback.js"(exports, module) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.fallback = exports.GoogleError = exports.operation = exports.Operation = exports.warn = exports.protobufMinimal = exports.protobuf = exports.LocationProtos = exports.IamProtos = exports.operationsProtos = exports.GrpcClient = exports.defaultToObjectOptions = exports.makeUUID = exports.LocationsClient = exports.IamClient = exports.OperationsClient = exports.StreamType = exports.StreamDescriptor = exports.PageDescriptor = exports.LongrunningDescriptor = exports.BundleDescriptor = exports.version = exports.createDefaultBackoffSettings = exports.RetryOptions = exports.constructSettings = exports.CallSettings = exports.routingHeader = exports.PathTemplate = void 0;
@@ -86039,9 +86154,9 @@ var require_fallback = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/util.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/util.js
 var require_util8 = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/util.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/util.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Deferred = void 0;
@@ -86189,9 +86304,9 @@ var require_util8 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/timestamp.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/timestamp.js
 var require_timestamp2 = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/timestamp.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/timestamp.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Timestamp = void 0;
@@ -86423,9 +86538,9 @@ var require_timestamp2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/validate.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/validate.js
 var require_validate = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/validate.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/validate.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.customObjectMessage = customObjectMessage;
@@ -86574,9 +86689,9 @@ var require_validate = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/logger.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/logger.js
 var require_logger = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/logger.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/logger.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.logger = logger2;
@@ -86605,9 +86720,9 @@ var require_logger = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/backoff.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/backoff.js
 var require_backoff = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/backoff.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/backoff.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ExponentialBackoff = exports.delayExecution = exports.MAX_RETRY_ATTEMPTS = exports.DEFAULT_BACKOFF_FACTOR = exports.DEFAULT_BACKOFF_MAX_DELAY_MS = exports.DEFAULT_BACKOFF_INITIAL_DELAY_MS = void 0;
@@ -86727,9 +86842,9 @@ var require_backoff = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/rate-limiter.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/rate-limiter.js
 var require_rate_limiter = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/rate-limiter.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/rate-limiter.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.RateLimiter = void 0;
@@ -86840,9 +86955,9 @@ var require_rate_limiter = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/map-type.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/map-type.js
 var require_map_type = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/map-type.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/map-type.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.VECTOR_MAP_VECTORS_KEY = exports.RESERVED_MAP_KEY_VECTOR_VALUE = exports.RESERVED_MAP_KEY = void 0;
@@ -86852,9 +86967,9 @@ var require_map_type = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/convert.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/convert.js
 var require_convert = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/convert.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/convert.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.timestampFromJson = timestampFromJson;
@@ -87037,9 +87152,9 @@ var require_convert = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/geo-point.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/geo-point.js
 var require_geo_point = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/geo-point.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/geo-point.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.GeoPoint = void 0;
@@ -87124,9 +87239,9 @@ var require_geo_point = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/order.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/order.js
 var require_order = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/order.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/order.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.primitiveComparator = primitiveComparator;
@@ -87330,9 +87445,9 @@ var require_order = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/path.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/path.js
 var require_path2 = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/path.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/path.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FieldPath = exports.QualifiedResourcePath = exports.ResourcePath = exports.DEFAULT_DATABASE_ID = void 0;
@@ -87873,9 +87988,9 @@ var require_path2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/serializer.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/serializer.js
 var require_serializer = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/serializer.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/serializer.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Serializer = void 0;
@@ -88250,9 +88365,9 @@ var require_serializer = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/field-value.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/field-value.js
 var require_field_value = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/field-value.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/field-value.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.DeleteTransform = exports.FieldTransform = exports.FieldValue = exports.VectorValue = void 0;
@@ -88691,9 +88806,9 @@ var require_field_value = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/types.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/types.js
 var require_types3 = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/types.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/types.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.defaultConverter = defaultConverter;
@@ -88711,9 +88826,9 @@ var require_types3 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/document-change.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/document-change.js
 var require_document_change = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/document-change.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/document-change.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.DocumentChange = void 0;
@@ -88866,9 +88981,9 @@ var require_document_change = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/query-profile.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/query-profile.js
 var require_query_profile = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/query-profile.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/query-profile.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ExplainResults = exports.ExplainMetrics = exports.ExecutionStats = exports.PlanSummary = void 0;
@@ -88954,9 +89069,9 @@ var require_query_profile = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/reference/vector-query-snapshot.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/reference/vector-query-snapshot.js
 var require_vector_query_snapshot = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/reference/vector-query-snapshot.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/reference/vector-query-snapshot.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.VectorQuerySnapshot = void 0;
@@ -89177,9 +89292,9 @@ var require_vector_query_snapshot = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/reference/vector-query.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/reference/vector-query.js
 var require_vector_query = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/reference/vector-query.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/reference/vector-query.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.VectorQuery = void 0;
@@ -89361,9 +89476,9 @@ var require_vector_query = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/reference/types.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/reference/types.js
 var require_types4 = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/reference/types.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/reference/types.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.LimitType = void 0;
@@ -89375,9 +89490,9 @@ var require_types4 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/reference/constants.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/reference/constants.js
 var require_constants3 = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/reference/constants.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/reference/constants.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.NOOP_MESSAGE = exports.comparisonOperators = exports.directionOperators = void 0;
@@ -89401,9 +89516,9 @@ var require_constants3 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/telemetry/trace-util.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/telemetry/trace-util.js
 var require_trace_util = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/telemetry/trace-util.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/telemetry/trace-util.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ATTRIBUTE_KEY_ATTEMPTS_REMAINING = exports.ATTRIBUTE_KEY_ATTEMPTS_ALLOWED = exports.ATTRIBUTE_KEY_TRANSACTION_TYPE = exports.ATTRIBUTE_KEY_IS_RETRY_WITH_CURSOR = exports.ATTRIBUTE_KEY_NUM_RESPONSES = exports.ATTRIBUTE_KEY_IS_TRANSACTIONAL = exports.ATTRIBUTE_KEY_DOC_COUNT = exports.ATTRIBUTE_SETTINGS_PREFIX = exports.ATTRIBUTE_SERVICE_PREFIX = exports.SPAN_NAME_BULK_WRITER_COMMIT = exports.SPAN_NAME_PARTITION_QUERY = exports.SPAN_NAME_BATCH_COMMIT = exports.SPAN_NAME_TRANSACTION_COMMIT = exports.SPAN_NAME_TRANSACTION_ROLLBACK = exports.SPAN_NAME_TRANSACTION_GET_DOCUMENTS = exports.SPAN_NAME_TRANSACTION_GET_DOCUMENT = exports.SPAN_NAME_TRANSACTION_GET_AGGREGATION_QUERY = exports.SPAN_NAME_TRANSACTION_GET_QUERY = exports.SPAN_NAME_TRANSACTION_RUN = exports.SPAN_NAME_AGGREGATION_QUERY_GET = exports.SPAN_NAME_QUERY_GET = exports.SPAN_NAME_COL_REF_LIST_DOCUMENTS = exports.SPAN_NAME_COL_REF_ADD = exports.SPAN_NAME_DOC_REF_LIST_COLLECTIONS = exports.SPAN_NAME_DOC_REF_GET = exports.SPAN_NAME_DOC_REF_DELETE = exports.SPAN_NAME_DOC_REF_UPDATE = exports.SPAN_NAME_DOC_REF_SET = exports.SPAN_NAME_DOC_REF_CREATE = exports.SPAN_NAME_RUN_AGGREGATION_QUERY = exports.SPAN_NAME_RUN_QUERY = exports.SPAN_NAME_BATCH_GET_DOCUMENTS = exports.SERVICE = void 0;
@@ -89443,9 +89558,9 @@ var require_trace_util = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/reference/query-util.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/reference/query-util.js
 var require_query_util = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/reference/query-util.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/reference/query-util.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.QueryUtil = void 0;
@@ -89676,9 +89791,9 @@ var require_query_util = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/reference/field-order.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/reference/field-order.js
 var require_field_order = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/reference/field-order.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/reference/field-order.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FieldOrder = void 0;
@@ -89711,9 +89826,9 @@ var require_field_order = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/reference/filter-internal.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/reference/filter-internal.js
 var require_filter_internal = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/reference/filter-internal.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/reference/filter-internal.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FilterInternal = void 0;
@@ -89723,9 +89838,9 @@ var require_filter_internal = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/reference/field-filter-internal.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/reference/field-filter-internal.js
 var require_field_filter_internal = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/reference/field-filter-internal.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/reference/field-filter-internal.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FieldFilterInternal = void 0;
@@ -89816,9 +89931,9 @@ var require_field_filter_internal = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/reference/composite-filter-internal.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/reference/composite-filter-internal.js
 var require_composite_filter_internal = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/reference/composite-filter-internal.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/reference/composite-filter-internal.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.CompositeFilterInternal = void 0;
@@ -89868,9 +89983,9 @@ var require_composite_filter_internal = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/reference/query-snapshot.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/reference/query-snapshot.js
 var require_query_snapshot = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/reference/query-snapshot.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/reference/query-snapshot.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.QuerySnapshot = void 0;
@@ -90094,9 +90209,9 @@ var require_query_snapshot = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/filter.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/filter.js
 var require_filter = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/filter.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/filter.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.CompositeFilter = exports.UnaryFilter = exports.Filter = void 0;
@@ -90259,9 +90374,9 @@ var require_filter = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/reference/helpers.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/reference/helpers.js
 var require_helpers2 = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/reference/helpers.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/reference/helpers.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.validateQueryOrder = validateQueryOrder;
@@ -90310,9 +90425,9 @@ var require_helpers2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/aggregate.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/aggregate.js
 var require_aggregate = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/aggregate.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/aggregate.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.AggregateField = exports.Aggregate = void 0;
@@ -90407,9 +90522,9 @@ var require_aggregate = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/reference/aggregate-query-snapshot.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/reference/aggregate-query-snapshot.js
 var require_aggregate_query_snapshot = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/reference/aggregate-query-snapshot.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/reference/aggregate-query-snapshot.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.AggregateQuerySnapshot = void 0;
@@ -90478,9 +90593,9 @@ var require_aggregate_query_snapshot = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/reference/aggregate-query.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/reference/aggregate-query.js
 var require_aggregate_query = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/reference/aggregate-query.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/reference/aggregate-query.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.AggregateQuery = void 0;
@@ -109858,9 +109973,9 @@ var require_src16 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/protosList.json
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/protosList.json
 var require_protosList = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/protosList.json"(exports, module) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/protosList.json"(exports, module) {
     module.exports = [
       "google/api/annotations.proto",
       "google/api/apikeys/v2/apikeys.proto",
@@ -110001,9 +110116,9 @@ var require_protosList = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/grpc.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/grpc.js
 var require_grpc = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/grpc.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/grpc.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.GoogleProtoFilesRoot = exports.GrpcClient = exports.ClientStub = void 0;
@@ -110408,9 +110523,9 @@ var require_grpc = __commonJS({
   }
 });
 
-// node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/index.js
+// node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/index.js
 var require_src17 = __commonJS({
-  "node_modules/.pnpm/google-gax@4.6.1/node_modules/google-gax/build/src/index.js"(exports) {
+  "node_modules/.pnpm/google-gax@4.6.1_supports-color@7.2.0/node_modules/google-gax/build/src/index.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.serializer = exports.warn = exports.ChannelCredentials = exports.makeUUID = exports.fallback = exports.protobufMinimal = exports.protobuf = exports.version = exports.createByteLengthFunction = exports.LocationsClient = exports.IamClient = exports.OperationsClient = exports.LocationProtos = exports.IamProtos = exports.operationsProtos = exports.routingHeader = exports.StreamType = exports.Status = exports.PathTemplate = exports.operation = exports.Operation = exports.GrpcClient = exports.GoogleProtoFilesRoot = exports.ClientStub = exports.GoogleError = exports.createMaxRetriesBackoffSettings = exports.createDefaultBackoffSettings = exports.createBackoffSettings = exports.createBundleOptions = exports.createRetryOptions = exports.RetryOptions = exports.constructSettings = exports.CallSettings = exports.StreamDescriptor = exports.PageDescriptor = exports.LongrunningDescriptor = exports.BundleDescriptor = exports.createApiCall = exports.OngoingCall = exports.grpc = exports.GoogleAuth = void 0;
@@ -110553,9 +110668,9 @@ var require_src17 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/watch.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/watch.js
 var require_watch = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/watch.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/watch.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.QueryWatch = exports.DocumentWatch = exports.WATCH_IDLE_TIMEOUT_MS = void 0;
@@ -111092,9 +111207,9 @@ var require_watch = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/reference/query.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/reference/query.js
 var require_query2 = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/reference/query.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/reference/query.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Query = void 0;
@@ -112141,9 +112256,9 @@ var require_query2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/reference/query-options.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/reference/query-options.js
 var require_query_options = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/reference/query-options.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/reference/query-options.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.QueryOptions = void 0;
@@ -112266,9 +112381,9 @@ var require_query_options = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/reference/collection-reference.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/reference/collection-reference.js
 var require_collection_reference = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/reference/collection-reference.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/reference/collection-reference.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.CollectionReference = void 0;
@@ -112534,9 +112649,9 @@ var require_collection_reference = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/reference/document-reference.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/reference/document-reference.js
 var require_document_reference = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/reference/document-reference.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/reference/document-reference.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.DocumentReference = void 0;
@@ -113004,9 +113119,9 @@ var require_document_reference = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/document.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/document.js
 var require_document = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/document.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/document.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Precondition = exports.DocumentTransform = exports.DocumentMask = exports.QueryDocumentSnapshot = exports.DocumentSnapshot = exports.DocumentSnapshotBuilder = void 0;
@@ -113818,9 +113933,9 @@ var require_document = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/write-batch.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/write-batch.js
 var require_write_batch = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/write-batch.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/write-batch.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.WriteBatch = exports.WriteResult = void 0;
@@ -114349,9 +114464,9 @@ var require_write_batch = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/bulk-writer.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/bulk-writer.js
 var require_bulk_writer = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/bulk-writer.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/bulk-writer.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.BulkWriter = exports.BulkWriterError = exports.DEFAULT_JITTER_FACTOR = exports.DEFAULT_MAXIMUM_OPS_PER_SECOND_LIMIT = exports.DEFAULT_INITIAL_OPS_PER_SECOND_LIMIT = exports.RETRY_MAX_BATCH_SIZE = void 0;
@@ -115074,9 +115189,9 @@ var require_bulk_writer = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/protos/firestore_v1_proto_api.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/protos/firestore_v1_proto_api.js
 var require_firestore_v1_proto_api = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/protos/firestore_v1_proto_api.js"(exports, module) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/protos/firestore_v1_proto_api.js"(exports, module) {
     ((e2) => {
       "function" == typeof define && define.amd ? define(["protobufjs/minimal"], e2) : "function" == typeof __require && "object" == typeof module && module && module.exports && (module.exports = e2(require_minimal2()));
     })(function(r2) {
@@ -119960,9 +120075,9 @@ var require_firestore_v1_proto_api = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/bundle.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/bundle.js
 var require_bundle = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/bundle.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/bundle.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.BundleBuilder = void 0;
@@ -120112,9 +120227,9 @@ var require_bundle = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/document-reader.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/document-reader.js
 var require_document_reader = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/document-reader.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/document-reader.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.DocumentReader = void 0;
@@ -120252,9 +120367,9 @@ var require_document_reader = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/pool.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/pool.js
 var require_pool2 = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/pool.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/pool.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ClientPool = exports.CLIENT_TERMINATED_ERROR_MSG = void 0;
@@ -120554,9 +120669,9 @@ var require_pool2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/transaction.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/transaction.js
 var require_transaction = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/transaction.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/transaction.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Transaction = void 0;
@@ -121063,9 +121178,9 @@ var require_transaction = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/query-partition.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/query-partition.js
 var require_query_partition = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/query-partition.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/query-partition.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.QueryPartition = void 0;
@@ -121186,9 +121301,9 @@ var require_query_partition = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/collection-group.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/collection-group.js
 var require_collection_group = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/collection-group.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/collection-group.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.CollectionGroup = void 0;
@@ -121269,9 +121384,9 @@ var require_collection_group = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/recursive-delete.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/recursive-delete.js
 var require_recursive_delete = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/recursive-delete.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/recursive-delete.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.RecursiveDelete = exports.RECURSIVE_DELETE_MIN_PENDING_OPS = exports.RECURSIVE_DELETE_MAX_PENDING_OPS = exports.REFERENCE_NAME_MIN_ID = void 0;
@@ -121430,9 +121545,9 @@ var require_recursive_delete = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/telemetry/span.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/telemetry/span.js
 var require_span = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/telemetry/span.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/telemetry/span.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Span = void 0;
@@ -121459,9 +121574,9 @@ var require_span = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/telemetry/disabled-trace-util.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/telemetry/disabled-trace-util.js
 var require_disabled_trace_util = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/telemetry/disabled-trace-util.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/telemetry/disabled-trace-util.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.DisabledTraceUtil = void 0;
@@ -123024,16 +123139,16 @@ var init_esm = __esm({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/protos/admin_v1.json
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/protos/admin_v1.json
 var require_admin_v1 = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/protos/admin_v1.json"(exports, module) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/protos/admin_v1.json"(exports, module) {
     module.exports = { options: { syntax: "proto3" }, nested: { google: { nested: { firestore: { nested: { admin: { nested: { v1: { options: { csharp_namespace: "Google.Cloud.Firestore.Admin.V1", go_package: "cloud.google.com/go/firestore/apiv1/admin/adminpb;adminpb", java_multiple_files: true, java_outer_classname: "LocationProto", java_package: "com.google.firestore.admin.v1", objc_class_prefix: "GCFS", php_namespace: "Google\\Cloud\\Firestore\\Admin\\V1", ruby_package: "Google::Cloud::Firestore::Admin::V1", "(google.api.resource_definition).type": "firestore.googleapis.com/CollectionGroup", "(google.api.resource_definition).pattern": "projects/{project}/databases/{database}/collectionGroups/{collection}" }, nested: { Backup: { options: { "(google.api.resource).type": "firestore.googleapis.com/Backup", "(google.api.resource).pattern": "projects/{project}/locations/{location}/backups/{backup}" }, fields: { name: { type: "string", id: 1, options: { "(google.api.field_behavior)": "OUTPUT_ONLY" } }, database: { type: "string", id: 2, options: { "(google.api.field_behavior)": "OUTPUT_ONLY", "(google.api.resource_reference).type": "firestore.googleapis.com/Database" } }, databaseUid: { type: "string", id: 7, options: { "(google.api.field_behavior)": "OUTPUT_ONLY" } }, snapshotTime: { type: "google.protobuf.Timestamp", id: 3, options: { "(google.api.field_behavior)": "OUTPUT_ONLY" } }, expireTime: { type: "google.protobuf.Timestamp", id: 4, options: { "(google.api.field_behavior)": "OUTPUT_ONLY" } }, stats: { type: "Stats", id: 6, options: { "(google.api.field_behavior)": "OUTPUT_ONLY" } }, state: { type: "State", id: 8, options: { "(google.api.field_behavior)": "OUTPUT_ONLY" } } }, nested: { Stats: { fields: { sizeBytes: { type: "int64", id: 1, options: { "(google.api.field_behavior)": "OUTPUT_ONLY" } }, documentCount: { type: "int64", id: 2, options: { "(google.api.field_behavior)": "OUTPUT_ONLY" } }, indexCount: { type: "int64", id: 3, options: { "(google.api.field_behavior)": "OUTPUT_ONLY" } } } }, State: { values: { STATE_UNSPECIFIED: 0, CREATING: 1, READY: 2, NOT_AVAILABLE: 3 } } } }, Database: { options: { "(google.api.resource).type": "firestore.googleapis.com/Database", "(google.api.resource).pattern": "projects/{project}/databases/{database}", "(google.api.resource).style": "DECLARATIVE_FRIENDLY" }, fields: { name: { type: "string", id: 1 }, uid: { type: "string", id: 3, options: { "(google.api.field_behavior)": "OUTPUT_ONLY" } }, createTime: { type: "google.protobuf.Timestamp", id: 5, options: { "(google.api.field_behavior)": "OUTPUT_ONLY" } }, updateTime: { type: "google.protobuf.Timestamp", id: 6, options: { "(google.api.field_behavior)": "OUTPUT_ONLY" } }, deleteTime: { type: "google.protobuf.Timestamp", id: 7, options: { "(google.api.field_behavior)": "OUTPUT_ONLY" } }, locationId: { type: "string", id: 9 }, type: { type: "DatabaseType", id: 10 }, concurrencyMode: { type: "ConcurrencyMode", id: 15 }, versionRetentionPeriod: { type: "google.protobuf.Duration", id: 17, options: { "(google.api.field_behavior)": "OUTPUT_ONLY" } }, earliestVersionTime: { type: "google.protobuf.Timestamp", id: 18, options: { "(google.api.field_behavior)": "OUTPUT_ONLY" } }, pointInTimeRecoveryEnablement: { type: "PointInTimeRecoveryEnablement", id: 21 }, appEngineIntegrationMode: { type: "AppEngineIntegrationMode", id: 19 }, keyPrefix: { type: "string", id: 20, options: { "(google.api.field_behavior)": "OUTPUT_ONLY" } }, deleteProtectionState: { type: "DeleteProtectionState", id: 22 }, cmekConfig: { type: "CmekConfig", id: 23, options: { "(google.api.field_behavior)": "OPTIONAL" } }, previousId: { type: "string", id: 25, options: { "(google.api.field_behavior)": "OUTPUT_ONLY" } }, sourceInfo: { type: "SourceInfo", id: 26, options: { "(google.api.field_behavior)": "OUTPUT_ONLY" } }, etag: { type: "string", id: 99 } }, nested: { DatabaseType: { values: { DATABASE_TYPE_UNSPECIFIED: 0, FIRESTORE_NATIVE: 1, DATASTORE_MODE: 2 } }, ConcurrencyMode: { values: { CONCURRENCY_MODE_UNSPECIFIED: 0, OPTIMISTIC: 1, PESSIMISTIC: 2, OPTIMISTIC_WITH_ENTITY_GROUPS: 3 } }, PointInTimeRecoveryEnablement: { values: { POINT_IN_TIME_RECOVERY_ENABLEMENT_UNSPECIFIED: 0, POINT_IN_TIME_RECOVERY_ENABLED: 1, POINT_IN_TIME_RECOVERY_DISABLED: 2 } }, AppEngineIntegrationMode: { values: { APP_ENGINE_INTEGRATION_MODE_UNSPECIFIED: 0, ENABLED: 1, DISABLED: 2 } }, DeleteProtectionState: { values: { DELETE_PROTECTION_STATE_UNSPECIFIED: 0, DELETE_PROTECTION_DISABLED: 1, DELETE_PROTECTION_ENABLED: 2 } }, CmekConfig: { fields: { kmsKeyName: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, activeKeyVersion: { rule: "repeated", type: "string", id: 2, options: { "(google.api.field_behavior)": "OUTPUT_ONLY" } } } }, SourceInfo: { oneofs: { source: { oneof: ["backup"] } }, fields: { backup: { type: "BackupSource", id: 1 }, operation: { type: "string", id: 3, options: { "(google.api.resource_reference).type": "firestore.googleapis.com/Operation" } } }, nested: { BackupSource: { fields: { backup: { type: "string", id: 1, options: { "(google.api.resource_reference).type": "firestore.googleapis.com/Backup" } } } } } }, EncryptionConfig: { oneofs: { encryptionType: { oneof: ["googleDefaultEncryption", "useSourceEncryption", "customerManagedEncryption"] } }, fields: { googleDefaultEncryption: { type: "GoogleDefaultEncryptionOptions", id: 1 }, useSourceEncryption: { type: "SourceEncryptionOptions", id: 2 }, customerManagedEncryption: { type: "CustomerManagedEncryptionOptions", id: 3 } }, nested: { GoogleDefaultEncryptionOptions: { fields: {} }, SourceEncryptionOptions: { fields: {} }, CustomerManagedEncryptionOptions: { fields: { kmsKeyName: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } } } } } } } }, Field: { options: { "(google.api.resource).type": "firestore.googleapis.com/Field", "(google.api.resource).pattern": "projects/{project}/databases/{database}/collectionGroups/{collection}/fields/{field}" }, fields: { name: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, indexConfig: { type: "IndexConfig", id: 2 }, ttlConfig: { type: "TtlConfig", id: 3 } }, nested: { IndexConfig: { fields: { indexes: { rule: "repeated", type: "Index", id: 1 }, usesAncestorConfig: { type: "bool", id: 2 }, ancestorField: { type: "string", id: 3 }, reverting: { type: "bool", id: 4 } } }, TtlConfig: { fields: { state: { type: "State", id: 1, options: { "(google.api.field_behavior)": "OUTPUT_ONLY" } } }, nested: { State: { values: { STATE_UNSPECIFIED: 0, CREATING: 1, ACTIVE: 2, NEEDS_REPAIR: 3 } } } } } }, Index: { options: { "(google.api.resource).type": "firestore.googleapis.com/Index", "(google.api.resource).pattern": "projects/{project}/databases/{database}/collectionGroups/{collection}/indexes/{index}" }, fields: { name: { type: "string", id: 1 }, queryScope: { type: "QueryScope", id: 2 }, apiScope: { type: "ApiScope", id: 5 }, fields: { rule: "repeated", type: "IndexField", id: 3 }, state: { type: "State", id: 4 } }, nested: { QueryScope: { values: { QUERY_SCOPE_UNSPECIFIED: 0, COLLECTION: 1, COLLECTION_GROUP: 2, COLLECTION_RECURSIVE: 3 } }, ApiScope: { values: { ANY_API: 0, DATASTORE_MODE_API: 1 } }, IndexField: { oneofs: { valueMode: { oneof: ["order", "arrayConfig", "vectorConfig"] } }, fields: { fieldPath: { type: "string", id: 1 }, order: { type: "Order", id: 2 }, arrayConfig: { type: "ArrayConfig", id: 3 }, vectorConfig: { type: "VectorConfig", id: 4 } }, nested: { Order: { values: { ORDER_UNSPECIFIED: 0, ASCENDING: 1, DESCENDING: 2 } }, ArrayConfig: { values: { ARRAY_CONFIG_UNSPECIFIED: 0, CONTAINS: 1 } }, VectorConfig: { oneofs: { type: { oneof: ["flat"] } }, fields: { dimension: { type: "int32", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, flat: { type: "FlatIndex", id: 2 } }, nested: { FlatIndex: { fields: {} } } } } }, State: { values: { STATE_UNSPECIFIED: 0, CREATING: 1, READY: 2, NEEDS_REPAIR: 3 } } } }, FirestoreAdmin: { options: { "(google.api.default_host)": "firestore.googleapis.com", "(google.api.oauth_scopes)": "https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/datastore" }, methods: { CreateIndex: { requestType: "CreateIndexRequest", responseType: "google.longrunning.Operation", options: { "(google.api.http).post": "/v1/{parent=projects/*/databases/*/collectionGroups/*}/indexes", "(google.api.http).body": "index", "(google.api.method_signature)": "parent,index", "(google.longrunning.operation_info).response_type": "Index", "(google.longrunning.operation_info).metadata_type": "IndexOperationMetadata" }, parsedOptions: [{ "(google.api.http)": { post: "/v1/{parent=projects/*/databases/*/collectionGroups/*}/indexes", body: "index" } }, { "(google.api.method_signature)": "parent,index" }, { "(google.longrunning.operation_info)": { response_type: "Index", metadata_type: "IndexOperationMetadata" } }] }, ListIndexes: { requestType: "ListIndexesRequest", responseType: "ListIndexesResponse", options: { "(google.api.http).get": "/v1/{parent=projects/*/databases/*/collectionGroups/*}/indexes", "(google.api.method_signature)": "parent" }, parsedOptions: [{ "(google.api.http)": { get: "/v1/{parent=projects/*/databases/*/collectionGroups/*}/indexes" } }, { "(google.api.method_signature)": "parent" }] }, GetIndex: { requestType: "GetIndexRequest", responseType: "Index", options: { "(google.api.http).get": "/v1/{name=projects/*/databases/*/collectionGroups/*/indexes/*}", "(google.api.method_signature)": "name" }, parsedOptions: [{ "(google.api.http)": { get: "/v1/{name=projects/*/databases/*/collectionGroups/*/indexes/*}" } }, { "(google.api.method_signature)": "name" }] }, DeleteIndex: { requestType: "DeleteIndexRequest", responseType: "google.protobuf.Empty", options: { "(google.api.http).delete": "/v1/{name=projects/*/databases/*/collectionGroups/*/indexes/*}", "(google.api.method_signature)": "name" }, parsedOptions: [{ "(google.api.http)": { delete: "/v1/{name=projects/*/databases/*/collectionGroups/*/indexes/*}" } }, { "(google.api.method_signature)": "name" }] }, GetField: { requestType: "GetFieldRequest", responseType: "Field", options: { "(google.api.http).get": "/v1/{name=projects/*/databases/*/collectionGroups/*/fields/*}", "(google.api.method_signature)": "name" }, parsedOptions: [{ "(google.api.http)": { get: "/v1/{name=projects/*/databases/*/collectionGroups/*/fields/*}" } }, { "(google.api.method_signature)": "name" }] }, UpdateField: { requestType: "UpdateFieldRequest", responseType: "google.longrunning.Operation", options: { "(google.api.http).patch": "/v1/{field.name=projects/*/databases/*/collectionGroups/*/fields/*}", "(google.api.http).body": "field", "(google.api.method_signature)": "field", "(google.longrunning.operation_info).response_type": "Field", "(google.longrunning.operation_info).metadata_type": "FieldOperationMetadata" }, parsedOptions: [{ "(google.api.http)": { patch: "/v1/{field.name=projects/*/databases/*/collectionGroups/*/fields/*}", body: "field" } }, { "(google.api.method_signature)": "field" }, { "(google.longrunning.operation_info)": { response_type: "Field", metadata_type: "FieldOperationMetadata" } }] }, ListFields: { requestType: "ListFieldsRequest", responseType: "ListFieldsResponse", options: { "(google.api.http).get": "/v1/{parent=projects/*/databases/*/collectionGroups/*}/fields", "(google.api.method_signature)": "parent" }, parsedOptions: [{ "(google.api.http)": { get: "/v1/{parent=projects/*/databases/*/collectionGroups/*}/fields" } }, { "(google.api.method_signature)": "parent" }] }, ExportDocuments: { requestType: "ExportDocumentsRequest", responseType: "google.longrunning.Operation", options: { "(google.api.http).post": "/v1/{name=projects/*/databases/*}:exportDocuments", "(google.api.http).body": "*", "(google.api.method_signature)": "name", "(google.longrunning.operation_info).response_type": "ExportDocumentsResponse", "(google.longrunning.operation_info).metadata_type": "ExportDocumentsMetadata" }, parsedOptions: [{ "(google.api.http)": { post: "/v1/{name=projects/*/databases/*}:exportDocuments", body: "*" } }, { "(google.api.method_signature)": "name" }, { "(google.longrunning.operation_info)": { response_type: "ExportDocumentsResponse", metadata_type: "ExportDocumentsMetadata" } }] }, ImportDocuments: { requestType: "ImportDocumentsRequest", responseType: "google.longrunning.Operation", options: { "(google.api.http).post": "/v1/{name=projects/*/databases/*}:importDocuments", "(google.api.http).body": "*", "(google.api.method_signature)": "name", "(google.longrunning.operation_info).response_type": "google.protobuf.Empty", "(google.longrunning.operation_info).metadata_type": "ImportDocumentsMetadata" }, parsedOptions: [{ "(google.api.http)": { post: "/v1/{name=projects/*/databases/*}:importDocuments", body: "*" } }, { "(google.api.method_signature)": "name" }, { "(google.longrunning.operation_info)": { response_type: "google.protobuf.Empty", metadata_type: "ImportDocumentsMetadata" } }] }, BulkDeleteDocuments: { requestType: "BulkDeleteDocumentsRequest", responseType: "google.longrunning.Operation", options: { "(google.api.http).post": "/v1/{name=projects/*/databases/*}:bulkDeleteDocuments", "(google.api.http).body": "*", "(google.api.method_signature)": "name", "(google.longrunning.operation_info).response_type": "BulkDeleteDocumentsResponse", "(google.longrunning.operation_info).metadata_type": "BulkDeleteDocumentsMetadata" }, parsedOptions: [{ "(google.api.http)": { post: "/v1/{name=projects/*/databases/*}:bulkDeleteDocuments", body: "*" } }, { "(google.api.method_signature)": "name" }, { "(google.longrunning.operation_info)": { response_type: "BulkDeleteDocumentsResponse", metadata_type: "BulkDeleteDocumentsMetadata" } }] }, CreateDatabase: { requestType: "CreateDatabaseRequest", responseType: "google.longrunning.Operation", options: { "(google.api.http).post": "/v1/{parent=projects/*}/databases", "(google.api.http).body": "database", "(google.api.method_signature)": "parent,database,database_id", "(google.longrunning.operation_info).response_type": "Database", "(google.longrunning.operation_info).metadata_type": "CreateDatabaseMetadata" }, parsedOptions: [{ "(google.api.http)": { post: "/v1/{parent=projects/*}/databases", body: "database" } }, { "(google.api.method_signature)": "parent,database,database_id" }, { "(google.longrunning.operation_info)": { response_type: "Database", metadata_type: "CreateDatabaseMetadata" } }] }, GetDatabase: { requestType: "GetDatabaseRequest", responseType: "Database", options: { "(google.api.http).get": "/v1/{name=projects/*/databases/*}", "(google.api.method_signature)": "name" }, parsedOptions: [{ "(google.api.http)": { get: "/v1/{name=projects/*/databases/*}" } }, { "(google.api.method_signature)": "name" }] }, ListDatabases: { requestType: "ListDatabasesRequest", responseType: "ListDatabasesResponse", options: { "(google.api.http).get": "/v1/{parent=projects/*}/databases", "(google.api.method_signature)": "parent" }, parsedOptions: [{ "(google.api.http)": { get: "/v1/{parent=projects/*}/databases" } }, { "(google.api.method_signature)": "parent" }] }, UpdateDatabase: { requestType: "UpdateDatabaseRequest", responseType: "google.longrunning.Operation", options: { "(google.api.http).patch": "/v1/{database.name=projects/*/databases/*}", "(google.api.http).body": "database", "(google.api.method_signature)": "database,update_mask", "(google.longrunning.operation_info).response_type": "Database", "(google.longrunning.operation_info).metadata_type": "UpdateDatabaseMetadata" }, parsedOptions: [{ "(google.api.http)": { patch: "/v1/{database.name=projects/*/databases/*}", body: "database" } }, { "(google.api.method_signature)": "database,update_mask" }, { "(google.longrunning.operation_info)": { response_type: "Database", metadata_type: "UpdateDatabaseMetadata" } }] }, DeleteDatabase: { requestType: "DeleteDatabaseRequest", responseType: "google.longrunning.Operation", options: { "(google.api.http).delete": "/v1/{name=projects/*/databases/*}", "(google.api.method_signature)": "name", "(google.longrunning.operation_info).response_type": "Database", "(google.longrunning.operation_info).metadata_type": "DeleteDatabaseMetadata" }, parsedOptions: [{ "(google.api.http)": { delete: "/v1/{name=projects/*/databases/*}" } }, { "(google.api.method_signature)": "name" }, { "(google.longrunning.operation_info)": { response_type: "Database", metadata_type: "DeleteDatabaseMetadata" } }] }, GetBackup: { requestType: "GetBackupRequest", responseType: "Backup", options: { "(google.api.http).get": "/v1/{name=projects/*/locations/*/backups/*}", "(google.api.method_signature)": "name" }, parsedOptions: [{ "(google.api.http)": { get: "/v1/{name=projects/*/locations/*/backups/*}" } }, { "(google.api.method_signature)": "name" }] }, ListBackups: { requestType: "ListBackupsRequest", responseType: "ListBackupsResponse", options: { "(google.api.http).get": "/v1/{parent=projects/*/locations/*}/backups", "(google.api.method_signature)": "parent" }, parsedOptions: [{ "(google.api.http)": { get: "/v1/{parent=projects/*/locations/*}/backups" } }, { "(google.api.method_signature)": "parent" }] }, DeleteBackup: { requestType: "DeleteBackupRequest", responseType: "google.protobuf.Empty", options: { "(google.api.http).delete": "/v1/{name=projects/*/locations/*/backups/*}", "(google.api.method_signature)": "name" }, parsedOptions: [{ "(google.api.http)": { delete: "/v1/{name=projects/*/locations/*/backups/*}" } }, { "(google.api.method_signature)": "name" }] }, RestoreDatabase: { requestType: "RestoreDatabaseRequest", responseType: "google.longrunning.Operation", options: { "(google.api.http).post": "/v1/{parent=projects/*}/databases:restore", "(google.api.http).body": "*", "(google.longrunning.operation_info).response_type": "Database", "(google.longrunning.operation_info).metadata_type": "RestoreDatabaseMetadata" }, parsedOptions: [{ "(google.api.http)": { post: "/v1/{parent=projects/*}/databases:restore", body: "*" } }, { "(google.longrunning.operation_info)": { response_type: "Database", metadata_type: "RestoreDatabaseMetadata" } }] }, CreateBackupSchedule: { requestType: "CreateBackupScheduleRequest", responseType: "BackupSchedule", options: { "(google.api.http).post": "/v1/{parent=projects/*/databases/*}/backupSchedules", "(google.api.http).body": "backup_schedule", "(google.api.method_signature)": "parent,backup_schedule" }, parsedOptions: [{ "(google.api.http)": { post: "/v1/{parent=projects/*/databases/*}/backupSchedules", body: "backup_schedule" } }, { "(google.api.method_signature)": "parent,backup_schedule" }] }, GetBackupSchedule: { requestType: "GetBackupScheduleRequest", responseType: "BackupSchedule", options: { "(google.api.http).get": "/v1/{name=projects/*/databases/*/backupSchedules/*}", "(google.api.method_signature)": "name" }, parsedOptions: [{ "(google.api.http)": { get: "/v1/{name=projects/*/databases/*/backupSchedules/*}" } }, { "(google.api.method_signature)": "name" }] }, ListBackupSchedules: { requestType: "ListBackupSchedulesRequest", responseType: "ListBackupSchedulesResponse", options: { "(google.api.http).get": "/v1/{parent=projects/*/databases/*}/backupSchedules", "(google.api.method_signature)": "parent" }, parsedOptions: [{ "(google.api.http)": { get: "/v1/{parent=projects/*/databases/*}/backupSchedules" } }, { "(google.api.method_signature)": "parent" }] }, UpdateBackupSchedule: { requestType: "UpdateBackupScheduleRequest", responseType: "BackupSchedule", options: { "(google.api.http).patch": "/v1/{backup_schedule.name=projects/*/databases/*/backupSchedules/*}", "(google.api.http).body": "backup_schedule", "(google.api.method_signature)": "backup_schedule,update_mask" }, parsedOptions: [{ "(google.api.http)": { patch: "/v1/{backup_schedule.name=projects/*/databases/*/backupSchedules/*}", body: "backup_schedule" } }, { "(google.api.method_signature)": "backup_schedule,update_mask" }] }, DeleteBackupSchedule: { requestType: "DeleteBackupScheduleRequest", responseType: "google.protobuf.Empty", options: { "(google.api.http).delete": "/v1/{name=projects/*/databases/*/backupSchedules/*}", "(google.api.method_signature)": "name" }, parsedOptions: [{ "(google.api.http)": { delete: "/v1/{name=projects/*/databases/*/backupSchedules/*}" } }, { "(google.api.method_signature)": "name" }] } } }, ListDatabasesRequest: { fields: { parent: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED", "(google.api.resource_reference).child_type": "firestore.googleapis.com/Database" } }, showDeleted: { type: "bool", id: 4 } } }, CreateDatabaseRequest: { fields: { parent: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED", "(google.api.resource_reference).child_type": "firestore.googleapis.com/Database" } }, database: { type: "Database", id: 2, options: { "(google.api.field_behavior)": "REQUIRED" } }, databaseId: { type: "string", id: 3, options: { "(google.api.field_behavior)": "REQUIRED" } } } }, CreateDatabaseMetadata: { fields: {} }, ListDatabasesResponse: { fields: { databases: { rule: "repeated", type: "Database", id: 1 }, unreachable: { rule: "repeated", type: "string", id: 3 } } }, GetDatabaseRequest: { fields: { name: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED", "(google.api.resource_reference).type": "firestore.googleapis.com/Database" } } } }, UpdateDatabaseRequest: { fields: { database: { type: "Database", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, updateMask: { type: "google.protobuf.FieldMask", id: 2 } } }, UpdateDatabaseMetadata: { fields: {} }, DeleteDatabaseRequest: { fields: { name: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED", "(google.api.resource_reference).type": "firestore.googleapis.com/Database" } }, etag: { type: "string", id: 3 } } }, DeleteDatabaseMetadata: { fields: {} }, CreateBackupScheduleRequest: { fields: { parent: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED", "(google.api.resource_reference).type": "firestore.googleapis.com/Database" } }, backupSchedule: { type: "BackupSchedule", id: 2, options: { "(google.api.field_behavior)": "REQUIRED" } } } }, GetBackupScheduleRequest: { fields: { name: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED", "(google.api.resource_reference).type": "firestore.googleapis.com/BackupSchedule" } } } }, UpdateBackupScheduleRequest: { fields: { backupSchedule: { type: "BackupSchedule", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, updateMask: { type: "google.protobuf.FieldMask", id: 2 } } }, ListBackupSchedulesRequest: { fields: { parent: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED", "(google.api.resource_reference).type": "firestore.googleapis.com/Database" } } } }, ListBackupSchedulesResponse: { fields: { backupSchedules: { rule: "repeated", type: "BackupSchedule", id: 1 } } }, DeleteBackupScheduleRequest: { fields: { name: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED", "(google.api.resource_reference).type": "firestore.googleapis.com/BackupSchedule" } } } }, CreateIndexRequest: { fields: { parent: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED", "(google.api.resource_reference).type": "firestore.googleapis.com/CollectionGroup" } }, index: { type: "Index", id: 2, options: { "(google.api.field_behavior)": "REQUIRED" } } } }, ListIndexesRequest: { fields: { parent: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED", "(google.api.resource_reference).type": "firestore.googleapis.com/CollectionGroup" } }, filter: { type: "string", id: 2 }, pageSize: { type: "int32", id: 3 }, pageToken: { type: "string", id: 4 } } }, ListIndexesResponse: { fields: { indexes: { rule: "repeated", type: "Index", id: 1 }, nextPageToken: { type: "string", id: 2 } } }, GetIndexRequest: { fields: { name: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED", "(google.api.resource_reference).type": "firestore.googleapis.com/Index" } } } }, DeleteIndexRequest: { fields: { name: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED", "(google.api.resource_reference).type": "firestore.googleapis.com/Index" } } } }, UpdateFieldRequest: { fields: { field: { type: "Field", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, updateMask: { type: "google.protobuf.FieldMask", id: 2 } } }, GetFieldRequest: { fields: { name: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED", "(google.api.resource_reference).type": "firestore.googleapis.com/Field" } } } }, ListFieldsRequest: { fields: { parent: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED", "(google.api.resource_reference).type": "firestore.googleapis.com/CollectionGroup" } }, filter: { type: "string", id: 2 }, pageSize: { type: "int32", id: 3 }, pageToken: { type: "string", id: 4 } } }, ListFieldsResponse: { fields: { fields: { rule: "repeated", type: "Field", id: 1 }, nextPageToken: { type: "string", id: 2 } } }, ExportDocumentsRequest: { fields: { name: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED", "(google.api.resource_reference).type": "firestore.googleapis.com/Database" } }, collectionIds: { rule: "repeated", type: "string", id: 2 }, outputUriPrefix: { type: "string", id: 3 }, namespaceIds: { rule: "repeated", type: "string", id: 4 }, snapshotTime: { type: "google.protobuf.Timestamp", id: 5 } } }, ImportDocumentsRequest: { fields: { name: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED", "(google.api.resource_reference).type": "firestore.googleapis.com/Database" } }, collectionIds: { rule: "repeated", type: "string", id: 2 }, inputUriPrefix: { type: "string", id: 3 }, namespaceIds: { rule: "repeated", type: "string", id: 4 } } }, BulkDeleteDocumentsRequest: { fields: { name: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED", "(google.api.resource_reference).type": "firestore.googleapis.com/Database" } }, collectionIds: { rule: "repeated", type: "string", id: 2, options: { "(google.api.field_behavior)": "OPTIONAL" } }, namespaceIds: { rule: "repeated", type: "string", id: 3, options: { "(google.api.field_behavior)": "OPTIONAL" } } } }, BulkDeleteDocumentsResponse: { fields: {} }, GetBackupRequest: { fields: { name: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED", "(google.api.resource_reference).type": "firestore.googleapis.com/Backup" } } } }, ListBackupsRequest: { fields: { parent: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED", "(google.api.resource_reference).type": "firestore.googleapis.com/Location" } }, filter: { type: "string", id: 2 } } }, ListBackupsResponse: { fields: { backups: { rule: "repeated", type: "Backup", id: 1 }, unreachable: { rule: "repeated", type: "string", id: 3 } } }, DeleteBackupRequest: { fields: { name: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED", "(google.api.resource_reference).type": "firestore.googleapis.com/Backup" } } } }, RestoreDatabaseRequest: { fields: { parent: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED", "(google.api.resource_reference).child_type": "firestore.googleapis.com/Database" } }, databaseId: { type: "string", id: 2, options: { "(google.api.field_behavior)": "REQUIRED" } }, backup: { type: "string", id: 3, options: { "(google.api.field_behavior)": "REQUIRED", "(google.api.resource_reference).type": "firestore.googleapis.com/Backup" } }, encryptionConfig: { type: "Database.EncryptionConfig", id: 9, options: { "(google.api.field_behavior)": "OPTIONAL" } } } }, IndexOperationMetadata: { fields: { startTime: { type: "google.protobuf.Timestamp", id: 1 }, endTime: { type: "google.protobuf.Timestamp", id: 2 }, index: { type: "string", id: 3 }, state: { type: "OperationState", id: 4 }, progressDocuments: { type: "Progress", id: 5 }, progressBytes: { type: "Progress", id: 6 } } }, FieldOperationMetadata: { fields: { startTime: { type: "google.protobuf.Timestamp", id: 1 }, endTime: { type: "google.protobuf.Timestamp", id: 2 }, field: { type: "string", id: 3 }, indexConfigDeltas: { rule: "repeated", type: "IndexConfigDelta", id: 4 }, state: { type: "OperationState", id: 5 }, progressDocuments: { type: "Progress", id: 6 }, progressBytes: { type: "Progress", id: 7 }, ttlConfigDelta: { type: "TtlConfigDelta", id: 8 } }, nested: { IndexConfigDelta: { fields: { changeType: { type: "ChangeType", id: 1 }, index: { type: "Index", id: 2 } }, nested: { ChangeType: { values: { CHANGE_TYPE_UNSPECIFIED: 0, ADD: 1, REMOVE: 2 } } } }, TtlConfigDelta: { fields: { changeType: { type: "ChangeType", id: 1 } }, nested: { ChangeType: { values: { CHANGE_TYPE_UNSPECIFIED: 0, ADD: 1, REMOVE: 2 } } } } } }, ExportDocumentsMetadata: { fields: { startTime: { type: "google.protobuf.Timestamp", id: 1 }, endTime: { type: "google.protobuf.Timestamp", id: 2 }, operationState: { type: "OperationState", id: 3 }, progressDocuments: { type: "Progress", id: 4 }, progressBytes: { type: "Progress", id: 5 }, collectionIds: { rule: "repeated", type: "string", id: 6 }, outputUriPrefix: { type: "string", id: 7 }, namespaceIds: { rule: "repeated", type: "string", id: 8 }, snapshotTime: { type: "google.protobuf.Timestamp", id: 9 } } }, ImportDocumentsMetadata: { fields: { startTime: { type: "google.protobuf.Timestamp", id: 1 }, endTime: { type: "google.protobuf.Timestamp", id: 2 }, operationState: { type: "OperationState", id: 3 }, progressDocuments: { type: "Progress", id: 4 }, progressBytes: { type: "Progress", id: 5 }, collectionIds: { rule: "repeated", type: "string", id: 6 }, inputUriPrefix: { type: "string", id: 7 }, namespaceIds: { rule: "repeated", type: "string", id: 8 } } }, BulkDeleteDocumentsMetadata: { fields: { startTime: { type: "google.protobuf.Timestamp", id: 1 }, endTime: { type: "google.protobuf.Timestamp", id: 2 }, operationState: { type: "OperationState", id: 3 }, progressDocuments: { type: "Progress", id: 4 }, progressBytes: { type: "Progress", id: 5 }, collectionIds: { rule: "repeated", type: "string", id: 6 }, namespaceIds: { rule: "repeated", type: "string", id: 7 }, snapshotTime: { type: "google.protobuf.Timestamp", id: 8 } } }, ExportDocumentsResponse: { fields: { outputUriPrefix: { type: "string", id: 1 } } }, RestoreDatabaseMetadata: { fields: { startTime: { type: "google.protobuf.Timestamp", id: 1 }, endTime: { type: "google.protobuf.Timestamp", id: 2 }, operationState: { type: "OperationState", id: 3 }, database: { type: "string", id: 4, options: { "(google.api.resource_reference).type": "firestore.googleapis.com/Database" } }, backup: { type: "string", id: 5, options: { "(google.api.resource_reference).type": "firestore.googleapis.com/Backup" } }, progressPercentage: { type: "Progress", id: 8 } } }, Progress: { fields: { estimatedWork: { type: "int64", id: 1 }, completedWork: { type: "int64", id: 2 } } }, OperationState: { values: { OPERATION_STATE_UNSPECIFIED: 0, INITIALIZING: 1, PROCESSING: 2, CANCELLING: 3, FINALIZING: 4, SUCCESSFUL: 5, FAILED: 6, CANCELLED: 7 } }, BackupSchedule: { options: { "(google.api.resource).type": "firestore.googleapis.com/BackupSchedule", "(google.api.resource).pattern": "projects/{project}/databases/{database}/backupSchedules/{backup_schedule}" }, oneofs: { recurrence: { oneof: ["dailyRecurrence", "weeklyRecurrence"] } }, fields: { name: { type: "string", id: 1, options: { "(google.api.field_behavior)": "OUTPUT_ONLY" } }, createTime: { type: "google.protobuf.Timestamp", id: 3, options: { "(google.api.field_behavior)": "OUTPUT_ONLY" } }, updateTime: { type: "google.protobuf.Timestamp", id: 10, options: { "(google.api.field_behavior)": "OUTPUT_ONLY" } }, retention: { type: "google.protobuf.Duration", id: 6 }, dailyRecurrence: { type: "DailyRecurrence", id: 7 }, weeklyRecurrence: { type: "WeeklyRecurrence", id: 8 } } }, DailyRecurrence: { fields: {} }, WeeklyRecurrence: { fields: { day: { type: "google.type.DayOfWeek", id: 2 } } }, LocationMetadata: { fields: {} } } } } } } }, api: { options: { go_package: "google.golang.org/genproto/googleapis/api;api", java_multiple_files: true, java_outer_classname: "LaunchStageProto", java_package: "com.google.api", objc_class_prefix: "GAPI", cc_enable_arenas: true }, nested: { fieldBehavior: { rule: "repeated", type: "google.api.FieldBehavior", id: 1052, extend: "google.protobuf.FieldOptions", options: { packed: false } }, FieldBehavior: { values: { FIELD_BEHAVIOR_UNSPECIFIED: 0, OPTIONAL: 1, REQUIRED: 2, OUTPUT_ONLY: 3, INPUT_ONLY: 4, IMMUTABLE: 5, UNORDERED_LIST: 6, NON_EMPTY_DEFAULT: 7, IDENTIFIER: 8 } }, resourceReference: { type: "google.api.ResourceReference", id: 1055, extend: "google.protobuf.FieldOptions" }, resourceDefinition: { rule: "repeated", type: "google.api.ResourceDescriptor", id: 1053, extend: "google.protobuf.FileOptions" }, resource: { type: "google.api.ResourceDescriptor", id: 1053, extend: "google.protobuf.MessageOptions" }, ResourceDescriptor: { fields: { type: { type: "string", id: 1 }, pattern: { rule: "repeated", type: "string", id: 2 }, nameField: { type: "string", id: 3 }, history: { type: "History", id: 4 }, plural: { type: "string", id: 5 }, singular: { type: "string", id: 6 }, style: { rule: "repeated", type: "Style", id: 10 } }, nested: { History: { values: { HISTORY_UNSPECIFIED: 0, ORIGINALLY_SINGLE_PATTERN: 1, FUTURE_MULTI_PATTERN: 2 } }, Style: { values: { STYLE_UNSPECIFIED: 0, DECLARATIVE_FRIENDLY: 1 } } } }, ResourceReference: { fields: { type: { type: "string", id: 1 }, childType: { type: "string", id: 2 } } }, http: { type: "HttpRule", id: 72295728, extend: "google.protobuf.MethodOptions" }, Http: { fields: { rules: { rule: "repeated", type: "HttpRule", id: 1 }, fullyDecodeReservedExpansion: { type: "bool", id: 2 } } }, HttpRule: { oneofs: { pattern: { oneof: ["get", "put", "post", "delete", "patch", "custom"] } }, fields: { selector: { type: "string", id: 1 }, get: { type: "string", id: 2 }, put: { type: "string", id: 3 }, post: { type: "string", id: 4 }, delete: { type: "string", id: 5 }, patch: { type: "string", id: 6 }, custom: { type: "CustomHttpPattern", id: 8 }, body: { type: "string", id: 7 }, responseBody: { type: "string", id: 12 }, additionalBindings: { rule: "repeated", type: "HttpRule", id: 11 } } }, CustomHttpPattern: { fields: { kind: { type: "string", id: 1 }, path: { type: "string", id: 2 } } }, methodSignature: { rule: "repeated", type: "string", id: 1051, extend: "google.protobuf.MethodOptions" }, defaultHost: { type: "string", id: 1049, extend: "google.protobuf.ServiceOptions" }, oauthScopes: { type: "string", id: 1050, extend: "google.protobuf.ServiceOptions" }, apiVersion: { type: "string", id: 525000001, extend: "google.protobuf.ServiceOptions" }, CommonLanguageSettings: { fields: { referenceDocsUri: { type: "string", id: 1, options: { deprecated: true } }, destinations: { rule: "repeated", type: "ClientLibraryDestination", id: 2 }, selectiveGapicGeneration: { type: "SelectiveGapicGeneration", id: 3 } } }, ClientLibrarySettings: { fields: { version: { type: "string", id: 1 }, launchStage: { type: "LaunchStage", id: 2 }, restNumericEnums: { type: "bool", id: 3 }, javaSettings: { type: "JavaSettings", id: 21 }, cppSettings: { type: "CppSettings", id: 22 }, phpSettings: { type: "PhpSettings", id: 23 }, pythonSettings: { type: "PythonSettings", id: 24 }, nodeSettings: { type: "NodeSettings", id: 25 }, dotnetSettings: { type: "DotnetSettings", id: 26 }, rubySettings: { type: "RubySettings", id: 27 }, goSettings: { type: "GoSettings", id: 28 } } }, Publishing: { fields: { methodSettings: { rule: "repeated", type: "MethodSettings", id: 2 }, newIssueUri: { type: "string", id: 101 }, documentationUri: { type: "string", id: 102 }, apiShortName: { type: "string", id: 103 }, githubLabel: { type: "string", id: 104 }, codeownerGithubTeams: { rule: "repeated", type: "string", id: 105 }, docTagPrefix: { type: "string", id: 106 }, organization: { type: "ClientLibraryOrganization", id: 107 }, librarySettings: { rule: "repeated", type: "ClientLibrarySettings", id: 109 }, protoReferenceDocumentationUri: { type: "string", id: 110 }, restReferenceDocumentationUri: { type: "string", id: 111 } } }, JavaSettings: { fields: { libraryPackage: { type: "string", id: 1 }, serviceClassNames: { keyType: "string", type: "string", id: 2 }, common: { type: "CommonLanguageSettings", id: 3 } } }, CppSettings: { fields: { common: { type: "CommonLanguageSettings", id: 1 } } }, PhpSettings: { fields: { common: { type: "CommonLanguageSettings", id: 1 } } }, PythonSettings: { fields: { common: { type: "CommonLanguageSettings", id: 1 }, experimentalFeatures: { type: "ExperimentalFeatures", id: 2 } }, nested: { ExperimentalFeatures: { fields: { restAsyncIoEnabled: { type: "bool", id: 1 }, protobufPythonicTypesEnabled: { type: "bool", id: 2 } } } } }, NodeSettings: { fields: { common: { type: "CommonLanguageSettings", id: 1 } } }, DotnetSettings: { fields: { common: { type: "CommonLanguageSettings", id: 1 }, renamedServices: { keyType: "string", type: "string", id: 2 }, renamedResources: { keyType: "string", type: "string", id: 3 }, ignoredResources: { rule: "repeated", type: "string", id: 4 }, forcedNamespaceAliases: { rule: "repeated", type: "string", id: 5 }, handwrittenSignatures: { rule: "repeated", type: "string", id: 6 } } }, RubySettings: { fields: { common: { type: "CommonLanguageSettings", id: 1 } } }, GoSettings: { fields: { common: { type: "CommonLanguageSettings", id: 1 }, renamedServices: { keyType: "string", type: "string", id: 2 } } }, MethodSettings: { fields: { selector: { type: "string", id: 1 }, longRunning: { type: "LongRunning", id: 2 }, autoPopulatedFields: { rule: "repeated", type: "string", id: 3 } }, nested: { LongRunning: { fields: { initialPollDelay: { type: "google.protobuf.Duration", id: 1 }, pollDelayMultiplier: { type: "float", id: 2 }, maxPollDelay: { type: "google.protobuf.Duration", id: 3 }, totalPollTimeout: { type: "google.protobuf.Duration", id: 4 } } } } }, ClientLibraryOrganization: { values: { CLIENT_LIBRARY_ORGANIZATION_UNSPECIFIED: 0, CLOUD: 1, ADS: 2, PHOTOS: 3, STREET_VIEW: 4, SHOPPING: 5, GEO: 6, GENERATIVE_AI: 7 } }, ClientLibraryDestination: { values: { CLIENT_LIBRARY_DESTINATION_UNSPECIFIED: 0, GITHUB: 10, PACKAGE_MANAGER: 20 } }, SelectiveGapicGeneration: { fields: { methods: { rule: "repeated", type: "string", id: 1 }, generateOmittedAsInternal: { type: "bool", id: 2 } } }, LaunchStage: { values: { LAUNCH_STAGE_UNSPECIFIED: 0, UNIMPLEMENTED: 6, PRELAUNCH: 7, EARLY_ACCESS: 1, ALPHA: 2, BETA: 3, GA: 4, DEPRECATED: 5 } } } }, protobuf: { options: { go_package: "google.golang.org/protobuf/types/descriptorpb", java_package: "com.google.protobuf", java_outer_classname: "DescriptorProtos", csharp_namespace: "Google.Protobuf.Reflection", objc_class_prefix: "GPB", cc_enable_arenas: true, optimize_for: "SPEED" }, nested: { FileDescriptorSet: { fields: { file: { rule: "repeated", type: "FileDescriptorProto", id: 1 } } }, Edition: { values: { EDITION_UNKNOWN: 0, EDITION_PROTO2: 998, EDITION_PROTO3: 999, EDITION_2023: 1e3, EDITION_2024: 1001, EDITION_1_TEST_ONLY: 1, EDITION_2_TEST_ONLY: 2, EDITION_99997_TEST_ONLY: 99997, EDITION_99998_TEST_ONLY: 99998, EDITION_99999_TEST_ONLY: 99999, EDITION_MAX: 2147483647 } }, FileDescriptorProto: { fields: { name: { type: "string", id: 1 }, package: { type: "string", id: 2 }, dependency: { rule: "repeated", type: "string", id: 3 }, publicDependency: { rule: "repeated", type: "int32", id: 10, options: { packed: false } }, weakDependency: { rule: "repeated", type: "int32", id: 11, options: { packed: false } }, messageType: { rule: "repeated", type: "DescriptorProto", id: 4 }, enumType: { rule: "repeated", type: "EnumDescriptorProto", id: 5 }, service: { rule: "repeated", type: "ServiceDescriptorProto", id: 6 }, extension: { rule: "repeated", type: "FieldDescriptorProto", id: 7 }, options: { type: "FileOptions", id: 8 }, sourceCodeInfo: { type: "SourceCodeInfo", id: 9 }, syntax: { type: "string", id: 12 }, edition: { type: "Edition", id: 14 } } }, DescriptorProto: { fields: { name: { type: "string", id: 1 }, field: { rule: "repeated", type: "FieldDescriptorProto", id: 2 }, extension: { rule: "repeated", type: "FieldDescriptorProto", id: 6 }, nestedType: { rule: "repeated", type: "DescriptorProto", id: 3 }, enumType: { rule: "repeated", type: "EnumDescriptorProto", id: 4 }, extensionRange: { rule: "repeated", type: "ExtensionRange", id: 5 }, oneofDecl: { rule: "repeated", type: "OneofDescriptorProto", id: 8 }, options: { type: "MessageOptions", id: 7 }, reservedRange: { rule: "repeated", type: "ReservedRange", id: 9 }, reservedName: { rule: "repeated", type: "string", id: 10 } }, nested: { ExtensionRange: { fields: { start: { type: "int32", id: 1 }, end: { type: "int32", id: 2 }, options: { type: "ExtensionRangeOptions", id: 3 } } }, ReservedRange: { fields: { start: { type: "int32", id: 1 }, end: { type: "int32", id: 2 } } } } }, ExtensionRangeOptions: { fields: { uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 }, declaration: { rule: "repeated", type: "Declaration", id: 2, options: { retention: "RETENTION_SOURCE" } }, features: { type: "FeatureSet", id: 50 }, verification: { type: "VerificationState", id: 3, options: { default: "UNVERIFIED", retention: "RETENTION_SOURCE" } } }, extensions: [[1e3, 536870911]], nested: { Declaration: { fields: { number: { type: "int32", id: 1 }, fullName: { type: "string", id: 2 }, type: { type: "string", id: 3 }, reserved: { type: "bool", id: 5 }, repeated: { type: "bool", id: 6 } }, reserved: [[4, 4]] }, VerificationState: { values: { DECLARATION: 0, UNVERIFIED: 1 } } } }, FieldDescriptorProto: { fields: { name: { type: "string", id: 1 }, number: { type: "int32", id: 3 }, label: { type: "Label", id: 4 }, type: { type: "Type", id: 5 }, typeName: { type: "string", id: 6 }, extendee: { type: "string", id: 2 }, defaultValue: { type: "string", id: 7 }, oneofIndex: { type: "int32", id: 9 }, jsonName: { type: "string", id: 10 }, options: { type: "FieldOptions", id: 8 }, proto3Optional: { type: "bool", id: 17 } }, nested: { Type: { values: { TYPE_DOUBLE: 1, TYPE_FLOAT: 2, TYPE_INT64: 3, TYPE_UINT64: 4, TYPE_INT32: 5, TYPE_FIXED64: 6, TYPE_FIXED32: 7, TYPE_BOOL: 8, TYPE_STRING: 9, TYPE_GROUP: 10, TYPE_MESSAGE: 11, TYPE_BYTES: 12, TYPE_UINT32: 13, TYPE_ENUM: 14, TYPE_SFIXED32: 15, TYPE_SFIXED64: 16, TYPE_SINT32: 17, TYPE_SINT64: 18 } }, Label: { values: { LABEL_OPTIONAL: 1, LABEL_REPEATED: 3, LABEL_REQUIRED: 2 } } } }, OneofDescriptorProto: { fields: { name: { type: "string", id: 1 }, options: { type: "OneofOptions", id: 2 } } }, EnumDescriptorProto: { fields: { name: { type: "string", id: 1 }, value: { rule: "repeated", type: "EnumValueDescriptorProto", id: 2 }, options: { type: "EnumOptions", id: 3 }, reservedRange: { rule: "repeated", type: "EnumReservedRange", id: 4 }, reservedName: { rule: "repeated", type: "string", id: 5 } }, nested: { EnumReservedRange: { fields: { start: { type: "int32", id: 1 }, end: { type: "int32", id: 2 } } } } }, EnumValueDescriptorProto: { fields: { name: { type: "string", id: 1 }, number: { type: "int32", id: 2 }, options: { type: "EnumValueOptions", id: 3 } } }, ServiceDescriptorProto: { fields: { name: { type: "string", id: 1 }, method: { rule: "repeated", type: "MethodDescriptorProto", id: 2 }, options: { type: "ServiceOptions", id: 3 } } }, MethodDescriptorProto: { fields: { name: { type: "string", id: 1 }, inputType: { type: "string", id: 2 }, outputType: { type: "string", id: 3 }, options: { type: "MethodOptions", id: 4 }, clientStreaming: { type: "bool", id: 5, options: { default: false } }, serverStreaming: { type: "bool", id: 6, options: { default: false } } } }, FileOptions: { fields: { javaPackage: { type: "string", id: 1 }, javaOuterClassname: { type: "string", id: 8 }, javaMultipleFiles: { type: "bool", id: 10, options: { default: false } }, javaGenerateEqualsAndHash: { type: "bool", id: 20, options: { deprecated: true } }, javaStringCheckUtf8: { type: "bool", id: 27, options: { default: false } }, optimizeFor: { type: "OptimizeMode", id: 9, options: { default: "SPEED" } }, goPackage: { type: "string", id: 11 }, ccGenericServices: { type: "bool", id: 16, options: { default: false } }, javaGenericServices: { type: "bool", id: 17, options: { default: false } }, pyGenericServices: { type: "bool", id: 18, options: { default: false } }, deprecated: { type: "bool", id: 23, options: { default: false } }, ccEnableArenas: { type: "bool", id: 31, options: { default: true } }, objcClassPrefix: { type: "string", id: 36 }, csharpNamespace: { type: "string", id: 37 }, swiftPrefix: { type: "string", id: 39 }, phpClassPrefix: { type: "string", id: 40 }, phpNamespace: { type: "string", id: 41 }, phpMetadataNamespace: { type: "string", id: 44 }, rubyPackage: { type: "string", id: 45 }, features: { type: "FeatureSet", id: 50 }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]], reserved: [[42, 42], [38, 38]], nested: { OptimizeMode: { values: { SPEED: 1, CODE_SIZE: 2, LITE_RUNTIME: 3 } } } }, MessageOptions: { fields: { messageSetWireFormat: { type: "bool", id: 1, options: { default: false } }, noStandardDescriptorAccessor: { type: "bool", id: 2, options: { default: false } }, deprecated: { type: "bool", id: 3, options: { default: false } }, mapEntry: { type: "bool", id: 7 }, deprecatedLegacyJsonFieldConflicts: { type: "bool", id: 11, options: { deprecated: true } }, features: { type: "FeatureSet", id: 12 }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]], reserved: [[4, 4], [5, 5], [6, 6], [8, 8], [9, 9]] }, FieldOptions: { fields: { ctype: { type: "CType", id: 1, options: { default: "STRING" } }, packed: { type: "bool", id: 2 }, jstype: { type: "JSType", id: 6, options: { default: "JS_NORMAL" } }, lazy: { type: "bool", id: 5, options: { default: false } }, unverifiedLazy: { type: "bool", id: 15, options: { default: false } }, deprecated: { type: "bool", id: 3, options: { default: false } }, weak: { type: "bool", id: 10, options: { default: false } }, debugRedact: { type: "bool", id: 16, options: { default: false } }, retention: { type: "OptionRetention", id: 17 }, targets: { rule: "repeated", type: "OptionTargetType", id: 19, options: { packed: false } }, editionDefaults: { rule: "repeated", type: "EditionDefault", id: 20 }, features: { type: "FeatureSet", id: 21 }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]], reserved: [[4, 4], [18, 18]], nested: { CType: { values: { STRING: 0, CORD: 1, STRING_PIECE: 2 } }, JSType: { values: { JS_NORMAL: 0, JS_STRING: 1, JS_NUMBER: 2 } }, OptionRetention: { values: { RETENTION_UNKNOWN: 0, RETENTION_RUNTIME: 1, RETENTION_SOURCE: 2 } }, OptionTargetType: { values: { TARGET_TYPE_UNKNOWN: 0, TARGET_TYPE_FILE: 1, TARGET_TYPE_EXTENSION_RANGE: 2, TARGET_TYPE_MESSAGE: 3, TARGET_TYPE_FIELD: 4, TARGET_TYPE_ONEOF: 5, TARGET_TYPE_ENUM: 6, TARGET_TYPE_ENUM_ENTRY: 7, TARGET_TYPE_SERVICE: 8, TARGET_TYPE_METHOD: 9 } }, EditionDefault: { fields: { edition: { type: "Edition", id: 3 }, value: { type: "string", id: 2 } } } } }, OneofOptions: { fields: { features: { type: "FeatureSet", id: 1 }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]] }, EnumOptions: { fields: { allowAlias: { type: "bool", id: 2 }, deprecated: { type: "bool", id: 3, options: { default: false } }, deprecatedLegacyJsonFieldConflicts: { type: "bool", id: 6, options: { deprecated: true } }, features: { type: "FeatureSet", id: 7 }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]], reserved: [[5, 5]] }, EnumValueOptions: { fields: { deprecated: { type: "bool", id: 1, options: { default: false } }, features: { type: "FeatureSet", id: 2 }, debugRedact: { type: "bool", id: 3, options: { default: false } }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]] }, ServiceOptions: { fields: { features: { type: "FeatureSet", id: 34 }, deprecated: { type: "bool", id: 33, options: { default: false } }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]] }, MethodOptions: { fields: { deprecated: { type: "bool", id: 33, options: { default: false } }, idempotencyLevel: { type: "IdempotencyLevel", id: 34, options: { default: "IDEMPOTENCY_UNKNOWN" } }, features: { type: "FeatureSet", id: 35 }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]], nested: { IdempotencyLevel: { values: { IDEMPOTENCY_UNKNOWN: 0, NO_SIDE_EFFECTS: 1, IDEMPOTENT: 2 } } } }, UninterpretedOption: { fields: { name: { rule: "repeated", type: "NamePart", id: 2 }, identifierValue: { type: "string", id: 3 }, positiveIntValue: { type: "uint64", id: 4 }, negativeIntValue: { type: "int64", id: 5 }, doubleValue: { type: "double", id: 6 }, stringValue: { type: "bytes", id: 7 }, aggregateValue: { type: "string", id: 8 } }, nested: { NamePart: { fields: { namePart: { rule: "required", type: "string", id: 1 }, isExtension: { rule: "required", type: "bool", id: 2 } } } } }, FeatureSet: { fields: { fieldPresence: { type: "FieldPresence", id: 1, options: { retention: "RETENTION_RUNTIME", targets: "TARGET_TYPE_FILE", "edition_defaults.edition": "EDITION_2023", "edition_defaults.value": "EXPLICIT" } }, enumType: { type: "EnumType", id: 2, options: { retention: "RETENTION_RUNTIME", targets: "TARGET_TYPE_FILE", "edition_defaults.edition": "EDITION_PROTO3", "edition_defaults.value": "OPEN" } }, repeatedFieldEncoding: { type: "RepeatedFieldEncoding", id: 3, options: { retention: "RETENTION_RUNTIME", targets: "TARGET_TYPE_FILE", "edition_defaults.edition": "EDITION_PROTO3", "edition_defaults.value": "PACKED" } }, utf8Validation: { type: "Utf8Validation", id: 4, options: { retention: "RETENTION_RUNTIME", targets: "TARGET_TYPE_FILE", "edition_defaults.edition": "EDITION_PROTO3", "edition_defaults.value": "VERIFY" } }, messageEncoding: { type: "MessageEncoding", id: 5, options: { retention: "RETENTION_RUNTIME", targets: "TARGET_TYPE_FILE", "edition_defaults.edition": "EDITION_PROTO2", "edition_defaults.value": "LENGTH_PREFIXED" } }, jsonFormat: { type: "JsonFormat", id: 6, options: { retention: "RETENTION_RUNTIME", targets: "TARGET_TYPE_FILE", "edition_defaults.edition": "EDITION_PROTO3", "edition_defaults.value": "ALLOW" } } }, extensions: [[1e3, 1e3], [1001, 1001], [1002, 1002], [9995, 9999], [1e4, 1e4]], reserved: [[999, 999]], nested: { FieldPresence: { values: { FIELD_PRESENCE_UNKNOWN: 0, EXPLICIT: 1, IMPLICIT: 2, LEGACY_REQUIRED: 3 } }, EnumType: { values: { ENUM_TYPE_UNKNOWN: 0, OPEN: 1, CLOSED: 2 } }, RepeatedFieldEncoding: { values: { REPEATED_FIELD_ENCODING_UNKNOWN: 0, PACKED: 1, EXPANDED: 2 } }, Utf8Validation: { values: { UTF8_VALIDATION_UNKNOWN: 0, VERIFY: 2, NONE: 3 } }, MessageEncoding: { values: { MESSAGE_ENCODING_UNKNOWN: 0, LENGTH_PREFIXED: 1, DELIMITED: 2 } }, JsonFormat: { values: { JSON_FORMAT_UNKNOWN: 0, ALLOW: 1, LEGACY_BEST_EFFORT: 2 } } } }, FeatureSetDefaults: { fields: { defaults: { rule: "repeated", type: "FeatureSetEditionDefault", id: 1 }, minimumEdition: { type: "Edition", id: 4 }, maximumEdition: { type: "Edition", id: 5 } }, nested: { FeatureSetEditionDefault: { fields: { edition: { type: "Edition", id: 3 }, features: { type: "FeatureSet", id: 2 } } } } }, SourceCodeInfo: { fields: { location: { rule: "repeated", type: "Location", id: 1 } }, nested: { Location: { fields: { path: { rule: "repeated", type: "int32", id: 1 }, span: { rule: "repeated", type: "int32", id: 2 }, leadingComments: { type: "string", id: 3 }, trailingComments: { type: "string", id: 4 }, leadingDetachedComments: { rule: "repeated", type: "string", id: 6 } } } } }, GeneratedCodeInfo: { fields: { annotation: { rule: "repeated", type: "Annotation", id: 1 } }, nested: { Annotation: { fields: { path: { rule: "repeated", type: "int32", id: 1 }, sourceFile: { type: "string", id: 2 }, begin: { type: "int32", id: 3 }, end: { type: "int32", id: 4 }, semantic: { type: "Semantic", id: 5 } }, nested: { Semantic: { values: { NONE: 0, SET: 1, ALIAS: 2 } } } } } }, Timestamp: { fields: { seconds: { type: "int64", id: 1 }, nanos: { type: "int32", id: 2 } } }, Duration: { fields: { seconds: { type: "int64", id: 1 }, nanos: { type: "int32", id: 2 } } }, Any: { fields: { type_url: { type: "string", id: 1 }, value: { type: "bytes", id: 2 } } }, Empty: { fields: {} }, FieldMask: { fields: { paths: { rule: "repeated", type: "string", id: 1 } } }, Struct: { fields: { fields: { keyType: "string", type: "Value", id: 1 } } }, Value: { oneofs: { kind: { oneof: ["nullValue", "numberValue", "stringValue", "boolValue", "structValue", "listValue"] } }, fields: { nullValue: { type: "NullValue", id: 1 }, numberValue: { type: "double", id: 2 }, stringValue: { type: "string", id: 3 }, boolValue: { type: "bool", id: 4 }, structValue: { type: "Struct", id: 5 }, listValue: { type: "ListValue", id: 6 } } }, NullValue: { values: { NULL_VALUE: 0 } }, ListValue: { fields: { values: { rule: "repeated", type: "Value", id: 1 } } }, DoubleValue: { fields: { value: { type: "double", id: 1 } } }, FloatValue: { fields: { value: { type: "float", id: 1 } } }, Int64Value: { fields: { value: { type: "int64", id: 1 } } }, UInt64Value: { fields: { value: { type: "uint64", id: 1 } } }, Int32Value: { fields: { value: { type: "int32", id: 1 } } }, UInt32Value: { fields: { value: { type: "uint32", id: 1 } } }, BoolValue: { fields: { value: { type: "bool", id: 1 } } }, StringValue: { fields: { value: { type: "string", id: 1 } } }, BytesValue: { fields: { value: { type: "bytes", id: 1 } } } } }, type: { options: { go_package: "google.golang.org/genproto/googleapis/type/latlng;latlng", java_multiple_files: true, java_outer_classname: "LatLngProto", java_package: "com.google.type", objc_class_prefix: "GTP", cc_enable_arenas: true }, nested: { DayOfWeek: { values: { DAY_OF_WEEK_UNSPECIFIED: 0, MONDAY: 1, TUESDAY: 2, WEDNESDAY: 3, THURSDAY: 4, FRIDAY: 5, SATURDAY: 6, SUNDAY: 7 } }, LatLng: { fields: { latitude: { type: "double", id: 1 }, longitude: { type: "double", id: 2 } } } } }, longrunning: { options: { cc_enable_arenas: true, csharp_namespace: "Google.LongRunning", go_package: "cloud.google.com/go/longrunning/autogen/longrunningpb;longrunningpb", java_multiple_files: true, java_outer_classname: "OperationsProto", java_package: "com.google.longrunning", objc_class_prefix: "GLRUN", php_namespace: "Google\\LongRunning" }, nested: { operationInfo: { type: "google.longrunning.OperationInfo", id: 1049, extend: "google.protobuf.MethodOptions" }, Operations: { options: { "(google.api.default_host)": "longrunning.googleapis.com" }, methods: { ListOperations: { requestType: "ListOperationsRequest", responseType: "ListOperationsResponse", options: { "(google.api.http).get": "/v1/{name=operations}", "(google.api.method_signature)": "name,filter" }, parsedOptions: [{ "(google.api.http)": { get: "/v1/{name=operations}" } }, { "(google.api.method_signature)": "name,filter" }] }, GetOperation: { requestType: "GetOperationRequest", responseType: "Operation", options: { "(google.api.http).get": "/v1/{name=operations/**}", "(google.api.method_signature)": "name" }, parsedOptions: [{ "(google.api.http)": { get: "/v1/{name=operations/**}" } }, { "(google.api.method_signature)": "name" }] }, DeleteOperation: { requestType: "DeleteOperationRequest", responseType: "google.protobuf.Empty", options: { "(google.api.http).delete": "/v1/{name=operations/**}", "(google.api.method_signature)": "name" }, parsedOptions: [{ "(google.api.http)": { delete: "/v1/{name=operations/**}" } }, { "(google.api.method_signature)": "name" }] }, CancelOperation: { requestType: "CancelOperationRequest", responseType: "google.protobuf.Empty", options: { "(google.api.http).post": "/v1/{name=operations/**}:cancel", "(google.api.http).body": "*", "(google.api.method_signature)": "name" }, parsedOptions: [{ "(google.api.http)": { post: "/v1/{name=operations/**}:cancel", body: "*" } }, { "(google.api.method_signature)": "name" }] }, WaitOperation: { requestType: "WaitOperationRequest", responseType: "Operation" } } }, Operation: { oneofs: { result: { oneof: ["error", "response"] } }, fields: { name: { type: "string", id: 1 }, metadata: { type: "google.protobuf.Any", id: 2 }, done: { type: "bool", id: 3 }, error: { type: "google.rpc.Status", id: 4 }, response: { type: "google.protobuf.Any", id: 5 } } }, GetOperationRequest: { fields: { name: { type: "string", id: 1 } } }, ListOperationsRequest: { fields: { name: { type: "string", id: 4 }, filter: { type: "string", id: 1 }, pageSize: { type: "int32", id: 2 }, pageToken: { type: "string", id: 3 } } }, ListOperationsResponse: { fields: { operations: { rule: "repeated", type: "Operation", id: 1 }, nextPageToken: { type: "string", id: 2 } } }, CancelOperationRequest: { fields: { name: { type: "string", id: 1 } } }, DeleteOperationRequest: { fields: { name: { type: "string", id: 1 } } }, WaitOperationRequest: { fields: { name: { type: "string", id: 1 }, timeout: { type: "google.protobuf.Duration", id: 2 } } }, OperationInfo: { fields: { responseType: { type: "string", id: 1 }, metadataType: { type: "string", id: 2 } } } } }, rpc: { options: { cc_enable_arenas: true, go_package: "google.golang.org/genproto/googleapis/rpc/status;status", java_multiple_files: true, java_outer_classname: "StatusProto", java_package: "com.google.rpc", objc_class_prefix: "RPC" }, nested: { Status: { fields: { code: { type: "int32", id: 1 }, message: { type: "string", id: 2 }, details: { rule: "repeated", type: "google.protobuf.Any", id: 3 } } } } } } } } };
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/v1/firestore_admin_client_config.json
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/v1/firestore_admin_client_config.json
 var require_firestore_admin_client_config = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/v1/firestore_admin_client_config.json"(exports, module) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/v1/firestore_admin_client_config.json"(exports, module) {
     module.exports = {
       interfaces: {
         "google.firestore.admin.v1.FirestoreAdmin": {
@@ -123176,9 +123291,9 @@ var require_firestore_admin_client_config = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/package.json
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/package.json
 var require_package8 = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/package.json"(exports, module) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/package.json"(exports, module) {
     module.exports = {
       name: "@google-cloud/firestore",
       description: "Firestore Client Library for Node.js",
@@ -123297,9 +123412,9 @@ var require_package8 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/v1/firestore_admin_client.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/v1/firestore_admin_client.js
 var require_firestore_admin_client = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/v1/firestore_admin_client.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/v1/firestore_admin_client.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FirestoreAdminClient = void 0;
@@ -124977,16 +125092,16 @@ var require_firestore_admin_client = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/protos/v1.json
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/protos/v1.json
 var require_v1 = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/protos/v1.json"(exports, module) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/protos/v1.json"(exports, module) {
     module.exports = { options: { syntax: "proto3" }, nested: { google: { nested: { firestore: { nested: { v1: { options: { csharp_namespace: "Google.Cloud.Firestore.V1", go_package: "cloud.google.com/go/firestore/apiv1/firestorepb;firestorepb", java_multiple_files: true, java_outer_classname: "WriteProto", java_package: "com.google.firestore.v1", objc_class_prefix: "GCFS", php_namespace: "Google\\Cloud\\Firestore\\V1", ruby_package: "Google::Cloud::Firestore::V1" }, nested: { AggregationResult: { fields: { aggregateFields: { keyType: "string", type: "Value", id: 2 } } }, Document: { fields: { name: { type: "string", id: 1 }, fields: { keyType: "string", type: "Value", id: 2 }, createTime: { type: "google.protobuf.Timestamp", id: 3 }, updateTime: { type: "google.protobuf.Timestamp", id: 4 } } }, Value: { oneofs: { valueType: { oneof: ["nullValue", "booleanValue", "integerValue", "doubleValue", "timestampValue", "stringValue", "bytesValue", "referenceValue", "geoPointValue", "arrayValue", "mapValue"] } }, fields: { nullValue: { type: "google.protobuf.NullValue", id: 11 }, booleanValue: { type: "bool", id: 1 }, integerValue: { type: "int64", id: 2 }, doubleValue: { type: "double", id: 3 }, timestampValue: { type: "google.protobuf.Timestamp", id: 10 }, stringValue: { type: "string", id: 17 }, bytesValue: { type: "bytes", id: 18 }, referenceValue: { type: "string", id: 5 }, geoPointValue: { type: "google.type.LatLng", id: 8 }, arrayValue: { type: "ArrayValue", id: 9 }, mapValue: { type: "MapValue", id: 6 } } }, ArrayValue: { fields: { values: { rule: "repeated", type: "Value", id: 1 } } }, MapValue: { fields: { fields: { keyType: "string", type: "Value", id: 1 } } }, BitSequence: { fields: { bitmap: { type: "bytes", id: 1 }, padding: { type: "int32", id: 2 } } }, BloomFilter: { fields: { bits: { type: "BitSequence", id: 1 }, hashCount: { type: "int32", id: 2 } } }, DocumentMask: { fields: { fieldPaths: { rule: "repeated", type: "string", id: 1 } } }, Precondition: { oneofs: { conditionType: { oneof: ["exists", "updateTime"] } }, fields: { exists: { type: "bool", id: 1 }, updateTime: { type: "google.protobuf.Timestamp", id: 2 } } }, TransactionOptions: { oneofs: { mode: { oneof: ["readOnly", "readWrite"] } }, fields: { readOnly: { type: "ReadOnly", id: 2 }, readWrite: { type: "ReadWrite", id: 3 } }, nested: { ReadWrite: { fields: { retryTransaction: { type: "bytes", id: 1 } } }, ReadOnly: { oneofs: { consistencySelector: { oneof: ["readTime"] } }, fields: { readTime: { type: "google.protobuf.Timestamp", id: 2 } } } } }, Firestore: { options: { "(google.api.default_host)": "firestore.googleapis.com", "(google.api.oauth_scopes)": "https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/datastore" }, methods: { GetDocument: { requestType: "GetDocumentRequest", responseType: "Document", options: { "(google.api.http).get": "/v1/{name=projects/*/databases/*/documents/*/**}" }, parsedOptions: [{ "(google.api.http)": { get: "/v1/{name=projects/*/databases/*/documents/*/**}" } }] }, ListDocuments: { requestType: "ListDocumentsRequest", responseType: "ListDocumentsResponse", options: { "(google.api.http).get": "/v1/{parent=projects/*/databases/*/documents/*/**}/{collection_id}", "(google.api.http).additional_bindings.get": "/v1/{parent=projects/*/databases/*/documents}/{collection_id}" }, parsedOptions: [{ "(google.api.http)": { get: "/v1/{parent=projects/*/databases/*/documents/*/**}/{collection_id}", additional_bindings: { get: "/v1/{parent=projects/*/databases/*/documents}/{collection_id}" } } }] }, UpdateDocument: { requestType: "UpdateDocumentRequest", responseType: "Document", options: { "(google.api.http).patch": "/v1/{document.name=projects/*/databases/*/documents/*/**}", "(google.api.http).body": "document", "(google.api.method_signature)": "document,update_mask" }, parsedOptions: [{ "(google.api.http)": { patch: "/v1/{document.name=projects/*/databases/*/documents/*/**}", body: "document" } }, { "(google.api.method_signature)": "document,update_mask" }] }, DeleteDocument: { requestType: "DeleteDocumentRequest", responseType: "google.protobuf.Empty", options: { "(google.api.http).delete": "/v1/{name=projects/*/databases/*/documents/*/**}", "(google.api.method_signature)": "name" }, parsedOptions: [{ "(google.api.http)": { delete: "/v1/{name=projects/*/databases/*/documents/*/**}" } }, { "(google.api.method_signature)": "name" }] }, BatchGetDocuments: { requestType: "BatchGetDocumentsRequest", responseType: "BatchGetDocumentsResponse", responseStream: true, options: { "(google.api.http).post": "/v1/{database=projects/*/databases/*}/documents:batchGet", "(google.api.http).body": "*" }, parsedOptions: [{ "(google.api.http)": { post: "/v1/{database=projects/*/databases/*}/documents:batchGet", body: "*" } }] }, BeginTransaction: { requestType: "BeginTransactionRequest", responseType: "BeginTransactionResponse", options: { "(google.api.http).post": "/v1/{database=projects/*/databases/*}/documents:beginTransaction", "(google.api.http).body": "*", "(google.api.method_signature)": "database" }, parsedOptions: [{ "(google.api.http)": { post: "/v1/{database=projects/*/databases/*}/documents:beginTransaction", body: "*" } }, { "(google.api.method_signature)": "database" }] }, Commit: { requestType: "CommitRequest", responseType: "CommitResponse", options: { "(google.api.http).post": "/v1/{database=projects/*/databases/*}/documents:commit", "(google.api.http).body": "*", "(google.api.method_signature)": "database,writes" }, parsedOptions: [{ "(google.api.http)": { post: "/v1/{database=projects/*/databases/*}/documents:commit", body: "*" } }, { "(google.api.method_signature)": "database,writes" }] }, Rollback: { requestType: "RollbackRequest", responseType: "google.protobuf.Empty", options: { "(google.api.http).post": "/v1/{database=projects/*/databases/*}/documents:rollback", "(google.api.http).body": "*", "(google.api.method_signature)": "database,transaction" }, parsedOptions: [{ "(google.api.http)": { post: "/v1/{database=projects/*/databases/*}/documents:rollback", body: "*" } }, { "(google.api.method_signature)": "database,transaction" }] }, RunQuery: { requestType: "RunQueryRequest", responseType: "RunQueryResponse", responseStream: true, options: { "(google.api.http).post": "/v1/{parent=projects/*/databases/*/documents}:runQuery", "(google.api.http).body": "*", "(google.api.http).additional_bindings.post": "/v1/{parent=projects/*/databases/*/documents/*/**}:runQuery", "(google.api.http).additional_bindings.body": "*" }, parsedOptions: [{ "(google.api.http)": { post: "/v1/{parent=projects/*/databases/*/documents}:runQuery", body: "*", additional_bindings: { post: "/v1/{parent=projects/*/databases/*/documents/*/**}:runQuery", body: "*" } } }] }, RunAggregationQuery: { requestType: "RunAggregationQueryRequest", responseType: "RunAggregationQueryResponse", responseStream: true, options: { "(google.api.http).post": "/v1/{parent=projects/*/databases/*/documents}:runAggregationQuery", "(google.api.http).body": "*", "(google.api.http).additional_bindings.post": "/v1/{parent=projects/*/databases/*/documents/*/**}:runAggregationQuery", "(google.api.http).additional_bindings.body": "*" }, parsedOptions: [{ "(google.api.http)": { post: "/v1/{parent=projects/*/databases/*/documents}:runAggregationQuery", body: "*", additional_bindings: { post: "/v1/{parent=projects/*/databases/*/documents/*/**}:runAggregationQuery", body: "*" } } }] }, PartitionQuery: { requestType: "PartitionQueryRequest", responseType: "PartitionQueryResponse", options: { "(google.api.http).post": "/v1/{parent=projects/*/databases/*/documents}:partitionQuery", "(google.api.http).body": "*", "(google.api.http).additional_bindings.post": "/v1/{parent=projects/*/databases/*/documents/*/**}:partitionQuery", "(google.api.http).additional_bindings.body": "*" }, parsedOptions: [{ "(google.api.http)": { post: "/v1/{parent=projects/*/databases/*/documents}:partitionQuery", body: "*", additional_bindings: { post: "/v1/{parent=projects/*/databases/*/documents/*/**}:partitionQuery", body: "*" } } }] }, Write: { requestType: "WriteRequest", requestStream: true, responseType: "WriteResponse", responseStream: true, options: { "(google.api.http).post": "/v1/{database=projects/*/databases/*}/documents:write", "(google.api.http).body": "*" }, parsedOptions: [{ "(google.api.http)": { post: "/v1/{database=projects/*/databases/*}/documents:write", body: "*" } }] }, Listen: { requestType: "ListenRequest", requestStream: true, responseType: "ListenResponse", responseStream: true, options: { "(google.api.http).post": "/v1/{database=projects/*/databases/*}/documents:listen", "(google.api.http).body": "*" }, parsedOptions: [{ "(google.api.http)": { post: "/v1/{database=projects/*/databases/*}/documents:listen", body: "*" } }] }, ListCollectionIds: { requestType: "ListCollectionIdsRequest", responseType: "ListCollectionIdsResponse", options: { "(google.api.http).post": "/v1/{parent=projects/*/databases/*/documents}:listCollectionIds", "(google.api.http).body": "*", "(google.api.http).additional_bindings.post": "/v1/{parent=projects/*/databases/*/documents/*/**}:listCollectionIds", "(google.api.http).additional_bindings.body": "*", "(google.api.method_signature)": "parent" }, parsedOptions: [{ "(google.api.http)": { post: "/v1/{parent=projects/*/databases/*/documents}:listCollectionIds", body: "*", additional_bindings: { post: "/v1/{parent=projects/*/databases/*/documents/*/**}:listCollectionIds", body: "*" } } }, { "(google.api.method_signature)": "parent" }] }, BatchWrite: { requestType: "BatchWriteRequest", responseType: "BatchWriteResponse", options: { "(google.api.http).post": "/v1/{database=projects/*/databases/*}/documents:batchWrite", "(google.api.http).body": "*" }, parsedOptions: [{ "(google.api.http)": { post: "/v1/{database=projects/*/databases/*}/documents:batchWrite", body: "*" } }] }, CreateDocument: { requestType: "CreateDocumentRequest", responseType: "Document", options: { "(google.api.http).post": "/v1/{parent=projects/*/databases/*/documents/**}/{collection_id}", "(google.api.http).body": "document" }, parsedOptions: [{ "(google.api.http)": { post: "/v1/{parent=projects/*/databases/*/documents/**}/{collection_id}", body: "document" } }] } } }, GetDocumentRequest: { oneofs: { consistencySelector: { oneof: ["transaction", "readTime"] } }, fields: { name: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, mask: { type: "DocumentMask", id: 2 }, transaction: { type: "bytes", id: 3 }, readTime: { type: "google.protobuf.Timestamp", id: 5 } } }, ListDocumentsRequest: { oneofs: { consistencySelector: { oneof: ["transaction", "readTime"] } }, fields: { parent: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, collectionId: { type: "string", id: 2, options: { "(google.api.field_behavior)": "OPTIONAL" } }, pageSize: { type: "int32", id: 3, options: { "(google.api.field_behavior)": "OPTIONAL" } }, pageToken: { type: "string", id: 4, options: { "(google.api.field_behavior)": "OPTIONAL" } }, orderBy: { type: "string", id: 6, options: { "(google.api.field_behavior)": "OPTIONAL" } }, mask: { type: "DocumentMask", id: 7, options: { "(google.api.field_behavior)": "OPTIONAL" } }, transaction: { type: "bytes", id: 8 }, readTime: { type: "google.protobuf.Timestamp", id: 10 }, showMissing: { type: "bool", id: 12 } } }, ListDocumentsResponse: { fields: { documents: { rule: "repeated", type: "Document", id: 1 }, nextPageToken: { type: "string", id: 2 } } }, CreateDocumentRequest: { fields: { parent: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, collectionId: { type: "string", id: 2, options: { "(google.api.field_behavior)": "REQUIRED" } }, documentId: { type: "string", id: 3 }, document: { type: "Document", id: 4, options: { "(google.api.field_behavior)": "REQUIRED" } }, mask: { type: "DocumentMask", id: 5 } } }, UpdateDocumentRequest: { fields: { document: { type: "Document", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, updateMask: { type: "DocumentMask", id: 2 }, mask: { type: "DocumentMask", id: 3 }, currentDocument: { type: "Precondition", id: 4 } } }, DeleteDocumentRequest: { fields: { name: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, currentDocument: { type: "Precondition", id: 2 } } }, BatchGetDocumentsRequest: { oneofs: { consistencySelector: { oneof: ["transaction", "newTransaction", "readTime"] } }, fields: { database: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, documents: { rule: "repeated", type: "string", id: 2 }, mask: { type: "DocumentMask", id: 3 }, transaction: { type: "bytes", id: 4 }, newTransaction: { type: "TransactionOptions", id: 5 }, readTime: { type: "google.protobuf.Timestamp", id: 7 } } }, BatchGetDocumentsResponse: { oneofs: { result: { oneof: ["found", "missing"] } }, fields: { found: { type: "Document", id: 1 }, missing: { type: "string", id: 2 }, transaction: { type: "bytes", id: 3 }, readTime: { type: "google.protobuf.Timestamp", id: 4 } } }, BeginTransactionRequest: { fields: { database: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, options: { type: "TransactionOptions", id: 2 } } }, BeginTransactionResponse: { fields: { transaction: { type: "bytes", id: 1 } } }, CommitRequest: { fields: { database: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, writes: { rule: "repeated", type: "Write", id: 2 }, transaction: { type: "bytes", id: 3 } } }, CommitResponse: { fields: { writeResults: { rule: "repeated", type: "WriteResult", id: 1 }, commitTime: { type: "google.protobuf.Timestamp", id: 2 } } }, RollbackRequest: { fields: { database: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, transaction: { type: "bytes", id: 2, options: { "(google.api.field_behavior)": "REQUIRED" } } } }, RunQueryRequest: { oneofs: { queryType: { oneof: ["structuredQuery"] }, consistencySelector: { oneof: ["transaction", "newTransaction", "readTime"] } }, fields: { parent: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, structuredQuery: { type: "StructuredQuery", id: 2 }, transaction: { type: "bytes", id: 5 }, newTransaction: { type: "TransactionOptions", id: 6 }, readTime: { type: "google.protobuf.Timestamp", id: 7 }, explainOptions: { type: "ExplainOptions", id: 10, options: { "(google.api.field_behavior)": "OPTIONAL" } } } }, RunQueryResponse: { oneofs: { continuationSelector: { oneof: ["done"] } }, fields: { transaction: { type: "bytes", id: 2 }, document: { type: "Document", id: 1 }, readTime: { type: "google.protobuf.Timestamp", id: 3 }, skippedResults: { type: "int32", id: 4 }, done: { type: "bool", id: 6 }, explainMetrics: { type: "ExplainMetrics", id: 11 } } }, RunAggregationQueryRequest: { oneofs: { queryType: { oneof: ["structuredAggregationQuery"] }, consistencySelector: { oneof: ["transaction", "newTransaction", "readTime"] } }, fields: { parent: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, structuredAggregationQuery: { type: "StructuredAggregationQuery", id: 2 }, transaction: { type: "bytes", id: 4 }, newTransaction: { type: "TransactionOptions", id: 5 }, readTime: { type: "google.protobuf.Timestamp", id: 6 }, explainOptions: { type: "ExplainOptions", id: 8, options: { "(google.api.field_behavior)": "OPTIONAL" } } } }, RunAggregationQueryResponse: { fields: { result: { type: "AggregationResult", id: 1 }, transaction: { type: "bytes", id: 2 }, readTime: { type: "google.protobuf.Timestamp", id: 3 }, explainMetrics: { type: "ExplainMetrics", id: 10 } } }, PartitionQueryRequest: { oneofs: { queryType: { oneof: ["structuredQuery"] }, consistencySelector: { oneof: ["readTime"] } }, fields: { parent: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, structuredQuery: { type: "StructuredQuery", id: 2 }, partitionCount: { type: "int64", id: 3 }, pageToken: { type: "string", id: 4 }, pageSize: { type: "int32", id: 5 }, readTime: { type: "google.protobuf.Timestamp", id: 6 } } }, PartitionQueryResponse: { fields: { partitions: { rule: "repeated", type: "Cursor", id: 1 }, nextPageToken: { type: "string", id: 2 } } }, WriteRequest: { fields: { database: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, streamId: { type: "string", id: 2 }, writes: { rule: "repeated", type: "Write", id: 3 }, streamToken: { type: "bytes", id: 4 }, labels: { keyType: "string", type: "string", id: 5 } } }, WriteResponse: { fields: { streamId: { type: "string", id: 1 }, streamToken: { type: "bytes", id: 2 }, writeResults: { rule: "repeated", type: "WriteResult", id: 3 }, commitTime: { type: "google.protobuf.Timestamp", id: 4 } } }, ListenRequest: { oneofs: { targetChange: { oneof: ["addTarget", "removeTarget"] } }, fields: { database: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, addTarget: { type: "Target", id: 2 }, removeTarget: { type: "int32", id: 3 }, labels: { keyType: "string", type: "string", id: 4 } } }, ListenResponse: { oneofs: { responseType: { oneof: ["targetChange", "documentChange", "documentDelete", "documentRemove", "filter"] } }, fields: { targetChange: { type: "TargetChange", id: 2 }, documentChange: { type: "DocumentChange", id: 3 }, documentDelete: { type: "DocumentDelete", id: 4 }, documentRemove: { type: "DocumentRemove", id: 6 }, filter: { type: "ExistenceFilter", id: 5 } } }, Target: { oneofs: { targetType: { oneof: ["query", "documents"] }, resumeType: { oneof: ["resumeToken", "readTime"] } }, fields: { query: { type: "QueryTarget", id: 2 }, documents: { type: "DocumentsTarget", id: 3 }, resumeToken: { type: "bytes", id: 4 }, readTime: { type: "google.protobuf.Timestamp", id: 11 }, targetId: { type: "int32", id: 5 }, once: { type: "bool", id: 6 }, expectedCount: { type: "google.protobuf.Int32Value", id: 12 } }, nested: { DocumentsTarget: { fields: { documents: { rule: "repeated", type: "string", id: 2 } } }, QueryTarget: { oneofs: { queryType: { oneof: ["structuredQuery"] } }, fields: { parent: { type: "string", id: 1 }, structuredQuery: { type: "StructuredQuery", id: 2 } } } } }, TargetChange: { fields: { targetChangeType: { type: "TargetChangeType", id: 1 }, targetIds: { rule: "repeated", type: "int32", id: 2 }, cause: { type: "google.rpc.Status", id: 3 }, resumeToken: { type: "bytes", id: 4 }, readTime: { type: "google.protobuf.Timestamp", id: 6 } }, nested: { TargetChangeType: { values: { NO_CHANGE: 0, ADD: 1, REMOVE: 2, CURRENT: 3, RESET: 4 } } } }, ListCollectionIdsRequest: { oneofs: { consistencySelector: { oneof: ["readTime"] } }, fields: { parent: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, pageSize: { type: "int32", id: 2 }, pageToken: { type: "string", id: 3 }, readTime: { type: "google.protobuf.Timestamp", id: 4 } } }, ListCollectionIdsResponse: { fields: { collectionIds: { rule: "repeated", type: "string", id: 1 }, nextPageToken: { type: "string", id: 2 } } }, BatchWriteRequest: { fields: { database: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, writes: { rule: "repeated", type: "Write", id: 2 }, labels: { keyType: "string", type: "string", id: 3 } } }, BatchWriteResponse: { fields: { writeResults: { rule: "repeated", type: "WriteResult", id: 1 }, status: { rule: "repeated", type: "google.rpc.Status", id: 2 } } }, StructuredQuery: { fields: { select: { type: "Projection", id: 1 }, from: { rule: "repeated", type: "CollectionSelector", id: 2 }, where: { type: "Filter", id: 3 }, orderBy: { rule: "repeated", type: "Order", id: 4 }, startAt: { type: "Cursor", id: 7 }, endAt: { type: "Cursor", id: 8 }, offset: { type: "int32", id: 6 }, limit: { type: "google.protobuf.Int32Value", id: 5 }, findNearest: { type: "FindNearest", id: 9, options: { "(google.api.field_behavior)": "OPTIONAL" } } }, nested: { CollectionSelector: { fields: { collectionId: { type: "string", id: 2 }, allDescendants: { type: "bool", id: 3 } } }, Filter: { oneofs: { filterType: { oneof: ["compositeFilter", "fieldFilter", "unaryFilter"] } }, fields: { compositeFilter: { type: "CompositeFilter", id: 1 }, fieldFilter: { type: "FieldFilter", id: 2 }, unaryFilter: { type: "UnaryFilter", id: 3 } } }, CompositeFilter: { fields: { op: { type: "Operator", id: 1 }, filters: { rule: "repeated", type: "Filter", id: 2 } }, nested: { Operator: { values: { OPERATOR_UNSPECIFIED: 0, AND: 1, OR: 2 } } } }, FieldFilter: { fields: { field: { type: "FieldReference", id: 1 }, op: { type: "Operator", id: 2 }, value: { type: "Value", id: 3 } }, nested: { Operator: { values: { OPERATOR_UNSPECIFIED: 0, LESS_THAN: 1, LESS_THAN_OR_EQUAL: 2, GREATER_THAN: 3, GREATER_THAN_OR_EQUAL: 4, EQUAL: 5, NOT_EQUAL: 6, ARRAY_CONTAINS: 7, IN: 8, ARRAY_CONTAINS_ANY: 9, NOT_IN: 10 } } } }, UnaryFilter: { oneofs: { operandType: { oneof: ["field"] } }, fields: { op: { type: "Operator", id: 1 }, field: { type: "FieldReference", id: 2 } }, nested: { Operator: { values: { OPERATOR_UNSPECIFIED: 0, IS_NAN: 2, IS_NULL: 3, IS_NOT_NAN: 4, IS_NOT_NULL: 5 } } } }, Order: { fields: { field: { type: "FieldReference", id: 1 }, direction: { type: "Direction", id: 2 } } }, Direction: { values: { DIRECTION_UNSPECIFIED: 0, ASCENDING: 1, DESCENDING: 2 } }, FieldReference: { fields: { fieldPath: { type: "string", id: 2 } } }, Projection: { fields: { fields: { rule: "repeated", type: "FieldReference", id: 2 } } }, FindNearest: { fields: { vectorField: { type: "FieldReference", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, queryVector: { type: "Value", id: 2, options: { "(google.api.field_behavior)": "REQUIRED" } }, distanceMeasure: { type: "DistanceMeasure", id: 3, options: { "(google.api.field_behavior)": "REQUIRED" } }, limit: { type: "google.protobuf.Int32Value", id: 4, options: { "(google.api.field_behavior)": "REQUIRED" } }, distanceResultField: { type: "string", id: 5, options: { "(google.api.field_behavior)": "OPTIONAL" } }, distanceThreshold: { type: "google.protobuf.DoubleValue", id: 6, options: { "(google.api.field_behavior)": "OPTIONAL" } } }, nested: { DistanceMeasure: { values: { DISTANCE_MEASURE_UNSPECIFIED: 0, EUCLIDEAN: 1, COSINE: 2, DOT_PRODUCT: 3 } } } } } }, StructuredAggregationQuery: { oneofs: { queryType: { oneof: ["structuredQuery"] } }, fields: { structuredQuery: { type: "StructuredQuery", id: 1 }, aggregations: { rule: "repeated", type: "Aggregation", id: 3, options: { "(google.api.field_behavior)": "OPTIONAL" } } }, nested: { Aggregation: { oneofs: { operator: { oneof: ["count", "sum", "avg"] } }, fields: { count: { type: "Count", id: 1 }, sum: { type: "Sum", id: 2 }, avg: { type: "Avg", id: 3 }, alias: { type: "string", id: 7, options: { "(google.api.field_behavior)": "OPTIONAL" } } }, nested: { Count: { fields: { upTo: { type: "google.protobuf.Int64Value", id: 1, options: { "(google.api.field_behavior)": "OPTIONAL" } } } }, Sum: { fields: { field: { type: "StructuredQuery.FieldReference", id: 1 } } }, Avg: { fields: { field: { type: "StructuredQuery.FieldReference", id: 1 } } } } } } }, Cursor: { fields: { values: { rule: "repeated", type: "Value", id: 1 }, before: { type: "bool", id: 2 } } }, ExplainOptions: { fields: { analyze: { type: "bool", id: 1, options: { "(google.api.field_behavior)": "OPTIONAL" } } } }, ExplainMetrics: { fields: { planSummary: { type: "PlanSummary", id: 1 }, executionStats: { type: "ExecutionStats", id: 2 } } }, PlanSummary: { fields: { indexesUsed: { rule: "repeated", type: "google.protobuf.Struct", id: 1 } } }, ExecutionStats: { fields: { resultsReturned: { type: "int64", id: 1 }, executionDuration: { type: "google.protobuf.Duration", id: 3 }, readOperations: { type: "int64", id: 4 }, debugStats: { type: "google.protobuf.Struct", id: 5 } } }, Write: { oneofs: { operation: { oneof: ["update", "delete", "transform"] } }, fields: { update: { type: "Document", id: 1 }, delete: { type: "string", id: 2 }, transform: { type: "DocumentTransform", id: 6 }, updateMask: { type: "DocumentMask", id: 3 }, updateTransforms: { rule: "repeated", type: "DocumentTransform.FieldTransform", id: 7 }, currentDocument: { type: "Precondition", id: 4 } } }, DocumentTransform: { fields: { document: { type: "string", id: 1 }, fieldTransforms: { rule: "repeated", type: "FieldTransform", id: 2 } }, nested: { FieldTransform: { oneofs: { transformType: { oneof: ["setToServerValue", "increment", "maximum", "minimum", "appendMissingElements", "removeAllFromArray"] } }, fields: { fieldPath: { type: "string", id: 1 }, setToServerValue: { type: "ServerValue", id: 2 }, increment: { type: "Value", id: 3 }, maximum: { type: "Value", id: 4 }, minimum: { type: "Value", id: 5 }, appendMissingElements: { type: "ArrayValue", id: 6 }, removeAllFromArray: { type: "ArrayValue", id: 7 } }, nested: { ServerValue: { values: { SERVER_VALUE_UNSPECIFIED: 0, REQUEST_TIME: 1 } } } } } }, WriteResult: { fields: { updateTime: { type: "google.protobuf.Timestamp", id: 1 }, transformResults: { rule: "repeated", type: "Value", id: 2 } } }, DocumentChange: { fields: { document: { type: "Document", id: 1 }, targetIds: { rule: "repeated", type: "int32", id: 5 }, removedTargetIds: { rule: "repeated", type: "int32", id: 6 } } }, DocumentDelete: { fields: { document: { type: "string", id: 1 }, removedTargetIds: { rule: "repeated", type: "int32", id: 6 }, readTime: { type: "google.protobuf.Timestamp", id: 4 } } }, DocumentRemove: { fields: { document: { type: "string", id: 1 }, removedTargetIds: { rule: "repeated", type: "int32", id: 2 }, readTime: { type: "google.protobuf.Timestamp", id: 4 } } }, ExistenceFilter: { fields: { targetId: { type: "int32", id: 1 }, count: { type: "int32", id: 2 }, unchangedNames: { type: "BloomFilter", id: 3 } } } } } } }, api: { options: { go_package: "google.golang.org/genproto/googleapis/api/annotations;annotations", java_multiple_files: true, java_outer_classname: "ResourceProto", java_package: "com.google.api", objc_class_prefix: "GAPI", cc_enable_arenas: true }, nested: { fieldBehavior: { rule: "repeated", type: "google.api.FieldBehavior", id: 1052, extend: "google.protobuf.FieldOptions", options: { packed: false } }, FieldBehavior: { values: { FIELD_BEHAVIOR_UNSPECIFIED: 0, OPTIONAL: 1, REQUIRED: 2, OUTPUT_ONLY: 3, INPUT_ONLY: 4, IMMUTABLE: 5, UNORDERED_LIST: 6, NON_EMPTY_DEFAULT: 7, IDENTIFIER: 8 } }, http: { type: "HttpRule", id: 72295728, extend: "google.protobuf.MethodOptions" }, Http: { fields: { rules: { rule: "repeated", type: "HttpRule", id: 1 }, fullyDecodeReservedExpansion: { type: "bool", id: 2 } } }, HttpRule: { oneofs: { pattern: { oneof: ["get", "put", "post", "delete", "patch", "custom"] } }, fields: { selector: { type: "string", id: 1 }, get: { type: "string", id: 2 }, put: { type: "string", id: 3 }, post: { type: "string", id: 4 }, delete: { type: "string", id: 5 }, patch: { type: "string", id: 6 }, custom: { type: "CustomHttpPattern", id: 8 }, body: { type: "string", id: 7 }, responseBody: { type: "string", id: 12 }, additionalBindings: { rule: "repeated", type: "HttpRule", id: 11 } } }, CustomHttpPattern: { fields: { kind: { type: "string", id: 1 }, path: { type: "string", id: 2 } } }, methodSignature: { rule: "repeated", type: "string", id: 1051, extend: "google.protobuf.MethodOptions" }, defaultHost: { type: "string", id: 1049, extend: "google.protobuf.ServiceOptions" }, oauthScopes: { type: "string", id: 1050, extend: "google.protobuf.ServiceOptions" }, apiVersion: { type: "string", id: 525000001, extend: "google.protobuf.ServiceOptions" }, CommonLanguageSettings: { fields: { referenceDocsUri: { type: "string", id: 1, options: { deprecated: true } }, destinations: { rule: "repeated", type: "ClientLibraryDestination", id: 2 }, selectiveGapicGeneration: { type: "SelectiveGapicGeneration", id: 3 } } }, ClientLibrarySettings: { fields: { version: { type: "string", id: 1 }, launchStage: { type: "LaunchStage", id: 2 }, restNumericEnums: { type: "bool", id: 3 }, javaSettings: { type: "JavaSettings", id: 21 }, cppSettings: { type: "CppSettings", id: 22 }, phpSettings: { type: "PhpSettings", id: 23 }, pythonSettings: { type: "PythonSettings", id: 24 }, nodeSettings: { type: "NodeSettings", id: 25 }, dotnetSettings: { type: "DotnetSettings", id: 26 }, rubySettings: { type: "RubySettings", id: 27 }, goSettings: { type: "GoSettings", id: 28 } } }, Publishing: { fields: { methodSettings: { rule: "repeated", type: "MethodSettings", id: 2 }, newIssueUri: { type: "string", id: 101 }, documentationUri: { type: "string", id: 102 }, apiShortName: { type: "string", id: 103 }, githubLabel: { type: "string", id: 104 }, codeownerGithubTeams: { rule: "repeated", type: "string", id: 105 }, docTagPrefix: { type: "string", id: 106 }, organization: { type: "ClientLibraryOrganization", id: 107 }, librarySettings: { rule: "repeated", type: "ClientLibrarySettings", id: 109 }, protoReferenceDocumentationUri: { type: "string", id: 110 }, restReferenceDocumentationUri: { type: "string", id: 111 } } }, JavaSettings: { fields: { libraryPackage: { type: "string", id: 1 }, serviceClassNames: { keyType: "string", type: "string", id: 2 }, common: { type: "CommonLanguageSettings", id: 3 } } }, CppSettings: { fields: { common: { type: "CommonLanguageSettings", id: 1 } } }, PhpSettings: { fields: { common: { type: "CommonLanguageSettings", id: 1 } } }, PythonSettings: { fields: { common: { type: "CommonLanguageSettings", id: 1 }, experimentalFeatures: { type: "ExperimentalFeatures", id: 2 } }, nested: { ExperimentalFeatures: { fields: { restAsyncIoEnabled: { type: "bool", id: 1 }, protobufPythonicTypesEnabled: { type: "bool", id: 2 } } } } }, NodeSettings: { fields: { common: { type: "CommonLanguageSettings", id: 1 } } }, DotnetSettings: { fields: { common: { type: "CommonLanguageSettings", id: 1 }, renamedServices: { keyType: "string", type: "string", id: 2 }, renamedResources: { keyType: "string", type: "string", id: 3 }, ignoredResources: { rule: "repeated", type: "string", id: 4 }, forcedNamespaceAliases: { rule: "repeated", type: "string", id: 5 }, handwrittenSignatures: { rule: "repeated", type: "string", id: 6 } } }, RubySettings: { fields: { common: { type: "CommonLanguageSettings", id: 1 } } }, GoSettings: { fields: { common: { type: "CommonLanguageSettings", id: 1 }, renamedServices: { keyType: "string", type: "string", id: 2 } } }, MethodSettings: { fields: { selector: { type: "string", id: 1 }, longRunning: { type: "LongRunning", id: 2 }, autoPopulatedFields: { rule: "repeated", type: "string", id: 3 } }, nested: { LongRunning: { fields: { initialPollDelay: { type: "google.protobuf.Duration", id: 1 }, pollDelayMultiplier: { type: "float", id: 2 }, maxPollDelay: { type: "google.protobuf.Duration", id: 3 }, totalPollTimeout: { type: "google.protobuf.Duration", id: 4 } } } } }, ClientLibraryOrganization: { values: { CLIENT_LIBRARY_ORGANIZATION_UNSPECIFIED: 0, CLOUD: 1, ADS: 2, PHOTOS: 3, STREET_VIEW: 4, SHOPPING: 5, GEO: 6, GENERATIVE_AI: 7 } }, ClientLibraryDestination: { values: { CLIENT_LIBRARY_DESTINATION_UNSPECIFIED: 0, GITHUB: 10, PACKAGE_MANAGER: 20 } }, SelectiveGapicGeneration: { fields: { methods: { rule: "repeated", type: "string", id: 1 }, generateOmittedAsInternal: { type: "bool", id: 2 } } }, LaunchStage: { values: { LAUNCH_STAGE_UNSPECIFIED: 0, UNIMPLEMENTED: 6, PRELAUNCH: 7, EARLY_ACCESS: 1, ALPHA: 2, BETA: 3, GA: 4, DEPRECATED: 5 } }, resourceReference: { type: "google.api.ResourceReference", id: 1055, extend: "google.protobuf.FieldOptions" }, resourceDefinition: { rule: "repeated", type: "google.api.ResourceDescriptor", id: 1053, extend: "google.protobuf.FileOptions" }, resource: { type: "google.api.ResourceDescriptor", id: 1053, extend: "google.protobuf.MessageOptions" }, ResourceDescriptor: { fields: { type: { type: "string", id: 1 }, pattern: { rule: "repeated", type: "string", id: 2 }, nameField: { type: "string", id: 3 }, history: { type: "History", id: 4 }, plural: { type: "string", id: 5 }, singular: { type: "string", id: 6 }, style: { rule: "repeated", type: "Style", id: 10 } }, nested: { History: { values: { HISTORY_UNSPECIFIED: 0, ORIGINALLY_SINGLE_PATTERN: 1, FUTURE_MULTI_PATTERN: 2 } }, Style: { values: { STYLE_UNSPECIFIED: 0, DECLARATIVE_FRIENDLY: 1 } } } }, ResourceReference: { fields: { type: { type: "string", id: 1 }, childType: { type: "string", id: 2 } } } } }, protobuf: { options: { go_package: "google.golang.org/protobuf/types/descriptorpb", java_package: "com.google.protobuf", java_outer_classname: "DescriptorProtos", csharp_namespace: "Google.Protobuf.Reflection", objc_class_prefix: "GPB", cc_enable_arenas: true, optimize_for: "SPEED" }, nested: { FileDescriptorSet: { fields: { file: { rule: "repeated", type: "FileDescriptorProto", id: 1 } } }, Edition: { values: { EDITION_UNKNOWN: 0, EDITION_PROTO2: 998, EDITION_PROTO3: 999, EDITION_2023: 1e3, EDITION_2024: 1001, EDITION_1_TEST_ONLY: 1, EDITION_2_TEST_ONLY: 2, EDITION_99997_TEST_ONLY: 99997, EDITION_99998_TEST_ONLY: 99998, EDITION_99999_TEST_ONLY: 99999, EDITION_MAX: 2147483647 } }, FileDescriptorProto: { fields: { name: { type: "string", id: 1 }, package: { type: "string", id: 2 }, dependency: { rule: "repeated", type: "string", id: 3 }, publicDependency: { rule: "repeated", type: "int32", id: 10, options: { packed: false } }, weakDependency: { rule: "repeated", type: "int32", id: 11, options: { packed: false } }, messageType: { rule: "repeated", type: "DescriptorProto", id: 4 }, enumType: { rule: "repeated", type: "EnumDescriptorProto", id: 5 }, service: { rule: "repeated", type: "ServiceDescriptorProto", id: 6 }, extension: { rule: "repeated", type: "FieldDescriptorProto", id: 7 }, options: { type: "FileOptions", id: 8 }, sourceCodeInfo: { type: "SourceCodeInfo", id: 9 }, syntax: { type: "string", id: 12 }, edition: { type: "Edition", id: 14 } } }, DescriptorProto: { fields: { name: { type: "string", id: 1 }, field: { rule: "repeated", type: "FieldDescriptorProto", id: 2 }, extension: { rule: "repeated", type: "FieldDescriptorProto", id: 6 }, nestedType: { rule: "repeated", type: "DescriptorProto", id: 3 }, enumType: { rule: "repeated", type: "EnumDescriptorProto", id: 4 }, extensionRange: { rule: "repeated", type: "ExtensionRange", id: 5 }, oneofDecl: { rule: "repeated", type: "OneofDescriptorProto", id: 8 }, options: { type: "MessageOptions", id: 7 }, reservedRange: { rule: "repeated", type: "ReservedRange", id: 9 }, reservedName: { rule: "repeated", type: "string", id: 10 } }, nested: { ExtensionRange: { fields: { start: { type: "int32", id: 1 }, end: { type: "int32", id: 2 }, options: { type: "ExtensionRangeOptions", id: 3 } } }, ReservedRange: { fields: { start: { type: "int32", id: 1 }, end: { type: "int32", id: 2 } } } } }, ExtensionRangeOptions: { fields: { uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 }, declaration: { rule: "repeated", type: "Declaration", id: 2, options: { retention: "RETENTION_SOURCE" } }, features: { type: "FeatureSet", id: 50 }, verification: { type: "VerificationState", id: 3, options: { default: "UNVERIFIED", retention: "RETENTION_SOURCE" } } }, extensions: [[1e3, 536870911]], nested: { Declaration: { fields: { number: { type: "int32", id: 1 }, fullName: { type: "string", id: 2 }, type: { type: "string", id: 3 }, reserved: { type: "bool", id: 5 }, repeated: { type: "bool", id: 6 } }, reserved: [[4, 4]] }, VerificationState: { values: { DECLARATION: 0, UNVERIFIED: 1 } } } }, FieldDescriptorProto: { fields: { name: { type: "string", id: 1 }, number: { type: "int32", id: 3 }, label: { type: "Label", id: 4 }, type: { type: "Type", id: 5 }, typeName: { type: "string", id: 6 }, extendee: { type: "string", id: 2 }, defaultValue: { type: "string", id: 7 }, oneofIndex: { type: "int32", id: 9 }, jsonName: { type: "string", id: 10 }, options: { type: "FieldOptions", id: 8 }, proto3Optional: { type: "bool", id: 17 } }, nested: { Type: { values: { TYPE_DOUBLE: 1, TYPE_FLOAT: 2, TYPE_INT64: 3, TYPE_UINT64: 4, TYPE_INT32: 5, TYPE_FIXED64: 6, TYPE_FIXED32: 7, TYPE_BOOL: 8, TYPE_STRING: 9, TYPE_GROUP: 10, TYPE_MESSAGE: 11, TYPE_BYTES: 12, TYPE_UINT32: 13, TYPE_ENUM: 14, TYPE_SFIXED32: 15, TYPE_SFIXED64: 16, TYPE_SINT32: 17, TYPE_SINT64: 18 } }, Label: { values: { LABEL_OPTIONAL: 1, LABEL_REPEATED: 3, LABEL_REQUIRED: 2 } } } }, OneofDescriptorProto: { fields: { name: { type: "string", id: 1 }, options: { type: "OneofOptions", id: 2 } } }, EnumDescriptorProto: { fields: { name: { type: "string", id: 1 }, value: { rule: "repeated", type: "EnumValueDescriptorProto", id: 2 }, options: { type: "EnumOptions", id: 3 }, reservedRange: { rule: "repeated", type: "EnumReservedRange", id: 4 }, reservedName: { rule: "repeated", type: "string", id: 5 } }, nested: { EnumReservedRange: { fields: { start: { type: "int32", id: 1 }, end: { type: "int32", id: 2 } } } } }, EnumValueDescriptorProto: { fields: { name: { type: "string", id: 1 }, number: { type: "int32", id: 2 }, options: { type: "EnumValueOptions", id: 3 } } }, ServiceDescriptorProto: { fields: { name: { type: "string", id: 1 }, method: { rule: "repeated", type: "MethodDescriptorProto", id: 2 }, options: { type: "ServiceOptions", id: 3 } } }, MethodDescriptorProto: { fields: { name: { type: "string", id: 1 }, inputType: { type: "string", id: 2 }, outputType: { type: "string", id: 3 }, options: { type: "MethodOptions", id: 4 }, clientStreaming: { type: "bool", id: 5, options: { default: false } }, serverStreaming: { type: "bool", id: 6, options: { default: false } } } }, FileOptions: { fields: { javaPackage: { type: "string", id: 1 }, javaOuterClassname: { type: "string", id: 8 }, javaMultipleFiles: { type: "bool", id: 10, options: { default: false } }, javaGenerateEqualsAndHash: { type: "bool", id: 20, options: { deprecated: true } }, javaStringCheckUtf8: { type: "bool", id: 27, options: { default: false } }, optimizeFor: { type: "OptimizeMode", id: 9, options: { default: "SPEED" } }, goPackage: { type: "string", id: 11 }, ccGenericServices: { type: "bool", id: 16, options: { default: false } }, javaGenericServices: { type: "bool", id: 17, options: { default: false } }, pyGenericServices: { type: "bool", id: 18, options: { default: false } }, deprecated: { type: "bool", id: 23, options: { default: false } }, ccEnableArenas: { type: "bool", id: 31, options: { default: true } }, objcClassPrefix: { type: "string", id: 36 }, csharpNamespace: { type: "string", id: 37 }, swiftPrefix: { type: "string", id: 39 }, phpClassPrefix: { type: "string", id: 40 }, phpNamespace: { type: "string", id: 41 }, phpMetadataNamespace: { type: "string", id: 44 }, rubyPackage: { type: "string", id: 45 }, features: { type: "FeatureSet", id: 50 }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]], reserved: [[42, 42], [38, 38]], nested: { OptimizeMode: { values: { SPEED: 1, CODE_SIZE: 2, LITE_RUNTIME: 3 } } } }, MessageOptions: { fields: { messageSetWireFormat: { type: "bool", id: 1, options: { default: false } }, noStandardDescriptorAccessor: { type: "bool", id: 2, options: { default: false } }, deprecated: { type: "bool", id: 3, options: { default: false } }, mapEntry: { type: "bool", id: 7 }, deprecatedLegacyJsonFieldConflicts: { type: "bool", id: 11, options: { deprecated: true } }, features: { type: "FeatureSet", id: 12 }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]], reserved: [[4, 4], [5, 5], [6, 6], [8, 8], [9, 9]] }, FieldOptions: { fields: { ctype: { type: "CType", id: 1, options: { default: "STRING" } }, packed: { type: "bool", id: 2 }, jstype: { type: "JSType", id: 6, options: { default: "JS_NORMAL" } }, lazy: { type: "bool", id: 5, options: { default: false } }, unverifiedLazy: { type: "bool", id: 15, options: { default: false } }, deprecated: { type: "bool", id: 3, options: { default: false } }, weak: { type: "bool", id: 10, options: { default: false } }, debugRedact: { type: "bool", id: 16, options: { default: false } }, retention: { type: "OptionRetention", id: 17 }, targets: { rule: "repeated", type: "OptionTargetType", id: 19, options: { packed: false } }, editionDefaults: { rule: "repeated", type: "EditionDefault", id: 20 }, features: { type: "FeatureSet", id: 21 }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]], reserved: [[4, 4], [18, 18]], nested: { CType: { values: { STRING: 0, CORD: 1, STRING_PIECE: 2 } }, JSType: { values: { JS_NORMAL: 0, JS_STRING: 1, JS_NUMBER: 2 } }, OptionRetention: { values: { RETENTION_UNKNOWN: 0, RETENTION_RUNTIME: 1, RETENTION_SOURCE: 2 } }, OptionTargetType: { values: { TARGET_TYPE_UNKNOWN: 0, TARGET_TYPE_FILE: 1, TARGET_TYPE_EXTENSION_RANGE: 2, TARGET_TYPE_MESSAGE: 3, TARGET_TYPE_FIELD: 4, TARGET_TYPE_ONEOF: 5, TARGET_TYPE_ENUM: 6, TARGET_TYPE_ENUM_ENTRY: 7, TARGET_TYPE_SERVICE: 8, TARGET_TYPE_METHOD: 9 } }, EditionDefault: { fields: { edition: { type: "Edition", id: 3 }, value: { type: "string", id: 2 } } } } }, OneofOptions: { fields: { features: { type: "FeatureSet", id: 1 }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]] }, EnumOptions: { fields: { allowAlias: { type: "bool", id: 2 }, deprecated: { type: "bool", id: 3, options: { default: false } }, deprecatedLegacyJsonFieldConflicts: { type: "bool", id: 6, options: { deprecated: true } }, features: { type: "FeatureSet", id: 7 }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]], reserved: [[5, 5]] }, EnumValueOptions: { fields: { deprecated: { type: "bool", id: 1, options: { default: false } }, features: { type: "FeatureSet", id: 2 }, debugRedact: { type: "bool", id: 3, options: { default: false } }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]] }, ServiceOptions: { fields: { features: { type: "FeatureSet", id: 34 }, deprecated: { type: "bool", id: 33, options: { default: false } }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]] }, MethodOptions: { fields: { deprecated: { type: "bool", id: 33, options: { default: false } }, idempotencyLevel: { type: "IdempotencyLevel", id: 34, options: { default: "IDEMPOTENCY_UNKNOWN" } }, features: { type: "FeatureSet", id: 35 }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]], nested: { IdempotencyLevel: { values: { IDEMPOTENCY_UNKNOWN: 0, NO_SIDE_EFFECTS: 1, IDEMPOTENT: 2 } } } }, UninterpretedOption: { fields: { name: { rule: "repeated", type: "NamePart", id: 2 }, identifierValue: { type: "string", id: 3 }, positiveIntValue: { type: "uint64", id: 4 }, negativeIntValue: { type: "int64", id: 5 }, doubleValue: { type: "double", id: 6 }, stringValue: { type: "bytes", id: 7 }, aggregateValue: { type: "string", id: 8 } }, nested: { NamePart: { fields: { namePart: { rule: "required", type: "string", id: 1 }, isExtension: { rule: "required", type: "bool", id: 2 } } } } }, FeatureSet: { fields: { fieldPresence: { type: "FieldPresence", id: 1, options: { retention: "RETENTION_RUNTIME", targets: "TARGET_TYPE_FILE", "edition_defaults.edition": "EDITION_2023", "edition_defaults.value": "EXPLICIT" } }, enumType: { type: "EnumType", id: 2, options: { retention: "RETENTION_RUNTIME", targets: "TARGET_TYPE_FILE", "edition_defaults.edition": "EDITION_PROTO3", "edition_defaults.value": "OPEN" } }, repeatedFieldEncoding: { type: "RepeatedFieldEncoding", id: 3, options: { retention: "RETENTION_RUNTIME", targets: "TARGET_TYPE_FILE", "edition_defaults.edition": "EDITION_PROTO3", "edition_defaults.value": "PACKED" } }, utf8Validation: { type: "Utf8Validation", id: 4, options: { retention: "RETENTION_RUNTIME", targets: "TARGET_TYPE_FILE", "edition_defaults.edition": "EDITION_PROTO3", "edition_defaults.value": "VERIFY" } }, messageEncoding: { type: "MessageEncoding", id: 5, options: { retention: "RETENTION_RUNTIME", targets: "TARGET_TYPE_FILE", "edition_defaults.edition": "EDITION_PROTO2", "edition_defaults.value": "LENGTH_PREFIXED" } }, jsonFormat: { type: "JsonFormat", id: 6, options: { retention: "RETENTION_RUNTIME", targets: "TARGET_TYPE_FILE", "edition_defaults.edition": "EDITION_PROTO3", "edition_defaults.value": "ALLOW" } } }, extensions: [[1e3, 1e3], [1001, 1001], [1002, 1002], [9995, 9999], [1e4, 1e4]], reserved: [[999, 999]], nested: { FieldPresence: { values: { FIELD_PRESENCE_UNKNOWN: 0, EXPLICIT: 1, IMPLICIT: 2, LEGACY_REQUIRED: 3 } }, EnumType: { values: { ENUM_TYPE_UNKNOWN: 0, OPEN: 1, CLOSED: 2 } }, RepeatedFieldEncoding: { values: { REPEATED_FIELD_ENCODING_UNKNOWN: 0, PACKED: 1, EXPANDED: 2 } }, Utf8Validation: { values: { UTF8_VALIDATION_UNKNOWN: 0, VERIFY: 2, NONE: 3 } }, MessageEncoding: { values: { MESSAGE_ENCODING_UNKNOWN: 0, LENGTH_PREFIXED: 1, DELIMITED: 2 } }, JsonFormat: { values: { JSON_FORMAT_UNKNOWN: 0, ALLOW: 1, LEGACY_BEST_EFFORT: 2 } } } }, FeatureSetDefaults: { fields: { defaults: { rule: "repeated", type: "FeatureSetEditionDefault", id: 1 }, minimumEdition: { type: "Edition", id: 4 }, maximumEdition: { type: "Edition", id: 5 } }, nested: { FeatureSetEditionDefault: { fields: { edition: { type: "Edition", id: 3 }, features: { type: "FeatureSet", id: 2 } } } } }, SourceCodeInfo: { fields: { location: { rule: "repeated", type: "Location", id: 1 } }, nested: { Location: { fields: { path: { rule: "repeated", type: "int32", id: 1 }, span: { rule: "repeated", type: "int32", id: 2 }, leadingComments: { type: "string", id: 3 }, trailingComments: { type: "string", id: 4 }, leadingDetachedComments: { rule: "repeated", type: "string", id: 6 } } } } }, GeneratedCodeInfo: { fields: { annotation: { rule: "repeated", type: "Annotation", id: 1 } }, nested: { Annotation: { fields: { path: { rule: "repeated", type: "int32", id: 1 }, sourceFile: { type: "string", id: 2 }, begin: { type: "int32", id: 3 }, end: { type: "int32", id: 4 }, semantic: { type: "Semantic", id: 5 } }, nested: { Semantic: { values: { NONE: 0, SET: 1, ALIAS: 2 } } } } } }, Struct: { fields: { fields: { keyType: "string", type: "Value", id: 1 } } }, Value: { oneofs: { kind: { oneof: ["nullValue", "numberValue", "stringValue", "boolValue", "structValue", "listValue"] } }, fields: { nullValue: { type: "NullValue", id: 1 }, numberValue: { type: "double", id: 2 }, stringValue: { type: "string", id: 3 }, boolValue: { type: "bool", id: 4 }, structValue: { type: "Struct", id: 5 }, listValue: { type: "ListValue", id: 6 } } }, NullValue: { values: { NULL_VALUE: 0 } }, ListValue: { fields: { values: { rule: "repeated", type: "Value", id: 1 } } }, Timestamp: { fields: { seconds: { type: "int64", id: 1 }, nanos: { type: "int32", id: 2 } } }, Duration: { fields: { seconds: { type: "int64", id: 1 }, nanos: { type: "int32", id: 2 } } }, DoubleValue: { fields: { value: { type: "double", id: 1 } } }, FloatValue: { fields: { value: { type: "float", id: 1 } } }, Int64Value: { fields: { value: { type: "int64", id: 1 } } }, UInt64Value: { fields: { value: { type: "uint64", id: 1 } } }, Int32Value: { fields: { value: { type: "int32", id: 1 } } }, UInt32Value: { fields: { value: { type: "uint32", id: 1 } } }, BoolValue: { fields: { value: { type: "bool", id: 1 } } }, StringValue: { fields: { value: { type: "string", id: 1 } } }, BytesValue: { fields: { value: { type: "bytes", id: 1 } } }, Empty: { fields: {} }, Any: { fields: { type_url: { type: "string", id: 1 }, value: { type: "bytes", id: 2 } } }, FieldMask: { fields: { paths: { rule: "repeated", type: "string", id: 1 } } } } }, type: { options: { cc_enable_arenas: true, go_package: "google.golang.org/genproto/googleapis/type/dayofweek;dayofweek", java_multiple_files: true, java_outer_classname: "DayOfWeekProto", java_package: "com.google.type", objc_class_prefix: "GTP" }, nested: { LatLng: { fields: { latitude: { type: "double", id: 1 }, longitude: { type: "double", id: 2 } } }, DayOfWeek: { values: { DAY_OF_WEEK_UNSPECIFIED: 0, MONDAY: 1, TUESDAY: 2, WEDNESDAY: 3, THURSDAY: 4, FRIDAY: 5, SATURDAY: 6, SUNDAY: 7 } } } }, rpc: { options: { cc_enable_arenas: true, go_package: "google.golang.org/genproto/googleapis/rpc/status;status", java_multiple_files: true, java_outer_classname: "StatusProto", java_package: "com.google.rpc", objc_class_prefix: "RPC" }, nested: { Status: { fields: { code: { type: "int32", id: 1 }, message: { type: "string", id: 2 }, details: { rule: "repeated", type: "google.protobuf.Any", id: 3 } } } } } } } } };
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/v1/firestore_client.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/v1/firestore_client.js
 var require_firestore_client = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/v1/firestore_client.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/v1/firestore_client.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FirestoreClient = void 0;
@@ -126155,9 +126270,9 @@ var require_firestore_client = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/v1/index.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/v1/index.js
 var require_v12 = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/v1/index.js"(exports, module) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/v1/index.js"(exports, module) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FirestoreAdminClient = exports.FirestoreClient = void 0;
@@ -126175,9 +126290,9 @@ var require_v12 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/telemetry/enabled-trace-util.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/telemetry/enabled-trace-util.js
 var require_enabled_trace_util = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/telemetry/enabled-trace-util.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/telemetry/enabled-trace-util.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.EnabledTraceUtil = void 0;
@@ -126285,16 +126400,16 @@ var require_enabled_trace_util = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/protos/v1beta1.json
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/protos/v1beta1.json
 var require_v1beta1 = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/protos/v1beta1.json"(exports, module) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/protos/v1beta1.json"(exports, module) {
     module.exports = { options: { syntax: "proto3" }, nested: { google: { nested: { protobuf: { options: { go_package: "google.golang.org/protobuf/types/descriptorpb", java_package: "com.google.protobuf", java_outer_classname: "DescriptorProtos", csharp_namespace: "Google.Protobuf.Reflection", objc_class_prefix: "GPB", cc_enable_arenas: true, optimize_for: "SPEED" }, nested: { Timestamp: { fields: { seconds: { type: "int64", id: 1 }, nanos: { type: "int32", id: 2 } } }, Struct: { fields: { fields: { keyType: "string", type: "Value", id: 1 } } }, Value: { oneofs: { kind: { oneof: ["nullValue", "numberValue", "stringValue", "boolValue", "structValue", "listValue"] } }, fields: { nullValue: { type: "NullValue", id: 1 }, numberValue: { type: "double", id: 2 }, stringValue: { type: "string", id: 3 }, boolValue: { type: "bool", id: 4 }, structValue: { type: "Struct", id: 5 }, listValue: { type: "ListValue", id: 6 } } }, NullValue: { values: { NULL_VALUE: 0 } }, ListValue: { fields: { values: { rule: "repeated", type: "Value", id: 1 } } }, FileDescriptorSet: { fields: { file: { rule: "repeated", type: "FileDescriptorProto", id: 1 } } }, Edition: { values: { EDITION_UNKNOWN: 0, EDITION_PROTO2: 998, EDITION_PROTO3: 999, EDITION_2023: 1e3, EDITION_2024: 1001, EDITION_1_TEST_ONLY: 1, EDITION_2_TEST_ONLY: 2, EDITION_99997_TEST_ONLY: 99997, EDITION_99998_TEST_ONLY: 99998, EDITION_99999_TEST_ONLY: 99999, EDITION_MAX: 2147483647 } }, FileDescriptorProto: { fields: { name: { type: "string", id: 1 }, package: { type: "string", id: 2 }, dependency: { rule: "repeated", type: "string", id: 3 }, publicDependency: { rule: "repeated", type: "int32", id: 10, options: { packed: false } }, weakDependency: { rule: "repeated", type: "int32", id: 11, options: { packed: false } }, messageType: { rule: "repeated", type: "DescriptorProto", id: 4 }, enumType: { rule: "repeated", type: "EnumDescriptorProto", id: 5 }, service: { rule: "repeated", type: "ServiceDescriptorProto", id: 6 }, extension: { rule: "repeated", type: "FieldDescriptorProto", id: 7 }, options: { type: "FileOptions", id: 8 }, sourceCodeInfo: { type: "SourceCodeInfo", id: 9 }, syntax: { type: "string", id: 12 }, edition: { type: "Edition", id: 14 } } }, DescriptorProto: { fields: { name: { type: "string", id: 1 }, field: { rule: "repeated", type: "FieldDescriptorProto", id: 2 }, extension: { rule: "repeated", type: "FieldDescriptorProto", id: 6 }, nestedType: { rule: "repeated", type: "DescriptorProto", id: 3 }, enumType: { rule: "repeated", type: "EnumDescriptorProto", id: 4 }, extensionRange: { rule: "repeated", type: "ExtensionRange", id: 5 }, oneofDecl: { rule: "repeated", type: "OneofDescriptorProto", id: 8 }, options: { type: "MessageOptions", id: 7 }, reservedRange: { rule: "repeated", type: "ReservedRange", id: 9 }, reservedName: { rule: "repeated", type: "string", id: 10 } }, nested: { ExtensionRange: { fields: { start: { type: "int32", id: 1 }, end: { type: "int32", id: 2 }, options: { type: "ExtensionRangeOptions", id: 3 } } }, ReservedRange: { fields: { start: { type: "int32", id: 1 }, end: { type: "int32", id: 2 } } } } }, ExtensionRangeOptions: { fields: { uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 }, declaration: { rule: "repeated", type: "Declaration", id: 2, options: { retention: "RETENTION_SOURCE" } }, features: { type: "FeatureSet", id: 50 }, verification: { type: "VerificationState", id: 3, options: { default: "UNVERIFIED", retention: "RETENTION_SOURCE" } } }, extensions: [[1e3, 536870911]], nested: { Declaration: { fields: { number: { type: "int32", id: 1 }, fullName: { type: "string", id: 2 }, type: { type: "string", id: 3 }, reserved: { type: "bool", id: 5 }, repeated: { type: "bool", id: 6 } }, reserved: [[4, 4]] }, VerificationState: { values: { DECLARATION: 0, UNVERIFIED: 1 } } } }, FieldDescriptorProto: { fields: { name: { type: "string", id: 1 }, number: { type: "int32", id: 3 }, label: { type: "Label", id: 4 }, type: { type: "Type", id: 5 }, typeName: { type: "string", id: 6 }, extendee: { type: "string", id: 2 }, defaultValue: { type: "string", id: 7 }, oneofIndex: { type: "int32", id: 9 }, jsonName: { type: "string", id: 10 }, options: { type: "FieldOptions", id: 8 }, proto3Optional: { type: "bool", id: 17 } }, nested: { Type: { values: { TYPE_DOUBLE: 1, TYPE_FLOAT: 2, TYPE_INT64: 3, TYPE_UINT64: 4, TYPE_INT32: 5, TYPE_FIXED64: 6, TYPE_FIXED32: 7, TYPE_BOOL: 8, TYPE_STRING: 9, TYPE_GROUP: 10, TYPE_MESSAGE: 11, TYPE_BYTES: 12, TYPE_UINT32: 13, TYPE_ENUM: 14, TYPE_SFIXED32: 15, TYPE_SFIXED64: 16, TYPE_SINT32: 17, TYPE_SINT64: 18 } }, Label: { values: { LABEL_OPTIONAL: 1, LABEL_REPEATED: 3, LABEL_REQUIRED: 2 } } } }, OneofDescriptorProto: { fields: { name: { type: "string", id: 1 }, options: { type: "OneofOptions", id: 2 } } }, EnumDescriptorProto: { fields: { name: { type: "string", id: 1 }, value: { rule: "repeated", type: "EnumValueDescriptorProto", id: 2 }, options: { type: "EnumOptions", id: 3 }, reservedRange: { rule: "repeated", type: "EnumReservedRange", id: 4 }, reservedName: { rule: "repeated", type: "string", id: 5 } }, nested: { EnumReservedRange: { fields: { start: { type: "int32", id: 1 }, end: { type: "int32", id: 2 } } } } }, EnumValueDescriptorProto: { fields: { name: { type: "string", id: 1 }, number: { type: "int32", id: 2 }, options: { type: "EnumValueOptions", id: 3 } } }, ServiceDescriptorProto: { fields: { name: { type: "string", id: 1 }, method: { rule: "repeated", type: "MethodDescriptorProto", id: 2 }, options: { type: "ServiceOptions", id: 3 } } }, MethodDescriptorProto: { fields: { name: { type: "string", id: 1 }, inputType: { type: "string", id: 2 }, outputType: { type: "string", id: 3 }, options: { type: "MethodOptions", id: 4 }, clientStreaming: { type: "bool", id: 5, options: { default: false } }, serverStreaming: { type: "bool", id: 6, options: { default: false } } } }, FileOptions: { fields: { javaPackage: { type: "string", id: 1 }, javaOuterClassname: { type: "string", id: 8 }, javaMultipleFiles: { type: "bool", id: 10, options: { default: false } }, javaGenerateEqualsAndHash: { type: "bool", id: 20, options: { deprecated: true } }, javaStringCheckUtf8: { type: "bool", id: 27, options: { default: false } }, optimizeFor: { type: "OptimizeMode", id: 9, options: { default: "SPEED" } }, goPackage: { type: "string", id: 11 }, ccGenericServices: { type: "bool", id: 16, options: { default: false } }, javaGenericServices: { type: "bool", id: 17, options: { default: false } }, pyGenericServices: { type: "bool", id: 18, options: { default: false } }, deprecated: { type: "bool", id: 23, options: { default: false } }, ccEnableArenas: { type: "bool", id: 31, options: { default: true } }, objcClassPrefix: { type: "string", id: 36 }, csharpNamespace: { type: "string", id: 37 }, swiftPrefix: { type: "string", id: 39 }, phpClassPrefix: { type: "string", id: 40 }, phpNamespace: { type: "string", id: 41 }, phpMetadataNamespace: { type: "string", id: 44 }, rubyPackage: { type: "string", id: 45 }, features: { type: "FeatureSet", id: 50 }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]], reserved: [[42, 42], [38, 38]], nested: { OptimizeMode: { values: { SPEED: 1, CODE_SIZE: 2, LITE_RUNTIME: 3 } } } }, MessageOptions: { fields: { messageSetWireFormat: { type: "bool", id: 1, options: { default: false } }, noStandardDescriptorAccessor: { type: "bool", id: 2, options: { default: false } }, deprecated: { type: "bool", id: 3, options: { default: false } }, mapEntry: { type: "bool", id: 7 }, deprecatedLegacyJsonFieldConflicts: { type: "bool", id: 11, options: { deprecated: true } }, features: { type: "FeatureSet", id: 12 }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]], reserved: [[4, 4], [5, 5], [6, 6], [8, 8], [9, 9]] }, FieldOptions: { fields: { ctype: { type: "CType", id: 1, options: { default: "STRING" } }, packed: { type: "bool", id: 2 }, jstype: { type: "JSType", id: 6, options: { default: "JS_NORMAL" } }, lazy: { type: "bool", id: 5, options: { default: false } }, unverifiedLazy: { type: "bool", id: 15, options: { default: false } }, deprecated: { type: "bool", id: 3, options: { default: false } }, weak: { type: "bool", id: 10, options: { default: false } }, debugRedact: { type: "bool", id: 16, options: { default: false } }, retention: { type: "OptionRetention", id: 17 }, targets: { rule: "repeated", type: "OptionTargetType", id: 19, options: { packed: false } }, editionDefaults: { rule: "repeated", type: "EditionDefault", id: 20 }, features: { type: "FeatureSet", id: 21 }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]], reserved: [[4, 4], [18, 18]], nested: { CType: { values: { STRING: 0, CORD: 1, STRING_PIECE: 2 } }, JSType: { values: { JS_NORMAL: 0, JS_STRING: 1, JS_NUMBER: 2 } }, OptionRetention: { values: { RETENTION_UNKNOWN: 0, RETENTION_RUNTIME: 1, RETENTION_SOURCE: 2 } }, OptionTargetType: { values: { TARGET_TYPE_UNKNOWN: 0, TARGET_TYPE_FILE: 1, TARGET_TYPE_EXTENSION_RANGE: 2, TARGET_TYPE_MESSAGE: 3, TARGET_TYPE_FIELD: 4, TARGET_TYPE_ONEOF: 5, TARGET_TYPE_ENUM: 6, TARGET_TYPE_ENUM_ENTRY: 7, TARGET_TYPE_SERVICE: 8, TARGET_TYPE_METHOD: 9 } }, EditionDefault: { fields: { edition: { type: "Edition", id: 3 }, value: { type: "string", id: 2 } } } } }, OneofOptions: { fields: { features: { type: "FeatureSet", id: 1 }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]] }, EnumOptions: { fields: { allowAlias: { type: "bool", id: 2 }, deprecated: { type: "bool", id: 3, options: { default: false } }, deprecatedLegacyJsonFieldConflicts: { type: "bool", id: 6, options: { deprecated: true } }, features: { type: "FeatureSet", id: 7 }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]], reserved: [[5, 5]] }, EnumValueOptions: { fields: { deprecated: { type: "bool", id: 1, options: { default: false } }, features: { type: "FeatureSet", id: 2 }, debugRedact: { type: "bool", id: 3, options: { default: false } }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]] }, ServiceOptions: { fields: { features: { type: "FeatureSet", id: 34 }, deprecated: { type: "bool", id: 33, options: { default: false } }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]] }, MethodOptions: { fields: { deprecated: { type: "bool", id: 33, options: { default: false } }, idempotencyLevel: { type: "IdempotencyLevel", id: 34, options: { default: "IDEMPOTENCY_UNKNOWN" } }, features: { type: "FeatureSet", id: 35 }, uninterpretedOption: { rule: "repeated", type: "UninterpretedOption", id: 999 } }, extensions: [[1e3, 536870911]], nested: { IdempotencyLevel: { values: { IDEMPOTENCY_UNKNOWN: 0, NO_SIDE_EFFECTS: 1, IDEMPOTENT: 2 } } } }, UninterpretedOption: { fields: { name: { rule: "repeated", type: "NamePart", id: 2 }, identifierValue: { type: "string", id: 3 }, positiveIntValue: { type: "uint64", id: 4 }, negativeIntValue: { type: "int64", id: 5 }, doubleValue: { type: "double", id: 6 }, stringValue: { type: "bytes", id: 7 }, aggregateValue: { type: "string", id: 8 } }, nested: { NamePart: { fields: { namePart: { rule: "required", type: "string", id: 1 }, isExtension: { rule: "required", type: "bool", id: 2 } } } } }, FeatureSet: { fields: { fieldPresence: { type: "FieldPresence", id: 1, options: { retention: "RETENTION_RUNTIME", targets: "TARGET_TYPE_FILE", "edition_defaults.edition": "EDITION_2023", "edition_defaults.value": "EXPLICIT" } }, enumType: { type: "EnumType", id: 2, options: { retention: "RETENTION_RUNTIME", targets: "TARGET_TYPE_FILE", "edition_defaults.edition": "EDITION_PROTO3", "edition_defaults.value": "OPEN" } }, repeatedFieldEncoding: { type: "RepeatedFieldEncoding", id: 3, options: { retention: "RETENTION_RUNTIME", targets: "TARGET_TYPE_FILE", "edition_defaults.edition": "EDITION_PROTO3", "edition_defaults.value": "PACKED" } }, utf8Validation: { type: "Utf8Validation", id: 4, options: { retention: "RETENTION_RUNTIME", targets: "TARGET_TYPE_FILE", "edition_defaults.edition": "EDITION_PROTO3", "edition_defaults.value": "VERIFY" } }, messageEncoding: { type: "MessageEncoding", id: 5, options: { retention: "RETENTION_RUNTIME", targets: "TARGET_TYPE_FILE", "edition_defaults.edition": "EDITION_PROTO2", "edition_defaults.value": "LENGTH_PREFIXED" } }, jsonFormat: { type: "JsonFormat", id: 6, options: { retention: "RETENTION_RUNTIME", targets: "TARGET_TYPE_FILE", "edition_defaults.edition": "EDITION_PROTO3", "edition_defaults.value": "ALLOW" } } }, extensions: [[1e3, 1e3], [1001, 1001], [1002, 1002], [9995, 9999], [1e4, 1e4]], reserved: [[999, 999]], nested: { FieldPresence: { values: { FIELD_PRESENCE_UNKNOWN: 0, EXPLICIT: 1, IMPLICIT: 2, LEGACY_REQUIRED: 3 } }, EnumType: { values: { ENUM_TYPE_UNKNOWN: 0, OPEN: 1, CLOSED: 2 } }, RepeatedFieldEncoding: { values: { REPEATED_FIELD_ENCODING_UNKNOWN: 0, PACKED: 1, EXPANDED: 2 } }, Utf8Validation: { values: { UTF8_VALIDATION_UNKNOWN: 0, VERIFY: 2, NONE: 3 } }, MessageEncoding: { values: { MESSAGE_ENCODING_UNKNOWN: 0, LENGTH_PREFIXED: 1, DELIMITED: 2 } }, JsonFormat: { values: { JSON_FORMAT_UNKNOWN: 0, ALLOW: 1, LEGACY_BEST_EFFORT: 2 } } } }, FeatureSetDefaults: { fields: { defaults: { rule: "repeated", type: "FeatureSetEditionDefault", id: 1 }, minimumEdition: { type: "Edition", id: 4 }, maximumEdition: { type: "Edition", id: 5 } }, nested: { FeatureSetEditionDefault: { fields: { edition: { type: "Edition", id: 3 }, features: { type: "FeatureSet", id: 2 } } } } }, SourceCodeInfo: { fields: { location: { rule: "repeated", type: "Location", id: 1 } }, nested: { Location: { fields: { path: { rule: "repeated", type: "int32", id: 1 }, span: { rule: "repeated", type: "int32", id: 2 }, leadingComments: { type: "string", id: 3 }, trailingComments: { type: "string", id: 4 }, leadingDetachedComments: { rule: "repeated", type: "string", id: 6 } } } } }, GeneratedCodeInfo: { fields: { annotation: { rule: "repeated", type: "Annotation", id: 1 } }, nested: { Annotation: { fields: { path: { rule: "repeated", type: "int32", id: 1 }, sourceFile: { type: "string", id: 2 }, begin: { type: "int32", id: 3 }, end: { type: "int32", id: 4 }, semantic: { type: "Semantic", id: 5 } }, nested: { Semantic: { values: { NONE: 0, SET: 1, ALIAS: 2 } } } } } }, Duration: { fields: { seconds: { type: "int64", id: 1 }, nanos: { type: "int32", id: 2 } } }, DoubleValue: { fields: { value: { type: "double", id: 1 } } }, FloatValue: { fields: { value: { type: "float", id: 1 } } }, Int64Value: { fields: { value: { type: "int64", id: 1 } } }, UInt64Value: { fields: { value: { type: "uint64", id: 1 } } }, Int32Value: { fields: { value: { type: "int32", id: 1 } } }, UInt32Value: { fields: { value: { type: "uint32", id: 1 } } }, BoolValue: { fields: { value: { type: "bool", id: 1 } } }, StringValue: { fields: { value: { type: "string", id: 1 } } }, BytesValue: { fields: { value: { type: "bytes", id: 1 } } }, Empty: { fields: {} }, Any: { fields: { type_url: { type: "string", id: 1 }, value: { type: "bytes", id: 2 } } }, FieldMask: { fields: { paths: { rule: "repeated", type: "string", id: 1 } } } } }, firestore: { nested: { v1beta1: { options: { csharp_namespace: "Google.Cloud.Firestore.V1Beta1", go_package: "cloud.google.com/go/firestore/apiv1beta1/firestorepb;firestorepb", java_multiple_files: true, java_outer_classname: "UndeliverableFirstGenEventProto", java_package: "com.google.firestore.v1beta1", objc_class_prefix: "GCFS", php_namespace: "Google\\Cloud\\Firestore\\V1beta1", ruby_package: "Google::Cloud::Firestore::V1beta1" }, nested: { DocumentMask: { fields: { fieldPaths: { rule: "repeated", type: "string", id: 1 } } }, Precondition: { oneofs: { conditionType: { oneof: ["exists", "updateTime"] } }, fields: { exists: { type: "bool", id: 1 }, updateTime: { type: "google.protobuf.Timestamp", id: 2 } } }, TransactionOptions: { oneofs: { mode: { oneof: ["readOnly", "readWrite"] } }, fields: { readOnly: { type: "ReadOnly", id: 2 }, readWrite: { type: "ReadWrite", id: 3 } }, nested: { ReadWrite: { fields: { retryTransaction: { type: "bytes", id: 1 } } }, ReadOnly: { oneofs: { consistencySelector: { oneof: ["readTime"] } }, fields: { readTime: { type: "google.protobuf.Timestamp", id: 2 } } } } }, Document: { fields: { name: { type: "string", id: 1 }, fields: { keyType: "string", type: "Value", id: 2 }, createTime: { type: "google.protobuf.Timestamp", id: 3 }, updateTime: { type: "google.protobuf.Timestamp", id: 4 } } }, Value: { oneofs: { valueType: { oneof: ["nullValue", "booleanValue", "integerValue", "doubleValue", "timestampValue", "stringValue", "bytesValue", "referenceValue", "geoPointValue", "arrayValue", "mapValue"] } }, fields: { nullValue: { type: "google.protobuf.NullValue", id: 11 }, booleanValue: { type: "bool", id: 1 }, integerValue: { type: "int64", id: 2 }, doubleValue: { type: "double", id: 3 }, timestampValue: { type: "google.protobuf.Timestamp", id: 10 }, stringValue: { type: "string", id: 17 }, bytesValue: { type: "bytes", id: 18 }, referenceValue: { type: "string", id: 5 }, geoPointValue: { type: "google.type.LatLng", id: 8 }, arrayValue: { type: "ArrayValue", id: 9 }, mapValue: { type: "MapValue", id: 6 } } }, ArrayValue: { fields: { values: { rule: "repeated", type: "Value", id: 1 } } }, MapValue: { fields: { fields: { keyType: "string", type: "Value", id: 1 } } }, Firestore: { options: { "(google.api.default_host)": "firestore.googleapis.com", "(google.api.oauth_scopes)": "https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/datastore" }, methods: { GetDocument: { requestType: "GetDocumentRequest", responseType: "Document", options: { "(google.api.http).get": "/v1beta1/{name=projects/*/databases/*/documents/*/**}" }, parsedOptions: [{ "(google.api.http)": { get: "/v1beta1/{name=projects/*/databases/*/documents/*/**}" } }] }, ListDocuments: { requestType: "ListDocumentsRequest", responseType: "ListDocumentsResponse", options: { "(google.api.http).get": "/v1beta1/{parent=projects/*/databases/*/documents/*/**}/{collection_id}" }, parsedOptions: [{ "(google.api.http)": { get: "/v1beta1/{parent=projects/*/databases/*/documents/*/**}/{collection_id}" } }] }, UpdateDocument: { requestType: "UpdateDocumentRequest", responseType: "Document", options: { "(google.api.http).patch": "/v1beta1/{document.name=projects/*/databases/*/documents/*/**}", "(google.api.http).body": "document", "(google.api.method_signature)": "document,update_mask" }, parsedOptions: [{ "(google.api.http)": { patch: "/v1beta1/{document.name=projects/*/databases/*/documents/*/**}", body: "document" } }, { "(google.api.method_signature)": "document,update_mask" }] }, DeleteDocument: { requestType: "DeleteDocumentRequest", responseType: "google.protobuf.Empty", options: { "(google.api.http).delete": "/v1beta1/{name=projects/*/databases/*/documents/*/**}", "(google.api.method_signature)": "name" }, parsedOptions: [{ "(google.api.http)": { delete: "/v1beta1/{name=projects/*/databases/*/documents/*/**}" } }, { "(google.api.method_signature)": "name" }] }, BatchGetDocuments: { requestType: "BatchGetDocumentsRequest", responseType: "BatchGetDocumentsResponse", responseStream: true, options: { "(google.api.http).post": "/v1beta1/{database=projects/*/databases/*}/documents:batchGet", "(google.api.http).body": "*" }, parsedOptions: [{ "(google.api.http)": { post: "/v1beta1/{database=projects/*/databases/*}/documents:batchGet", body: "*" } }] }, BeginTransaction: { requestType: "BeginTransactionRequest", responseType: "BeginTransactionResponse", options: { "(google.api.http).post": "/v1beta1/{database=projects/*/databases/*}/documents:beginTransaction", "(google.api.http).body": "*", "(google.api.method_signature)": "database" }, parsedOptions: [{ "(google.api.http)": { post: "/v1beta1/{database=projects/*/databases/*}/documents:beginTransaction", body: "*" } }, { "(google.api.method_signature)": "database" }] }, Commit: { requestType: "CommitRequest", responseType: "CommitResponse", options: { "(google.api.http).post": "/v1beta1/{database=projects/*/databases/*}/documents:commit", "(google.api.http).body": "*", "(google.api.method_signature)": "database,writes" }, parsedOptions: [{ "(google.api.http)": { post: "/v1beta1/{database=projects/*/databases/*}/documents:commit", body: "*" } }, { "(google.api.method_signature)": "database,writes" }] }, Rollback: { requestType: "RollbackRequest", responseType: "google.protobuf.Empty", options: { "(google.api.http).post": "/v1beta1/{database=projects/*/databases/*}/documents:rollback", "(google.api.http).body": "*", "(google.api.method_signature)": "database,transaction" }, parsedOptions: [{ "(google.api.http)": { post: "/v1beta1/{database=projects/*/databases/*}/documents:rollback", body: "*" } }, { "(google.api.method_signature)": "database,transaction" }] }, RunQuery: { requestType: "RunQueryRequest", responseType: "RunQueryResponse", responseStream: true, options: { "(google.api.http).post": "/v1beta1/{parent=projects/*/databases/*/documents}:runQuery", "(google.api.http).body": "*", "(google.api.http).additional_bindings.post": "/v1beta1/{parent=projects/*/databases/*/documents/*/**}:runQuery", "(google.api.http).additional_bindings.body": "*" }, parsedOptions: [{ "(google.api.http)": { post: "/v1beta1/{parent=projects/*/databases/*/documents}:runQuery", body: "*", additional_bindings: { post: "/v1beta1/{parent=projects/*/databases/*/documents/*/**}:runQuery", body: "*" } } }] }, PartitionQuery: { requestType: "PartitionQueryRequest", responseType: "PartitionQueryResponse", options: { "(google.api.http).post": "/v1beta1/{parent=projects/*/databases/*/documents}:partitionQuery", "(google.api.http).body": "*", "(google.api.http).additional_bindings.post": "/v1beta1/{parent=projects/*/databases/*/documents/*/**}:partitionQuery", "(google.api.http).additional_bindings.body": "*" }, parsedOptions: [{ "(google.api.http)": { post: "/v1beta1/{parent=projects/*/databases/*/documents}:partitionQuery", body: "*", additional_bindings: { post: "/v1beta1/{parent=projects/*/databases/*/documents/*/**}:partitionQuery", body: "*" } } }] }, Write: { requestType: "WriteRequest", requestStream: true, responseType: "WriteResponse", responseStream: true, options: { "(google.api.http).post": "/v1beta1/{database=projects/*/databases/*}/documents:write", "(google.api.http).body": "*" }, parsedOptions: [{ "(google.api.http)": { post: "/v1beta1/{database=projects/*/databases/*}/documents:write", body: "*" } }] }, Listen: { requestType: "ListenRequest", requestStream: true, responseType: "ListenResponse", responseStream: true, options: { "(google.api.http).post": "/v1beta1/{database=projects/*/databases/*}/documents:listen", "(google.api.http).body": "*" }, parsedOptions: [{ "(google.api.http)": { post: "/v1beta1/{database=projects/*/databases/*}/documents:listen", body: "*" } }] }, ListCollectionIds: { requestType: "ListCollectionIdsRequest", responseType: "ListCollectionIdsResponse", options: { "(google.api.http).post": "/v1beta1/{parent=projects/*/databases/*/documents}:listCollectionIds", "(google.api.http).body": "*", "(google.api.http).additional_bindings.post": "/v1beta1/{parent=projects/*/databases/*/documents/*/**}:listCollectionIds", "(google.api.http).additional_bindings.body": "*", "(google.api.method_signature)": "parent" }, parsedOptions: [{ "(google.api.http)": { post: "/v1beta1/{parent=projects/*/databases/*/documents}:listCollectionIds", body: "*", additional_bindings: { post: "/v1beta1/{parent=projects/*/databases/*/documents/*/**}:listCollectionIds", body: "*" } } }, { "(google.api.method_signature)": "parent" }] }, BatchWrite: { requestType: "BatchWriteRequest", responseType: "BatchWriteResponse", options: { "(google.api.http).post": "/v1beta1/{database=projects/*/databases/*}/documents:batchWrite", "(google.api.http).body": "*" }, parsedOptions: [{ "(google.api.http)": { post: "/v1beta1/{database=projects/*/databases/*}/documents:batchWrite", body: "*" } }] }, CreateDocument: { requestType: "CreateDocumentRequest", responseType: "Document", options: { "(google.api.http).post": "/v1beta1/{parent=projects/*/databases/*/documents/**}/{collection_id}", "(google.api.http).body": "document" }, parsedOptions: [{ "(google.api.http)": { post: "/v1beta1/{parent=projects/*/databases/*/documents/**}/{collection_id}", body: "document" } }] } } }, GetDocumentRequest: { oneofs: { consistencySelector: { oneof: ["transaction", "readTime"] } }, fields: { name: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, mask: { type: "DocumentMask", id: 2 }, transaction: { type: "bytes", id: 3 }, readTime: { type: "google.protobuf.Timestamp", id: 5 } } }, ListDocumentsRequest: { oneofs: { consistencySelector: { oneof: ["transaction", "readTime"] } }, fields: { parent: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, collectionId: { type: "string", id: 2, options: { "(google.api.field_behavior)": "REQUIRED" } }, pageSize: { type: "int32", id: 3 }, pageToken: { type: "string", id: 4 }, orderBy: { type: "string", id: 6 }, mask: { type: "DocumentMask", id: 7 }, transaction: { type: "bytes", id: 8 }, readTime: { type: "google.protobuf.Timestamp", id: 10 }, showMissing: { type: "bool", id: 12 } } }, ListDocumentsResponse: { fields: { documents: { rule: "repeated", type: "Document", id: 1 }, nextPageToken: { type: "string", id: 2 } } }, CreateDocumentRequest: { fields: { parent: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, collectionId: { type: "string", id: 2, options: { "(google.api.field_behavior)": "REQUIRED" } }, documentId: { type: "string", id: 3 }, document: { type: "Document", id: 4, options: { "(google.api.field_behavior)": "REQUIRED" } }, mask: { type: "DocumentMask", id: 5 } } }, UpdateDocumentRequest: { fields: { document: { type: "Document", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, updateMask: { type: "DocumentMask", id: 2 }, mask: { type: "DocumentMask", id: 3 }, currentDocument: { type: "Precondition", id: 4 } } }, DeleteDocumentRequest: { fields: { name: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, currentDocument: { type: "Precondition", id: 2 } } }, BatchGetDocumentsRequest: { oneofs: { consistencySelector: { oneof: ["transaction", "newTransaction", "readTime"] } }, fields: { database: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, documents: { rule: "repeated", type: "string", id: 2 }, mask: { type: "DocumentMask", id: 3 }, transaction: { type: "bytes", id: 4 }, newTransaction: { type: "TransactionOptions", id: 5 }, readTime: { type: "google.protobuf.Timestamp", id: 7 } } }, BatchGetDocumentsResponse: { oneofs: { result: { oneof: ["found", "missing"] } }, fields: { found: { type: "Document", id: 1 }, missing: { type: "string", id: 2 }, transaction: { type: "bytes", id: 3 }, readTime: { type: "google.protobuf.Timestamp", id: 4 } } }, BeginTransactionRequest: { fields: { database: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, options: { type: "TransactionOptions", id: 2 } } }, BeginTransactionResponse: { fields: { transaction: { type: "bytes", id: 1 } } }, CommitRequest: { fields: { database: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, writes: { rule: "repeated", type: "Write", id: 2 }, transaction: { type: "bytes", id: 3 } } }, CommitResponse: { fields: { writeResults: { rule: "repeated", type: "WriteResult", id: 1 }, commitTime: { type: "google.protobuf.Timestamp", id: 2 } } }, RollbackRequest: { fields: { database: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, transaction: { type: "bytes", id: 2, options: { "(google.api.field_behavior)": "REQUIRED" } } } }, RunQueryRequest: { oneofs: { queryType: { oneof: ["structuredQuery"] }, consistencySelector: { oneof: ["transaction", "newTransaction", "readTime"] } }, fields: { parent: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, structuredQuery: { type: "StructuredQuery", id: 2 }, transaction: { type: "bytes", id: 5 }, newTransaction: { type: "TransactionOptions", id: 6 }, readTime: { type: "google.protobuf.Timestamp", id: 7 } } }, RunQueryResponse: { fields: { transaction: { type: "bytes", id: 2 }, document: { type: "Document", id: 1 }, readTime: { type: "google.protobuf.Timestamp", id: 3 }, skippedResults: { type: "int32", id: 4 } } }, PartitionQueryRequest: { oneofs: { queryType: { oneof: ["structuredQuery"] } }, fields: { parent: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, structuredQuery: { type: "StructuredQuery", id: 2 }, partitionCount: { type: "int64", id: 3 }, pageToken: { type: "string", id: 4 }, pageSize: { type: "int32", id: 5 } } }, PartitionQueryResponse: { fields: { partitions: { rule: "repeated", type: "Cursor", id: 1 }, nextPageToken: { type: "string", id: 2 } } }, WriteRequest: { fields: { database: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, streamId: { type: "string", id: 2 }, writes: { rule: "repeated", type: "Write", id: 3 }, streamToken: { type: "bytes", id: 4 }, labels: { keyType: "string", type: "string", id: 5 } } }, WriteResponse: { fields: { streamId: { type: "string", id: 1 }, streamToken: { type: "bytes", id: 2 }, writeResults: { rule: "repeated", type: "WriteResult", id: 3 }, commitTime: { type: "google.protobuf.Timestamp", id: 4 } } }, ListenRequest: { oneofs: { targetChange: { oneof: ["addTarget", "removeTarget"] } }, fields: { database: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, addTarget: { type: "Target", id: 2 }, removeTarget: { type: "int32", id: 3 }, labels: { keyType: "string", type: "string", id: 4 } } }, ListenResponse: { oneofs: { responseType: { oneof: ["targetChange", "documentChange", "documentDelete", "documentRemove", "filter"] } }, fields: { targetChange: { type: "TargetChange", id: 2 }, documentChange: { type: "DocumentChange", id: 3 }, documentDelete: { type: "DocumentDelete", id: 4 }, documentRemove: { type: "DocumentRemove", id: 6 }, filter: { type: "ExistenceFilter", id: 5 } } }, Target: { oneofs: { targetType: { oneof: ["query", "documents"] }, resumeType: { oneof: ["resumeToken", "readTime"] } }, fields: { query: { type: "QueryTarget", id: 2 }, documents: { type: "DocumentsTarget", id: 3 }, resumeToken: { type: "bytes", id: 4 }, readTime: { type: "google.protobuf.Timestamp", id: 11 }, targetId: { type: "int32", id: 5 }, once: { type: "bool", id: 6 } }, nested: { DocumentsTarget: { fields: { documents: { rule: "repeated", type: "string", id: 2 } } }, QueryTarget: { oneofs: { queryType: { oneof: ["structuredQuery"] } }, fields: { parent: { type: "string", id: 1 }, structuredQuery: { type: "StructuredQuery", id: 2 } } } } }, TargetChange: { fields: { targetChangeType: { type: "TargetChangeType", id: 1 }, targetIds: { rule: "repeated", type: "int32", id: 2 }, cause: { type: "google.rpc.Status", id: 3 }, resumeToken: { type: "bytes", id: 4 }, readTime: { type: "google.protobuf.Timestamp", id: 6 } }, nested: { TargetChangeType: { values: { NO_CHANGE: 0, ADD: 1, REMOVE: 2, CURRENT: 3, RESET: 4 } } } }, ListCollectionIdsRequest: { fields: { parent: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, pageSize: { type: "int32", id: 2 }, pageToken: { type: "string", id: 3 } } }, ListCollectionIdsResponse: { fields: { collectionIds: { rule: "repeated", type: "string", id: 1 }, nextPageToken: { type: "string", id: 2 } } }, BatchWriteRequest: { fields: { database: { type: "string", id: 1, options: { "(google.api.field_behavior)": "REQUIRED" } }, writes: { rule: "repeated", type: "Write", id: 2 }, labels: { keyType: "string", type: "string", id: 3 } } }, BatchWriteResponse: { fields: { writeResults: { rule: "repeated", type: "WriteResult", id: 1 }, status: { rule: "repeated", type: "google.rpc.Status", id: 2 } } }, StructuredQuery: { fields: { select: { type: "Projection", id: 1 }, from: { rule: "repeated", type: "CollectionSelector", id: 2 }, where: { type: "Filter", id: 3 }, orderBy: { rule: "repeated", type: "Order", id: 4 }, startAt: { type: "Cursor", id: 7 }, endAt: { type: "Cursor", id: 8 }, offset: { type: "int32", id: 6 }, limit: { type: "google.protobuf.Int32Value", id: 5 } }, nested: { CollectionSelector: { fields: { collectionId: { type: "string", id: 2 }, allDescendants: { type: "bool", id: 3 } } }, Filter: { oneofs: { filterType: { oneof: ["compositeFilter", "fieldFilter", "unaryFilter"] } }, fields: { compositeFilter: { type: "CompositeFilter", id: 1 }, fieldFilter: { type: "FieldFilter", id: 2 }, unaryFilter: { type: "UnaryFilter", id: 3 } } }, CompositeFilter: { fields: { op: { type: "Operator", id: 1 }, filters: { rule: "repeated", type: "Filter", id: 2 } }, nested: { Operator: { values: { OPERATOR_UNSPECIFIED: 0, AND: 1 } } } }, FieldFilter: { fields: { field: { type: "FieldReference", id: 1 }, op: { type: "Operator", id: 2 }, value: { type: "Value", id: 3 } }, nested: { Operator: { values: { OPERATOR_UNSPECIFIED: 0, LESS_THAN: 1, LESS_THAN_OR_EQUAL: 2, GREATER_THAN: 3, GREATER_THAN_OR_EQUAL: 4, EQUAL: 5, NOT_EQUAL: 6, ARRAY_CONTAINS: 7, IN: 8, ARRAY_CONTAINS_ANY: 9, NOT_IN: 10 } } } }, UnaryFilter: { oneofs: { operandType: { oneof: ["field"] } }, fields: { op: { type: "Operator", id: 1 }, field: { type: "FieldReference", id: 2 } }, nested: { Operator: { values: { OPERATOR_UNSPECIFIED: 0, IS_NAN: 2, IS_NULL: 3, IS_NOT_NAN: 4, IS_NOT_NULL: 5 } } } }, FieldReference: { fields: { fieldPath: { type: "string", id: 2 } } }, Order: { fields: { field: { type: "FieldReference", id: 1 }, direction: { type: "Direction", id: 2 } } }, Projection: { fields: { fields: { rule: "repeated", type: "FieldReference", id: 2 } } }, Direction: { values: { DIRECTION_UNSPECIFIED: 0, ASCENDING: 1, DESCENDING: 2 } } } }, Cursor: { fields: { values: { rule: "repeated", type: "Value", id: 1 }, before: { type: "bool", id: 2 } } }, Write: { oneofs: { operation: { oneof: ["update", "delete", "transform"] } }, fields: { update: { type: "Document", id: 1 }, delete: { type: "string", id: 2 }, transform: { type: "DocumentTransform", id: 6 }, updateMask: { type: "DocumentMask", id: 3 }, updateTransforms: { rule: "repeated", type: "DocumentTransform.FieldTransform", id: 7 }, currentDocument: { type: "Precondition", id: 4 } } }, DocumentTransform: { fields: { document: { type: "string", id: 1 }, fieldTransforms: { rule: "repeated", type: "FieldTransform", id: 2 } }, nested: { FieldTransform: { oneofs: { transformType: { oneof: ["setToServerValue", "increment", "maximum", "minimum", "appendMissingElements", "removeAllFromArray"] } }, fields: { fieldPath: { type: "string", id: 1 }, setToServerValue: { type: "ServerValue", id: 2 }, increment: { type: "Value", id: 3 }, maximum: { type: "Value", id: 4 }, minimum: { type: "Value", id: 5 }, appendMissingElements: { type: "ArrayValue", id: 6 }, removeAllFromArray: { type: "ArrayValue", id: 7 } }, nested: { ServerValue: { values: { SERVER_VALUE_UNSPECIFIED: 0, REQUEST_TIME: 1 } } } } } }, WriteResult: { fields: { updateTime: { type: "google.protobuf.Timestamp", id: 1 }, transformResults: { rule: "repeated", type: "Value", id: 2 } } }, DocumentChange: { fields: { document: { type: "Document", id: 1 }, targetIds: { rule: "repeated", type: "int32", id: 5 }, removedTargetIds: { rule: "repeated", type: "int32", id: 6 } } }, DocumentDelete: { fields: { document: { type: "string", id: 1 }, removedTargetIds: { rule: "repeated", type: "int32", id: 6 }, readTime: { type: "google.protobuf.Timestamp", id: 4 } } }, DocumentRemove: { fields: { document: { type: "string", id: 1 }, removedTargetIds: { rule: "repeated", type: "int32", id: 2 }, readTime: { type: "google.protobuf.Timestamp", id: 4 } } }, ExistenceFilter: { fields: { targetId: { type: "int32", id: 1 }, count: { type: "int32", id: 2 } } }, UndeliverableFirstGenEvent: { fields: { message: { type: "string", id: 1 }, reason: { type: "Reason", id: 2 }, documentName: { type: "string", id: 3 }, documentChangeType: { type: "DocumentChangeType", id: 4 }, functionName: { rule: "repeated", type: "string", id: 5 }, triggeredTime: { type: "google.protobuf.Timestamp", id: 6 } }, nested: { Reason: { values: { REASON_UNSPECIFIED: 0, EXCEEDING_SIZE_LIMIT: 1 } }, DocumentChangeType: { values: { DOCUMENT_CHANGE_TYPE_UNSPECIFIED: 0, CREATE: 1, DELETE: 2, UPDATE: 3 } } } } } } } }, type: { options: { cc_enable_arenas: true, go_package: "google.golang.org/genproto/googleapis/type/dayofweek;dayofweek", java_multiple_files: true, java_outer_classname: "DayOfWeekProto", java_package: "com.google.type", objc_class_prefix: "GTP" }, nested: { LatLng: { fields: { latitude: { type: "double", id: 1 }, longitude: { type: "double", id: 2 } } }, DayOfWeek: { values: { DAY_OF_WEEK_UNSPECIFIED: 0, MONDAY: 1, TUESDAY: 2, WEDNESDAY: 3, THURSDAY: 4, FRIDAY: 5, SATURDAY: 6, SUNDAY: 7 } } } }, api: { options: { go_package: "google.golang.org/genproto/googleapis/api/annotations;annotations", java_multiple_files: true, java_outer_classname: "ResourceProto", java_package: "com.google.api", objc_class_prefix: "GAPI", cc_enable_arenas: true }, nested: { http: { type: "HttpRule", id: 72295728, extend: "google.protobuf.MethodOptions" }, Http: { fields: { rules: { rule: "repeated", type: "HttpRule", id: 1 }, fullyDecodeReservedExpansion: { type: "bool", id: 2 } } }, HttpRule: { oneofs: { pattern: { oneof: ["get", "put", "post", "delete", "patch", "custom"] } }, fields: { selector: { type: "string", id: 1 }, get: { type: "string", id: 2 }, put: { type: "string", id: 3 }, post: { type: "string", id: 4 }, delete: { type: "string", id: 5 }, patch: { type: "string", id: 6 }, custom: { type: "CustomHttpPattern", id: 8 }, body: { type: "string", id: 7 }, responseBody: { type: "string", id: 12 }, additionalBindings: { rule: "repeated", type: "HttpRule", id: 11 } } }, CustomHttpPattern: { fields: { kind: { type: "string", id: 1 }, path: { type: "string", id: 2 } } }, methodSignature: { rule: "repeated", type: "string", id: 1051, extend: "google.protobuf.MethodOptions" }, defaultHost: { type: "string", id: 1049, extend: "google.protobuf.ServiceOptions" }, oauthScopes: { type: "string", id: 1050, extend: "google.protobuf.ServiceOptions" }, apiVersion: { type: "string", id: 525000001, extend: "google.protobuf.ServiceOptions" }, CommonLanguageSettings: { fields: { referenceDocsUri: { type: "string", id: 1, options: { deprecated: true } }, destinations: { rule: "repeated", type: "ClientLibraryDestination", id: 2 }, selectiveGapicGeneration: { type: "SelectiveGapicGeneration", id: 3 } } }, ClientLibrarySettings: { fields: { version: { type: "string", id: 1 }, launchStage: { type: "LaunchStage", id: 2 }, restNumericEnums: { type: "bool", id: 3 }, javaSettings: { type: "JavaSettings", id: 21 }, cppSettings: { type: "CppSettings", id: 22 }, phpSettings: { type: "PhpSettings", id: 23 }, pythonSettings: { type: "PythonSettings", id: 24 }, nodeSettings: { type: "NodeSettings", id: 25 }, dotnetSettings: { type: "DotnetSettings", id: 26 }, rubySettings: { type: "RubySettings", id: 27 }, goSettings: { type: "GoSettings", id: 28 } } }, Publishing: { fields: { methodSettings: { rule: "repeated", type: "MethodSettings", id: 2 }, newIssueUri: { type: "string", id: 101 }, documentationUri: { type: "string", id: 102 }, apiShortName: { type: "string", id: 103 }, githubLabel: { type: "string", id: 104 }, codeownerGithubTeams: { rule: "repeated", type: "string", id: 105 }, docTagPrefix: { type: "string", id: 106 }, organization: { type: "ClientLibraryOrganization", id: 107 }, librarySettings: { rule: "repeated", type: "ClientLibrarySettings", id: 109 }, protoReferenceDocumentationUri: { type: "string", id: 110 }, restReferenceDocumentationUri: { type: "string", id: 111 } } }, JavaSettings: { fields: { libraryPackage: { type: "string", id: 1 }, serviceClassNames: { keyType: "string", type: "string", id: 2 }, common: { type: "CommonLanguageSettings", id: 3 } } }, CppSettings: { fields: { common: { type: "CommonLanguageSettings", id: 1 } } }, PhpSettings: { fields: { common: { type: "CommonLanguageSettings", id: 1 } } }, PythonSettings: { fields: { common: { type: "CommonLanguageSettings", id: 1 }, experimentalFeatures: { type: "ExperimentalFeatures", id: 2 } }, nested: { ExperimentalFeatures: { fields: { restAsyncIoEnabled: { type: "bool", id: 1 }, protobufPythonicTypesEnabled: { type: "bool", id: 2 } } } } }, NodeSettings: { fields: { common: { type: "CommonLanguageSettings", id: 1 } } }, DotnetSettings: { fields: { common: { type: "CommonLanguageSettings", id: 1 }, renamedServices: { keyType: "string", type: "string", id: 2 }, renamedResources: { keyType: "string", type: "string", id: 3 }, ignoredResources: { rule: "repeated", type: "string", id: 4 }, forcedNamespaceAliases: { rule: "repeated", type: "string", id: 5 }, handwrittenSignatures: { rule: "repeated", type: "string", id: 6 } } }, RubySettings: { fields: { common: { type: "CommonLanguageSettings", id: 1 } } }, GoSettings: { fields: { common: { type: "CommonLanguageSettings", id: 1 }, renamedServices: { keyType: "string", type: "string", id: 2 } } }, MethodSettings: { fields: { selector: { type: "string", id: 1 }, longRunning: { type: "LongRunning", id: 2 }, autoPopulatedFields: { rule: "repeated", type: "string", id: 3 } }, nested: { LongRunning: { fields: { initialPollDelay: { type: "google.protobuf.Duration", id: 1 }, pollDelayMultiplier: { type: "float", id: 2 }, maxPollDelay: { type: "google.protobuf.Duration", id: 3 }, totalPollTimeout: { type: "google.protobuf.Duration", id: 4 } } } } }, ClientLibraryOrganization: { values: { CLIENT_LIBRARY_ORGANIZATION_UNSPECIFIED: 0, CLOUD: 1, ADS: 2, PHOTOS: 3, STREET_VIEW: 4, SHOPPING: 5, GEO: 6, GENERATIVE_AI: 7 } }, ClientLibraryDestination: { values: { CLIENT_LIBRARY_DESTINATION_UNSPECIFIED: 0, GITHUB: 10, PACKAGE_MANAGER: 20 } }, SelectiveGapicGeneration: { fields: { methods: { rule: "repeated", type: "string", id: 1 }, generateOmittedAsInternal: { type: "bool", id: 2 } } }, LaunchStage: { values: { LAUNCH_STAGE_UNSPECIFIED: 0, UNIMPLEMENTED: 6, PRELAUNCH: 7, EARLY_ACCESS: 1, ALPHA: 2, BETA: 3, GA: 4, DEPRECATED: 5 } }, fieldBehavior: { rule: "repeated", type: "google.api.FieldBehavior", id: 1052, extend: "google.protobuf.FieldOptions", options: { packed: false } }, FieldBehavior: { values: { FIELD_BEHAVIOR_UNSPECIFIED: 0, OPTIONAL: 1, REQUIRED: 2, OUTPUT_ONLY: 3, INPUT_ONLY: 4, IMMUTABLE: 5, UNORDERED_LIST: 6, NON_EMPTY_DEFAULT: 7, IDENTIFIER: 8 } }, resourceReference: { type: "google.api.ResourceReference", id: 1055, extend: "google.protobuf.FieldOptions" }, resourceDefinition: { rule: "repeated", type: "google.api.ResourceDescriptor", id: 1053, extend: "google.protobuf.FileOptions" }, resource: { type: "google.api.ResourceDescriptor", id: 1053, extend: "google.protobuf.MessageOptions" }, ResourceDescriptor: { fields: { type: { type: "string", id: 1 }, pattern: { rule: "repeated", type: "string", id: 2 }, nameField: { type: "string", id: 3 }, history: { type: "History", id: 4 }, plural: { type: "string", id: 5 }, singular: { type: "string", id: 6 }, style: { rule: "repeated", type: "Style", id: 10 } }, nested: { History: { values: { HISTORY_UNSPECIFIED: 0, ORIGINALLY_SINGLE_PATTERN: 1, FUTURE_MULTI_PATTERN: 2 } }, Style: { values: { STYLE_UNSPECIFIED: 0, DECLARATIVE_FRIENDLY: 1 } } } }, ResourceReference: { fields: { type: { type: "string", id: 1 }, childType: { type: "string", id: 2 } } } } }, rpc: { options: { cc_enable_arenas: true, go_package: "google.golang.org/genproto/googleapis/rpc/status;status", java_multiple_files: true, java_outer_classname: "StatusProto", java_package: "com.google.rpc", objc_class_prefix: "RPC" }, nested: { Status: { fields: { code: { type: "int32", id: 1 }, message: { type: "string", id: 2 }, details: { rule: "repeated", type: "google.protobuf.Any", id: 3 } } } } } } } } };
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/v1beta1/firestore_client_config.json
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/v1beta1/firestore_client_config.json
 var require_firestore_client_config2 = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/v1beta1/firestore_client_config.json"(exports, module) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/v1beta1/firestore_client_config.json"(exports, module) {
     module.exports = {
       interfaces: {
         "google.firestore.v1beta1.Firestore": {
@@ -126397,9 +126512,9 @@ var require_firestore_client_config2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/v1beta1/firestore_client.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/v1beta1/firestore_client.js
 var require_firestore_client2 = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/v1beta1/firestore_client.js"(exports) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/v1beta1/firestore_client.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FirestoreClient = void 0;
@@ -127354,9 +127469,9 @@ var require_firestore_client2 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/v1beta1/index.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/v1beta1/index.js
 var require_v1beta12 = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/v1beta1/index.js"(exports, module) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/v1beta1/index.js"(exports, module) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FirestoreClient = void 0;
@@ -127370,9 +127485,9 @@ var require_v1beta12 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/index.js
+// node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/index.js
 var require_src18 = __commonJS({
-  "node_modules/.pnpm/@google-cloud+firestore@7.11.6/node_modules/@google-cloud/firestore/build/src/index.js"(exports, module) {
+  "node_modules/.pnpm/@google-cloud+firestore@7.11.6_supports-color@7.2.0/node_modules/@google-cloud/firestore/build/src/index.js"(exports, module) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Firestore = exports.DEFAULT_MAX_IDLE_CHANNELS = exports.DEFAULT_MAX_TRANSACTION_ATTEMPTS = exports.MAX_REQUEST_RETRIES = exports.AggregateField = exports.Aggregate = exports.setLogFunction = exports.QueryPartition = exports.CollectionGroup = exports.GeoPoint = exports.FieldPath = exports.DocumentChange = exports.Timestamp = exports.Transaction = exports.WriteResult = exports.WriteBatch = exports.Filter = exports.VectorValue = exports.FieldValue = exports.QueryDocumentSnapshot = exports.DocumentSnapshot = exports.BulkWriter = exports.Query = exports.QuerySnapshot = exports.DocumentReference = exports.CollectionReference = void 0;
@@ -128515,9 +128630,9 @@ var require_src18 = __commonJS({
   }
 });
 
-// node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2/node_modules/firebase-admin/lib/firestore/firestore-internal.js
+// node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2_supports-color@7.2.0/node_modules/firebase-admin/lib/firestore/firestore-internal.js
 var require_firestore_internal = __commonJS({
-  "node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2/node_modules/firebase-admin/lib/firestore/firestore-internal.js"(exports) {
+  "node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2_supports-color@7.2.0/node_modules/firebase-admin/lib/firestore/firestore-internal.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FirestoreService = void 0;
@@ -128631,9 +128746,9 @@ var require_firestore_internal = __commonJS({
   }
 });
 
-// node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2/node_modules/firebase-admin/lib/firestore/index.js
+// node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2_supports-color@7.2.0/node_modules/firebase-admin/lib/firestore/index.js
 var require_firestore = __commonJS({
-  "node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2/node_modules/firebase-admin/lib/firestore/index.js"(exports) {
+  "node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2_supports-color@7.2.0/node_modules/firebase-admin/lib/firestore/index.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FirebaseFirestoreError = exports.setLogFunction = exports.v1 = exports.WriteResult = exports.WriteBatch = exports.Transaction = exports.Timestamp = exports.QuerySnapshot = exports.QueryPartition = exports.QueryDocumentSnapshot = exports.Query = exports.GrpcStatus = exports.GeoPoint = exports.Firestore = exports.Filter = exports.FieldValue = exports.FieldPath = exports.DocumentSnapshot = exports.DocumentReference = exports.CollectionReference = exports.CollectionGroup = exports.BundleBuilder = exports.BulkWriter = exports.AggregateQuerySnapshot = exports.AggregateQuery = exports.AggregateField = void 0;
@@ -128739,7 +128854,7 @@ var require_firestore = __commonJS({
   }
 });
 
-// node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2/node_modules/firebase-admin/lib/esm/firestore/index.js
+// node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2_supports-color@7.2.0/node_modules/firebase-admin/lib/esm/firestore/index.js
 var firestore_exports = {};
 __export(firestore_exports, {
   AggregateField: () => AggregateField,
@@ -128773,7 +128888,7 @@ __export(firestore_exports, {
 });
 var import_firestore, AggregateField, AggregateQuery, AggregateQuerySnapshot, BulkWriter, BundleBuilder, CollectionGroup, CollectionReference, DocumentReference, DocumentSnapshot, FieldPath, FieldValue, Filter, FirebaseFirestoreError, Firestore, GeoPoint, GrpcStatus, Query, QueryDocumentSnapshot, QueryPartition, QuerySnapshot, Timestamp, Transaction, WriteBatch, WriteResult, getFirestore, initializeFirestore, setLogFunction, v12;
 var init_firestore = __esm({
-  "node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2/node_modules/firebase-admin/lib/esm/firestore/index.js"() {
+  "node_modules/.pnpm/firebase-admin@13.10.0_@firebase+app-compat@0.5.18_@firebase+app@0.16.2_supports-color@7.2.0/node_modules/firebase-admin/lib/esm/firestore/index.js"() {
     import_firestore = __toESM(require_firestore(), 1);
     AggregateField = import_firestore.default.AggregateField;
     AggregateQuery = import_firestore.default.AggregateQuery;
@@ -146316,7 +146431,7 @@ var helmet = Object.assign(
 // server/app.ts
 var import_jsonwebtoken3 = __toESM(require_jsonwebtoken(), 1);
 
-// node_modules/.pnpm/@google+genai@2.29.1/node_modules/@google/genai/dist/node/index.mjs
+// node_modules/.pnpm/@google+genai@2.29.1_supports-color@7.2.0/node_modules/@google/genai/dist/node/index.mjs
 var import_p_retry = __toESM(require_p_retry(), 1);
 var import_google_auth_library = __toESM(require_src6(), 1);
 import { createWriteStream } from "fs";
@@ -146335,7 +146450,7 @@ var import_subprotocol = __toESM(require_subprotocol(), 1);
 var import_websocket = __toESM(require_websocket(), 1);
 var import_websocket_server = __toESM(require_websocket_server(), 1);
 
-// node_modules/.pnpm/@google+genai@2.29.1/node_modules/@google/genai/dist/node/index.mjs
+// node_modules/.pnpm/@google+genai@2.29.1_supports-color@7.2.0/node_modules/@google/genai/dist/node/index.mjs
 import * as path from "path";
 var _defaultBaseGeminiUrl = void 0;
 var _defaultBaseVertexUrl = void 0;
@@ -179173,7 +179288,7 @@ var JsonDataStore = class {
         break;
       } catch (e2) {
         if (e2.code !== "EEXIST") throw e2;
-        if (attempt === maxRetries - 1) throw new Error("Could not acquire store lock");
+        if (attempt === maxRetries - 1) throw new Error("Could not acquire store lock", { cause: e2 });
         const start = Date.now();
         while (Date.now() - start < retryDelayMs) {
         }
@@ -179503,7 +179618,7 @@ async function findReviewEligibility(store2, user, salonId, requestedBookingId) 
   };
 }
 
-// node_modules/.pnpm/express-rate-limit@8.7.1_express@4.22.3/node_modules/express-rate-limit/dist/index.mjs
+// node_modules/.pnpm/express-rate-limit@8.7.1_express@4.22.3_supports-color@7.2.0__supports-color@7.2.0/node_modules/express-rate-limit/dist/index.mjs
 var import_ip_address = __toESM(require_ip_address(), 1);
 var import_debug = __toESM(require_src2(), 1);
 import { isIPv6 } from "node:net";

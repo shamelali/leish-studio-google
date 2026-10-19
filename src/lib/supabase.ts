@@ -5,9 +5,9 @@
  */
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
-// @ts-ignore Vite env typing (no vite/client types in this tsconfig)
+// @ts-expect-error Vite env typing (no vite/client types in this tsconfig)
 const url = import.meta.env.VITE_SUPABASE_URL as string | undefined;
-// @ts-ignore
+// @ts-expect-error same as above
 const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
 
 export const supabaseBrowser: SupabaseClient | null =

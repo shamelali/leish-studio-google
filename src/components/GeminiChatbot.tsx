@@ -31,7 +31,8 @@ export type ConciergeTools = {
   };
 };
 
-type ConciergeMessage = UIMessage<unknown, {}, ConciergeTools>;
+// No custom UI data parts for this chatbot — use the library default.
+type ConciergeMessage = UIMessage<unknown, never, ConciergeTools>;
 type SearchArtistsPart = Extract<ConciergeMessage['parts'][number], { type: 'tool-searchArtists' }>;
 
 interface GeminiChatbotProps {
