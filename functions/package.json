@@ -1,0 +1,21 @@
+{
+  "name": "leish-functions",
+  "description": "Leish! Studio API — Firebase Cloud Functions (free Spark tier)",
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "main": "lib/src/index.js",
+  "dependencies": {
+    "firebase-functions": "^6.2.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  },
+  "engines": {
+    "node": "22"
+  }
+}

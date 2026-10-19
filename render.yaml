@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: leish-studio
+    env: node
+    plan: free
+    region: ohio
+    buildCommand: "pnpm install --frozen-lockfile && pnpm run build"
+    startCommand: "NODE_ENV=production node dev.ts"
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: STORE_BACKEND
+        value: firestore
+      - key: JWT_SECRET
+        generateValue: true
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: PORT
+        value: "3000"
+    autoDeploy: true
