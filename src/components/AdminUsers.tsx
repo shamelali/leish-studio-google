@@ -13,7 +13,7 @@ interface AdminUsersProps {
   onOpenAuth: (mode?: 'signin' | 'signup', prompt?: string) => void;
 }
 
-type Role = 'client' | 'provider' | 'admin';
+type Role = 'client' | 'MUA' | 'studio' | 'admin';
 
 interface RowEdit {
   role: Role;
@@ -22,7 +22,7 @@ interface RowEdit {
 
 function editOf(user: User): RowEdit {
   return {
-    role: (['client', 'provider', 'admin'] as const).includes(user.role as Role)
+    role: (['client', 'MUA', 'studio', 'admin'] as const).includes(user.role as Role)
       ? (user.role as Role)
       : 'client',
     salonId: user.salonId ?? '',
@@ -182,7 +182,8 @@ export default function AdminUsers({ currentUser, onOpenAuth }: AdminUsersProps)
                   className="rounded-lg border border-line bg-inset px-2 py-2 text-xs text-fg focus:border-accent-strong focus:outline-none disabled:opacity-50"
                 >
                   <option value="client">Client</option>
-                  <option value="provider">Provider</option>
+                  <option value="MUA">Makeup Artist</option>
+                  <option value="studio">Salon Admin</option>
                   <option value="admin">Admin</option>
                 </select>
                 <select
