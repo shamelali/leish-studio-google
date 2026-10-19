@@ -200481,7 +200481,7 @@ var registerSchema = external_exports.object({
   name: external_exports.string().min(1).max(100),
   email: external_exports.string().email(),
   password: external_exports.string().min(6).max(100),
-  role: external_exports.enum(["client", "MUA", "studio", "admin"]).optional(),
+  role: external_exports.enum(["client", "MUA", "studio"]).optional(),
   phone: external_exports.string().optional(),
   bio: external_exports.string().max(500).optional()
 });
@@ -200490,7 +200490,7 @@ var loginSchema = external_exports.object({
   password: external_exports.string().min(1)
 });
 var oauthCompleteSchema = external_exports.object({
-  role: external_exports.enum(["client", "MUA", "studio", "admin"]).optional()
+  role: external_exports.enum(["client", "MUA", "studio"]).optional()
 });
 var updateProfileSchema = external_exports.object({
   id: external_exports.string().min(1),
