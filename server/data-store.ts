@@ -302,7 +302,7 @@ export class JsonDataStore implements DataStore {
         break; // Lock acquired
       } catch (e: any) {
         if (e.code !== 'EEXIST') throw e;
-        if (attempt === maxRetries - 1) throw new Error('Could not acquire store lock');
+        if (attempt === maxRetries - 1) throw new Error('Could not acquire store lock', { cause: e });
         // Wait and retry
         const start = Date.now();
         while (Date.now() - start < retryDelayMs) { /* busy wait for short delay */ }
@@ -332,7 +332,7 @@ export class JsonDataStore implements DataStore {
       fs.chmodSync(STORE_PATH, 0o600);
     } finally {
       // Release lock
-      try { fs.unlinkSync(lockPath); } catch {}
+      try { fs.unlinkSync(lockPath); } catch { /* already gone — nothing to release */ }
     }
   }
 
