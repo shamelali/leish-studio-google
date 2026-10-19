@@ -35,7 +35,7 @@ const registerSchema = z.object({
   name: z.string().min(1).max(100),
   email: z.string().email(),
   password: z.string().min(6).max(100),
-  role: z.enum(['client', 'MUA', 'studio', 'admin']).optional(),
+  role: z.enum(['client', 'MUA', 'studio']).optional(),
   phone: z.string().optional(),
   bio: z.string().max(500).optional(),
 });
@@ -49,7 +49,7 @@ const loginSchema = z.object({
 });
 
 const oauthCompleteSchema = z.object({
-  role: z.enum(['client', 'MUA', 'studio', 'admin']).optional(),
+  role: z.enum(['client', 'MUA', 'studio']).optional(),
 });
 
 const updateProfileSchema = z.object({

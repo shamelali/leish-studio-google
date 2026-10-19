@@ -471,6 +471,18 @@ describe('JWT configuration (TR-9)', () => {
 });
 
 describe('auth round-trip', () => {
+  it('rejects administrator role selection from public registration', async () => {
+    const res = await request(app).post('/api/auth/register').send({
+      name: 'Attempted Admin',
+      email: `attempted-admin-${Date.now()}@leish.test`,
+      password: 'Sup3rSecret!',
+      role: 'admin',
+    });
+
+    expect(res.status).toBe(400);
+    expect(res.body.error).toMatch(/invalid option|expected/i);
+  });
+
   it('registers a user and resolves the session token', async () => {
     const email = `phase0-${Date.now()}@leish.test`;
 
