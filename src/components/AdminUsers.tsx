@@ -29,6 +29,15 @@ function editOf(user: User): RowEdit {
   };
 }
 
+export function matchesAdminUserSearch(user: User, query: string): boolean {
+  const normalizedQuery = query.trim().toLowerCase();
+  if (!normalizedQuery) return true;
+
+  return [user.name, user.email, user.id, user.salonId ?? ''].some(value =>
+    value.trim().toLowerCase().includes(normalizedQuery),
+  );
+}
+
 export default function AdminUsers({ currentUser, onOpenAuth }: AdminUsersProps) {
   const isAdmin = currentUser?.role === 'admin';
   const { data: users = [], isLoading, error: loadError } = useUsers(isAdmin);
@@ -41,12 +50,8 @@ export default function AdminUsers({ currentUser, onOpenAuth }: AdminUsersProps)
   const [notice, setNotice] = useState<{ kind: 'error' | 'success'; text: string } | null>(null);
 
   const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
     const list = (users as User[]).slice().sort((a, b) => a.email.localeCompare(b.email));
-    if (!q) return list;
-    return list.filter(user =>
-      user.email.toLowerCase().includes(q) || user.name.toLowerCase().includes(q),
-    );
+    return list.filter(user => matchesAdminUserSearch(user, query));
   }, [users, query]);
 
   if (!currentUser || !isAdmin) {
@@ -125,18 +130,22 @@ export default function AdminUsers({ currentUser, onOpenAuth }: AdminUsersProps)
         <h2 className="font-serif text-2xl text-fg">All Users</h2>
         <span className="text-xs font-mono text-fg-dim">{(users as User[]).length} accounts</span>
       </div>
-      <p className="text-xs text-fg-muted mb-5">Change roles, link providers to salons, or unlink them. Changes apply immediately.</p>
+      <p className="text-xs text-fg-muted mb-5">Change roles, link artists and studio operators to listings, or unlink them. Select Save to apply changes. The IDs below show the saved account details.</p>
 
-      <div className="relative mb-4">
-        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-fg-dim" />
-        <input
-          type="search"
-          value={query}
-          onChange={event => setQuery(event.target.value)}
-          placeholder="Search name or email…"
-          aria-label="Search users"
-          className="w-full max-w-sm rounded-xl border border-line bg-inset py-2.5 pl-10 pr-3 text-sm text-fg placeholder-fg-dim focus:border-accent-strong focus:outline-none"
-        />
+      <div className="mb-4">
+        <div className="relative w-full max-w-sm">
+          <Search aria-hidden="true" className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-fg-dim" />
+          <input
+            type="search"
+            value={query}
+            onChange={event => setQuery(event.target.value)}
+            placeholder="Search name, email, or ID…"
+            aria-label="Search users by name, email, account ID, or linked listing ID"
+            aria-describedby="admin-user-search-help"
+            className="w-full rounded-xl border border-line bg-inset py-2.5 pl-10 pr-3 text-sm text-fg placeholder-fg-dim focus:border-accent-strong focus:outline-none"
+          />
+        </div>
+        <p id="admin-user-search-help" className="mt-1.5 pl-1 text-xs text-fg-muted">Search loaded accounts by name, email, account ID, or linked listing ID.</p>
       </div>
 
       {notice && (
@@ -160,18 +169,24 @@ export default function AdminUsers({ currentUser, onOpenAuth }: AdminUsersProps)
         <p className="text-sm text-fg-muted">No accounts match.</p>
       ) : (
         <div className="rounded-2xl border border-line overflow-hidden">
-          <div className="hidden sm:grid grid-cols-[1fr_130px_1fr_90px_44px] gap-3 px-4 py-2.5 text-[11px] font-mono uppercase tracking-wider text-fg-dim bg-panel-mid border-b border-line">
-            <span>Account</span><span>Role</span><span>Salon</span><span /><span />
+          <div className="hidden sm:grid grid-cols-[minmax(0,1fr)_160px_minmax(0,1fr)_90px_44px] gap-3 px-4 py-2.5 text-[11px] font-mono uppercase tracking-wider text-fg-dim bg-panel-mid border-b border-line">
+            <span>Account</span><span>Role</span><span>Listing</span><span /><span />
           </div>
           {filtered.map((user: User) => {
             const edit = edits[user.id] ?? editOf(user);
             const dirty = isDirty(user);
             const saving = updateUser.isPending && dirty;
+            const isProvider = user.role === 'MUA' || user.role === 'studio';
+            const hasSelectedListing = edit.salonId && (salons as Salon[]).some(salon => salon.id === edit.salonId);
             return (
-              <div key={user.id} className="grid sm:grid-cols-[1fr_130px_1fr_90px_44px] gap-3 items-center px-4 py-3 border-b border-line last:border-0 bg-recessed">
+              <div key={user.id} className="grid sm:grid-cols-[minmax(0,1fr)_160px_minmax(0,1fr)_90px_44px] gap-3 items-center px-4 py-3 border-b border-line last:border-0 bg-recessed">
                 <div className="min-w-0">
                   <p className="text-sm font-medium text-fg truncate">{user.name}</p>
                   <p className="text-xs font-mono text-fg-muted truncate">{user.email}</p>
+                  <p className="mt-1 text-xs leading-4 text-fg-muted">
+                    <span>{user.role === 'MUA' ? 'MUA account ID' : 'Account ID'}: </span>
+                    <span className="font-mono text-fg-muted break-all select-text">{user.id}</span>
+                  </p>
                 </div>
                 <select
                   value={edit.role}
@@ -179,24 +194,35 @@ export default function AdminUsers({ currentUser, onOpenAuth }: AdminUsersProps)
                   aria-label={`Role for ${user.email}`}
                   disabled={user.id === currentUser.id}
                   title={user.id === currentUser.id ? 'Your own role cannot be changed here' : undefined}
-                  className="rounded-lg border border-line bg-inset px-2 py-2 text-xs text-fg focus:border-accent-strong focus:outline-none disabled:opacity-50"
+                  className="w-full min-w-0 rounded-lg border border-line bg-inset px-2 py-2 text-xs text-fg focus:border-accent-strong focus:outline-none disabled:opacity-50"
                 >
                   <option value="client">Client</option>
-                  <option value="MUA">Makeup Artist</option>
-                  <option value="studio">Salon Admin</option>
+                  <option value="MUA">Makeup Artist (MUA)</option>
+                  <option value="studio">Studio Operator</option>
                   <option value="admin">Admin</option>
                 </select>
-                <select
-                  value={edit.salonId}
-                  onChange={event => setRowEdit(user.id, { salonId: event.target.value })}
-                  aria-label={`Salon for ${user.email}`}
-                  className="rounded-lg border border-line bg-inset px-2 py-2 text-xs text-fg focus:border-accent-strong focus:outline-none"
-                >
-                  <option value="">No salon</option>
-                  {(salons as Salon[]).map(salon => (
-                    <option key={salon.id} value={salon.id}>{salon.name}</option>
-                  ))}
-                </select>
+                <div className="min-w-0">
+                  <select
+                    value={edit.salonId}
+                    onChange={event => setRowEdit(user.id, { salonId: event.target.value })}
+                    aria-label={`Listing for ${user.email}`}
+                    className="w-full min-w-0 rounded-lg border border-line bg-inset px-2 py-2 text-xs text-fg focus:border-accent-strong focus:outline-none"
+                  >
+                    <option value="">No listing</option>
+                    {!hasSelectedListing && edit.salonId && (
+                      <option value={edit.salonId}>Listing not loaded ({edit.salonId})</option>
+                    )}
+                    {(salons as Salon[]).map(salon => (
+                      <option key={salon.id} value={salon.id}>{salon.name}</option>
+                    ))}
+                  </select>
+                  <p className="mt-1 text-xs leading-4 text-fg-muted">
+                    <span>Linked listing ID: </span>
+                    <span className="font-mono text-fg-muted break-all select-text">
+                      {user.salonId || (isProvider ? 'Not linked yet' : '—')}
+                    </span>
+                  </p>
+                </div>
                 <button
                   type="button"
                   onClick={() => saveRow(user)}

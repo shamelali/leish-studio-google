@@ -29,6 +29,14 @@ pnpm run dev
 
 The app is served on `http://localhost:3000` unless `PORT` is set.
 
+### Account and artist IDs
+
+In the administrator's **All Users** screen, each makeup artist shows their
+existing **MUA account ID** (`User.id`) separately from the **Linked listing ID**
+(`User.salonId`). Unlinked professional accounts show **Not linked yet**; this
+does not mean their account ID is missing. IDs are selectable and searchable
+among loaded accounts. Role and listing edits take effect after **Save**.
+
 ## Checks
 
 ```bash
