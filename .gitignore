@@ -33,3 +33,8 @@ db_store.json
 skills-lock.json
 playwright-report/
 tests/e2e/test-results/
+
+# Local assistant/tooling config and generated skill material — not application code.
+.claude/
+agent/
+skills/
