@@ -31,6 +31,8 @@ describe('concierge booking cards', () => {
     for (const text of ['Catalogue Artist', 'Kuala Lumpur', 'Dewy Bridal Makeup', 'RM 450', 'Book this service']) {
       expect(html).toContain(text);
     }
+    expect(html).toContain('Image unavailable');
+    expect(html).not.toContain('src=""');
     expect(html).not.toContain('Available today');
   });
 

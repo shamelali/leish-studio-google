@@ -65,9 +65,19 @@ export default function ConciergeArtistCards({ state, result, onBook }: Concierg
       <p className="text-xs leading-relaxed text-fg-muted">{result.summary}</p>
       <div className="grid gap-3 sm:grid-cols-2">
         {result.artists.map(({ salon, service, reason }) => (
-          <article key={`${salon.id}-${service.id}`} className="overflow-hidden rounded-2xl border border-line bg-surface shadow-sm transition-colors hover:border-accent-soft">
-            <div className="relative h-32 bg-inset">
-              <img src={salon.image} alt={salon.name} loading="lazy" decoding="async" className="h-full w-full object-cover" />
+            <article key={`${salon.id}-${service.id}`} className="overflow-hidden rounded-2xl border border-line bg-surface shadow-sm transition-colors hover:border-accent-soft">
+              <div className="relative h-32 bg-inset">
+              {salon.image ? (
+                <img src={salon.image} alt={salon.name} loading="lazy" decoding="async" className="h-full w-full object-cover" />
+              ) : (
+                <div
+                  className="flex h-full w-full items-center justify-center bg-gradient-to-br from-brand-rose-surface/60 via-inset to-surface px-4 text-center text-[10px] font-mono uppercase tracking-wider text-fg-dim"
+                  role="img"
+                  aria-label={`${salon.name} image unavailable`}
+                >
+                  Image unavailable
+                </div>
+              )}
               <span className="absolute left-2.5 top-2.5 rounded-full border border-brand-rose/40 bg-brand-rose-surface/90 px-2 py-1 text-[9px] font-mono font-semibold uppercase tracking-wide text-brand-rose backdrop-blur-sm">
                 {categoryLabels[salon.category] || salon.category}
               </span>
