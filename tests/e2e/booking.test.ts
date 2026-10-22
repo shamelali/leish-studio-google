@@ -1,42 +1,41 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
+
+interface E2ESalon {
+  id: string;
+  name: string;
+}
+
+async function getFirstSalon(page: Page): Promise<E2ESalon> {
+  const response = await page.request.get('/api/salons');
+  expect(response.status()).toBe(200);
+  const body = await response.json() as { data?: E2ESalon[] };
+  expect(body.data?.length ?? 0).toBeGreaterThan(0);
+  return body.data![0];
+}
 
 test.describe('Booking Flow', () => {
   test('should navigate to salon details', async ({ page }) => {
     await page.goto('/');
-    
-    // Wait for salons to load
-    await page.waitForTimeout(4000);
-    
-    // Click on a salon card using JavaScript to bypass overlay issues
-    const salonCard = page.getByRole('heading', { name: 'Leish! Bridal Atelier KL' }).first();
-    await salonCard.waitFor({ state: 'visible', timeout: 10000 });
-    await salonCard.click({ force: true });
-    
-    // Should navigate to salon details page
-    await expect(page).toHaveURL(/\/salon\/.*/, { timeout: 15000 });
-    await expect(page.getByText('Leish! Bridal Atelier KL')).toBeVisible();
+
+    const salon = await getFirstSalon(page);
+    await expect(page.getByRole('button', { name: `View ${salon.name}` })).toBeVisible({ timeout: 10000 });
+    await page.getByRole('button', { name: `View ${salon.name}` }).click();
+
+    await expect(page).toHaveURL(new RegExp(`/salon/${salon.id}$`));
+    await expect(page.getByRole('heading', { name: salon.name, exact: true })).toBeVisible();
   });
 
   test('should open booking modal', async ({ page }) => {
-    await page.goto('/salon/salon-leish-001');
-    await page.waitForTimeout(3000);
-    
-    // Click book now or create booking button
-    const bookButtons = page.getByRole('button', { name: /book|schedule|reserve/i });
-    if ((await bookButtons.count()) > 0) {
-      await bookButtons.first().click();
-      
-      // Booking modal should open
-      await expect(page.getByText(/booking|appointment/i).first()).toBeVisible();
-    } else {
-      console.log('No book button found - may need to be logged in');
-    }
+    const salon = await getFirstSalon(page);
+    await page.goto(`/salon/${encodeURIComponent(salon.id)}`);
+    await expect(page.getByRole('heading', { name: salon.name, exact: true })).toBeVisible();
+
+    await page.getByRole('button', { name: 'Reserve Slot', exact: true }).first().click();
+    await expect(page.getByRole('dialog')).toBeVisible();
+    await expect(page.getByRole('dialog').getByRole('heading', { name: 'Date & time', exact: true })).toBeVisible();
   });
 
   test('should show pagination envelope on salons page', async ({ page }) => {
-    await page.goto('/');
-    await page.waitForTimeout(2000);
-    
     // The API returns a paginated envelope
     const response = await page.request.get('/api/salons');
     expect(response.status()).toBe(200);

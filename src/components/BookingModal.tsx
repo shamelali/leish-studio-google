@@ -17,7 +17,8 @@ import {
   Calculator
 } from 'lucide-react';
 import { Salon, Service, StaffMember, Booking, User, LookbookItem } from '../types';
-import { apiClient, useCreateBooking, bookingsApi } from '../lib/api';
+import { apiClient, useCreateBooking } from '../lib/api';
+import { analytics } from '../lib/analytics';
 import {
   bookingFormSchema, bookingTimeSlots, bookingTravelQuoteSchema, buildBookingRequest,
   formatBookingDate, getBookingDates, getBookingScheduleErrors, getBookingTravelFee,
@@ -57,11 +58,6 @@ export default function BookingModal({
   const [scheduleErrors, setScheduleErrors] = useState<{ staff?: string; date?: string; time?: string }>({});
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [errorFocusVersion, setErrorFocusVersion] = useState(0);
-  // Payment state (Hitpay)
-  const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
-  const [paymentStatus, setPaymentStatus] = useState<'pending' | 'paid' | 'failed' | null>(null);
-  const [paymentBillId, setPaymentBillId] = useState<string | null>(null);
-  const [paymentBusy, setPaymentBusy] = useState(false);
   // Guest email verification (FR-001): appears when the API answers
   // 422 contact_unverified; a code is requested automatically, the guest
   // enters it, and the next submit carries it as contactCode.
@@ -234,6 +230,13 @@ export default function BookingModal({
       } as BookingRequest);
     } catch (error) {
       const code = (error as { code?: string })?.code;
+      analytics.track('booking_failed', {
+        failure_type: code === 'contact_unverified' || code === 'invalid_contact'
+          ? 'contact_verification'
+          : code === 'invalid_token'
+            ? 'session'
+            : 'request',
+      });
       if (code === 'contact_unverified' || code === 'invalid_contact') {
         setVerificationNeeded(true);
         if (!verificationSent) {
@@ -253,19 +256,6 @@ export default function BookingModal({
       submitting.current = false;
     }
     setReceivedBooking(result);
-    // Initiate Hitpay payment for the new booking
-    try {
-      setPaymentBusy(true);
-      const payment = await bookingsApi.pay(result.id);
-      setPaymentUrl(payment.paymentUrl);
-      setPaymentBillId(payment.billId);
-      setPaymentStatus('pending');
-    } catch (error: any) {
-      setSubmitError(error.message || 'Booking created, but payment could not be initiated. You can pay later.');
-      setPaymentStatus(null);
-    } finally {
-      setPaymentBusy(false);
-    }
     setStep(4);
     onBookingSuccess(result);
   };

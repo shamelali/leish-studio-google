@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import crypto from 'node:crypto';
 import bcrypt from 'bcrypt';
 import type { Salon, Booking, Review, Service, StaffMember, User } from '../src/types.ts';
 import { FirestoreStore } from './firestore-store.ts';
@@ -9,17 +10,12 @@ import { slicePage } from './pagination.ts';
 import { bookingsConflict } from './slots.ts';
 import type { ContactVerificationRecord } from './contact-verification.ts';
 import { classifyAttempt, contactKey } from './contact-verification.ts';
+import { SlotConflictError, idempotencyExpiry, isIdempotencyLive } from './store-utils.ts';
+
+export { SlotConflictError, IDEMPOTENCY_TTL_MS, idempotencyExpiry, isIdempotencyLive } from './store-utils.ts';
 
 export interface StoredUser extends User {
   password: string;
-}
-
-/** Raised when a booking would overlap an active booking for the same staff member (FR-004). */
-export class SlotConflictError extends Error {
-  constructor() {
-    super('Slot conflict');
-    this.name = 'SlotConflictError';
-  }
 }
 
 export interface IdempotencyInput {
@@ -33,17 +29,6 @@ export interface BookingWriteResult {
   booking: Booking;
   /** True when the idempotency key matched an existing booking (AC-007). */
   replayed: boolean;
-}
-
-/** Idempotency records live 24h (G3) and are scoped per owner (BR-3). */
-export const IDEMPOTENCY_TTL_MS = 24 * 60 * 60 * 1000;
-
-export function idempotencyExpiry(now = Date.now()): string {
-  return new Date(now + IDEMPOTENCY_TTL_MS).toISOString();
-}
-
-export function isIdempotencyLive(expiresAt: string, now = Date.now()): boolean {
-  return new Date(expiresAt).getTime() > now;
 }
 
 /** Role-derived row filters for booking lists (computed by the handler, enforced by the store). */
@@ -184,10 +169,12 @@ const hashPassword = (password: string): string => bcrypt.hashSync(password, 10)
 // The catalog launches empty (Malaysia-only listings to be added through
 // admin tooling). The sole seed is the administrator bootstrap account;
 // it cannot be created via signup (register only allows client/provider).
-// Set LEISH_ADMIN_PASSWORD in production — the fallback below exists only
-// so local dev and tests boot without secrets. Existing db_store.json
-// files keep their stored hash; this only affects fresh seeds.
-const SEED_ADMIN_PASSWORD = process.env.LEISH_ADMIN_PASSWORD || 'lindan95';
+// Set LEISH_ADMIN_PASSWORD in production. Local development generates a
+// one-off password when the variable is absent so no credential is embedded in
+// the repository. Existing db_store.json files keep their stored hash; this
+// only affects fresh seeds.
+const configuredAdminPassword = process.env.LEISH_ADMIN_PASSWORD?.trim();
+const SEED_ADMIN_PASSWORD = configuredAdminPassword || crypto.randomBytes(32).toString('base64url');
 const INITIAL_USERS: StoredUser[] = [
   {
     id: 'user-admin-1',

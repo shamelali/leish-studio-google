@@ -52,6 +52,35 @@ The single full verification command is:
 pnpm run verify
 ```
 
+### Browser E2E checks
+
+The default Playwright run is bounded to a local credential-free app server. It
+uses `server/test-fixture.json` through a temporary JSON store, sets
+`LEISH_REQUIRE_CONTACT_VERIFICATION=0`, and does not use local Supabase,
+Firebase, AI, maps, or Brevo credentials.
+
+```bash
+pnpm run test:e2e
+```
+
+Use `PLAYWRIGHT_BASE_URL` to target an already deployed or separately managed
+server; setting it disables the local `webServer`.
+
+```bash
+PLAYWRIGHT_BASE_URL="https://example.test" pnpm run test:e2e
+```
+
+The valid-email OTP success test is skipped by default because it requires a
+real configured email transport. Run it only against a credentialed target with
+`PLAYWRIGHT_EXTERNAL_SERVICES=1`; malformed and empty-contact checks remain
+keyless by default.
+
+The Firestore emulator CLI is a project-local dev dependency:
+
+```bash
+pnpm run emulator:firestore
+```
+
 The Supabase integration tests are skipped unless both
 `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` are configured.
 
@@ -81,3 +110,10 @@ locked dependency install, `pnpm run build`, and `pnpm exec tsx dev.ts`.
 Set production secrets in Render's environment settings and use the Supabase
 backend for durable data. See `docs/07-launch-runbook.md` and
 `PRODUCTION_CHECKLIST.md` for smoke tests and rollback guidance.
+
+The Firestore adapter remains available for separately configured deployments
+and is covered by the emulator suite; it is not the checked-in Render
+production profile. Workspace writes, payments, real availability, live
+distance calculations, and physical-device accessibility sign-off remain
+explicitly unverified until their external credentials or product policies are
+provided.

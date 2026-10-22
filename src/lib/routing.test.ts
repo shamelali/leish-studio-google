@@ -14,6 +14,23 @@ describe('minimal URL routing', () => {
     expect(pathForRoute(route)).toBe('/salon/atelier%2Fone');
   });
 
+  it('accepts the legacy listing detail alias', () => {
+    expect(routeFromLocation({ pathname: '/listing/atelier-one' })).toEqual({
+      tab: 'explore',
+      salonId: 'atelier-one',
+    });
+  });
+
+  it.each([
+    ['/advisor', { tab: 'ai-stylist' }],
+    ['/bookings', { tab: 'client' }],
+    ['/portal/client', { tab: 'client' }],
+    ['/portal/provider', { tab: 'provider' }],
+    ['/portal/admin', { tab: 'admin' }],
+  ] as const)('maps %s to its implemented surface', (pathname, expected) => {
+    expect(routeFromLocation({ pathname })).toEqual(expected);
+  });
+
   it('falls back to discovery for unknown paths', () => {
     expect(routeFromLocation({ pathname: '/not-a-route' })).toEqual({ tab: 'explore' });
   });

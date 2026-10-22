@@ -6,6 +6,7 @@
 - [ ] `SUPABASE_URL` set in the deployment environment
 - [ ] `SUPABASE_SERVICE_ROLE_KEY` set as a server-only secret
 - [ ] `JWT_SECRET` — 64+ character random string (not placeholder)
+- [ ] `LEISH_ADMIN_PASSWORD` — strong bootstrap password if a fresh JSON seed is ever used
 - [ ] `GEMINI_API_KEY` — valid production key with billing enabled
 - [ ] `NODE_ENV=production`
 - [ ] `VERCEL=1` (auto-set on Vercel)

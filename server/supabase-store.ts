@@ -9,11 +9,7 @@ import type {
   BookingWriteResult,
   StoredUser,
 } from './data-store.ts';
-import {
-  SlotConflictError,
-  idempotencyExpiry,
-  isIdempotencyLive,
-} from './data-store.ts';
+import { SlotConflictError, idempotencyExpiry, isIdempotencyLive } from './store-utils.ts';
 import type { ContactVerificationRecord } from './contact-verification.ts';
 import { classifyAttempt, contactKey } from './contact-verification.ts';
 import type { PageParams, Paginated } from './pagination.ts';

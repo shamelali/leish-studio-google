@@ -1,9 +1,10 @@
 # Leish! Launch Runbook
 
-This runbook covers the current Vercel + Express deployment. Firestore is the
-required production data backend; JSON remains available for local development
-and tests. Payments, real availability, and consent-backed analytics remain
-separate work.
+This runbook covers the repository's checked-in Render + Express deployment
+profile. Supabase is the production data backend for that profile; JSON remains
+available for local development and tests, while Firestore remains an optional
+adapter verified through the emulator suite. Payments, real availability, and
+consent-backed analytics remain separate work.
 
 ## 1. Preflight
 
@@ -14,41 +15,59 @@ pnpm install --frozen-lockfile
 pnpm run typecheck
 pnpm test
 pnpm run build
+pnpm exec playwright test --list
 ```
+
+For the default browser smoke run, Playwright starts `pnpm run dev` against an
+isolated copy of `server/test-fixture.json` and clears external credential
+variables. No production secrets are needed:
+
+```bash
+pnpm run test:e2e
+```
+
+Set `PLAYWRIGHT_BASE_URL` when the browser checks should use an existing
+deployment instead of the local server. The valid-email OTP test remains
+skipped unless `PLAYWRIGHT_EXTERNAL_SERVICES=1` is set and the target has a
+working Brevo transport; the invalid and empty-contact checks are always
+keyless.
 
 Confirm the working tree contains no `.env.local`, generated credentials, or
 unexpected `api/[...path].js` changes before pushing.
 
 ## 2. Deployment environment checklist
 
-Configure these in the Vercel project settings, not in source control:
+Configure these in the Render service settings, not in source control:
 
 | Variable | Required | Notes |
 |---|---:|---|
 | `JWT_SECRET` | Yes in production | Random secret of at least 32 bytes. Rotate deliberately; changing it invalidates active sessions. |
-| `STORE_BACKEND` | Yes in production | Set explicitly to `firestore`; the JSON backend is local/test only. |
-| `FIREBASE_PROJECT_ID` | With Firestore | Google Cloud project used by the Firebase Admin adapter. |
+| `STORE_BACKEND` | Yes in production | Set explicitly to `supabase`; the JSON backend is local/test only. |
+| `SUPABASE_URL` | Yes with Supabase | Project URL for the durable production store. |
+| `SUPABASE_SERVICE_ROLE_KEY` | Yes with Supabase | Server-only service-role secret; never expose it to the browser. |
 | `GEMINI_API_KEY` | Only for AI routes | Server-side only; never use a `VITE_` prefix. |
 | `APP_URL` | Recommended | Public deployment URL used for self-referential links and callbacks. |
 | `VITE_GOOGLE_MAPS_API_KEY` | Only for maps | Restrict the key to the deployed origins and Maps APIs required by the app. |
 
-Configure Firebase Admin credentials through the deployment secret manager
-(`GOOGLE_APPLICATION_CREDENTIALS` or the `FIREBASE_CLIENT_EMAIL` /
-`FIREBASE_PRIVATE_KEY` pair). The server refuses to boot in production unless
-`STORE_BACKEND=firestore` is explicitly set; it never falls back to an empty or
-ephemeral JSON catalog.
+The server refuses to boot in production unless a durable backend is explicitly
+selected; it never silently falls back to an empty or ephemeral JSON catalog.
+If a separate deployment selects Firestore, configure its Firebase Admin
+credentials through that deployment's secret manager and run the emulator and
+production verification steps before treating it as durable.
 
 ## 3. Deploy and smoke test
 
-1. Deploy through the repository's normal Vercel integration.
+1. Deploy through the repository's normal Render integration.
 2. Open the deployed URL and verify the directory loads.
 3. Verify a guest can open a listing, complete the booking steps, and see a
    confirmation receipt.
 4. Verify the provider demo journey: sign in, open the provider portal, and
    confirm a pending booking.
-5. Check the deep links `/lookbook`, `/ai-stylist`, `/workspace`, `/client`,
-   `/provider`, `/image-studio`, `/video-studio`, and `/concierge` on a
-   fresh tab. Each should return the app shell instead of a 404.
+5. Check the deep links `/lookbook`, `/ai-stylist`, `/advisor`, `/bookings`,
+   `/client`, `/provider`, `/portal/client`, `/portal/provider`,
+   `/image-studio`, `/video-studio`, and `/concierge` on a fresh tab. Each
+   should return the app shell instead of a 404. `/workspace` is intentionally
+   omitted because no Workspace surface exists yet.
 
 Useful read-only checks:
 
@@ -62,7 +81,7 @@ build logs or issue comments.
 
 ## 4. Monitoring
 
-- Use Vercel Functions logs for API status codes, timeouts, and startup errors.
+- Use Render service logs for API status codes, timeouts, and startup errors.
 - Use the visible `ErrorBoundary` fallback for client-side crashes; capture the
   error and route when reporting an incident, without user-entered content.
 - Watch booking and authentication failures first because they are the core
@@ -75,9 +94,9 @@ build logs or issue comments.
 ### Rollback
 
 1. Stop promotion of the failing deployment.
-2. Promote the last known-good Vercel deployment.
+2. Promote the last known-good Render deployment.
 3. Re-run the directory, booking, provider status, and deep-link smoke checks.
-4. Preserve the failing deployment URL and Vercel request IDs for diagnosis.
+4. Preserve the failing deployment URL and Render request/log IDs for diagnosis.
 
 For a source rollback, use a reviewed revert commit and repeat the full
 preflight checks before redeploying.

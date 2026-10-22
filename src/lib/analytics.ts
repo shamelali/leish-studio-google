@@ -12,7 +12,11 @@ export const ANALYTICS_EVENT_NAMES = [
   'view_listing',
   'booking_started',
   'booking_completed',
+  'booking_failed',
   'auth_completed',
+  'search_submitted',
+  'ai_fallback_shown',
+  'lookbook_attached',
 ] as const;
 
 export type AnalyticsEventName = (typeof ANALYTICS_EVENT_NAMES)[number];

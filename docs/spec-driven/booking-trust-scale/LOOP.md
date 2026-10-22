@@ -12,7 +12,7 @@ Auth fix: register/login fall back to legacy bcrypt when Supabase Auth creation 
 Supabase slot-conflict: migration 002 applied — constraint trigger leish_booking_overlap_trigger enforces DB-level slot conflict (raises 23P01 → SlotConflictError) on leish_bookings.
 NVIDIA concierge model: NVIDIA_CONCIERGE_MODEL=nemotron-3-super-120b-a12b set on Vercel (production + preview).
 Auth ordering: booking-create handler already checks auth before salon/service/staff lookups (garbage Bearer → 401, not 404).
-Payments: Billplz integration live on /api/bookings/:id/pay (create bill) and /api/bookings/:id/pay/callback (webhook). BILLPLZ_API_KEY and BILLPLZ_COLLECTION_ID configured on Vercel (production + preview).
+Payments: the Billplz routes remain a separately gated experiment, but the v1 booking UI now creates pending requests without initiating payment. Payment policy, gateway verification, refunds and provider settlement remain outside the accepted v1 funnel.
 
 ## Supabase Auth configuration (www.leish.my) — dashboard actions
 

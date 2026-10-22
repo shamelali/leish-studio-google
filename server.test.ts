@@ -50,7 +50,7 @@ beforeAll(async () => {
       { id: 'user-provider-1', name: 'Aina Rahman', email: 'aina@leish.test', password: hashPassword('password123'), role: 'studio', salonId: 'salon-1', phone: '+60 12-890 1234', createdAt: '2026-01-10T10:00:00.000Z' },
       { id: 'user-provider-2', name: 'Siti Ahmad', email: 'siti@leish.test', password: hashPassword('password123'), role: 'studio', salonId: 'salon-2', phone: '+60 12-456 7890', createdAt: '2026-01-12T12:00:00.000Z' },
       { id: 'user-client-1', name: 'Mei Ling', email: 'mei@leish.test', password: hashPassword('password123'), role: 'client', phone: '+60 12-345 6789', createdAt: '2026-01-15T08:00:00.000Z' },
-      { id: 'user-admin-1', name: 'Shamel', email: 'shamel@leish.my', password: hashPassword('lindan95'), role: 'admin', phone: '+60 12-000 0000', createdAt: '2026-10-17T00:00:00.000Z' },
+      { id: 'user-admin-1', name: 'Shamel', email: 'shamel@leish.my', password: hashPassword('test-admin-password'), role: 'admin', phone: '+60 12-000 0000', createdAt: '2026-10-17T00:00:00.000Z' },
     ],
   }));
 
@@ -117,7 +117,7 @@ describe('list pagination contract (FR-006/FR-007)', () => {
   beforeAll(async () => {
     const admin = await request(app)
       .post('/api/auth/login')
-      .send({ email: 'shamel@leish.my', password: 'lindan95' });
+      .send({ email: 'shamel@leish.my', password: 'test-admin-password' });
     expect(admin.status).toBe(200);
     adminToken = admin.body.token;
     const provider = await request(app)
@@ -219,7 +219,7 @@ describe('booking slot conflicts + idempotency (FR-004/FR-005)', () => {
   beforeAll(async () => {
     const admin = await request(app)
       .post('/api/auth/login')
-      .send({ email: 'shamel@leish.my', password: 'lindan95' });
+      .send({ email: 'shamel@leish.my', password: 'test-admin-password' });
     expect(admin.status).toBe(200);
     adminToken = admin.body.token;
     const provider = await request(app)
@@ -1436,7 +1436,7 @@ describe('admin salon creation (POST /api/salons)', () => {
   beforeAll(async () => {
     const admin = await request(app)
       .post('/api/auth/login')
-      .send({ email: 'shamel@leish.my', password: 'lindan95' });
+      .send({ email: 'shamel@leish.my', password: 'test-admin-password' });
     expect(admin.status).toBe(200);
     adminToken = admin.body.token;
     const provider = await request(app)
@@ -1485,7 +1485,7 @@ describe('admin users panel (GET+PATCH /api/users)', () => {
   beforeAll(async () => {
     const admin = await request(app)
       .post('/api/auth/login')
-      .send({ email: 'shamel@leish.my', password: 'lindan95' });
+      .send({ email: 'shamel@leish.my', password: 'test-admin-password' });
     expect(admin.status).toBe(200);
     adminToken = admin.body.token;
     const provider = await request(app)

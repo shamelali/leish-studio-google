@@ -32,8 +32,11 @@ async function bootstrap() {
   }
 
   const port = Number(process.env.PORT) || 3000;
-  const server = app.listen(port, '0.0.0.0', () => {
-    console.log(`Leish! Full-stack server running on http://0.0.0.0:${port}`);
+  // Let Node choose the local unspecified address so both IPv4 (127.0.0.1)
+  // and IPv6 (::1) localhost clients can connect. Binding only to 0.0.0.0
+  // makes browsers that resolve localhost to ::1 report ERR_CONNECTION_REFUSED.
+  const server = app.listen(port, () => {
+    console.log(`Leish! Full-stack server running on http://localhost:${port}`);
   });
 
   // Graceful shutdown: drain connections, finish in-flight work, exit cleanly.

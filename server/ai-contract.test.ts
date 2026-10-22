@@ -215,3 +215,72 @@ describe('review-summary AI contract', () => {
     expect(response.body.bestFor).toEqual(expect.any(String));
   });
 });
+
+describe('creative studio AI contract', () => {
+  beforeEach(() => {
+    process.env.GEMINI_API_KEY = '';
+  });
+
+  it('returns a labeled, bookable lookbook preview without a model key', async () => {
+    const response = await request(app)
+      .post('/api/gemini/trends-lookbook')
+      .send({ aesthetic: 'soft-glam', lighting: 'Natural daylight' });
+
+    expect(response.status).toBe(200);
+    expect(response.body).toMatchObject({
+      source: 'fallback',
+      category: 'soft-glam',
+      recommendedSalonId: salon.id,
+      recommendedServiceId: 'service-ai-test',
+    });
+  });
+
+  it('returns a deterministic concierge preview without a model key', async () => {
+    const response = await request(app)
+      .post('/api/gemini/chat')
+      .send({ messages: [{ parts: [{ text: 'I need a soft glam look' }] }] });
+
+    expect(response.status).toBe(200);
+    expect(response.body.reply).toContain('preview mode');
+    expect(response.body.groundingCitations).toEqual([]);
+    expect(generateContent).not.toHaveBeenCalled();
+  });
+
+  it('validates image and video prompts before returning keyless previews', async () => {
+    const invalidImage = await request(app).post('/api/gemini/generate-image').send({ prompt: ' ' });
+    const invalidVideo = await request(app).post('/api/gemini/generate-video').send({ prompt: '' });
+    expect(invalidImage.status).toBe(400);
+    expect(invalidVideo.status).toBe(400);
+
+    const image = await request(app)
+      .post('/api/gemini/generate-image')
+      .send({ prompt: 'soft champagne bridal makeup' });
+    const video = await request(app)
+      .post('/api/gemini/generate-video')
+      .send({ prompt: 'a slow editorial makeup reveal', aspectRatio: '9:16' });
+
+    expect(image.status).toBe(200);
+    expect(image.body).toMatchObject({ prompt: 'soft champagne bridal makeup', mode: 'preview' });
+    expect(video.status).toBe(200);
+    expect(video.body).toMatchObject({
+      operationName: 'simulated-video-operation',
+      aspectRatio: '9:16',
+      done: true,
+    });
+  });
+
+  it('supports simulated video status and download flows', async () => {
+    const status = await request(app)
+      .post('/api/gemini/video-status')
+      .send({ operationName: 'simulated-video-operation' });
+    const download = await request(app)
+      .post('/api/gemini/video-download')
+      .send({ operationName: 'simulated-video-operation' })
+      .redirects(0);
+
+    expect(status.status).toBe(200);
+    expect(status.body).toEqual({ done: true, videoUrl: expect.stringContaining('commondatastorage.googleapis.com') });
+    expect(download.status).toBe(302);
+    expect(download.headers.location).toContain('commondatastorage.googleapis.com');
+  });
+});

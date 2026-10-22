@@ -28,6 +28,7 @@ ENV PORT=3000
 #   -e SUPABASE_URL=https://<project>.supabase.co
 #   -e SUPABASE_SERVICE_ROLE_KEY=<server-only key>
 #   -e JWT_SECRET=<random 64+ char string>
+#   -e LEISH_ADMIN_PASSWORD=<bootstrap password for a fresh JSON seed>
 #   -e GEMINI_API_KEY=<your Gemini API key>
 
 # Production entry point: serves dist/ static assets + Express API

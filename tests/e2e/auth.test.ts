@@ -14,7 +14,7 @@ test.describe('Authentication', () => {
     await expect(page.getByText(/I want to join as/i)).toBeVisible();
   });
 
-  test('should fill out registration form', async ({ page }) => {
+  test('should fill out registration form', async ({ page }, testInfo) => {
     await page.goto('/');
     await page.getByRole('button', { name: /get started/i }).first().click();
     
@@ -24,7 +24,10 @@ test.describe('Authentication', () => {
     
     // Fill in registration details
     await page.getByPlaceholder(/Camille Laurent/i).fill('Test User');
-    await page.getByPlaceholder(/name@example.com/i).fill(`test${Date.now()}@leish.test`);
+    const emailSuffix = `${testInfo.project.name}-${testInfo.workerIndex}-${testInfo.retry}`
+      .replace(/[^a-z0-9-]/gi, '-')
+      .toLowerCase();
+    await page.getByPlaceholder(/name@example.com/i).fill(`playwright-${emailSuffix}@leish.test`);
     await page.getByPlaceholder(/••••••••/i).fill('TestPass123!');
     
     // Wait for submit button to be enabled (form validation)
@@ -32,11 +35,8 @@ test.describe('Authentication', () => {
     
     // Submit registration
     await page.getByRole('button', { name: /create my account/i }).click();
-    
-    // Should show success or navigate to app
-    await page.waitForTimeout(3000);
-    const bodyText = await page.textContent('body');
-    expect(bodyText).toContain('Leish');
+
+    await expect(page.getByText(/account created successfully/i)).toBeVisible({ timeout: 10000 });
   });
 
   test('should show login form', async ({ page }) => {

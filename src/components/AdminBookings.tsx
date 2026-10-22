@@ -5,7 +5,8 @@
  * Admins can see every booking and update status or delete.
  */
 import React, { useCallback, useState } from 'react';
-import { useBookings, adminBookingsApi } from '../lib/api';
+import { useQueryClient } from '@tanstack/react-query';
+import { useBookings, bookingsApi, adminBookingsApi } from '../lib/api';
 import type { Booking } from '../types';
 import {
   Calendar as CalendarIcon,
@@ -90,6 +91,7 @@ function BookingRow({ booking, onDelete, onStatusChange, isDeleting, isUpdating 
 
 export default function AdminBookings() {
   const { data: bookings = [], isLoading } = useBookings();
+  const queryClient = useQueryClient();
   const [deleting, setDeleting] = useState<Set<string>>(new Set());
   const [updating, setUpdating] = useState<Set<string>>(new Set());
   const [notice, setNotice] = useState<{ kind: 'error' | 'success'; text: string } | null>(null);
@@ -100,17 +102,14 @@ export default function AdminBookings() {
     setUpdating(prev => new Set([...prev, id]));
     setNotice(null);
     try {
-      await fetch(`/api/bookings/${id}/status`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('leish_auth_token')}`,
-        },
-        body: JSON.stringify({ status }),
-      });
+      await bookingsApi.updateStatus(id, status);
+      await queryClient.invalidateQueries({ queryKey: ['bookings'] });
       setNotice({ kind: 'success', text: `Booking status updated to ${status}.` });
-    } catch (err: any) {
-      setNotice({ kind: 'error', text: err.message || 'Could not update booking status.' });
+    } catch (err: unknown) {
+      setNotice({
+        kind: 'error',
+        text: err instanceof Error ? err.message : 'Could not update booking status.',
+      });
     } finally {
       setUpdating(prev => {
         const next = new Set(prev);
@@ -118,16 +117,20 @@ export default function AdminBookings() {
         return next;
       });
     }
-  }, []);
+  }, [queryClient]);
 
   const handleDelete = useCallback(async (id: string) => {
     setDeleting(prev => new Set([...prev, id]));
     setNotice(null);
     try {
       await adminBookingsApi.remove(id);
+      await queryClient.invalidateQueries({ queryKey: ['bookings'] });
       setNotice({ kind: 'success', text: 'Booking deleted.' });
-    } catch (err: any) {
-      setNotice({ kind: 'error', text: err.message || 'Could not delete booking.' });
+    } catch (err: unknown) {
+      setNotice({
+        kind: 'error',
+        text: err instanceof Error ? err.message : 'Could not delete booking.',
+      });
     } finally {
       setDeleting(prev => {
         const next = new Set(prev);
@@ -135,7 +138,7 @@ export default function AdminBookings() {
         return next;
       });
     }
-  }, []);
+  }, [queryClient]);
 
   if (isLoading) {
     return (

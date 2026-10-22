@@ -35,7 +35,7 @@ interface AppState {
 
 export const useStore = create<AppState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       // Auth
       currentUser: null,
       token: null,
@@ -88,10 +88,7 @@ export const useStore = create<AppState>()(
 
       // Hero
       currentHeroImage: '',
-      setCurrentHeroImage: (url) => {
-        set({ currentHeroImage: url });
-        localStorage.setItem('leish_hero_image', url);
-      },
+      setCurrentHeroImage: (url) => set({ currentHeroImage: url }),
     }),
     {
       name: 'leish-app-storage',
@@ -100,6 +97,18 @@ export const useStore = create<AppState>()(
         token: state.token,
         currentHeroImage: state.currentHeroImage,
       }),
+      merge: (persistedState, currentState) => {
+        const persisted = (persistedState || {}) as Partial<AppState>;
+        const merged = { ...currentState, ...persisted };
+        if (!merged.currentHeroImage && typeof window !== 'undefined') {
+          const legacyHeroImage = window.localStorage.getItem('leish_hero_image');
+          if (legacyHeroImage) {
+            merged.currentHeroImage = legacyHeroImage;
+            window.localStorage.removeItem('leish_hero_image');
+          }
+        }
+        return merged;
+      },
     }
   )
 );

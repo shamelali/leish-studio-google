@@ -116,6 +116,7 @@ export interface Review {
 
 export interface LookbookItem {
   id: string;
+  source?: 'model' | 'fallback';
   lookName: string;
   category: string;
   vibeDescription: string;

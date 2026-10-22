@@ -51,6 +51,7 @@ export default function App() {
     searchQuery, setSearchQuery,
     selectedCategory, setSelectedCategory,
     listingTypeFilter, setListingTypeFilter,
+    currentHeroImage, setCurrentHeroImage,
   } = useStore();
 
   const { data: salons = [], isLoading, error, refetch } = useSalons();
@@ -60,6 +61,7 @@ export default function App() {
   const [authPromptMessage, setAuthPromptMessage] = useState<string | undefined>(undefined);
   const [profileModalOpen, setProfileModalOpen] = useState(false);
   const [route, setRoute] = useState<AppRoute>(() => routeFromLocation(window.location));
+  const [searchInput, setSearchInput] = useState(searchQuery);
 
   // Booking states
   const [activeBookingSalon, setActiveBookingSalon] = useState<Salon | null>(null);
@@ -117,11 +119,10 @@ export default function App() {
     },
   ];
 
-  const [currentHeroImage, setCurrentHeroImage] = useState<string>(() => {
-    return localStorage.getItem('leish_hero_image') || CURATED_HERO_IMAGES[0].url;
-  });
   const [heroPickerOpen, setHeroPickerOpen] = useState(false);
   const [customHeroUrl, setCustomHeroUrl] = useState('');
+
+  const heroImage = currentHeroImage || CURATED_HERO_IMAGES[0].url;
 
   // Rating filter & sorting state
   const [minRatingFilter, setMinRatingFilter] = useState<number | 'all'>('all');
@@ -150,6 +151,18 @@ export default function App() {
     window.addEventListener('popstate', onPopState);
     return () => window.removeEventListener('popstate', onPopState);
   }, []);
+
+  useEffect(() => {
+    if (searchInput === searchQuery) return;
+    const timer = window.setTimeout(() => {
+      setSearchQuery(searchInput);
+      analytics.track('search_submitted', {
+        has_query: Boolean(searchInput.trim()),
+        query_length: searchInput.trim().length,
+      });
+    }, 250);
+    return () => window.clearTimeout(timer);
+  }, [searchInput, searchQuery, setSearchQuery]);
 
   useEffect(() => {
     // The route is the source of truth for shareable navigation. Avoid
@@ -312,6 +325,9 @@ export default function App() {
     setActiveBookingSalon(salon);
     setActiveBookingService(service);
     setActiveBookingMoodboard(moodboard);
+    analytics.track('lookbook_attached', {
+      has_recommendation: Boolean(moodboard.recommendedSalonId && moodboard.recommendedServiceId),
+    });
   };
 
   const handleBookingSuccess = (booking: Booking) => {
@@ -396,7 +412,7 @@ export default function App() {
                  <div className="mx-auto max-w-7xl space-y-16 px-4 py-10 sm:px-6 sm:py-12 lg:px-8">
                    <div className="relative flex min-h-[520px] flex-col justify-end overflow-hidden rounded-[2rem] border border-line/80 bg-editorial-glow p-6 shadow-2xl sm:min-h-[560px] sm:p-12 lg:p-16">
                     <img
-                      src={currentHeroImage}
+                       src={heroImage}
                       alt="Leish! Haute Couture Makeup Artistry"
                       fetchPriority="high"
                       decoding="async"
@@ -437,14 +453,13 @@ export default function App() {
 
                           <div className="space-y-2 max-h-64 overflow-y-auto pr-1">
                             {CURATED_HERO_IMAGES.map((img) => {
-                              const isSelected = currentHeroImage === img.url;
+                               const isSelected = heroImage === img.url;
                               return (
                                 <button
                                   key={img.id}
                                   type="button"
                                   onClick={() => {
                                     setCurrentHeroImage(img.url);
-                                    localStorage.setItem('leish_hero_image', img.url);
                                     setHeroPickerOpen(false);
                                   }}
                                   className={`w-full flex items-center gap-3 p-2 rounded-xl border text-left transition-all cursor-pointer ${
@@ -488,15 +503,14 @@ export default function App() {
                                 placeholder="https://..."
                                 className="flex-1 rounded-lg border border-accent-soft bg-surface px-2.5 py-1.5 text-xs text-fg focus:border-accent-strong focus:outline-none"
                               />
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  if (customHeroUrl.trim()) {
-                                    setCurrentHeroImage(customHeroUrl.trim());
-                                    localStorage.setItem('leish_hero_image', customHeroUrl.trim());
-                                    setHeroPickerOpen(false);
-                                  }
-                                }}
+                             <button
+                               type="button"
+                               onClick={() => {
+                                 if (customHeroUrl.trim()) {
+                                   setCurrentHeroImage(customHeroUrl.trim());
+                                   setHeroPickerOpen(false);
+                                 }
+                               }}
                                      className="rounded-lg bg-primary px-3 py-1.5 text-xs font-bold text-on-primary transition-colors hover:bg-primary-hover cursor-pointer"
                               >
                                 Apply
@@ -548,8 +562,8 @@ export default function App() {
                            <input
                             id="hero-search"
                             type="text"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
+                             value={searchInput}
+                             onChange={(e) => setSearchInput(e.target.value)}
                             placeholder="Search MUA artists by name, studios, bridal cut-creases, soft glam..."
                             className="w-full rounded-xl border border-accent-soft bg-surface pl-11 pr-4 py-3 text-xs sm:text-sm text-fg placeholder:text-fg-dim focus:border-accent-strong focus:outline-none"
                           />

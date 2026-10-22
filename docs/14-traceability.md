@@ -19,4 +19,4 @@ Every new product requirement must receive an ID, an SRS reference, an implement
 
 ## Current unverified items
 
-Production Firestore durability, real distance calculation, Workspace write flows, consent-backed analytics, payments, real availability and full visual/accessibility audit remain intentionally open and must not be reported as complete.
+Production Supabase durability and backup/restore, real distance calculation, Workspace write flows, consent-backed analytics delivery, payments, real availability and full visual/accessibility audit remain intentionally open and must not be reported as complete.

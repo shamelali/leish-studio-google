@@ -27,6 +27,7 @@ import {
 import { LookbookItem, Salon, Service } from '../types';
 import { apiClient } from '../lib/api';
 import { resolveCatalogRecommendation } from '../lib/catalog-resolution';
+import { analytics } from '../lib/analytics';
 
 interface LookbookStudioProps {
   salons: Salon[];
@@ -99,6 +100,9 @@ export default function LookbookStudio({ salons, onBookLook }: LookbookStudioPro
           lighting
       });
       setCurrentLook(data);
+      if (data.source === 'fallback') {
+        analytics.track('ai_fallback_shown', { surface: 'lookbook' });
+      }
     } catch (err) {
       console.error(err);
       setGenerationError('The lookbook could not be generated. Check your connection and try again.');
@@ -347,9 +351,16 @@ export default function LookbookStudio({ salons, onBookLook }: LookbookStudioPro
                 
                 <div className="absolute bottom-6 left-6 right-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
                   <div>
-                       <span className="mb-2 inline-block rounded-full bg-primary px-3 py-1 text-[10px] font-mono font-semibold uppercase tracking-widest text-on-primary shadow-md">
-                      {currentLook.category} Artistry Specification
-                    </span>
+                     <div className="mb-2 flex flex-wrap items-center gap-2">
+                       <span className="inline-block rounded-full bg-primary px-3 py-1 text-[10px] font-mono font-semibold uppercase tracking-widest text-on-primary shadow-md">
+                         {currentLook.category} Artistry Specification
+                       </span>
+                       {currentLook.source === 'fallback' && (
+                         <span className="rounded-full border border-warning-border/40 bg-warning-surface/60 px-3 py-1 text-[10px] font-mono font-semibold uppercase tracking-widest text-warning">
+                           Preview recommendation
+                         </span>
+                       )}
+                     </div>
                     <h2 className="font-serif text-2xl sm:text-3xl font-bold text-fg tracking-tight">
                       {currentLook.lookName}
                     </h2>

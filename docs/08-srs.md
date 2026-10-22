@@ -94,7 +94,7 @@ The system shall provide an overview for guests and, after Google consent, list 
 
 ## 8. Open implementation gaps
 
-The current repository still requires production verification or follow-up for Firestore durability, real geocoding, consent-backed analytics, full Workspace writes, payment discovery, real availability, and a physical-device accessibility audit. These are not silently treated as complete.
+The current repository still requires production verification or follow-up for Supabase durability and backup/restore, real geocoding, consent-backed analytics delivery, full Workspace writes, payment discovery, real availability, and a physical-device accessibility audit. These are not silently treated as complete.
 
 ## 9. Acceptance baseline
 

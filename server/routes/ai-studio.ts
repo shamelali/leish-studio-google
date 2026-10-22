@@ -58,6 +58,7 @@ export function registerAiStudioRoutes(app: Express, ctx: RouteContext & { aiCli
       // Fallback curated lookbook spec if Gemini is unavailable
       const fallbackLookbook = {
         id: generateLookId(),
+        source: 'fallback' as const,
         lookName: selectedAesthetic === 'bridal'
           ? 'Royal Gilded Silk Bridal'
           : selectedAesthetic === 'editorial'
@@ -172,9 +173,10 @@ Ensure colorPalette has 5 distinct harmonious hexadecimal values. Return pure JS
         if (response && response.text) {
           const cleanText = stripJsonFences(response.text);
 
-          const parsed = JSON.parse(cleanText);
-          parsed.id = generateLookId();
-          parsed.heroImage = heroImage;
+           const parsed = JSON.parse(cleanText);
+           parsed.id = generateLookId();
+           parsed.source = 'model';
+           parsed.heroImage = heroImage;
           return res.json(parsed);
         }
       } catch (genErr: any) {

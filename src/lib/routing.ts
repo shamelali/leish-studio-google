@@ -27,8 +27,17 @@ function decodeSegment(segment: string) {
 /** Parse the public URL without requiring a router dependency. */
 export function routeFromLocation(location: Pick<Location, 'pathname'>): AppRoute {
   const segments = location.pathname.split('/').filter(Boolean).map(decodeSegment);
-  if (segments[0] === 'salon' && segments[1]) return { tab: 'explore', salonId: segments[1] };
+  if ((segments[0] === 'salon' || segments[0] === 'listing') && segments[1]) {
+    return { tab: 'explore', salonId: segments[1] };
+  }
   if (segments[0] === 'explore') return { tab: 'explore' };
+  if (segments[0] === 'advisor') return { tab: 'ai-stylist' };
+  if (segments[0] === 'bookings' || segments[0] === 'portal') {
+    const section = segments[1];
+    if (section === 'provider' || section === 'studio') return { tab: 'provider' };
+    if (section === 'admin') return { tab: 'admin' };
+    return { tab: 'client' };
+  }
   if (segments[0] && TABS.has(segments[0])) return { tab: segments[0] as Exclude<AppRoute, { tab: 'explore' }>['tab'] };
   return { tab: 'explore' };
 }

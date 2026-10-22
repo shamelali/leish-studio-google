@@ -242,19 +242,22 @@ export default function Dashboard({ salons, currentUser, onOpenAuth }: Dashboard
     if (!photoFile || !selectedSalonId) return;
     setUploadingPhoto(true);
     try {
-      const reader = new FileReader();
-      reader.onloadend = async () => {
-        const base64 = reader.result as string;
-        await salonsApi.update(selectedSalonId, { image: base64 });
-        setUploadingPhoto(false);
-        setPhotoFile(null);
-        setPhotoPreview(null);
-        await fetchSalonAndBookings();
-      };
-      reader.readAsDataURL(photoFile);
-    } catch (err: any) {
+      const base64 = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          if (typeof reader.result === 'string') resolve(reader.result);
+          else reject(new Error('The selected image could not be read.'));
+        };
+        reader.onerror = () => reject(reader.error || new Error('The selected image could not be read.'));
+        reader.readAsDataURL(photoFile);
+      });
+      await salonsApi.update(selectedSalonId, { image: base64 });
+      clearPhoto();
+      await fetchSalonAndBookings();
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to upload profile photo.');
+    } finally {
       setUploadingPhoto(false);
-      setError(err.message || 'Failed to upload profile photo.');
     }
   };
 
@@ -300,9 +303,9 @@ export default function Dashboard({ salons, currentUser, onOpenAuth }: Dashboard
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
+    <div className="adaptive-dashboard mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 space-y-8">
       {isProviderRole(currentUser?.role) ? (
-        <div className="rounded-2xl border border-accent-soft/40 bg-inset p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+        <div className="adaptive-banner rounded-2xl border border-accent-soft/40 bg-inset p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
           <div className="flex items-center space-x-3">
             <span className="h-2.5 w-2.5 rounded-full bg-success-surface animate-pulse" />
             <p className="text-fg-muted">
@@ -314,7 +317,7 @@ export default function Dashboard({ salons, currentUser, onOpenAuth }: Dashboard
           </span>
         </div>
       ) : (
-        <div className="rounded-2xl border border-accent-soft/40 bg-gradient-to-r from-panel-mid to-recessed p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs">
+        <div className="adaptive-banner rounded-2xl border border-accent-soft/40 bg-gradient-to-r from-panel-mid to-recessed p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs">
           <div>
             <span className="inline-block text-[10px] font-mono uppercase tracking-wider text-fg bg-accent/30 px-2 py-0.5 rounded-md mb-1.5">
               Makeup Studio Partner Access
@@ -343,15 +346,20 @@ export default function Dashboard({ salons, currentUser, onOpenAuth }: Dashboard
         </div>
       )}
 
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-line pb-5 gap-4">
+      <div className="adaptive-header flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5">
         <div>
-          <h1 className="font-serif text-2xl font-bold text-fg">Business Salon Panel</h1>
-          <p className="text-xs text-fg-muted mt-1">Manage appointments, service catalog, profile photo, and studio settings.</p>
+          <div className="mb-3 flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.22em] text-accent-text">
+            <span className="adaptive-live-dot" /> Partner workspace / 01
+          </div>
+          <h1 className="font-display text-3xl font-semibold tracking-[-0.04em] text-fg sm:text-4xl">Welcome back, {currentUser?.name?.split(' ')[0] || 'partner'}.</h1>
+          <p className="mt-2 max-w-xl text-sm leading-6 text-fg-muted">Your studio command center for appointments, services, and the details clients see first.</p>
         </div>
 
         <div className="flex items-center space-x-2.5">
-          <Store className="h-4 w-4 text-accent-text" />
+          <Store className="h-4 w-4 text-accent-text" aria-hidden="true" />
+          <label htmlFor="partner-studio-select" className="sr-only">Select studio</label>
           <select
+            id="partner-studio-select"
             value={selectedSalonId}
             onChange={(e) => setSelectedSalonId(e.target.value)}
             className="rounded-xl border border-accent-soft bg-panel px-4 py-2.5 text-xs sm:text-sm font-semibold text-fg focus:border-accent-strong focus:outline-none cursor-pointer"
@@ -376,8 +384,8 @@ export default function Dashboard({ salons, currentUser, onOpenAuth }: Dashboard
         </div>
       ) : salon ? (
         <div className="space-y-8">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="rounded-xl border border-line bg-panel p-5 space-y-2 relative overflow-hidden">
+           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div className="adaptive-stat rounded-xl border border-line bg-panel p-5 space-y-2 relative overflow-hidden">
               <div className="absolute right-4 top-4 rounded-full bg-success-surface/10 p-2 text-success">
                 <DollarSign className="h-4 w-4" />
               </div>
@@ -386,7 +394,7 @@ export default function Dashboard({ salons, currentUser, onOpenAuth }: Dashboard
               <p className="text-[10px] text-fg-muted">Sum of confirmed & completed sessions</p>
             </div>
 
-            <div className="rounded-xl border border-line bg-panel p-5 space-y-2 relative overflow-hidden">
+            <div className="adaptive-stat rounded-xl border border-line bg-panel p-5 space-y-2 relative overflow-hidden">
               <div className="absolute right-4 top-4 rounded-full bg-info-surface/10 p-2 text-info">
                 <Calendar className="h-4 w-4" />
               </div>
@@ -395,7 +403,7 @@ export default function Dashboard({ salons, currentUser, onOpenAuth }: Dashboard
               <p className="text-[10px] text-fg-muted">All-time tickets processed</p>
             </div>
 
-            <div className="rounded-xl border border-line bg-panel p-5 space-y-2 relative overflow-hidden">
+            <div className="adaptive-stat rounded-xl border border-line bg-panel p-5 space-y-2 relative overflow-hidden">
               <div className="absolute right-4 top-4 rounded-full bg-warning-surface/10 p-2 text-accent-text">
                 <Star className="h-4 w-4" />
               </div>
@@ -405,8 +413,13 @@ export default function Dashboard({ salons, currentUser, onOpenAuth }: Dashboard
             </div>
           </div>
 
-          <div className="flex border-b border-line pb-px">
+          <div className="adaptive-tabs flex overflow-x-auto border-b border-line pb-px scrollbar-none" role="tablist" aria-label="Studio workspace sections">
             <button
+              id="dashboard-tab-appointments"
+              type="button"
+              role="tab"
+              aria-selected={dashTab === 'appointments'}
+              aria-controls="dashboard-panel"
               onClick={() => setDashTab('appointments')}
               className={`px-5 py-3 text-xs sm:text-sm font-semibold border-b-2 transition-all cursor-pointer ${
                 dashTab === 'appointments' ? 'border-accent text-fg' : 'border-transparent text-fg-muted hover:text-fg'
@@ -415,6 +428,11 @@ export default function Dashboard({ salons, currentUser, onOpenAuth }: Dashboard
               Active Appointments ({bookings.filter(b => b.status === 'pending' || b.status === 'confirmed').length})
             </button>
             <button
+              id="dashboard-tab-services"
+              type="button"
+              role="tab"
+              aria-selected={dashTab === 'services'}
+              aria-controls="dashboard-panel"
               onClick={() => setDashTab('services')}
               className={`px-5 py-3 text-xs sm:text-sm font-semibold border-b-2 transition-all cursor-pointer ${
                 dashTab === 'services' ? 'border-accent text-fg' : 'border-transparent text-fg-muted hover:text-fg'
@@ -423,6 +441,11 @@ export default function Dashboard({ salons, currentUser, onOpenAuth }: Dashboard
               Services Menu ({salon.services.length})
             </button>
             <button
+              id="dashboard-tab-profile"
+              type="button"
+              role="tab"
+              aria-selected={dashTab === 'profile'}
+              aria-controls="dashboard-panel"
               onClick={() => setDashTab('profile')}
               className={`px-5 py-3 text-xs sm:text-sm font-semibold border-b-2 transition-all cursor-pointer ${
                 dashTab === 'profile' ? 'border-accent text-fg' : 'border-transparent text-fg-muted hover:text-fg'
@@ -431,6 +454,11 @@ export default function Dashboard({ salons, currentUser, onOpenAuth }: Dashboard
               Edit Studio Details
             </button>
             <button
+              id="dashboard-tab-audit"
+              type="button"
+              role="tab"
+              aria-selected={dashTab === 'audit'}
+              aria-controls="dashboard-panel"
               onClick={() => setDashTab('audit')}
               className={`px-5 py-3 text-xs sm:text-sm font-semibold border-b-2 transition-all cursor-pointer flex items-center gap-1.5 ${
                 dashTab === 'audit' ? 'border-accent text-fg' : 'border-transparent text-fg-muted hover:text-fg'
@@ -441,7 +469,13 @@ export default function Dashboard({ salons, currentUser, onOpenAuth }: Dashboard
             </button>
           </div>
 
-          <div className="min-h-[400px]">
+          <div
+            id="dashboard-panel"
+            role="tabpanel"
+            aria-labelledby={`dashboard-tab-${dashTab}`}
+            tabIndex={0}
+            className="min-h-[400px]"
+          >
             {dashTab === 'appointments' && (
               <div className="space-y-4">
                 {bookings.length === 0 ? (

@@ -96,27 +96,27 @@ export default function AdminSettings() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <SettingRow
           label="Site URL"
-          description="Canonical production domain used for auth callbacks and email links."
-          value="https://leish.my"
+          description="Public deployment URL used for auth callbacks and email links."
+          value="Configured deployment URL"
           icon={Globe}
           editable
         />
         <SettingRow
           label="Store Backend"
-          description="Durable persistence backend for production data."
-          value="supabase"
+          description="Application data storage configured for this deployment."
+          value="Configured storage"
           icon={Database}
         />
         <SettingRow
           label="Auth Provider"
-          description="Authentication method for user accounts."
-          value="Supabase Auth (password + OAuth)"
+          description="Authentication configuration used for user accounts."
+          value="Configured authentication"
           icon={Lock}
         />
         <SettingRow
           label="Email Service"
-          description="Transactional email provider for OTP and confirmations."
-          value="Brevo (configured)"
+          description="Transactional email configuration for OTP and confirmations."
+          value="Configured email service"
           icon={Mail}
         />
         <SettingRow
@@ -127,8 +127,8 @@ export default function AdminSettings() {
         />
         <SettingRow
           label="Admin Accounts"
-          description="Bootstrap admin: shamel@leish.my / lindan95 (fallback)."
-          value="1 admin account"
+          description="Admin access is managed through the configured authentication flow. Credentials are not displayed here."
+          value="Managed through authentication"
           icon={ShieldCheck}
         />
       </div>

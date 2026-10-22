@@ -9,6 +9,7 @@ import { Sparkles, ArrowRight, CornerDownRight, Calendar, AlertCircle, RefreshCw
 import { AIAdviceResponse, Salon, Service } from '../types';
 import { apiClient } from '../lib/api';
 import { resolveCatalogRecommendation } from '../lib/catalog-resolution';
+import { analytics } from '../lib/analytics';
 
 interface AIStylistProps {
   onInitiateBooking: (salon: Salon, service: Service) => void;
@@ -47,6 +48,9 @@ export default function AIStylist({ onInitiateBooking, salons }: AIStylistProps)
           preferredCategory
       });
       setAdvice(result);
+      if (result.source === 'fallback') {
+        analytics.track('ai_fallback_shown', { surface: 'ai-stylist' });
+      }
     } catch (err: any) {
       setError(err.message || 'AI Matching failed. Please try again.');
     } finally {

@@ -10,9 +10,9 @@
 
 **Decision:** Call Gemini only from Express. **Why:** Protects the API key and centralizes model tiering, timeouts, output validation and fallbacks. **Consequence:** AI features depend on API route latency and require deterministic keyless behavior for development.
 
-## ADR-003 — Firestore as intended durable store, JSON as test fallback
+## ADR-003 — Supabase as the checked-in durable store, JSON as test fallback
 
-**Decision:** Hide persistence behind a `DataStore` interface; use Firestore for verified production durability and retain the JSON implementation for local tests. **Why:** The app needs concurrent durable writes while preserving fast isolated tests. **Consequence:** Firestore rules, indexes, migration and emulator evidence are release dependencies.
+**Decision:** Hide persistence behind a `DataStore` interface; use Supabase for the checked-in Render production profile and retain the JSON implementation for local tests. Keep the Firestore adapter as an optional deployment profile covered by emulator tests. **Why:** The repository's Render manifest, migrations and production checklist already target Supabase while the interface keeps a second durable adapter possible. **Consequence:** Supabase backups, RLS/migration verification and restore evidence are release dependencies; a Firestore deployment must record its own credentials, rules and indexes before claiming durability.
 
 ## ADR-004 — JWT bearer authentication for the API
 

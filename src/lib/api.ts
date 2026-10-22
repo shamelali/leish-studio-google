@@ -96,8 +96,6 @@ export const bookingsApi = {
     apiClient.post('/bookings', data),
   updateStatus: (id: string, status: string) =>
     apiClient.patch(`/bookings/${id}/status`, { status }),
-  pay: (id: string) =>
-    apiClient.post<{ paymentUrl: string; billId: string; amount: number; currency: string }>(`/bookings/${id}/pay`, {}),
 };
 
 // Admin Booking API
